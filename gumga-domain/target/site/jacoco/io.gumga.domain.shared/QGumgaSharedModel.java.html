@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>QGumgaSharedModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-domain</a> &gt; <a href="index.source.html" class="el_package">io.gumga.domain.shared</a> &gt; <span class="el_source">QGumgaSharedModel.java</span></div><h1>QGumgaSharedModel.java</h1><pre class="source lang-java linenums">package io.gumga.domain.shared;
+
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
+import io.gumga.domain.QGumgaModel;
+import io.gumga.domain.domains.GumgaOi;
+
+import javax.annotation.Generated;
+
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
+
+
+/**
+ * QGumgaSharedModel is a Querydsl query type for GumgaSharedModel
+ */
+@Generated(&quot;com.mysema.query.codegen.SupertypeSerializer&quot;)
+public class QGumgaSharedModel extends EntityPathBase&lt;GumgaSharedModel&lt;? extends java.io.Serializable&gt;&gt; {
+
+    private static final long serialVersionUID = -1157887249L;
+
+<span class="nc" id="L25">    public static final QGumgaSharedModel gumgaSharedModel = new QGumgaSharedModel(&quot;gumgaSharedModel&quot;);</span>
+
+<span class="nc" id="L27">    public final QGumgaModel _super = new QGumgaModel(this);</span>
+
+<span class="nc" id="L29">    public final StringPath gumgaOrganizations = createString(&quot;gumgaOrganizations&quot;);</span>
+
+<span class="nc" id="L31">    public final StringPath gumgaUsers = createString(&quot;gumgaUsers&quot;);</span>
+
+    //inherited
+<span class="nc" id="L34">    public final SimplePath&lt;java.io.Serializable&gt; id = _super.id;</span>
+
+    //inherited
+<span class="nc" id="L37">    public final ComparablePath&lt;GumgaOi&gt; oi = _super.oi;</span>
+
+    @SuppressWarnings(&quot;all&quot;)
+    public QGumgaSharedModel(String variable) {
+<span class="nc" id="L41">        super((Class)GumgaSharedModel.class, forVariable(variable));</span>
+<span class="nc" id="L42">    }</span>
+
+    @SuppressWarnings(&quot;all&quot;)
+    public QGumgaSharedModel(Path&lt;? extends GumgaSharedModel&gt; path) {
+<span class="nc" id="L46">        super((Class)path.getType(), path.getMetadata());</span>
+<span class="nc" id="L47">    }</span>
+
+    @SuppressWarnings(&quot;all&quot;)
+    public QGumgaSharedModel(PathMetadata&lt;?&gt; metadata) {
+<span class="nc" id="L51">        super((Class)GumgaSharedModel.class, metadata);</span>
+<span class="nc" id="L52">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

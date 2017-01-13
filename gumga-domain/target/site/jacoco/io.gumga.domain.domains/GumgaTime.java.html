@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaTime.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-domain</a> &gt; <a href="index.source.html" class="el_package">io.gumga.domain.domains</a> &gt; <span class="el_source">GumgaTime.java</span></div><h1>GumgaTime.java</h1><pre class="source lang-java linenums">package io.gumga.domain.domains;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
+
+/**
+ * Representa o tempo com alguns facilitadores
+ *
+ * @author munif
+ */
+public final class GumgaTime extends GumgaDomain {
+
+    private Date value;
+
+<span class="nc" id="L16">    public GumgaTime() {</span>
+<span class="nc" id="L17">        value = new Date();</span>
+<span class="nc" id="L18">    }</span>
+
+<span class="nc" id="L20">    public GumgaTime(Date value) {</span>
+<span class="nc" id="L21">        this.value = value;</span>
+<span class="nc" id="L22">    }</span>
+
+<span class="nc" id="L24">    public GumgaTime(int hour, int minute) {</span>
+<span class="nc" id="L25">        Calendar cal = Calendar.getInstance();</span>
+<span class="nc" id="L26">        cal.set(Calendar.HOUR_OF_DAY, hour);</span>
+<span class="nc" id="L27">        cal.set(Calendar.MINUTE, minute);</span>
+<span class="nc" id="L28">        cal.set(Calendar.SECOND, 0);</span>
+<span class="nc" id="L29">        cal.set(Calendar.MILLISECOND, 0);</span>
+<span class="nc" id="L30">        value = cal.getTime();</span>
+<span class="nc" id="L31">    }</span>
+
+<span class="nc" id="L33">    public GumgaTime(GumgaTime other) {</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (other != null) {</span>
+<span class="nc" id="L35">            value = other.value;</span>
+        }
+<span class="nc" id="L37">    }</span>
+
+    public int getOnlyTimeInSeconds() {
+<span class="nc" id="L40">        Calendar cal = Calendar.getInstance();</span>
+<span class="nc" id="L41">        cal.setTime(value);</span>
+<span class="nc" id="L42">        return cal.get(Calendar.HOUR_OF_DAY) * 3600 + cal.get(Calendar.MINUTE) * 60 + cal.get(Calendar.SECOND);</span>
+    }
+
+    public Date getValue() {
+<span class="nc" id="L46">        return value;</span>
+    }
+
+    public void setValue(Date value) {
+<span class="nc" id="L50">        this.value = value;</span>
+<span class="nc" id="L51">    }</span>
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L55">        int hash = 7;</span>
+<span class="nc" id="L56">        hash = 17 * hash + Objects.hashCode(this.value);</span>
+<span class="nc" id="L57">        return hash;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L63">            return false;</span>
+        }
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L66">            return false;</span>
+        }
+<span class="nc" id="L68">        final GumgaTime other = (GumgaTime) obj;</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (!Objects.equals(this.value, other.value)) {</span>
+<span class="nc" id="L70">            return false;</span>
+        }
+<span class="nc" id="L72">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L77">        return value.toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

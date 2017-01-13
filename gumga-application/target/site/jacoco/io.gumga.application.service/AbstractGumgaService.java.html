@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AbstractGumgaService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-application</a> &gt; <a href="index.source.html" class="el_package">io.gumga.application.service</a> &gt; <span class="el_source">AbstractGumgaService.java</span></div><h1>AbstractGumgaService.java</h1><pre class="source lang-java linenums">package io.gumga.application.service;
+
+import io.gumga.application.customfields.GumgaCustomEnhancerService;
+import io.gumga.core.exception.NoMultiTenancyException;
+import io.gumga.core.utils.ReflectionUtils;
+import io.gumga.domain.GumgaMultitenancy;
+import io.gumga.domain.customfields.GumgaCustomizableModel;
+import io.gumga.domain.domains.GumgaOi;
+import io.gumga.domain.repository.GumgaCrudRepository;
+import io.gumga.domain.repository.GumgaMultitenancyUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.Serializable;
+
+public abstract class AbstractGumgaService&lt;T, ID extends Serializable&gt; {
+
+<span class="fc" id="L19">    protected final Logger logger = LoggerFactory.getLogger(getClass());</span>
+    protected final GumgaCrudRepository&lt;T, ID&gt; repository;
+
+    @Autowired
+    protected GumgaCustomEnhancerService gces;
+
+<span class="fc" id="L25">    public AbstractGumgaService(GumgaCrudRepository&lt;T, ID&gt; repository) {</span>
+<span class="fc" id="L26">        this.repository = repository;</span>
+<span class="fc" id="L27">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public Class&lt;T&gt; clazz() {
+<span class="nc" id="L31">        return (Class&lt;T&gt;) ReflectionUtils.inferGenericType(getClass());</span>
+    }
+
+    public void loadGumgaCustomFields(Object entity) {
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (entity instanceof GumgaCustomizableModel) {</span>
+<span class="nc" id="L36">            gces.loadCustomFields((GumgaCustomizableModel) entity);</span>
+        }
+<span class="fc" id="L38">    }</span>
+
+    public GumgaOi gumgaOiForSearch() {
+        try {
+<span class="nc" id="L42">            String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(clazz().getAnnotation(GumgaMultitenancy.class));</span>
+<span class="nc" id="L43">            GumgaOi oi = new GumgaOi(oiPattern);</span>
+<span class="nc" id="L44">            return oi;</span>
+        }
+<span class="nc" id="L46">        catch(Exception ex){</span>
+<span class="nc" id="L47">            throw new NoMultiTenancyException(&quot;The class &quot;+clazz().getCanonicalName()+&quot; haven't MultiTenancy&quot; );</span>
+        }
+    }
+    public GumgaOi gumgaOiForSearchWithWildCard() {
+        try {
+<span class="nc" id="L52">            String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(clazz().getAnnotation(GumgaMultitenancy.class));</span>
+<span class="nc" id="L53">            GumgaOi oi = new GumgaOi(oiPattern.concat(&quot;%&quot;));</span>
+<span class="nc" id="L54">            return oi;</span>
+        }
+<span class="nc" id="L56">        catch(Exception ex){</span>
+<span class="nc" id="L57">            throw new NoMultiTenancyException(&quot;The class &quot;+clazz().getCanonicalName()+&quot; haven't MultiTenancy&quot; );</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaValues.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-core</a> &gt; <a href="index.source.html" class="el_package">io.gumga.core</a> &gt; <span class="el_source">GumgaValues.java</span></div><h1>GumgaValues.java</h1><pre class="source lang-java linenums">package io.gumga.core;
+
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Interface que deve ser implementada para alterar comportamentos padrão do
+ * framework.
+ *
+ * @author munif
+ */
+public interface GumgaValues {
+
+    default String getGumgaNLPBasePackage(){
+<span class="nc" id="L22">        return &quot;io.gumga&quot;;</span>
+    };
+
+    /**
+     *
+     * @return Tempo padrão de expiração do ticket para troca de senha.
+     */
+    default long getDefaultExpirationForChangePassword() {
+<span class="nc" id="L30">        return 3600l * 1000 * 6;</span>
+    }
+
+    /**
+     * @return URL do sistema de segurança
+     */
+    default String getGumgaSecurityPage() {
+<span class="nc" id="L37">        return &quot;http://www.gumga.com.br/security&quot;;</span>
+    }
+
+    /**
+     * @return URL da api do sistema de segurança
+     */
+    default String getGumgaSecurityUrl() {
+<span class="nc" id="L44">        return &quot;http://www.gumga.com.br/security-api/publicoperations&quot;;</span>
+    }
+
+    /**
+     * @return Tempo padrão de expiração do token curto neste software em
+     * segundos.
+     */
+    default long getDefaultTokenDuration() {
+<span class="nc" id="L52">        return 30l * 60l * 1000l;</span>
+    }
+
+    /**
+     * @return se o log está ativo
+     */
+    default boolean isLogActive() {
+<span class="nc" id="L59">        return true;</span>
+    }
+
+    /**
+     * Para não logar no banco
+     *
+     * @return
+     */
+    default boolean isLogRequestOnConsole() {
+<span class="nc" id="L68">        return false;</span>
+    }
+
+    /**
+     * Lista de paths de urls que serão ignoradas do log
+     *
+     * @return
+     */
+    default Set&lt;String&gt; getUrlsToNotLog() {
+<span class="nc" id="L77">        return new HashSet&lt;&gt;();</span>
+    }
+
+    /**
+     * @return diretório para armazenar aquivos vindos do upload
+     */
+    default String getUploadTempDir() {
+<span class="nc" id="L84">        return System.getProperty(&quot;user.home&quot;).concat(&quot;/gumgafiles/tempupload&quot;);</span>
+
+    }
+
+    /**
+     * @return diretório para armazenar aquivos de log
+     */
+    default String getLogDir() {
+<span class="nc" id="L92">        return System.getProperty(&quot;user.home&quot;).concat(&quot;/gumgafiles/logs&quot;);</span>
+    }
+
+    /**
+     * @return diretório para armazenar templates como email
+     */
+    default String getTemplatesFolder() {
+<span class="nc" id="L99">        return System.getProperty(&quot;user.home&quot;).concat(&quot;/gumgafiles/templates&quot;);</span>
+    }
+
+    /**
+     *
+     * @return propeties de configuração do usuario
+     */
+    default Properties getCustomFileProperties() {
+<span class="nc" id="L107">        Properties toReturn = new Properties();</span>
+        try {
+<span class="nc" id="L109">            InputStream input = new FileInputStream(System.getProperty(&quot;user.home&quot;) + &quot;/gumgafiles/&quot; + getCustomPropertiesFileName());</span>
+<span class="nc" id="L110">            toReturn.load(input);</span>
+<span class="nc" id="L111">        } catch (IOException e) {</span>
+<span class="nc" id="L112">            Logger.getLogger(GumgaValues.class.getName()).log(Level.INFO,&quot;Utilizando properties padrão&quot;);</span>
+<span class="nc" id="L113">        }</span>
+<span class="nc" id="L114">        return toReturn;</span>
+    }
+
+    /**
+     *
+     * @return arquivo de configuração da applicação
+     */
+    default String getCustomPropertiesFileName() {
+<span class="nc" id="L122">        return &quot;gumga-security.properties&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaUserDataService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-application</a> &gt; <a href="index.source.html" class="el_package">io.gumga.application</a> &gt; <span class="el_source">GumgaUserDataService.java</span></div><h1>GumgaUserDataService.java</h1><pre class="source lang-java linenums">package io.gumga.application;
+
+import io.gumga.core.GumgaThreadScope;
+import io.gumga.core.QueryObject;
+import io.gumga.core.SearchResult;
+import io.gumga.domain.GumgaUserData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class GumgaUserDataService extends GumgaService&lt;GumgaUserData, Long&gt; {
+
+    private GumgaUserDataRepository repository;
+
+    @Autowired
+    public GumgaUserDataService(GumgaUserDataRepository repository) {
+<span class="fc" id="L17">        super(repository);</span>
+<span class="fc" id="L18">        this.repository = repository;</span>
+<span class="fc" id="L19">    }</span>
+
+    @Override
+    public void beforeSave(GumgaUserData entity) {
+<span class="nc" id="L23">        entity.setUserLogin(GumgaThreadScope.login.get());</span>
+<span class="nc" id="L24">    }</span>
+
+    /**
+     * Encontrar GumgaUserData baseado no atributo key da classe @{@link GumgaUserData}
+     * @param prefix
+     * @return
+     */
+    public SearchResult&lt;GumgaUserData&gt; searchByKeyPrefix(String prefix) {
+<span class="nc" id="L32">        QueryObject qo = new QueryObject();</span>
+<span class="nc" id="L33">        qo.setAq(String.format(&quot;obj.userLogin='%s' and obj.key like '%s%%'&quot;, GumgaThreadScope.login.get(), prefix));</span>
+<span class="nc" id="L34">        return super.pesquisa(qo);</span>
+    }
+
+    /**
+     * Encontrar GumgaUserData baseado no atributo userLogin e key da classe @{@link GumgaUserData}
+     * @param userLogin
+     * @param key
+     * @return
+     */
+    public GumgaUserData findByUserLoginAndKey(String userLogin, String key) {
+<span class="nc" id="L44">        return repository.findByUserLoginAndKey(userLogin,key);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

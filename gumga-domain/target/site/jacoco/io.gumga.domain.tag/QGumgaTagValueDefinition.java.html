@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>QGumgaTagValueDefinition.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-domain</a> &gt; <a href="index.source.html" class="el_package">io.gumga.domain.tag</a> &gt; <span class="el_source">QGumgaTagValueDefinition.java</span></div><h1>QGumgaTagValueDefinition.java</h1><pre class="source lang-java linenums">package io.gumga.domain.tag;
+
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import io.gumga.domain.QGumgaModel;
+import io.gumga.domain.domains.GumgaOi;
+
+import javax.annotation.Generated;
+
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
+
+/**
+ * QGumgaTagValueDefinition is a Querydsl query type for GumgaTagValueDefinition
+ */
+@Generated(&quot;com.mysema.query.codegen.EntitySerializer&quot;)
+public class QGumgaTagValueDefinition extends EntityPathBase&lt;GumgaTagValueDefinition&gt; {
+
+    private static final long serialVersionUID = 1597724325L;
+
+<span class="nc" id="L24">    public static final QGumgaTagValueDefinition gumgaTagValueDefinition = new QGumgaTagValueDefinition(&quot;gumgaTagValueDefinition&quot;);</span>
+
+<span class="nc" id="L26">    public final QGumgaModel _super = new QGumgaModel(this);</span>
+
+<span class="nc" id="L28">    public final NumberPath&lt;Long&gt; id = createNumber(&quot;id&quot;, Long.class);</span>
+
+<span class="nc" id="L30">    public final StringPath name = createString(&quot;name&quot;);</span>
+
+    //inherited
+<span class="nc" id="L33">    public final ComparablePath&lt;GumgaOi&gt; oi = _super.oi;</span>
+
+<span class="nc" id="L35">    public final NumberPath&lt;Integer&gt; version = createNumber(&quot;version&quot;, Integer.class);</span>
+
+    public QGumgaTagValueDefinition(String variable) {
+<span class="nc" id="L38">        super(GumgaTagValueDefinition.class, forVariable(variable));</span>
+<span class="nc" id="L39">    }</span>
+
+    public QGumgaTagValueDefinition(Path&lt;? extends GumgaTagValueDefinition&gt; path) {
+<span class="nc" id="L42">        super(path.getType(), path.getMetadata());</span>
+<span class="nc" id="L43">    }</span>
+
+    public QGumgaTagValueDefinition(PathMetadata&lt;?&gt; metadata) {
+<span class="nc" id="L46">        super(GumgaTagValueDefinition.class, metadata);</span>
+<span class="nc" id="L47">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

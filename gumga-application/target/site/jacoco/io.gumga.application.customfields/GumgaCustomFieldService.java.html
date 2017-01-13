@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaCustomFieldService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-application</a> &gt; <a href="index.source.html" class="el_package">io.gumga.application.customfields</a> &gt; <span class="el_source">GumgaCustomFieldService.java</span></div><h1>GumgaCustomFieldService.java</h1><pre class="source lang-java linenums">package io.gumga.application.customfields;
+
+import io.gumga.application.GumgaService;
+import io.gumga.core.QueryObject;
+import io.gumga.domain.customfields.GumgaCustomField;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class GumgaCustomFieldService extends GumgaService&lt;GumgaCustomField, Long&gt; {
+
+    private final GumgaCustomFieldRepository repository;
+
+    @Autowired
+    public GumgaCustomFieldService(GumgaCustomFieldRepository repository) {
+<span class="fc" id="L18">        super(repository);</span>
+<span class="fc" id="L19">        this.repository = repository;</span>
+<span class="fc" id="L20">    }</span>
+
+    /**
+     * Retonar a lista de atributos genericos da classe passada por parametro
+     * @param clazzName
+     * @return
+     */
+    List&lt;GumgaCustomField&gt; findByClass(String clazzName) {
+<span class="fc" id="L28">        return repository.search(getQueryObject(clazzName)).getValues();</span>
+
+    }
+
+    /**
+     * Retonar a lista de atributos genericos da classe passada por parametro
+     * @param c
+     * @return
+     */
+    List&lt;GumgaCustomField&gt; findByClass(Class c) {
+<span class="fc" id="L38">        return findByClass(c.getName());</span>
+    }
+
+    /**
+     * Retonar a lista de atributos genericos da classe passada por parametro
+     * @param obj
+     * @return
+     */
+    List&lt;GumgaCustomField&gt; findByClass(Object obj) {
+<span class="fc" id="L47">        return findByClass(obj.getClass());</span>
+    }
+
+    private QueryObject getQueryObject(String clazzName) {
+<span class="fc" id="L51">        QueryObject qo = new QueryObject();</span>
+<span class="fc" id="L52">        qo.setAq(&quot;obj.clazz='&quot; + clazzName + &quot;'&quot;);</span>
+<span class="fc" id="L53">        qo.setSortField(&quot;visualizationOrder&quot;);</span>
+<span class="fc" id="L54">        return qo;</span>
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

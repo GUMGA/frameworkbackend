@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaNoDeleteService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-application</a> &gt; <a href="index.source.html" class="el_package">io.gumga.application.service</a> &gt; <span class="el_source">GumgaNoDeleteService.java</span></div><h1>GumgaNoDeleteService.java</h1><pre class="source lang-java linenums">package io.gumga.application.service;
+
+import io.gumga.core.GumgaIdable;
+import io.gumga.core.QueryObject;
+import io.gumga.core.SearchResult;
+import io.gumga.domain.repository.GumgaCrudRepository;
+import io.gumga.domain.service.GumgaReadableServiceable;
+import io.gumga.domain.service.GumgaWritableServiceable;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+
+@Service
+@Scope(&quot;prototype&quot;)
+public abstract class GumgaNoDeleteService&lt;T extends GumgaIdable&lt;?&gt;, ID extends Serializable&gt; extends AbstractGumgaService&lt;T, ID&gt; implements GumgaReadableServiceable&lt;T&gt;, GumgaWritableServiceable&lt;T&gt; {
+
+	public GumgaNoDeleteService(GumgaCrudRepository&lt;T, ID&gt; repository) {
+<span class="nc" id="L20">		super(repository);</span>
+<span class="nc" id="L21">	}</span>
+
+	/**
+	 * Processo executado antes do método Pesquisa da classe {@link GumgaNoDeleteService}
+	 * @param query
+	 */
+<span class="nc" id="L27">	public void beforePesquisa(QueryObject query) { }</span>
+
+	/**
+	 * Processo executado apos do método Pesquisa da classe {@link GumgaNoDeleteService}
+	 * @param result
+	 */
+<span class="nc" id="L33">	public void afterPesquisa(SearchResult&lt;T&gt; result) { }</span>
+	
+	@Transactional(readOnly = true)
+	public SearchResult&lt;T&gt; pesquisa(QueryObject query) {
+<span class="nc" id="L37">		beforePesquisa(query);</span>
+<span class="nc" id="L38">		SearchResult&lt;T&gt; result = repository.search(query);</span>
+<span class="nc" id="L39">		afterPesquisa(result);</span>
+		
+<span class="nc" id="L41">		return result;</span>
+	}
+
+	/**
+	 * Processo executado antes do método view da classe {@link GumgaNoDeleteService}
+	 * @param id
+	 */
+<span class="nc" id="L48">	public void beforeView(ID id) {}</span>
+
+	/**
+	 * Processo executado apos do método view da classe {@link GumgaNoDeleteService}
+	 * @param entity
+	 */
+<span class="nc" id="L54">	public void afterView(T entity) {}</span>
+
+	/**
+	 * Pesquisa a entidade tipada na classe {@link GumgaNoDeleteService} pela primary key
+	 * @param id
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public T view(ID id) {
+<span class="nc" id="L63">		beforeView(id);</span>
+<span class="nc" id="L64">		T entity = repository.findOne(id);</span>
+<span class="nc" id="L65">                loadGumgaCustomFields(entity);</span>
+<span class="nc" id="L66">		afterView(entity);</span>
+		
+<span class="nc" id="L68">		return entity;</span>
+	}
+
+	/**
+	 * Processo executado antes do método save e update da classe {@link GumgaNoDeleteService}
+	 * @param entity
+	 */
+	private void beforeSaveOrUpdate(T entity) {
+<span class="nc bnc" id="L76" title="All 2 branches missed.">		if (entity.getId() == null)</span>
+<span class="nc" id="L77">			beforeSave(entity);</span>
+		else
+<span class="nc" id="L79">			beforeUpdate(entity);</span>
+<span class="nc" id="L80">	}</span>
+
+	/**
+	 * Processo executado apos do método save e update da classe {@link GumgaNoDeleteService}
+	 * @param entity
+	 */
+	private void afterSaveOrUpdate(T entity) {
+<span class="nc bnc" id="L87" title="All 2 branches missed.">		if (entity.getId() == null)</span>
+<span class="nc" id="L88">			afterSave(entity);</span>
+		else
+<span class="nc" id="L90">			afterUpdate(entity);</span>
+<span class="nc" id="L91">	}</span>
+
+	/**
+	 * Processo executado antes do método save da classe {@link GumgaNoDeleteService}
+	 * @param entity
+	 */
+<span class="nc" id="L97">	public void beforeSave(T entity) {}</span>
+
+	/**
+	 * Processo executado antes do método update da classe {@link GumgaNoDeleteService}
+	 * @param entity
+	 */
+<span class="nc" id="L103">	public void beforeUpdate(T entity) {}</span>
+
+	/**
+	 * Processo executado apos do método save da classe {@link GumgaNoDeleteService}
+	 * @param entity
+	 */
+<span class="nc" id="L109">	public void afterSave(T entity) {}</span>
+
+	/**
+	 * Processo executado apos do método update da classe {@link GumgaNoDeleteService}
+	 * @param entity
+	 */
+<span class="nc" id="L115">	public void afterUpdate(T entity) {}</span>
+
+	/**
+	 * Salvar entidade na base de dados
+	 * @param resource
+	 * @return
+	 */
+	@Transactional
+	public T save(T resource) {
+<span class="nc" id="L124">		beforeSaveOrUpdate(resource);</span>
+<span class="nc" id="L125">		T entity = repository.save(resource);</span>
+<span class="nc" id="L126">                gces.saveCustomFields(resource);</span>
+<span class="nc" id="L127">		afterSaveOrUpdate(entity);</span>
+		
+<span class="nc" id="L129">		return entity;</span>
+	}
+
+	/**
+	 * Sincronizar os dados do {@link javax.persistence.EntityManager} com o banco de dados.
+	 */
+	public void forceFlush() {
+<span class="nc" id="L136">		repository.flush();</span>
+<span class="nc" id="L137">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

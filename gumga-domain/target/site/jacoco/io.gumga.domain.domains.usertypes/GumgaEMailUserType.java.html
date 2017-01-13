@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaEMailUserType.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-domain</a> &gt; <a href="index.source.html" class="el_package">io.gumga.domain.domains.usertypes</a> &gt; <span class="el_source">GumgaEMailUserType.java</span></div><h1>GumgaEMailUserType.java</h1><pre class="source lang-java linenums">package io.gumga.domain.domains.usertypes;
+
+import io.gumga.domain.domains.GumgaEMail;
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+
+/**
+ * UserType que permite serializar o tipo dentro do Hibernate
+ */
+<span class="nc" id="L15">public class GumgaEMailUserType extends MutableUserType {</span>
+
+    @Override
+    public int[] sqlTypes() {
+<span class="nc" id="L19">        return new int[]{Types.VARCHAR};</span>
+    }
+
+    @Override
+    public Class returnedClass() {
+<span class="nc" id="L24">        return GumgaEMail.class;</span>
+    }
+
+    @Override
+    public boolean equals(Object o, Object o1) throws HibernateException {
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (o == null) {</span>
+<span class="nc" id="L30">            return false;</span>
+        }
+<span class="nc" id="L32">        return o.equals(o1);</span>
+    }
+
+    @Override
+    public int hashCode(Object o) throws HibernateException {
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (o == null) {</span>
+<span class="nc" id="L38">            return 0;</span>
+        }
+<span class="nc" id="L40">        return o.hashCode();</span>
+    }
+
+    @Override
+    public Object nullSafeGet(final ResultSet resultSet,
+            final String[] names,
+            final SessionImplementor paramSessionImplementor, final Object paramObject)
+            throws HibernateException, SQLException {
+<span class="nc" id="L48">        GumgaEMail object = null;</span>
+<span class="nc" id="L49">        final String valor = resultSet.getString(names[0]);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (!resultSet.wasNull()) {</span>
+<span class="nc" id="L51">            object = new GumgaEMail(valor);</span>
+        }
+<span class="nc" id="L53">        return object;</span>
+    }
+
+    @Override
+    public void nullSafeSet(final PreparedStatement preparedStatement,
+            final Object value, final int property,
+            final SessionImplementor sessionImplementor)
+            throws HibernateException, SQLException {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (null == value) {</span>
+<span class="nc" id="L62">            preparedStatement.setNull(property, java.sql.Types.VARCHAR);</span>
+        } else {
+<span class="nc" id="L64">            final GumgaEMail object = (GumgaEMail) value;</span>
+<span class="nc" id="L65">            preparedStatement.setString(property, object.getValue());</span>
+        }
+<span class="nc" id="L67">    }</span>
+
+    @Override
+    public Object deepCopy(Object value) throws HibernateException {
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (value == null) {</span>
+<span class="nc" id="L72">            return null;</span>
+        }
+
+<span class="nc" id="L75">        final GumgaEMail recebido = (GumgaEMail) value;</span>
+<span class="nc" id="L76">        final GumgaEMail aRetornar = new GumgaEMail(recebido);</span>
+<span class="nc" id="L77">        return aRetornar;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

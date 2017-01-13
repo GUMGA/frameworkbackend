@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaTagDefinition.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-domain</a> &gt; <a href="index.source.html" class="el_package">io.gumga.domain.tag</a> &gt; <span class="el_source">GumgaTagDefinition.java</span></div><h1>GumgaTagDefinition.java</h1><pre class="source lang-java linenums">package io.gumga.domain.tag;
+
+import io.gumga.domain.GumgaModel;
+import io.gumga.domain.GumgaMultitenancy;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Representa a definição de um TAG
+ *
+ * @author munif
+ */
+@Entity
+@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = &quot;SEQ_GUMGA_GTAG_DEFI&quot;)
+@Table(name = &quot;gumga_gtag_defi&quot;)
+@GumgaMultitenancy
+public class GumgaTagDefinition extends GumgaModel&lt;Long&gt; {
+
+    @Version
+    private Integer version;
+
+    @NotNull
+    private String name;
+
+<span class="nc" id="L28">    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)</span>
+    private List&lt;GumgaTagValueDefinition&gt; attributes = new ArrayList&lt;&gt;();
+
+<span class="nc" id="L31">    public GumgaTagDefinition() {</span>
+<span class="nc" id="L32">    }</span>
+
+<span class="nc" id="L34">    public GumgaTagDefinition(String name) {</span>
+<span class="nc" id="L35">        this.name = name;</span>
+<span class="nc" id="L36">    }</span>
+
+    public String getName() {
+<span class="nc" id="L39">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="nc" id="L43">        this.name = name;</span>
+<span class="nc" id="L44">    }</span>
+
+    public List&lt;GumgaTagValueDefinition&gt; getAttributes() {
+<span class="nc" id="L47">        return attributes;</span>
+    }
+
+    public void setAttributes(List&lt;GumgaTagValueDefinition&gt; attributes) {
+<span class="nc" id="L51">        this.attributes = attributes;</span>
+<span class="nc" id="L52">    }</span>
+
+    public void addAttribute(String name) {
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if (attributes == null) {</span>
+<span class="nc" id="L56">            attributes = new ArrayList&lt;&gt;();</span>
+        }
+<span class="nc" id="L58">        attributes.add(new GumgaTagValueDefinition(name));</span>
+<span class="nc" id="L59">    }</span>
+
+    public void addAttributes(String... names) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        for (String name : names) {</span>
+<span class="nc" id="L63">            addAttribute(name);</span>
+        }
+<span class="nc" id="L65">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>JavaScriptEngine.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-core</a> &gt; <a href="index.source.html" class="el_package">io.gumga.core</a> &gt; <span class="el_source">JavaScriptEngine.java</span></div><h1>JavaScriptEngine.java</h1><pre class="source lang-java linenums">package io.gumga.core;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.util.Date;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Interpretador Javascript para backend
+ *
+ * @author munif
+ */
+<span class="nc" id="L16">public class JavaScriptEngine {</span>
+
+<span class="nc" id="L18">    private static final ScriptEngineManager engineManager = new ScriptEngineManager();</span>
+
+    /**
+     * Avalia o valor do script com o contexto de objetos java passados no map e
+     * retora um objeto.
+     *
+     * @param script script a ser executado
+     * @param objects objetos java a serem inseridos no contexto javascript
+     * @return valor resultante
+     */
+    public static Object eval(String script, Map&lt;String, Object&gt; objects) {
+        try {
+<span class="nc" id="L30">            ScriptEngine engine = engineManager.getEngineByName(&quot;JavaScript&quot;);</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">            if (objects != null) {</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">                for (String key : objects.keySet()) {</span>
+<span class="nc" id="L33">                    engine.put(key, objects.get(key));</span>
+<span class="nc" id="L34">                }</span>
+            }
+<span class="nc" id="L36">            return engine.eval(script);</span>
+<span class="nc" id="L37">        } catch (ScriptException ex) {</span>
+<span class="nc" id="L38">            Logger.getLogger(JavaScriptEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="nc" id="L40">        return null;</span>
+    }
+
+    /**
+     * Avalia o valor do script com o contexto de objetos java passados no map e
+     * retora uma data.
+     *
+     * @param script script a ser executado
+     * @param objects objetos java a serem inseridos no contexto javascript
+     * @return valor resultante
+     */
+    public static Date evalForDate(String script, Map&lt;String, Object&gt; objects) {
+<span class="nc" id="L52">        String scriptForDate = &quot;(&quot; + script + &quot;).getTime()&quot;;</span>
+<span class="nc" id="L53">        long mili = (long) (double) eval(scriptForDate, objects);</span>
+<span class="nc" id="L54">        return new Date(mili);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

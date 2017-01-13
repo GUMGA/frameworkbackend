@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaCustomFieldValue.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-domain</a> &gt; <a href="index.source.html" class="el_package">io.gumga.domain.customfields</a> &gt; <span class="el_source">GumgaCustomFieldValue.java</span></div><h1>GumgaCustomFieldValue.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package io.gumga.domain.customfields;
+
+import io.gumga.core.JavaScriptEngine;
+import io.gumga.domain.GumgaModel;
+import io.gumga.domain.GumgaMultitenancy;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
+
+/**
+ * Armazena o valor de um atributo genérico
+ *
+ * @author munif
+ */
+@Entity
+@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = &quot;SEQ_GUMGA_FLD_VLE&quot;)
+//             123456789012345678
+@Table(name = &quot;gumga_fld_vle&quot;)
+@GumgaMultitenancy
+public class GumgaCustomFieldValue extends GumgaModel&lt;Long&gt; {
+
+    //TEXT, NUMBER, DATE, LOGIC, SELECTION;
+    @ManyToOne
+    private GumgaCustomField field;
+
+    private Long gumgaModelId;
+
+    private String textValue;
+    private BigDecimal numberValue;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dateValue;
+    private Boolean logicValue;
+
+<span class="nc" id="L40">    public GumgaCustomFieldValue() {</span>
+<span class="nc" id="L41">    }</span>
+
+<span class="nc" id="L43">    public GumgaCustomFieldValue(GumgaCustomField cf) {</span>
+<span class="nc" id="L44">        this.field = cf;</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (CustomFieldType.DATE.equals(cf.getType())) {</span>
+<span class="nc" id="L46">            setValue(JavaScriptEngine.evalForDate(cf.getDefaultValueScript(), null));</span>
+        } else {
+<span class="nc" id="L48">            setValue(JavaScriptEngine.eval(cf.getDefaultValueScript(), null));</span>
+        }
+<span class="nc" id="L50">    }</span>
+
+<span class="nc" id="L52">    public GumgaCustomFieldValue(GumgaCustomField field, Long gumgaModelId, Object value) {</span>
+<span class="nc" id="L53">        this.field = field;</span>
+<span class="nc" id="L54">        this.gumgaModelId = gumgaModelId;</span>
+<span class="nc" id="L55">        setValue(value);</span>
+<span class="nc" id="L56">    }</span>
+
+    public GumgaCustomField getField() {
+<span class="nc" id="L59">        return field;</span>
+    }
+
+    public void setField(GumgaCustomField field) {
+<span class="nc" id="L63">        this.field = field;</span>
+<span class="nc" id="L64">    }</span>
+
+    public Long getGumgaModelId() {
+<span class="nc" id="L67">        return gumgaModelId;</span>
+    }
+
+    public void setGumgaModelId(Long gumgaModelId) {
+<span class="nc" id="L71">        this.gumgaModelId = gumgaModelId;</span>
+<span class="nc" id="L72">    }</span>
+
+    public String getTextValue() {
+<span class="nc" id="L75">        return textValue;</span>
+    }
+
+    public void setTextValue(String textValue) {
+<span class="nc" id="L79">        this.textValue = textValue;</span>
+<span class="nc" id="L80">    }</span>
+
+    public BigDecimal getNumberValue() {
+<span class="nc" id="L83">        return numberValue;</span>
+    }
+
+    public void setNumberValue(BigDecimal numberValue) {
+<span class="nc" id="L87">        this.numberValue = numberValue;</span>
+<span class="nc" id="L88">    }</span>
+
+    public Date getDateValue() {
+<span class="nc" id="L91">        return dateValue;</span>
+    }
+
+    public void setDateValue(Date dateValue) {
+<span class="nc" id="L95">        this.dateValue = dateValue;</span>
+<span class="nc" id="L96">    }</span>
+
+    public Boolean getLogicValue() {
+<span class="nc" id="L99">        return logicValue;</span>
+    }
+
+    public void setLogicValue(Boolean logicValue) {
+<span class="nc" id="L103">        this.logicValue = logicValue;</span>
+<span class="nc" id="L104">    }</span>
+
+    public void setValue(Object value) {
+<span class="nc bnc" id="L107" title="All 5 branches missed.">        switch (field.getType()) {</span>
+            case DATE:
+<span class="nc" id="L109">                dateValue = (Date) value;</span>
+<span class="nc" id="L110">                break;</span>
+            case LOGIC:
+<span class="nc" id="L112">                logicValue = (Boolean) value;</span>
+<span class="nc" id="L113">                break;</span>
+            case NUMBER:
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                if (value instanceof BigDecimal) {</span>
+<span class="nc" id="L116">                    numberValue = (BigDecimal) value;</span>
+                } else {
+<span class="nc" id="L118">                    numberValue = new BigDecimal(value.toString());</span>
+                }
+<span class="nc" id="L120">                break;</span>
+            case SELECTION:
+            case TEXT:
+<span class="nc" id="L123">                textValue = (String) value;</span>
+                break;
+        }
+<span class="nc" id="L126">    }</span>
+
+    public Object getValue() {
+<span class="nc bnc" id="L129" title="All 5 branches missed.">        switch (field.getType()) {</span>
+            case DATE:
+<span class="nc" id="L131">                return dateValue;</span>
+            case LOGIC:
+<span class="nc" id="L133">                return logicValue;</span>
+            case NUMBER:
+<span class="nc" id="L135">                return numberValue;</span>
+            case SELECTION:
+            case TEXT:
+<span class="nc" id="L138">                return textValue;</span>
+        }
+<span class="nc" id="L140">        return null;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L145">        Object value = getValue();</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        return value == null ? &quot;null&quot; : value.toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaTimeUserType.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-domain</a> &gt; <a href="index.source.html" class="el_package">io.gumga.domain.domains.usertypes</a> &gt; <span class="el_source">GumgaTimeUserType.java</span></div><h1>GumgaTimeUserType.java</h1><pre class="source lang-java linenums">package io.gumga.domain.domains.usertypes;
+
+import io.gumga.domain.domains.GumgaTime;
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
+
+import java.sql.*;
+import java.util.Date;
+
+/**
+ * Permite armazenar um horário com hora, minuto e segundo em atributos
+ * separados
+ *
+ * @author munif
+ */
+<span class="nc" id="L16">public class GumgaTimeUserType extends MutableUserType {</span>
+
+    @Override
+    public int[] sqlTypes() {
+<span class="nc" id="L20">        return new int[]{Types.TIME};</span>
+    }
+
+    @Override
+    public Class returnedClass() {
+<span class="nc" id="L25">        return GumgaTime.class;</span>
+    }
+
+    @Override
+    public boolean equals(Object o, Object o1) throws HibernateException {
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (o == null) {</span>
+<span class="nc" id="L31">            return false;</span>
+        }
+<span class="nc" id="L33">        return o.equals(o1);</span>
+    }
+
+    @Override
+    public int hashCode(Object o) throws HibernateException {
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (o == null) {</span>
+<span class="nc" id="L39">            return 0;</span>
+        }
+<span class="nc" id="L41">        return o.hashCode();</span>
+    }
+
+    @Override
+    public Object nullSafeGet(final ResultSet resultSet,
+            final String[] names,
+            final SessionImplementor paramSessionImplementor, final Object paramObject)
+            throws HibernateException, SQLException {
+<span class="nc" id="L49">        GumgaTime object = null;</span>
+<span class="nc" id="L50">        final Date valor = resultSet.getTime(names[0]);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (!resultSet.wasNull()) {</span>
+<span class="nc" id="L52">            object = new GumgaTime(valor);</span>
+        }
+<span class="nc" id="L54">        return object;</span>
+    }
+
+    @Override
+    public void nullSafeSet(final PreparedStatement preparedStatement,
+            final Object value, final int property,
+            final SessionImplementor sessionImplementor)
+            throws HibernateException, SQLException {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (null == value) {</span>
+<span class="nc" id="L63">            preparedStatement.setNull(property, java.sql.Types.TIME);</span>
+        } else {
+<span class="nc" id="L65">            final GumgaTime object = (GumgaTime) value;</span>
+<span class="nc" id="L66">            preparedStatement.setTime(property, new Time(object.getValue().getTime()));</span>
+        }
+<span class="nc" id="L68">    }</span>
+
+    @Override
+    public Object deepCopy(Object value) throws HibernateException {
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (value == null) {</span>
+<span class="nc" id="L73">            return null;</span>
+        }
+
+<span class="nc" id="L76">        final GumgaTime recebido = (GumgaTime) value;</span>
+<span class="nc" id="L77">        final GumgaTime aRetornar = new GumgaTime(recebido);</span>
+<span class="nc" id="L78">        return aRetornar;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

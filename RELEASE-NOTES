@@ -1,0 +1,126 @@
+  _____ _    _ __  __  _____          
+ / ____| |  | |  \/  |/ ____|   /\    
+| |  __| |  | | \  / | |  __   /  \   
+| | |_ | |  | | |\/| | | |_ | / /\ \  
+| |__| | |__| | |  | | |__| |/ ____ \ 
+ \_____|\____/|_|  |_|\_____/_/    \_\
+
+=======================================
+Framework Backend
+1.3.0
+    Mudança no nome do dominio para satisfazer o requisito do maven center
+
+1.2.17
+ - GumgaNamingStrategy implements NamingStrategy BETA!!!!
+ - Objetos criados em /api/voice
+ - Mais informaçẽos no constraintViolation
+ - Alteração nos domínios do framework para funcionar em Banco de Dados Oracle.
+ - Scripts para correção das alterações das tabelas:
+
+--ORACLE
+RENAME TABLE GUMGA_LOG TO GUMGA_GLOG
+RENAME SEQUENCE SEQ_LOG to SEQ_GUMGA_GLOG
+
+RENAME TABLE gumga_message TO gumga_msg
+RENAME SEQUENCE SEQ_GUMGA_MESSAGE to SEQ_GUMGA_MSG
+
+RENAME TABLE gumga_user_data TO guser_gdata
+RENAME SEQUENCE SEQ_GUMGA_USER_DATA to SEQ_GUSER_GDATA
+
+RENAME TABLE gumga_custom_field TO gumga_ctm_fld
+RENAME SEQUENCE SEQ_GUMGA_CUSTOM_FIELD to SEQ_GUMGA_CTM_FLD
+
+RENAME TABLE gumga_field_value TO gumga_fld_vle
+RENAME SEQUENCE SEQ_GUMGA_FIELD_VALUE to SEQ_GUMGA_FLD_VLE
+
+RENAME TABLE gumga_tag TO gumga_gtag
+RENAME SEQUENCE SEQ_GUMGA_TAG to SEQ_GUMGA_GTAG
+
+RENAME TABLE gumga_tag_def TO gumga_gtag_defi
+RENAME SEQUENCE SEQ_GUMGA_TAG_DEF to SEQ_GUMGA_GTAG_DEFI
+
+RENAME TABLE gumga_tag_val TO gumga_gtag_valu
+RENAME SEQUENCE SEQ_GUMGA_TAG_VAL to SEQ_GUMGA_GTAG_VALU
+
+RENAME TABLE gumga_tag_vdef TO gtag_vdefi
+RENAME SEQUENCE SEQ_GUMGA_TAG_VAL_DEF to SEQ_GTAG_VALU_DEFI
+
+
+--MYSQL
+ALTER TABLE GUMGA_LOG RENAME GUMGA_GLOG
+
+ALTER TABLE gumga_message RENAME gumga_msg
+
+ALTER TABLE gumga_user_data RENAME guser_gdata
+
+ALTER TABLE gumga_custom_field RENAME gumga_ctm_fld
+
+ALTER TABLE gumga_field_value RENAME gumga_fld_vle
+
+ALTER TABLE gumga_tag RENAME gumga_gtag
+
+ALTER TABLE gumga_tag_def RENAME gumga_gtag_defi
+
+ALTER TABLE gumga_tag_val RENAME gumga_gtag_valu
+
+ALTER TABLE gumga_tag_vdef RENAME gtag_vdefi
+
+
+--POSTGRES
+
+ALTER TABLE GUMGA_LOG RENAME TO GUMGA_GLOG
+ALTER SEQUENCE SEQ_LOG RENAME to SEQ_GUMGA_GLOG
+
+ALTER TABLE gumga_message RENAME TO gumga_msg
+ALTER SEQUENCE SEQ_GUMGA_MESSAGE RENAME to SEQ_GUMGA_MSG
+
+ALTER TABLE gumga_user_data RENAME TO guser_gdata
+ALTER SEQUENCE SEQ_GUMGA_USER_DATA RENAME to SEQ_GUSER_GDATA
+
+ALTER TABLE gumga_custom_field RENAME TO gumga_ctm_fld
+ALTER SEQUENCE SEQ_GUMGA_CUSTOM_FIELD RENAME to SEQ_GUMGA_CTM_FLD
+
+ALTER TABLE gumga_field_value RENAME TO gumga_fld_vle
+ALTER SEQUENCE SEQ_GUMGA_FIELD_VALUE RENAME to SEQ_GUMGA_FLD_VLE
+
+ALTER TABLE gumga_tag RENAME TO gumga_gtag
+ALTER SEQUENCE SEQ_GUMGA_TAG RENAME to SEQ_GUMGA_GTAG
+
+ALTER TABLE gumga_tag_def RENAME TO gumga_gtag_defi
+ALTER SEQUENCE SEQ_GUMGA_TAG_DEF RENAME to SEQ_GUMGA_GTAG_DEFI
+
+ALTER TABLE gumga_tag_val RENAME TO gumga_gtag_valu
+ALTER SEQUENCE SEQ_GUMGA_TAG_VAL RENAME to SEQ_GUMGA_GTAG_VALU
+
+ALTER TABLE gumga_tag_vdef RENAME TO gtag_vdefi
+ALTER SEQUENCE SEQ_GUMGA_TAG_VAL_DEF RENAME to SEQ_GTAG_VALU_DEFI
+
+
+
+1.2.16
+ - Integração com o reconhecimento de voz
+ - Biblioteca para interpretação de linguagem natural
+
+
+1.2.15
+- GumgaSharedModel (Compartilhamento de objetos)
+- MaximumUsersSharesExceeded
+
+
+1.2.14
+=======================================
+- Create class GumgaTenancyUtils that contains the method changeOi
+- System.out.println changed to Logger.log
+- GumgaRevisionEntity passa a utilizar o sequence SEQREV e não mais o hibernate_sequence
+- Added method in the class AbstractGumgaService methods gumgaOiForSearchWithWildCard and gumgaOiForSearch
+- Created Class NoMultiTenancyException
+- Route to whois changed to a non-plublic route.
+- Método adicionado na interface ApiOperationTranslator para possibilitar traduções mais complexas baseadas no request
+- Proxy para o reconhecimento facial com biletagem
+- Proxy para o reconhecimento facial
+
+
+1.2.13 and Before
+=============
+Not yet
+

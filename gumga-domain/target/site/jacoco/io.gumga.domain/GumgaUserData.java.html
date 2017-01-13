@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaUserData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-domain</a> &gt; <a href="index.source.html" class="el_package">io.gumga.domain</a> &gt; <span class="el_source">GumgaUserData.java</span></div><h1>GumgaUserData.java</h1><pre class="source lang-java linenums">package io.gumga.domain;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+/**
+ * Representa dados do do usuário. Útil para armazenar configurações específicas
+ * do usuário, como consultas, parâmetros, etc..
+ *
+ * @author munif
+ */
+@Entity
+@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = &quot;SEQ_GUSER_GDATA&quot;)
+@Table(name = &quot;guser_gdata&quot;)
+@GumgaMultitenancy
+public class GumgaUserData extends GumgaModel&lt;Long&gt; {
+
+    private String userLogin;
+    @Column(name = &quot;data_key&quot;)
+    private String key;
+    private String description;
+    @Column(name = &quot;data_value&quot;, length = 4096)
+    private String value;
+
+<span class="nc" id="L27">    public GumgaUserData() {</span>
+<span class="nc" id="L28">    }</span>
+
+<span class="nc" id="L30">    public GumgaUserData(String description, String key, String value) {</span>
+<span class="nc" id="L31">        this.key = key;</span>
+<span class="nc" id="L32">        this.value = value;</span>
+<span class="nc" id="L33">        this.description = description;</span>
+<span class="nc" id="L34">    }</span>
+
+    public String getUserLogin() {
+<span class="nc" id="L37">        return userLogin;</span>
+    }
+
+    public void setUserLogin(String userLogin) {
+<span class="nc" id="L41">        this.userLogin = userLogin;</span>
+<span class="nc" id="L42">    }</span>
+
+    public String getKey() {
+<span class="nc" id="L45">        return key;</span>
+    }
+
+    public void setKey(String key) {
+<span class="nc" id="L49">        this.key = key;</span>
+<span class="nc" id="L50">    }</span>
+
+    public String getDescription() {
+<span class="nc" id="L53">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="nc" id="L57">        this.description = description;</span>
+<span class="nc" id="L58">    }</span>
+
+    public String getValue() {
+<span class="nc" id="L61">        return value;</span>
+    }
+
+    public void setValue(String value) {
+<span class="nc" id="L65">        this.value = value;</span>
+<span class="nc" id="L66">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L70">        return &quot;GumgaUserData{&quot; + &quot;userLogin=&quot; + userLogin + &quot;, key=&quot; + key + &quot;, value=&quot; + value + '}';</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

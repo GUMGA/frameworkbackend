@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>QGumgaCustomFieldValue.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-domain</a> &gt; <a href="index.source.html" class="el_package">io.gumga.domain.customfields</a> &gt; <span class="el_source">QGumgaCustomFieldValue.java</span></div><h1>QGumgaCustomFieldValue.java</h1><pre class="source lang-java linenums">package io.gumga.domain.customfields;
+
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.*;
+import io.gumga.domain.QGumgaModel;
+import io.gumga.domain.domains.GumgaOi;
+
+import javax.annotation.Generated;
+
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
+
+/**
+ * QGumgaCustomFieldValue is a Querydsl query type for GumgaCustomFieldValue
+ */
+@Generated(&quot;com.mysema.query.codegen.EntitySerializer&quot;)
+public class QGumgaCustomFieldValue extends EntityPathBase&lt;GumgaCustomFieldValue&gt; {
+
+    private static final long serialVersionUID = -714441694L;
+
+<span class="nc" id="L21">    private static final PathInits INITS = PathInits.DIRECT2;</span>
+
+<span class="nc" id="L23">    public static final QGumgaCustomFieldValue gumgaCustomFieldValue = new QGumgaCustomFieldValue(&quot;gumgaCustomFieldValue&quot;);</span>
+
+<span class="nc" id="L25">    public final QGumgaModel _super = new QGumgaModel(this);</span>
+
+<span class="nc" id="L27">    public final DateTimePath&lt;java.util.Date&gt; dateValue = createDateTime(&quot;dateValue&quot;, java.util.Date.class);</span>
+
+    public final QGumgaCustomField field;
+
+<span class="nc" id="L31">    public final NumberPath&lt;Long&gt; gumgaModelId = createNumber(&quot;gumgaModelId&quot;, Long.class);</span>
+
+<span class="nc" id="L33">    public final NumberPath&lt;Long&gt; id = createNumber(&quot;id&quot;, Long.class);</span>
+
+<span class="nc" id="L35">    public final BooleanPath logicValue = createBoolean(&quot;logicValue&quot;);</span>
+
+<span class="nc" id="L37">    public final NumberPath&lt;java.math.BigDecimal&gt; numberValue = createNumber(&quot;numberValue&quot;, java.math.BigDecimal.class);</span>
+
+    //inherited
+<span class="nc" id="L40">    public final ComparablePath&lt;GumgaOi&gt; oi = _super.oi;</span>
+
+<span class="nc" id="L42">    public final StringPath textValue = createString(&quot;textValue&quot;);</span>
+
+    public QGumgaCustomFieldValue(String variable) {
+<span class="nc" id="L45">        this(GumgaCustomFieldValue.class, forVariable(variable), INITS);</span>
+<span class="nc" id="L46">    }</span>
+
+    public QGumgaCustomFieldValue(Path&lt;? extends GumgaCustomFieldValue&gt; path) {
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);</span>
+<span class="nc" id="L50">    }</span>
+
+    public QGumgaCustomFieldValue(PathMetadata&lt;?&gt; metadata) {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);</span>
+<span class="nc" id="L54">    }</span>
+
+    public QGumgaCustomFieldValue(PathMetadata&lt;?&gt; metadata, PathInits inits) {
+<span class="nc" id="L57">        this(GumgaCustomFieldValue.class, metadata, inits);</span>
+<span class="nc" id="L58">    }</span>
+
+    public QGumgaCustomFieldValue(Class&lt;? extends GumgaCustomFieldValue&gt; type, PathMetadata&lt;?&gt; metadata, PathInits inits) {
+<span class="nc" id="L61">        super(type, metadata, inits);</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        this.field = inits.isInitialized(&quot;field&quot;) ? new QGumgaCustomField(forProperty(&quot;field&quot;)) : null;</span>
+<span class="nc" id="L63">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

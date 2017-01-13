@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaReadOnlyService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-application</a> &gt; <a href="index.source.html" class="el_package">io.gumga.application.service</a> &gt; <span class="el_source">GumgaReadOnlyService.java</span></div><h1>GumgaReadOnlyService.java</h1><pre class="source lang-java linenums">package io.gumga.application.service;
+
+import io.gumga.core.GumgaIdable;
+import io.gumga.core.QueryObject;
+import io.gumga.core.SearchResult;
+import io.gumga.domain.repository.GumgaCrudRepository;
+import io.gumga.domain.service.GumgaReadableServiceable;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+
+@Service
+@Scope(&quot;prototype&quot;)
+public abstract class GumgaReadOnlyService&lt;T extends GumgaIdable&lt;?&gt;, ID extends Serializable&gt; extends AbstractGumgaService&lt;T, ID&gt; implements GumgaReadableServiceable&lt;T&gt; {
+
+    public GumgaReadOnlyService(GumgaCrudRepository&lt;T, ID&gt; repository) {
+<span class="nc" id="L19">        super(repository);</span>
+<span class="nc" id="L20">    }</span>
+
+    /**
+     * Processo executado antes do método Pesquisa da classe {@link GumgaReadableServiceable}
+     * @param query
+     */
+    public void beforePesquisa(QueryObject query) {
+<span class="nc" id="L27">    }</span>
+
+    /**
+     * Processo executado apos do método Pesquisa da classe {@link GumgaReadableServiceable}
+     * @param result
+     */
+    public void afterPesquisa(SearchResult&lt;T&gt; result) {
+<span class="nc" id="L34">    }</span>
+
+    @Transactional(readOnly = true)
+    public SearchResult&lt;T&gt; pesquisa(QueryObject query) {
+<span class="nc" id="L38">        beforePesquisa(query);</span>
+<span class="nc" id="L39">        SearchResult&lt;T&gt; result = repository.search(query);</span>
+<span class="nc" id="L40">        afterPesquisa(result);</span>
+
+<span class="nc" id="L42">        return result;</span>
+    }
+
+    /**
+     * Processo executado antes do método view da classe {@link GumgaReadableServiceable}
+     * @param id
+     */
+    public void beforeView(ID id) {
+<span class="nc" id="L50">    }</span>
+
+    /**
+     * Processo executado apos do método view da classe {@link GumgaReadableServiceable}
+     * @param entity
+     */
+    public void afterView(T entity) {
+<span class="nc" id="L57">    }</span>
+
+    /**
+     * Pesquisa a entidade tipada na classe {@link GumgaReadableServiceable} pela primary key
+     * @param id
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public T view(ID id) {
+<span class="nc" id="L66">        beforeView(id);</span>
+<span class="nc" id="L67">        T entity = repository.findOne(id);</span>
+<span class="nc" id="L68">        loadGumgaCustomFields(entity);</span>
+<span class="nc" id="L69">        afterView(entity);</span>
+<span class="nc" id="L70">        return entity;</span>
+    }
+
+    /**
+     * Pesquisa a entidade passada no parametro pela primary key da entidade do parametro
+     * @param clazz entidade a ser pesquisada
+     * @param id primary key da entidade
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public Object genercView(Class clazz, ID id) {
+<span class="nc" id="L81">        Object entity = repository.genericFindOne(clazz, id);</span>
+<span class="nc" id="L82">        return entity;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

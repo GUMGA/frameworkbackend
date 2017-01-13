@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GumgaCEPUserType.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gumga-domain</a> &gt; <a href="index.source.html" class="el_package">io.gumga.domain.domains.usertypes</a> &gt; <span class="el_source">GumgaCEPUserType.java</span></div><h1>GumgaCEPUserType.java</h1><pre class="source lang-java linenums">package io.gumga.domain.domains.usertypes;
+
+import io.gumga.domain.domains.GumgaCEP;
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+
+/**
+ * UserType que permite serializar o tipo dentro do Hibernate
+ */
+<span class="nc" id="L15">public class GumgaCEPUserType extends MutableUserType {</span>
+
+    @Override
+    public int[] sqlTypes() {
+<span class="nc" id="L19">        return new int[]{Types.VARCHAR};</span>
+    }
+
+    @Override
+    public Class returnedClass() {
+<span class="nc" id="L24">        return GumgaCEP.class;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc" id="L29">        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+
+    @Override
+    public boolean equals(Object o, Object o1) throws HibernateException {
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (o == null) {</span>
+<span class="nc" id="L35">            return false;</span>
+        }
+<span class="nc" id="L37">        return o.equals(o1);</span>
+    }
+
+    @Override
+    public int hashCode(Object o) throws HibernateException {
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (o == null) {</span>
+<span class="nc" id="L43">            return 0;</span>
+        }
+<span class="nc" id="L45">        return o.hashCode();</span>
+    }
+
+    @Override
+    public Object nullSafeGet(final ResultSet resultSet,
+            final String[] names,
+            final SessionImplementor paramSessionImplementor, final Object paramObject)
+            throws HibernateException, SQLException {
+<span class="nc" id="L53">        GumgaCEP object = null;</span>
+<span class="nc" id="L54">        final String valor = resultSet.getString(names[0]);</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if (!resultSet.wasNull()) {</span>
+<span class="nc" id="L56">            object = new GumgaCEP(valor);</span>
+        }
+<span class="nc" id="L58">        return object;</span>
+    }
+
+    @Override
+    public void nullSafeSet(final PreparedStatement preparedStatement,
+            final Object value, final int property,
+            final SessionImplementor sessionImplementor)
+            throws HibernateException, SQLException {
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (null == value) {</span>
+<span class="nc" id="L67">            preparedStatement.setNull(property, java.sql.Types.VARCHAR);</span>
+        } else {
+<span class="nc" id="L69">            final GumgaCEP object = (GumgaCEP) value;</span>
+<span class="nc" id="L70">            preparedStatement.setString(property, object.getValue());</span>
+        }
+<span class="nc" id="L72">    }</span>
+
+    @Override
+    public Object deepCopy(Object value) throws HibernateException {
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (value == null) {</span>
+<span class="nc" id="L77">            return null;</span>
+        }
+
+<span class="nc" id="L80">        final GumgaCEP recebido = (GumgaCEP) value;</span>
+<span class="nc" id="L81">        final GumgaCEP aRetornar = new GumgaCEP(recebido);</span>
+<span class="nc" id="L82">        return aRetornar;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L87">        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>
