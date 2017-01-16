@@ -54,7 +54,7 @@ public class GumgaUntypedRepository {
     /**
      * Fazer a pesquisa com os atributos que estão anotados com {@link org.hibernate.search.annotations.Field}
      * @param text
-     * @return
+     * @return dados da pesquisa
      */
     public List<Object> fullTextSearch(String text) {
         List aRetornar = new ArrayList();
@@ -81,7 +81,7 @@ public class GumgaUntypedRepository {
     /**
      * Pegar todos os atributos de uma classe
      * @param classe objeto que voce deseja pegar os atributos
-     * @return
+     * @return dados da pesquisa
      * @throws SecurityException
      */
     public static List<Field> getTodosAtributos(Class classe) throws SecurityException {
@@ -95,7 +95,7 @@ public class GumgaUntypedRepository {
 
     /**
      * Pegar as entidades que estão anotadas com {@link Indexed}
-     * @return
+     * @return dados da pesquisa
      */
     private List<Class> getAllIndexedEntities() {
         List<Class> aRetornar = new ArrayList<>();

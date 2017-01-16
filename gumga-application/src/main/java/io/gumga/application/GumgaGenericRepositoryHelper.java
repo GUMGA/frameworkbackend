@@ -23,7 +23,7 @@ public class GumgaGenericRepositoryHelper {
 
     /**
      * Faz substituição dos operadores especificados no atributo hqlConverter para operadores do tipo SQL
-     * @return
+     * @return operadores sql
      */
     public static Map<GumgaHqlEntry, GumgaHqlElement> getHqlConverter() {
         if (hqlConverter == null) {
@@ -89,9 +89,9 @@ public class GumgaGenericRepositoryHelper {
     }
 
     /**
-     * Gera um Objeto QueryObject através de uma String.
+     * Gera um Objeto QueryObjectElement através de uma String.
      * @param s
-     * @return
+     * @return lista de QueryObjectElement
      */
     public static List<QueryObjectElement> qoeFromString(String s) {
         List<QueryObjectElement> aRetornar = new ArrayList<>();
@@ -122,7 +122,7 @@ public class GumgaGenericRepositoryHelper {
      * Gera um HQL através das informações da entidade e do QueryObject especificado por parâmetro.
      * @param entityInformation
      * @param qoes
-     * @return
+     * @return hql
      */
     public static String hqlFromQoes(JpaEntityInformation entityInformation, List<QueryObjectElement> qoes) {
         String aRetornar = "";

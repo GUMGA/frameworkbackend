@@ -219,7 +219,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     /**
      * Faz uma pesquisa no banco baseado na entidade que está tipada na interface {@link GumgaCrudRepository}
      * @param query
-     * @return
+     * @return resultado da pesquisa
      */
     private SearchResult<T> advancedSearch(QueryObject query) {
 //        if (query.getAq().startsWith("{")) {
@@ -402,7 +402,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
      * Pesquisa na base de dados baseado na entidade tipada na interface @{@link GumgaCrudRepository} com os filtro passados
      * @param spec filtro a ser utilizado na pesquisa
      * @param sort a ordem que voce deseja retornar o dados
-     * @return
+     * @return resultado da pesquisa
      */
     @Override
     public List<T> findAll(Specification<T> spec, Sort sort) {
@@ -417,7 +417,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
      * Pesquisa na base de dados baseado na entidade tipada na interface @{@link GumgaCrudRepository} com os filtro passados
      * @param spec filtro a ser utilizado na pesquisa
      * @param pageable paginação
-     * @return
+     * @return resultado da pesquisa
      */
     @Override
     public Page<T> findAll(Specification<T> spec, Pageable pageable) {
@@ -430,7 +430,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface @{@link GumgaCrudRepository} com os filtro passados
      * @param spec filtro a ser utilizado na pesquisa
-     * @return
+     * @return resultado da pesquisa
      */
     @Override
     public List<T> findAll(Specification<T> spec) {
@@ -443,7 +443,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface @{@link GumgaCrudRepository} com os filtro passados
      * @param spec filtro a ser utilizado na pesquisa
-     * @return
+     * @return resultado da pesquisa
      */
     @Override
     public T findOne(Specification<T> spec) {
@@ -456,7 +456,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface @{@link GumgaCrudRepository} com os filtro passados
      * @param pageable parametros da paginação
-     * @return
+     * @return resultado da pesquisa
      */
     @Override
     public Page<T> findAll(Pageable pageable) {
@@ -469,7 +469,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface @{@link GumgaCrudRepository} com os filtro passados
      * @param sort ordem de retorno dos dados
-     * @return
+     * @return resultado da pesquisa
      */
     @Override
     public List<T> findAll(Sort sort) {
@@ -496,7 +496,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface @{@link GumgaCrudRepository} com os filtro passados
-     * @return
+     * @return resultado da pesquisa
      */
     @Override
     public List<T> findAll() {
@@ -509,7 +509,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     /**
      * Verificar se objecto salvo no banco ja existe.
      * @param id valor a ser pequisado na primary key da entidade
-     * @return
+     * @return resultado da pesquisa
      */
     @Override
     public boolean exists(ID id) {
@@ -519,7 +519,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     /**
      * Pesquisar a entidade tipada na interface @{@link GumgaCrudRepository} com Multitenancy caso a entidade esteja anotada com @{@link GumgaMultitenancy}
      * @param id
-     * @return
+     * @return resultado da pesquisa
      */
     @Override
     public T getOne(ID id) {

@@ -46,7 +46,7 @@ public class GumgaQueryDSLRepositoryImpl<T, ID extends Serializable> extends Gum
 
     /**
      * Pesquisa todos os registro da entidade tipada na classe {@link GumgaQueryDSLRepositoryImpl}
-     * @return
+     * @return dados da pesquisa
      */
     public List<T> findAll() {
         return createQuery().list(path);
@@ -55,7 +55,7 @@ public class GumgaQueryDSLRepositoryImpl<T, ID extends Serializable> extends Gum
     /**
      * Pesquisa todos os registro da entidade tipada na classe {@link GumgaQueryDSLRepositoryImpl}
      * @param predicate filtro da pesquisa
-     * @return
+     * @return dados da pesquisa
      */
     public List<T> findAll(Predicate predicate) {
         return findAll(toSpecification(predicate), path);
@@ -65,7 +65,7 @@ public class GumgaQueryDSLRepositoryImpl<T, ID extends Serializable> extends Gum
      * Pesquisa todos os registro da entidade tipada na classe {@link GumgaQueryDSLRepositoryImpl}
      * @param predicate filtro da pesquisa
      * @param orders   ordem dos dados
-     * @return
+     * @return dados da pesquisa
      */
     public List<T> findAll(Predicate predicate, OrderSpecifier<?>... orders) {
         JPQLQuery query = createQuery(predicate);
@@ -128,7 +128,7 @@ public class GumgaQueryDSLRepositoryImpl<T, ID extends Serializable> extends Gum
      * Pesquisa todos os registro da entidade tipada na classe {@link GumgaQueryDSLRepositoryImpl}
      * @param predicate filtros da pesquisa
      * @param pageable configurações de paginação
-     * @return
+     * @return dados da pesquisa
      */
     @Override
     public Page<T> findAll(Predicate predicate, Pageable pageable) {
@@ -147,7 +147,7 @@ public class GumgaQueryDSLRepositoryImpl<T, ID extends Serializable> extends Gum
     /**
      * Criar uma nova Jpaquery com os filtros e com multitenancy se a classe tiver anotada com {@link GumgaMultitenancy}
      * @param predicate filtro dos dados
-     * @return
+     * @return dados da pesquisa
      */
     public JPQLQuery createQuery(Predicate... predicate) {
         return createQuery(toSpecification(predicate));

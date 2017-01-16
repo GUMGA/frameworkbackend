@@ -54,7 +54,7 @@ public class GumgaLoggerService {
      *
      * @param msg mensagem do log
      * @param level index da execption do StrackTrace
-     * @return
+     * @return dados do log
      */
     public String createLogLine(String msg, int level) {
         StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[level];

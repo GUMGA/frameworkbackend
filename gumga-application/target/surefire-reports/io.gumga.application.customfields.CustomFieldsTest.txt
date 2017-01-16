@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: io.gumga.application.customfields.CustomFieldsTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.34 sec - in io.gumga.application.customfields.CustomFieldsTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.292 sec - in io.gumga.application.customfields.CustomFieldsTest

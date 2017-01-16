@@ -1,0 +1,6 @@
+#!/bin/sh
+project_key="GUMGA"
+test "" != "$(grep $project_key "$1")" || {
+        echo >&2 "ERRO: No começo da Mensagem deve constar a ISSUE do JIRA, no formato $project_key-# Da Issue"
+        exit 1
+}

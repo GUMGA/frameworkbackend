@@ -26,7 +26,7 @@ public class GumgaUserDataService extends GumgaService<GumgaUserData, Long> {
     /**
      * Encontrar GumgaUserData baseado no atributo key da classe @{@link GumgaUserData}
      * @param prefix
-     * @return
+     * @return dados da pesquisa
      */
     public SearchResult<GumgaUserData> searchByKeyPrefix(String prefix) {
         QueryObject qo = new QueryObject();
@@ -38,7 +38,7 @@ public class GumgaUserDataService extends GumgaService<GumgaUserData, Long> {
      * Encontrar GumgaUserData baseado no atributo userLogin e key da classe @{@link GumgaUserData}
      * @param userLogin
      * @param key
-     * @return
+     * @return dados da pesquisa
      */
     public GumgaUserData findByUserLoginAndKey(String userLogin, String key) {
         return repository.findByUserLoginAndKey(userLogin,key);

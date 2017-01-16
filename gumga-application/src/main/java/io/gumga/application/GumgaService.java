@@ -62,7 +62,7 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
     /**
      * Pesquisa a entidade na base de dados por primary key
      * @param id
-     * @return
+     * @return dados da pesquisa
      */
     @Transactional(readOnly = true)
     public T view(ID id) {
@@ -78,7 +78,7 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
      * Procura a entidade pela primary key
      * @param clazz entidade a ser procurada
      * @param id primary key da entidade
-     * @return
+     * @return dados da pesquisa
      */
     @Transactional(readOnly = true)
     public Object genercView(Class clazz, ID id) {
@@ -160,7 +160,7 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
     /**
      * Salva a entidade na base de dados com Multitenancy se a entidade estiver anotada com {@link GumgaMultitenancy}
      * @param resource
-     * @return
+     * @return dados da pesquisa
      */
     @Transactional
     public T save(T resource) {
@@ -186,7 +186,7 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
     /**
      * Retornar as versões anteriores das entidades marcadas pelas auditoria
      * @param id
-     * @return
+     * @return dados da pesquisa
      */
     @Transactional(readOnly = true)
     public List<GumgaObjectAndRevision> listOldVersions(ID id) {

@@ -28,7 +28,7 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
 
     /**
      * Cria uma nova Pesquisa da entidade que está tipada na interface @{@link GumgaCrudRepository}. Link @{@link Pesquisa}
-     * @return
+     * @return nova pesquisa
      */
     Pesquisa<T> search();
 
@@ -55,7 +55,7 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
     /**
      * Retornar as versões anteriores das entidades marcadas pelas auditoria
      * @param id
-     * @return
+     * @return versões anteriores das entidades marcadas pelas auditoria
      */
     List<GumgaObjectAndRevision> listOldVersions(ID id);
 
@@ -66,7 +66,7 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
      * @param ordenationId
      * @param whereQuery
      * @param <A>
-     * @return
+     * @return resultados da busca
      */
     <A> SearchResult<A> advancedSearch(String selectQueryWithoutWhere, String countObjt, String ordenationId, QueryObject whereQuery);
 
@@ -74,13 +74,13 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
      *
      * @param clazz
      * @param id
-     * @return
+     * @return resultado da pesquisa
      */
     Object genericFindOne(Class clazz, Object id);
 
     /**
      * Pesquisa todas as entidades com o tenancy do ThreadScope
-     * @return
+     * @return resultado da pesquisa
      */
     SearchResult<T> findAllWithTenancy();
 
