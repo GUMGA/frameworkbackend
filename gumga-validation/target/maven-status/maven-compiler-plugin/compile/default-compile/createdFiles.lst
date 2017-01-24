@@ -2,13 +2,13 @@ io/gumga/validation/validator/common/FieldWithoutErrorsValidator.class
 io/gumga/validation/validator/collection/NotEmptyCollectionValidator.class
 io/gumga/validation/GumgaValidationError.class
 io/gumga/validation/GumgaFieldValidator.class
-io/gumga/validation/exception/InvalidEntityException.class
 io/gumga/validation/validator/string/NotNullOrEmptyValidator.class
+io/gumga/validation/exception/InvalidEntityException.class
 io/gumga/validation/validator/GumgaStringValidation.class
 io/gumga/validation/validator/string/IllegalWordsValidator.class
 io/gumga/validation/validator/common/IsFalseValidator.class
 io/gumga/validation/validator/GumgaAbstractValidator.class
-io/gumga/validation/GumgaValidator.class
 io/gumga/validation/validator/common/NotNullValidator.class
+io/gumga/validation/GumgaValidator.class
 io/gumga/validation/validator/common/IsTrueValidator.class
 io/gumga/validation/validator/GumgaCommonValidator.class

@@ -1,8 +1,8 @@
 package io.gumga.application.sharedmodel;
 
-import io.gumga.application.Bus;
-import io.gumga.application.BusRepository;
-import io.gumga.application.BusService;
+import io.gumga.testmodel.Bus;
+import io.gumga.testmodel.BusRepository;
+import io.gumga.testmodel.BusService;
 import io.gumga.application.SpringConfig;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;

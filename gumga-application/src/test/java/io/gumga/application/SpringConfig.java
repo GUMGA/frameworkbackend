@@ -1,5 +1,6 @@
 package io.gumga.application;
 
+import io.gumga.application.GumgaRepositoryFactoryBean;
 import io.gumga.application.service.GumgaFreemarkerTemplateEngineService;
 import io.gumga.application.service.JasyptGumgaPasswordService;
 import io.gumga.core.GumgaValues;

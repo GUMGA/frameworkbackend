@@ -1,9 +1,9 @@
 package io.gumga.application.tag;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.gumga.application.Car;
-import io.gumga.application.CarRepository;
-import io.gumga.application.CompanyService;
+import io.gumga.testmodel.Car;
+import io.gumga.testmodel.CarRepository;
+import io.gumga.testmodel.CompanyService;
 import io.gumga.application.SpringConfig;
 import io.gumga.domain.tag.GumgaTag;
 import io.gumga.domain.tag.GumgaTagDefinition;

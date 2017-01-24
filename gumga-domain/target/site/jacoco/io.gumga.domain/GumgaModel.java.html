@@ -59,9 +59,9 @@ public abstract class GumgaModel&lt;ID extends Serializable&gt; implements Gumga
 <span class="fc" id="L59">        Class classe = this.getClass();</span>
 <span class="pc bpc" id="L60" title="1 of 2 branches missed.">        if (classe.isAnnotationPresent(GumgaMultitenancy.class)) {</span>
 <span class="fc" id="L61">            String oc = GumgaThreadScope.organizationCode.get();</span>
-<span class="fc bfc" id="L62" title="All 2 branches covered.">            if (oc == null) {</span>
-<span class="fc" id="L63">                GumgaMultitenancy tenancy = this.getClass().getAnnotation(GumgaMultitenancy.class);</span>
-<span class="fc" id="L64">                oc = tenancy.publicMarking().getMark();</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">            if (oc == null) {</span>
+<span class="nc" id="L63">                GumgaMultitenancy tenancy = this.getClass().getAnnotation(GumgaMultitenancy.class);</span>
+<span class="nc" id="L64">                oc = tenancy.publicMarking().getMark();</span>
             }
 <span class="fc" id="L66">            oi = new GumgaOi(oc);</span>
         }

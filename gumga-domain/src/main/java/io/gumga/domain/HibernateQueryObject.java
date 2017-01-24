@@ -41,8 +41,10 @@ public class HibernateQueryObject {
         if (!queryObject.isPhonetic()) {
             this.parsers.put(String.class, GumgaQueryParserProvider.STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
         }
-
-        this.queryObject.setQ(Normalizer.normalize(queryObject.getQ(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toUpperCase());
+        
+        //Não está selecionando registros salvos no banco com acento.
+        //this.queryObject.setQ(Normalizer.normalize(queryObject.getQ(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toUpperCase());
+        this.queryObject.setQ(queryObject.getQ().toUpperCase());
     }
 
     public Criterion[] getCriterions(Class<?> clazz) {

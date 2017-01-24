@@ -1,10 +1,19 @@
 package io.gumga.application.customfields;
 
+import io.gumga.testmodel.CarRepository;
+import io.gumga.testmodel.CompanyService;
+import io.gumga.testmodel.Car;
+import io.gumga.testmodel.Company;
+import io.gumga.application.SpringConfig;
 import io.gumga.application.*;
+import io.gumga.application.customfields.GumgaCustomEnhancerService;
+import io.gumga.application.customfields.GumgaCustomFieldService;
+import io.gumga.application.customfields.GumgaCustomFieldValueService;
 import io.gumga.core.QueryObject;
 import io.gumga.domain.customfields.CustomFieldType;
 import io.gumga.domain.customfields.GumgaCustomField;
 import io.gumga.domain.customfields.GumgaCustomFieldValue;
+import io.gumga.application.SpringConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
