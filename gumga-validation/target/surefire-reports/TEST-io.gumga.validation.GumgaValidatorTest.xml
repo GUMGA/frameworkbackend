@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="11" failures="0" name="io.gumga.validation.GumgaValidatorTest" time="0.369" errors="0" skipped="0">
+<testsuite tests="11" failures="0" name="io.gumga.validation.GumgaValidatorTest" time="0.356" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/home/munif/java/jdk1.8.0_65/jre/lib/amd64"/>
@@ -59,15 +59,15 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_invalid_if_any_validation_is_false" time="0.142"/>
+  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_invalid_if_any_validation_is_false" time="0.118"/>
   <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_throw_exception_if_validation_is_false" time="0.001"/>
   <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_valid_if_expression_is_false" time="0.001"/>
-  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_invalid_if_expression_is_null" time="0.001"/>
+  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_invalid_if_expression_is_null" time="0"/>
   <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_invalid_if_expression_is_true" time="0"/>
-  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_valid_if_expression_is_true" time="0"/>
-  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_throw_exception_if_validation_is_false_and_have_no_errors" time="0.014"/>
-  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_invalid_if_expression_is_false" time="0"/>
+  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_valid_if_expression_is_true" time="0.001"/>
+  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_throw_exception_if_validation_is_false_and_have_no_errors" time="0.011"/>
+  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_invalid_if_expression_is_false" time="0.001"/>
   <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_valid_if_expression_is_not_null" time="0"/>
-  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_valid_if_all_validations_is_true" time="0.001"/>
+  <testcase classname="io.gumga.validation.GumgaValidatorTest" name="should_be_valid_if_all_validations_is_true" time="0"/>
   <testcase classname="io.gumga.validation.GumgaValidatorTest" name="mustShowAMessageOfError" time="0"/>
 </testsuite>

@@ -29,6 +29,7 @@
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/TaskRepository.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/QCar.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/postgres/PostgresTest.java
+/home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/h2/H2Test.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/oracle/OracleSpringConfig.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/Car.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/BusService.java

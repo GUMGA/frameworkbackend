@@ -39,7 +39,7 @@ public class SpringConfig {
     @Bean
     @Autowired
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-        GumgaQueryParserProvider.defaultMap = GumgaQueryParserProvider.getOracleLikeMap();
+        GumgaQueryParserProvider.defaultMap = GumgaQueryParserProvider.getH2LikeMap();
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);

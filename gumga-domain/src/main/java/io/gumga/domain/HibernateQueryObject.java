@@ -43,8 +43,8 @@ public class HibernateQueryObject {
         }
         
         //Não está selecionando registros salvos no banco com acento.
-        //this.queryObject.setQ(Normalizer.normalize(queryObject.getQ(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toUpperCase());
-        this.queryObject.setQ(queryObject.getQ().toUpperCase());
+        this.queryObject.setQ(Normalizer.normalize(queryObject.getQ(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toUpperCase());
+        //this.queryObject.setQ(queryObject.getQ().toUpperCase());
     }
 
     public Criterion[] getCriterions(Class<?> clazz) {
