@@ -1,8 +1,9 @@
 # GUMGA FRAMEWORK BACKEND
 
 O GUMGA FRAMEWORK BACKEND possibilita a criação de APIs JAVA com diversas funcionalidades comuns a sistemas que utilizam bancos de dados relacionais. Utiliza outros frameworks como SPRING, HIBERNATE, JACKSON, ...
+[Documentação completa.](https://gumga.github.io/)
 
-### Prerequisites
+## Prerequisites
 
 Para utilização do framework é necessário JAVA e MAVEN. Você pode verificar a instalação destes através dos comandos 
 ```
@@ -11,12 +12,17 @@ mvn -v
 ```
 ![archetype](https://github.com/GUMGA/framework-backend/blob/master/docs/img/javamvn.gif)
 
+### Installing
+
+[Para instalar o JAVA em seu sistema.](http://www.oracle.com/technetwork/pt/java/javase/downloads/index.html)
+
+[maven.apache](https://maven.apache.org/)
 
 ## Getting Started
 
 O framework da gumga está disponível através de repositório no mavencentral e para utilizá-lo recomenda-se a criação do projeto via archetype da gumga que cria a estrutura básica de um projeto.
 ```shell
-mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=io.gumga  -DarchetypeArtifactId=gumga-archetype  -DgroupId=br.com.gumgademo  -DartifactId=exemplo -Dversion=0.1
+mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=io.gumga  -DarchetypeArtifactId=gumga-archetype -DarchetypeVersion=LATEST -DgroupId=br.com.gumgademo  -DartifactId=exemplo -Dversion=0.1
 ```
 
 
@@ -26,11 +32,7 @@ mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=io.gumga  -Dar
 
 
 
-### Installing
 
-[Para instalar o JAVA em seu sistema.](http://www.oracle.com/technetwork/pt/java/javase/downloads/index.html)
-
-[maven.apache](https://maven.apache.org/)
 
 
 ## Running the tests
