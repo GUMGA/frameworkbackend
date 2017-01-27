@@ -14,6 +14,8 @@ import io.gumga.domain.customfields.CustomFieldType;
 import io.gumga.domain.customfields.GumgaCustomField;
 import io.gumga.domain.customfields.GumgaCustomFieldValue;
 import io.gumga.application.SpringConfig;
+import io.gumga.testmodel.MyCar;
+import io.gumga.testmodel.MyCarService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +48,9 @@ public class CustomFieldsTest {
     @Autowired
     private GumgaCustomEnhancerService enhancerService;
 
+    @Autowired
+    private MyCarService myCarService;
+
     @Test
     public void injectionSanityCheck() {
         assertNotNull(companyService);
@@ -64,11 +69,14 @@ public class CustomFieldsTest {
         GumgaCustomField logicCustomField = new GumgaCustomField(Car.class.getName(), "logicField", "Custom logic Field for test", true, CustomFieldType.LOGIC, "Not empty", "true", "true", "", 4.0, "MAIN_FIELDS", "a.b.c");
         GumgaCustomField selectionCustomField = new GumgaCustomField(Car.class.getName(), "selectionField", "Custom selection Field for test", true, CustomFieldType.SELECTION, "Not empty", "true", "'Nothing'", "", 5.0, "MAIN_FIELDS", "a.b.c");
 
+        GumgaCustomField myCarField = new GumgaCustomField(MyCar.class.getName(), "engineHP", "Egine HP", true, CustomFieldType.TEXT, "Not empty", "true", "'Nothing'", "", 5.0, "MAIN_FIELDS", "a.b.c");
+
         customFieldService.save(dateCustomField);
         customFieldService.save(textCustomField);
         customFieldService.save(numberCustomField);
         customFieldService.save(logicCustomField);
         customFieldService.save(selectionCustomField);
+        customFieldService.save(myCarField);
 
         Car jetta = new Car("black");
         Car march = new Car("silver");
@@ -81,20 +89,16 @@ public class CustomFieldsTest {
         customFieldValueService.save(new GumgaCustomFieldValue(selectionCustomField, march.getId(), "two doors"));
         customFieldValueService.save(new GumgaCustomFieldValue(logicCustomField, jetta.getId(), false));
         customFieldValueService.save(new GumgaCustomFieldValue(selectionCustomField, jetta.getId(), "four doors"));
-
-        
-        
-
     }
 
     @Test
     @Transactional
     public void listFieldsforCar() {
         List<GumgaCustomField> values = customFieldService.pesquisa(new QueryObject()).getValues();
-        for (GumgaCustomField gcf:values){
-            System.out.println("---------->"+gcf.getClazz()+"  "+gcf.getDescription()+"  "+gcf.getOi());
+        for (GumgaCustomField gcf : values) {
+            System.out.println("---------->" + gcf.getClazz() + "  " + gcf.getDescription() + "  " + gcf.getOi());
         }
-        
+
         List<GumgaCustomField> result = customFieldService.findByClass(Car.class);
         assertEquals(2, result.size());
     }
@@ -121,6 +125,14 @@ public class CustomFieldsTest {
         enhancerService.loadCustomFields(result.get(0));
         int size = result.get(0).getGumgaCustomFields().size();
         assertEquals(2, size);
+    }
+
+    @Test
+    @Transactional
+    public void newInstace() {
+        MyCar myCar = new MyCar("AAA-0001", "BLACK");
+        enhancerService.setDefaultValues(myCar);
+        assertEquals("MyCar{licensePlate=AAA-0001}{logicField=true, selectionField=Nothing, engineHP=Nothing}", myCar.toString());
     }
 
 }

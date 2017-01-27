@@ -4,6 +4,7 @@ io/gumga/application/SpringConfig.class
 io/gumga/alldatabases/AllDatabasesTest.class
 io/gumga/oracle/OracleTest.class
 io/gumga/oracle/OracleSpringConfig$1.class
+io/gumga/testmodel/MyCarRepository.class
 io/gumga/application/customfields/CustomFieldsTest.class
 io/gumga/application/GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest.class
 io/gumga/postgres/PostgresSpringConfig.class
@@ -30,10 +31,12 @@ io/gumga/application/tag/TagsTest.class
 io/gumga/application/nlp/Conta.class
 io/gumga/application/report/Contact.class
 io/gumga/testmodel/BusService.class
+io/gumga/testmodel/MyCar.class
 io/gumga/application/nlp/Casa.class
 io/gumga/application/nlp/GumgaNLPTest.class
 io/gumga/mysql/MysqlTest.class
 io/gumga/testmodel/Task.class
+io/gumga/testmodel/MyCarService.class
 io/gumga/testmodel/Bus.class
 io/gumga/testmodel/Company.class
 io/gumga/application/report/ReportTest.class

@@ -9,6 +9,7 @@
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/CompanyRepository.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/application/GumgaValuesTest.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/mysql/MysqlSpringConfig.java
+/home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/MyCarService.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/application/SpringConfig.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/CarRepository.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/application/nlp/NotaFiscal.java
@@ -20,6 +21,7 @@
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/application/nlp/Conta.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/application/template/GumgaFreemarkerTemplateEngineTest.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/application/password/GumgaPasswordServiceTest.java
+/home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/MyCar.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/application/customfields/CustomFieldsTest.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/Bus.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/QTask.java
@@ -27,6 +29,7 @@
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/Task.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/oracle/OracleTest.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/TaskRepository.java
+/home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/MyCarRepository.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/testmodel/QCar.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/postgres/PostgresTest.java
 /home/munif/gumga/frameworkbackend/gumga-application/src/test/java/io/gumga/h2/H2Test.java
