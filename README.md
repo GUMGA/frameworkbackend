@@ -1,20 +1,9 @@
 # GUMGA FRAMEWORK BACKEND
 
 O GUMGA FRAMEWORK BACKEND possibilita a criação de APIs JAVA com diversas funcionalidades comuns a sistemas que utilizam bancos de dados relacionais. Utiliza outros frameworks como SPRING, HIBERNATE, JACKSON, ...
+[Documentação completa.](https://gumga.github.io/)
 
-## Getting Started
-
-O framework da gumga ~~está~~ estará disponível através de repositório no mavencentral e para utilizá-lo recomenda-se a criação do projeto via archetype da gumga que cria a estrutura básica de um projeto.
-```shell
-mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=br.com.gumga  -DarchetypeArtifactId=projeto-archetype  -DgroupId=br.com.gumgademo  -DartifactId=exemplo -Dversion=0.1
-```
-
-
-![archetype](https://github.com/GUMGA/framework-backend/blob/master/docs/img/archetype.gif)
-
-
-
-### Prerequisites
+## Prerequisites
 
 Para utilização do framework é necessário JAVA e MAVEN. Você pode verificar a instalação destes através dos comandos 
 ```
@@ -23,12 +12,27 @@ mvn -v
 ```
 ![archetype](https://github.com/GUMGA/framework-backend/blob/master/docs/img/javamvn.gif)
 
-
 ### Installing
 
 [Para instalar o JAVA em seu sistema.](http://www.oracle.com/technetwork/pt/java/javase/downloads/index.html)
 
 [maven.apache](https://maven.apache.org/)
+
+## Getting Started
+
+O framework da gumga está disponível através de repositório no mavencentral e para utilizá-lo recomenda-se a criação do projeto via archetype da gumga que cria a estrutura básica de um projeto.
+```shell
+mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=io.gumga  -DarchetypeArtifactId=gumga-archetype -DarchetypeVersion=LATEST -DgroupId=br.com.gumgademo  -DartifactId=exemplo -Dversion=0.1
+```
+
+
+![archetype](https://github.com/GUMGA/framework-backend/blob/master/docs/img/archetype.gif)
+
+
+
+
+
+
 
 
 ## Running the tests
@@ -51,6 +55,7 @@ Para fazer deploy de aplicações criadas com o framwork, utilize os arquivos WA
 
 
 ## Built With
+```shell
 [INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ exemplo-api ---
 [INFO] br.com.gumgademo:exemplo-api:war:0.1
 [INFO] +- br.com.gumgademo:exemplo-application:jar:0.1:compile
@@ -191,7 +196,7 @@ Para fazer deploy de aplicações criadas com o framwork, utilize os arquivos WA
 [INFO]       +- com.fasterxml.jackson.core:jackson-annotations:jar:2.3.0:compile
 [INFO]       \- com.fasterxml.jackson.core:jackson-core:jar:2.3.2:compile
 [INFO]                                                                         
-
+``` 
 
 ## Contributing
  
