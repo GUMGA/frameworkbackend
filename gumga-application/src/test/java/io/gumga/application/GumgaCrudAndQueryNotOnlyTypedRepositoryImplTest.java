@@ -5,6 +5,12 @@
  */
 package io.gumga.application;
 
+import io.gumga.testmodel.CarRepository;
+import io.gumga.testmodel.QCar;
+import io.gumga.testmodel.QTask;
+import io.gumga.testmodel.Task;
+import io.gumga.testmodel.TaskRepository;
+import io.gumga.application.SpringConfig;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.domain.domains.GumgaOi;

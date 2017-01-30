@@ -1,6 +1,9 @@
 package io.gumga.application;
 
 import com.mysema.query.types.expr.BooleanExpression;
+import io.gumga.testmodel.Car;
+import io.gumga.testmodel.CarRepository;
+import io.gumga.testmodel.QCar;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.SearchResult;
 import org.junit.Before;

@@ -1,5 +1,8 @@
 package io.gumga.application;
 
+import io.gumga.testmodel.Company;
+import io.gumga.testmodel.CompanyService;
+import io.gumga.application.SpringConfig;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;

@@ -30,166 +30,211 @@ public class GumgaAddress extends GumgaDomain {
     private String localization;
     private String state;
     private String country;
+    private Double latitude;
+    private Double longitude;
+    private String formalCode;
 
-<span class="nc" id="L34">    public GumgaAddress() {</span>
+<span class="nc" id="L37">    public GumgaAddress() {</span>
 
-<span class="nc" id="L36">    }</span>
+<span class="nc" id="L39">    }</span>
 
-<span class="nc" id="L38">    public GumgaAddress(GumgaAddress other) {</span>
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (other != null) {</span>
-<span class="nc" id="L40">            this.zipCode = other.zipCode;</span>
-<span class="nc" id="L41">            this.premisseType = other.premisseType;</span>
-<span class="nc" id="L42">            this.premisse = other.premisse;</span>
-<span class="nc" id="L43">            this.number = other.number;</span>
-<span class="nc" id="L44">            this.information = other.information;</span>
-<span class="nc" id="L45">            this.neighbourhood = other.neighbourhood;</span>
-<span class="nc" id="L46">            this.localization = other.localization;</span>
-<span class="nc" id="L47">            this.state = other.state;</span>
-<span class="nc" id="L48">            this.country = other.country;</span>
+<span class="nc" id="L41">    public GumgaAddress(GumgaAddress other) {</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (other != null) {</span>
+<span class="nc" id="L43">            this.zipCode = other.zipCode;</span>
+<span class="nc" id="L44">            this.premisseType = other.premisseType;</span>
+<span class="nc" id="L45">            this.premisse = other.premisse;</span>
+<span class="nc" id="L46">            this.number = other.number;</span>
+<span class="nc" id="L47">            this.information = other.information;</span>
+<span class="nc" id="L48">            this.neighbourhood = other.neighbourhood;</span>
+<span class="nc" id="L49">            this.localization = other.localization;</span>
+<span class="nc" id="L50">            this.state = other.state;</span>
+<span class="nc" id="L51">            this.country = other.country;</span>
+<span class="nc" id="L52">            this.latitude = other.latitude;</span>
+<span class="nc" id="L53">            this.longitude = other.latitude;</span>
+<span class="nc" id="L54">            this.formalCode = other.formalCode;</span>
         }
-<span class="nc" id="L50">    }</span>
+<span class="nc" id="L56">    }</span>
 
-<span class="nc" id="L52">    public GumgaAddress(String zipCode, String premisseType, String premisse, String number, String information, String neighbourhood, String localization, String state, String country) {</span>
-<span class="nc" id="L53">        this.zipCode = zipCode;</span>
-<span class="nc" id="L54">        this.premisseType = premisseType;</span>
-<span class="nc" id="L55">        this.premisse = premisse;</span>
-<span class="nc" id="L56">        this.number = number;</span>
-<span class="nc" id="L57">        this.information = information;</span>
-<span class="nc" id="L58">        this.neighbourhood = neighbourhood;</span>
-<span class="nc" id="L59">        this.localization = localization;</span>
-<span class="nc" id="L60">        this.state = state;</span>
-<span class="nc" id="L61">        this.country = country;</span>
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L58">    public GumgaAddress(String zipCode, String premisseType, String premisse, String number, String information, String neighbourhood, String localization, String state, String country, Double latitude, Double longitude, String formalCode) {</span>
+<span class="nc" id="L59">        this.zipCode = zipCode;</span>
+<span class="nc" id="L60">        this.premisseType = premisseType;</span>
+<span class="nc" id="L61">        this.premisse = premisse;</span>
+<span class="nc" id="L62">        this.number = number;</span>
+<span class="nc" id="L63">        this.information = information;</span>
+<span class="nc" id="L64">        this.neighbourhood = neighbourhood;</span>
+<span class="nc" id="L65">        this.localization = localization;</span>
+<span class="nc" id="L66">        this.state = state;</span>
+<span class="nc" id="L67">        this.country = country;</span>
+<span class="nc" id="L68">        this.latitude = latitude;</span>
+<span class="nc" id="L69">        this.longitude = longitude;</span>
+<span class="nc" id="L70">        this.formalCode = formalCode;</span>
+<span class="nc" id="L71">    }</span>
 
     public String getZipCode() {
-<span class="nc" id="L65">        return zipCode;</span>
+<span class="nc" id="L74">        return zipCode;</span>
     }
 
     public void setZipCode(String zipCode) {
-<span class="nc" id="L69">        this.zipCode = zipCode;</span>
-<span class="nc" id="L70">    }</span>
+<span class="nc" id="L78">        this.zipCode = zipCode;</span>
+<span class="nc" id="L79">    }</span>
 
     public String getPremisseType() {
-<span class="nc" id="L73">        return premisseType;</span>
+<span class="nc" id="L82">        return premisseType;</span>
     }
 
     public void setPremisseType(String premisseType) {
-<span class="nc" id="L77">        this.premisseType = premisseType;</span>
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L86">        this.premisseType = premisseType;</span>
+<span class="nc" id="L87">    }</span>
 
     public String getPremisse() {
-<span class="nc" id="L81">        return premisse;</span>
+<span class="nc" id="L90">        return premisse;</span>
     }
 
     public void setPremisse(String premisse) {
-<span class="nc" id="L85">        this.premisse = premisse;</span>
-<span class="nc" id="L86">    }</span>
+<span class="nc" id="L94">        this.premisse = premisse;</span>
+<span class="nc" id="L95">    }</span>
 
     public String getNumber() {
-<span class="nc" id="L89">        return number;</span>
+<span class="nc" id="L98">        return number;</span>
     }
 
     public void setNumber(String number) {
-<span class="nc" id="L93">        this.number = number;</span>
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L102">        this.number = number;</span>
+<span class="nc" id="L103">    }</span>
 
     public String getInformation() {
-<span class="nc" id="L97">        return information;</span>
+<span class="nc" id="L106">        return information;</span>
     }
 
     public void setInformation(String information) {
-<span class="nc" id="L101">        this.information = information;</span>
-<span class="nc" id="L102">    }</span>
+<span class="nc" id="L110">        this.information = information;</span>
+<span class="nc" id="L111">    }</span>
 
     public String getNeighbourhood() {
-<span class="nc" id="L105">        return neighbourhood;</span>
+<span class="nc" id="L114">        return neighbourhood;</span>
     }
 
     public void setNeighbourhood(String neighbourhood) {
-<span class="nc" id="L109">        this.neighbourhood = neighbourhood;</span>
-<span class="nc" id="L110">    }</span>
+<span class="nc" id="L118">        this.neighbourhood = neighbourhood;</span>
+<span class="nc" id="L119">    }</span>
 
     public String getLocalization() {
-<span class="nc" id="L113">        return localization;</span>
+<span class="nc" id="L122">        return localization;</span>
     }
 
     public void setLocalization(String localization) {
-<span class="nc" id="L117">        this.localization = localization;</span>
-<span class="nc" id="L118">    }</span>
+<span class="nc" id="L126">        this.localization = localization;</span>
+<span class="nc" id="L127">    }</span>
 
     public String getState() {
-<span class="nc" id="L121">        return state;</span>
+<span class="nc" id="L130">        return state;</span>
     }
 
     public void setState(String state) {
-<span class="nc" id="L125">        this.state = state;</span>
-<span class="nc" id="L126">    }</span>
+<span class="nc" id="L134">        this.state = state;</span>
+<span class="nc" id="L135">    }</span>
 
     public String getCountry() {
-<span class="nc" id="L129">        return country;</span>
+<span class="nc" id="L138">        return country;</span>
     }
 
     public void setCountry(String country) {
-<span class="nc" id="L133">        this.country = country;</span>
-<span class="nc" id="L134">    }</span>
+<span class="nc" id="L142">        this.country = country;</span>
+<span class="nc" id="L143">    }</span>
+
+    public Double getLatitude() {
+<span class="nc" id="L146">        return latitude;</span>
+    }
+
+    public void setLatitude(Double latitude) {
+<span class="nc" id="L150">        this.latitude = latitude;</span>
+<span class="nc" id="L151">    }</span>
+
+    public Double getLongitude() {
+<span class="nc" id="L154">        return longitude;</span>
+    }
+
+    public void setLongitude(Double longitude) {
+<span class="nc" id="L158">        this.longitude = longitude;</span>
+<span class="nc" id="L159">    }</span>
+
+    public String getFormalCode() {
+<span class="nc" id="L162">        return formalCode;</span>
+    }
+
+    public void setFormalCode(String formalCode) {
+<span class="nc" id="L166">        this.formalCode = formalCode;</span>
+<span class="nc" id="L167">    }</span>
 
     @Override
     public int hashCode() {
-<span class="nc" id="L138">        int hash = 5;</span>
-<span class="nc" id="L139">        hash = 23 * hash + Objects.hashCode(this.zipCode);</span>
-<span class="nc" id="L140">        hash = 23 * hash + Objects.hashCode(this.premisseType);</span>
-<span class="nc" id="L141">        hash = 23 * hash + Objects.hashCode(this.premisse);</span>
-<span class="nc" id="L142">        hash = 23 * hash + Objects.hashCode(this.number);</span>
-<span class="nc" id="L143">        hash = 23 * hash + Objects.hashCode(this.information);</span>
-<span class="nc" id="L144">        hash = 23 * hash + Objects.hashCode(this.neighbourhood);</span>
-<span class="nc" id="L145">        hash = 23 * hash + Objects.hashCode(this.localization);</span>
-<span class="nc" id="L146">        hash = 23 * hash + Objects.hashCode(this.state);</span>
-<span class="nc" id="L147">        hash = 23 * hash + Objects.hashCode(this.country);</span>
-<span class="nc" id="L148">        return hash;</span>
+<span class="nc" id="L171">        int hash = 5;</span>
+<span class="nc" id="L172">        hash = 23 * hash + Objects.hashCode(this.zipCode);</span>
+<span class="nc" id="L173">        hash = 23 * hash + Objects.hashCode(this.premisseType);</span>
+<span class="nc" id="L174">        hash = 23 * hash + Objects.hashCode(this.premisse);</span>
+<span class="nc" id="L175">        hash = 23 * hash + Objects.hashCode(this.number);</span>
+<span class="nc" id="L176">        hash = 23 * hash + Objects.hashCode(this.information);</span>
+<span class="nc" id="L177">        hash = 23 * hash + Objects.hashCode(this.neighbourhood);</span>
+<span class="nc" id="L178">        hash = 23 * hash + Objects.hashCode(this.localization);</span>
+<span class="nc" id="L179">        hash = 23 * hash + Objects.hashCode(this.state);</span>
+<span class="nc" id="L180">        hash = 23 * hash + Objects.hashCode(this.country);</span>
+<span class="nc" id="L181">        hash = 23 * hash + Objects.hashCode(this.latitude);</span>
+<span class="nc" id="L182">        hash = 23 * hash + Objects.hashCode(this.longitude);</span>
+<span class="nc" id="L183">        hash = 23 * hash + Objects.hashCode(this.formalCode);</span>
+<span class="nc" id="L184">        return hash;</span>
     }
 
     @Override
     public boolean equals(Object obj) {
-<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (obj == null) {</span>
-<span class="nc" id="L154">            return false;</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L190">            return false;</span>
         }
-<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
-<span class="nc" id="L157">            return false;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L193">            return false;</span>
         }
-<span class="nc" id="L159">        final GumgaAddress other = (GumgaAddress) obj;</span>
-<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (!Objects.equals(this.zipCode, other.zipCode)) {</span>
-<span class="nc" id="L161">            return false;</span>
+<span class="nc" id="L195">        final GumgaAddress other = (GumgaAddress) obj;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (!Objects.equals(this.zipCode, other.zipCode)) {</span>
+<span class="nc" id="L197">            return false;</span>
         }
-<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (!Objects.equals(this.premisseType, other.premisseType)) {</span>
-<span class="nc" id="L164">            return false;</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (!Objects.equals(this.premisseType, other.premisseType)) {</span>
+<span class="nc" id="L200">            return false;</span>
         }
-<span class="nc bnc" id="L166" title="All 2 branches missed.">        if (!Objects.equals(this.premisse, other.premisse)) {</span>
-<span class="nc" id="L167">            return false;</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">        if (!Objects.equals(this.premisse, other.premisse)) {</span>
+<span class="nc" id="L203">            return false;</span>
         }
-<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (!Objects.equals(this.number, other.number)) {</span>
-<span class="nc" id="L170">            return false;</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        if (!Objects.equals(this.number, other.number)) {</span>
+<span class="nc" id="L206">            return false;</span>
         }
-<span class="nc bnc" id="L172" title="All 2 branches missed.">        if (!Objects.equals(this.information, other.information)) {</span>
-<span class="nc" id="L173">            return false;</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">        if (!Objects.equals(this.information, other.information)) {</span>
+<span class="nc" id="L209">            return false;</span>
         }
-<span class="nc bnc" id="L175" title="All 2 branches missed.">        if (!Objects.equals(this.neighbourhood, other.neighbourhood)) {</span>
-<span class="nc" id="L176">            return false;</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        if (!Objects.equals(this.neighbourhood, other.neighbourhood)) {</span>
+<span class="nc" id="L212">            return false;</span>
         }
-<span class="nc bnc" id="L178" title="All 2 branches missed.">        if (!Objects.equals(this.localization, other.localization)) {</span>
-<span class="nc" id="L179">            return false;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (!Objects.equals(this.localization, other.localization)) {</span>
+<span class="nc" id="L215">            return false;</span>
         }
-<span class="nc bnc" id="L181" title="All 2 branches missed.">        if (!Objects.equals(this.state, other.state)) {</span>
-<span class="nc" id="L182">            return false;</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">        if (!Objects.equals(this.state, other.state)) {</span>
+<span class="nc" id="L218">            return false;</span>
         }
-<span class="nc bnc" id="L184" title="All 2 branches missed.">        if (!Objects.equals(this.country, other.country)) {</span>
-<span class="nc" id="L185">            return false;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (!Objects.equals(this.country, other.country)) {</span>
+<span class="nc" id="L221">            return false;</span>
         }
-<span class="nc" id="L187">        return true;</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">        if (!Objects.equals(this.latitude, other.latitude)) {</span>
+<span class="nc" id="L224">            return false;</span>
+        }
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        if (!Objects.equals(this.longitude, other.longitude)) {</span>
+<span class="nc" id="L227">            return false;</span>
+        }
+<span class="nc bnc" id="L229" title="All 2 branches missed.">        if (!Objects.equals(this.formalCode, other.formalCode)) {</span>
+<span class="nc" id="L230">            return false;</span>
+        }
+<span class="nc" id="L232">        return true;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L192">        return &quot;GumgaAddress{&quot; + &quot;zipCode=&quot; + zipCode + &quot;, premisseType=&quot; + premisseType + &quot;, premisse=&quot; + premisse + &quot;, number=&quot; + number + &quot;, information=&quot; + information + &quot;, neighbourhood=&quot; + neighbourhood + &quot;, localization=&quot; + localization + &quot;, state=&quot; + state + &quot;, country=&quot; + country + '}';</span>
+<span class="nc" id="L237">        return &quot;GumgaAddress{&quot; + &quot;zipCode=&quot; + zipCode + &quot;, premisseType=&quot; + premisseType + &quot;, premisse=&quot; + premisse + &quot;, number=&quot; + number + &quot;, information=&quot; + information + &quot;, neighbourhood=&quot; + neighbourhood + &quot;, localization=&quot; + localization + &quot;, state=&quot; + state + &quot;, country=&quot; + country + &quot;, latitude=&quot; + latitude + &quot;, longitude=&quot; + longitude + &quot;, formalCode=&quot; + formalCode + '}';</span>
     }
 
 }

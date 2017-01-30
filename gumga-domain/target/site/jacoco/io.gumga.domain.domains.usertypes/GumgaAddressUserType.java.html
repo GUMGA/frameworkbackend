@@ -11,105 +11,121 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.hibernate.type.DoubleType;
 
 /**
  * UserType que permite serializar o tipo dentro do Hibernate
  */
-<span class="nc" id="L18">public class GumgaAddressUserType implements CompositeUserType {</span>
+<span class="nc" id="L19">public class GumgaAddressUserType implements CompositeUserType {</span>
 
     @Override
     public String[] getPropertyNames() {
-<span class="nc" id="L22">        return new String[]{&quot;zipCode&quot;, &quot;premisseType&quot;, &quot;premisse&quot;, &quot;number&quot;, &quot;information&quot;, &quot;neighbourhood&quot;, &quot;localization&quot;, &quot;state&quot;, &quot;country&quot;};</span>
+<span class="nc" id="L23">        return new String[]{&quot;zipCode&quot;, &quot;premisseType&quot;, &quot;premisse&quot;, &quot;number&quot;, &quot;information&quot;, &quot;neighbourhood&quot;, &quot;localization&quot;, &quot;state&quot;, &quot;country&quot;,&quot;latitude&quot;,&quot;longitude&quot;,&quot;formalCode&quot;};</span>
     }
 
     @Override
     public Type[] getPropertyTypes() {
-<span class="nc" id="L27">        return new Type[]{StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE,</span>
-            StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE};
+<span class="nc" id="L28">        return new Type[]{StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE,</span>
+            StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE,DoubleType.INSTANCE,DoubleType.INSTANCE,StringType.INSTANCE};
     }
 
     @Override
     public Object getPropertyValue(final Object component, final int property) throws HibernateException {
-<span class="nc bnc" id="L33" title="All 10 branches missed.">        switch (property) {</span>
+<span class="nc bnc" id="L34" title="All 13 branches missed.">        switch (property) {</span>
             case 0:
-<span class="nc" id="L35">                return ((GumgaAddress) component).getZipCode();</span>
+<span class="nc" id="L36">                return ((GumgaAddress) component).getZipCode();</span>
             case 1:
-<span class="nc" id="L37">                return ((GumgaAddress) component).getPremisseType();</span>
+<span class="nc" id="L38">                return ((GumgaAddress) component).getPremisseType();</span>
             case 2:
-<span class="nc" id="L39">                return ((GumgaAddress) component).getPremisse();</span>
+<span class="nc" id="L40">                return ((GumgaAddress) component).getPremisse();</span>
             case 3:
-<span class="nc" id="L41">                return ((GumgaAddress) component).getNumber();</span>
+<span class="nc" id="L42">                return ((GumgaAddress) component).getNumber();</span>
             case 4:
-<span class="nc" id="L43">                return ((GumgaAddress) component).getInformation();</span>
+<span class="nc" id="L44">                return ((GumgaAddress) component).getInformation();</span>
             case 5:
-<span class="nc" id="L45">                return ((GumgaAddress) component).getNeighbourhood();</span>
+<span class="nc" id="L46">                return ((GumgaAddress) component).getNeighbourhood();</span>
             case 6:
-<span class="nc" id="L47">                return ((GumgaAddress) component).getLocalization();</span>
+<span class="nc" id="L48">                return ((GumgaAddress) component).getLocalization();</span>
             case 7:
-<span class="nc" id="L49">                return ((GumgaAddress) component).getState();</span>
+<span class="nc" id="L50">                return ((GumgaAddress) component).getState();</span>
             case 8:
-<span class="nc" id="L51">                return ((GumgaAddress) component).getCountry();</span>
+<span class="nc" id="L52">                return ((GumgaAddress) component).getCountry();</span>
+            case 9:
+<span class="nc" id="L54">                return ((GumgaAddress) component).getLatitude();</span>
+            case 10:
+<span class="nc" id="L56">                return ((GumgaAddress) component).getLongitude();</span>
+            case 11:
+<span class="nc" id="L58">                return ((GumgaAddress) component).getFormalCode();</span>
             default:
-<span class="nc" id="L53">                return null;</span>
+<span class="nc" id="L60">                return null;</span>
 
         }
     }
 
     @Override
     public void setPropertyValue(final Object component, final int property, final Object setValue) throws HibernateException {
-<span class="nc bnc" id="L60" title="All 10 branches missed.">        switch (property) {</span>
+<span class="nc bnc" id="L67" title="All 13 branches missed.">        switch (property) {</span>
             case 0:
-<span class="nc" id="L62">                ((GumgaAddress) component).setZipCode((String) setValue);</span>
-<span class="nc" id="L63">                break;</span>
+<span class="nc" id="L69">                ((GumgaAddress) component).setZipCode((String) setValue);</span>
+<span class="nc" id="L70">                break;</span>
             case 1:
-<span class="nc" id="L65">                ((GumgaAddress) component).setPremisseType((String) setValue);</span>
-<span class="nc" id="L66">                break;</span>
+<span class="nc" id="L72">                ((GumgaAddress) component).setPremisseType((String) setValue);</span>
+<span class="nc" id="L73">                break;</span>
             case 2:
-<span class="nc" id="L68">                ((GumgaAddress) component).setPremisse((String) setValue);</span>
-<span class="nc" id="L69">                break;</span>
+<span class="nc" id="L75">                ((GumgaAddress) component).setPremisse((String) setValue);</span>
+<span class="nc" id="L76">                break;</span>
             case 3:
-<span class="nc" id="L71">                ((GumgaAddress) component).setNumber((String) setValue);</span>
-<span class="nc" id="L72">                break;</span>
+<span class="nc" id="L78">                ((GumgaAddress) component).setNumber((String) setValue);</span>
+<span class="nc" id="L79">                break;</span>
             case 4:
-<span class="nc" id="L74">                ((GumgaAddress) component).setInformation((String) setValue);</span>
-<span class="nc" id="L75">                break;</span>
+<span class="nc" id="L81">                ((GumgaAddress) component).setInformation((String) setValue);</span>
+<span class="nc" id="L82">                break;</span>
             case 5:
-<span class="nc" id="L77">                ((GumgaAddress) component).setNeighbourhood((String) setValue);</span>
-<span class="nc" id="L78">                break;</span>
+<span class="nc" id="L84">                ((GumgaAddress) component).setNeighbourhood((String) setValue);</span>
+<span class="nc" id="L85">                break;</span>
             case 6:
-<span class="nc" id="L80">                ((GumgaAddress) component).setLocalization((String) setValue);</span>
-<span class="nc" id="L81">                break;</span>
+<span class="nc" id="L87">                ((GumgaAddress) component).setLocalization((String) setValue);</span>
+<span class="nc" id="L88">                break;</span>
             case 7:
-<span class="nc" id="L83">                ((GumgaAddress) component).setState((String) setValue);</span>
-<span class="nc" id="L84">                break;</span>
+<span class="nc" id="L90">                ((GumgaAddress) component).setState((String) setValue);</span>
+<span class="nc" id="L91">                break;</span>
             case 8:
-<span class="nc" id="L86">                ((GumgaAddress) component).setCountry((String) setValue);</span>
+<span class="nc" id="L93">                ((GumgaAddress) component).setCountry((String) setValue);</span>
+<span class="nc" id="L94">                break;</span>
+            case 9:
+<span class="nc" id="L96">                ((GumgaAddress) component).setLatitude((Double) setValue);</span>
+<span class="nc" id="L97">                break;</span>
+            case 10:
+<span class="nc" id="L99">                ((GumgaAddress) component).setLongitude((Double) setValue);</span>
+<span class="nc" id="L100">                break;</span>
+            case 11:
+<span class="nc" id="L102">                ((GumgaAddress) component).setFormalCode((String) setValue);</span>
                 break;
         }
-<span class="nc" id="L89">    }</span>
+<span class="nc" id="L105">    }</span>
 
     @Override
     public Class returnedClass() {
-<span class="nc" id="L93">        return GumgaAddress.class;</span>
+<span class="nc" id="L109">        return GumgaAddress.class;</span>
     }
 
     @Override
     public boolean equals(final Object o1, final Object o2) throws HibernateException {
-<span class="nc" id="L98">        boolean isEqual = false;</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (o1 == o2) {</span>
-<span class="nc" id="L100">            isEqual = false;</span>
+<span class="nc" id="L114">        boolean isEqual = false;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (o1 == o2) {</span>
+<span class="nc" id="L116">            isEqual = false;</span>
         }
-<span class="nc bnc" id="L102" title="All 4 branches missed.">        if (null == o1 || null == o2) {</span>
-<span class="nc" id="L103">            isEqual = false;</span>
+<span class="nc bnc" id="L118" title="All 4 branches missed.">        if (null == o1 || null == o2) {</span>
+<span class="nc" id="L119">            isEqual = false;</span>
         } else {
-<span class="nc" id="L105">            isEqual = o1.equals(o2);</span>
+<span class="nc" id="L121">            isEqual = o1.equals(o2);</span>
         }
-<span class="nc" id="L107">        return isEqual;</span>
+<span class="nc" id="L123">        return isEqual;</span>
     }
 
     @Override
     public int hashCode(Object o) throws HibernateException {
-<span class="nc" id="L112">        return o.hashCode();</span>
+<span class="nc" id="L128">        return o.hashCode();</span>
     }
 
     @Override
@@ -118,13 +134,15 @@ import java.sql.SQLException;
             final SessionImplementor paramSessionImplementor, final Object paramObject)
             throws HibernateException, SQLException {
         //owner here is of type TestUser or the actual owning Object
-<span class="nc" id="L121">        GumgaAddress object = null;</span>
-<span class="nc" id="L122">        final String zipCode = resultSet.getString(names[0]);</span>
+<span class="nc" id="L137">        GumgaAddress object = null;</span>
+<span class="nc" id="L138">        final String zipCode = resultSet.getString(names[0]);</span>
         //Deferred check after first read
-<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (!resultSet.wasNull()) {</span>
-<span class="nc" id="L125">            object = new GumgaAddress(zipCode, resultSet.getString(names[1]), resultSet.getString(names[2]), resultSet.getString(names[3]), resultSet.getString(names[4]), resultSet.getString(names[5]), resultSet.getString(names[6]), resultSet.getString(names[7]), resultSet.getString(names[8]));</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if (!resultSet.wasNull()) {</span>
+<span class="nc" id="L141">            object = new GumgaAddress(zipCode, resultSet.getString(names[1]), resultSet.getString(names[2]), resultSet.getString(names[3]), resultSet.getString(names[4]), </span>
+<span class="nc" id="L142">                    resultSet.getString(names[5]), resultSet.getString(names[6]), resultSet.getString(names[7]), resultSet.getString(names[8]),</span>
+<span class="nc" id="L143">                    resultSet.getDouble(names[9]),resultSet.getDouble(names[10]),resultSet.getString(names[11]));</span>
         }
-<span class="nc" id="L127">        return object;</span>
+<span class="nc" id="L145">        return object;</span>
     }
 
     /**
@@ -136,29 +154,35 @@ import java.sql.SQLException;
             final Object value, final int property,
             final SessionImplementor sessionImplementor)
             throws HibernateException, SQLException {
-<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (null == value) {</span>
-<span class="nc" id="L140">            preparedStatement.setNull(property + 0, java.sql.Types.VARCHAR);</span>
-<span class="nc" id="L141">            preparedStatement.setNull(property + 1, java.sql.Types.VARCHAR);</span>
-<span class="nc" id="L142">            preparedStatement.setNull(property + 2, java.sql.Types.VARCHAR);</span>
-<span class="nc" id="L143">            preparedStatement.setNull(property + 3, java.sql.Types.VARCHAR);</span>
-<span class="nc" id="L144">            preparedStatement.setNull(property + 4, java.sql.Types.VARCHAR);</span>
-<span class="nc" id="L145">            preparedStatement.setNull(property + 5, java.sql.Types.VARCHAR);</span>
-<span class="nc" id="L146">            preparedStatement.setNull(property + 6, java.sql.Types.VARCHAR);</span>
-<span class="nc" id="L147">            preparedStatement.setNull(property + 7, java.sql.Types.VARCHAR);</span>
-<span class="nc" id="L148">            preparedStatement.setNull(property + 8, java.sql.Types.VARCHAR);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (null == value) {</span>
+<span class="nc" id="L158">            preparedStatement.setNull(property + 0, java.sql.Types.VARCHAR);</span>
+<span class="nc" id="L159">            preparedStatement.setNull(property + 1, java.sql.Types.VARCHAR);</span>
+<span class="nc" id="L160">            preparedStatement.setNull(property + 2, java.sql.Types.VARCHAR);</span>
+<span class="nc" id="L161">            preparedStatement.setNull(property + 3, java.sql.Types.VARCHAR);</span>
+<span class="nc" id="L162">            preparedStatement.setNull(property + 4, java.sql.Types.VARCHAR);</span>
+<span class="nc" id="L163">            preparedStatement.setNull(property + 5, java.sql.Types.VARCHAR);</span>
+<span class="nc" id="L164">            preparedStatement.setNull(property + 6, java.sql.Types.VARCHAR);</span>
+<span class="nc" id="L165">            preparedStatement.setNull(property + 7, java.sql.Types.VARCHAR);</span>
+<span class="nc" id="L166">            preparedStatement.setNull(property + 8, java.sql.Types.VARCHAR);</span>
+<span class="nc" id="L167">            preparedStatement.setNull(property + 9, java.sql.Types.DOUBLE);</span>
+<span class="nc" id="L168">            preparedStatement.setNull(property + 10, java.sql.Types.DOUBLE);</span>
+<span class="nc" id="L169">            preparedStatement.setNull(property + 11, java.sql.Types.VARCHAR);</span>
         } else {
-<span class="nc" id="L150">            final GumgaAddress object = (GumgaAddress) value;</span>
-<span class="nc" id="L151">            preparedStatement.setString(property + 0, object.getZipCode());</span>
-<span class="nc" id="L152">            preparedStatement.setString(property + 1, object.getPremisseType());</span>
-<span class="nc" id="L153">            preparedStatement.setString(property + 2, object.getPremisse());</span>
-<span class="nc" id="L154">            preparedStatement.setString(property + 3, object.getNumber());</span>
-<span class="nc" id="L155">            preparedStatement.setString(property + 4, object.getInformation());</span>
-<span class="nc" id="L156">            preparedStatement.setString(property + 5, object.getNeighbourhood());</span>
-<span class="nc" id="L157">            preparedStatement.setString(property + 6, object.getLocalization());</span>
-<span class="nc" id="L158">            preparedStatement.setString(property + 7, object.getState());</span>
-<span class="nc" id="L159">            preparedStatement.setString(property + 8, object.getCountry());</span>
+<span class="nc" id="L171">            final GumgaAddress object = (GumgaAddress) value;</span>
+<span class="nc" id="L172">            preparedStatement.setString(property + 0, object.getZipCode());</span>
+<span class="nc" id="L173">            preparedStatement.setString(property + 1, object.getPremisseType());</span>
+<span class="nc" id="L174">            preparedStatement.setString(property + 2, object.getPremisse());</span>
+<span class="nc" id="L175">            preparedStatement.setString(property + 3, object.getNumber());</span>
+<span class="nc" id="L176">            preparedStatement.setString(property + 4, object.getInformation());</span>
+<span class="nc" id="L177">            preparedStatement.setString(property + 5, object.getNeighbourhood());</span>
+<span class="nc" id="L178">            preparedStatement.setString(property + 6, object.getLocalization());</span>
+<span class="nc" id="L179">            preparedStatement.setString(property + 7, object.getState());</span>
+<span class="nc" id="L180">            preparedStatement.setString(property + 8, object.getCountry());</span>
+<span class="nc" id="L181">            preparedStatement.setDouble(property + 9, object.getLatitude());</span>
+<span class="nc" id="L182">            preparedStatement.setDouble(property + 10, object.getLongitude());</span>
+<span class="nc" id="L183">            preparedStatement.setString(property + 11, object.getFormalCode());</span>
         }
-<span class="nc" id="L161">    }</span>
+<span class="nc" id="L185">    }</span>
 
     /**
      * Used to create Snapshots of the object
@@ -166,18 +190,18 @@ import java.sql.SQLException;
     @Override
     public Object deepCopy(final Object value) throws HibernateException {
 //        return value; if object was immutable we could return the object as its is
-<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (value == null) {</span>
-<span class="nc" id="L170">            return null;</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (value == null) {</span>
+<span class="nc" id="L194">            return null;</span>
         }
 
-<span class="nc" id="L173">        final GumgaAddress recebido = (GumgaAddress) value;</span>
-<span class="nc" id="L174">        final GumgaAddress aRetornar = new GumgaAddress(recebido);</span>
-<span class="nc" id="L175">        return aRetornar;</span>
+<span class="nc" id="L197">        final GumgaAddress recebido = (GumgaAddress) value;</span>
+<span class="nc" id="L198">        final GumgaAddress aRetornar = new GumgaAddress(recebido);</span>
+<span class="nc" id="L199">        return aRetornar;</span>
     }
 
     @Override
     public boolean isMutable() {
-<span class="nc" id="L180">        return true;</span>
+<span class="nc" id="L204">        return true;</span>
     }
 
     /**
@@ -189,7 +213,7 @@ import java.sql.SQLException;
             final SessionImplementor paramSessionImplementor)
             throws HibernateException {
         //Thus the data Types must implement serializable
-<span class="nc" id="L192">        return (Serializable) value;</span>
+<span class="nc" id="L216">        return (Serializable) value;</span>
     }
 
     /**
@@ -200,7 +224,7 @@ import java.sql.SQLException;
             final SessionImplementor sessionImplementor, final Object owner)
             throws HibernateException {
         //would work as the class is Serializable, and stored in cache as it is - see disassemble
-<span class="nc" id="L203">        return cached;</span>
+<span class="nc" id="L227">        return cached;</span>
     }
 
     /**
@@ -212,7 +236,7 @@ import java.sql.SQLException;
             throws HibernateException {
         //        return original; // if immutable use this
         //For mutable types at bare minimum return a deep copy of first argument
-<span class="nc" id="L215">        return this.deepCopy(original);</span>
+<span class="nc" id="L239">        return this.deepCopy(original);</span>
     }
 
 }

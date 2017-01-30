@@ -34,3 +34,10 @@ dist/
 nbdist/
 .nb-gradle/
 
+.idea/
+/gumga-presentation/target/
+/gumga-application/target/
+/gumga-core/target/
+/gumga-domain/target/
+/gumga-validation/target/
+/gumga-application/nbproject/

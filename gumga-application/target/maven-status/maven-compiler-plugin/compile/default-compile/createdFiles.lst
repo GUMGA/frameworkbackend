@@ -9,7 +9,6 @@ io/gumga/application/clock/RelogioImpl.class
 io/gumga/application/tag/GumgaTagDefinitionRepository.class
 io/gumga/application/service/AbstractGumgaService.class
 io/gumga/application/service/JasyptGumgaPasswordService.class
-gumga/framework/application/spring/config/GumgaNamingStrategy.class
 io/gumga/application/spring/config/MySqlDataSourceProvider.class
 io/gumga/application/spring/config/DatabaseConfigSupport$Database.class
 io/gumga/application/GumgaMessageService.class
@@ -22,6 +21,7 @@ io/gumga/application/spring/config/PostgreSqlDataSourceProvider.class
 io/gumga/application/nlp/GumgaNLP.class
 io/gumga/application/spring/config/ApplicationConfiguration.class
 io/gumga/application/GumgaRepositoryFactoryBean.class
+io/gumga/application/spring/config/GumgaNamingStrategy.class
 io/gumga/application/QueryObjectLikeDecorator.class
 io/gumga/application/customfields/GumgaCustomFieldValueService.class
 io/gumga/application/customfields/GumgaCustomEnhancerService.class

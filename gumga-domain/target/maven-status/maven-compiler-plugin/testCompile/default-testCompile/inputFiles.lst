@@ -1,5 +1,5 @@
-/home/gumganot/gumga/frameworkbackend/gumga-domain/src/test/java/io/gumga/domain/test/money/GumgaTenancyUtilsTest.java
-/home/gumganot/gumga/frameworkbackend/gumga-domain/src/test/java/io/gumga/domain/test/money/TestEntitySharedModel.java
-/home/gumganot/gumga/frameworkbackend/gumga-domain/src/test/java/io/gumga/domain/test/money/GumgaSharedModelTest.java
-/home/gumganot/gumga/frameworkbackend/gumga-domain/src/test/java/io/gumga/domain/test/money/GumgaMoneyTest.java
-/home/gumganot/gumga/frameworkbackend/gumga-domain/src/test/java/io/gumga/domain/test/money/TestEntity.java
+/home/gumganot/temporario/frameworkbackend/gumga-domain/src/test/java/io/gumga/domain/test/money/GumgaMoneyTest.java
+/home/gumganot/temporario/frameworkbackend/gumga-domain/src/test/java/io/gumga/domain/test/money/TestEntity.java
+/home/gumganot/temporario/frameworkbackend/gumga-domain/src/test/java/io/gumga/domain/test/money/TestEntitySharedModel.java
+/home/gumganot/temporario/frameworkbackend/gumga-domain/src/test/java/io/gumga/domain/test/money/GumgaTenancyUtilsTest.java
+/home/gumganot/temporario/frameworkbackend/gumga-domain/src/test/java/io/gumga/domain/test/money/GumgaSharedModelTest.java

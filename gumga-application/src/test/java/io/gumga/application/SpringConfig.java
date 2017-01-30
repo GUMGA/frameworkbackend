@@ -1,5 +1,6 @@
 package io.gumga.application;
 
+import io.gumga.application.GumgaRepositoryFactoryBean;
 import io.gumga.application.service.GumgaFreemarkerTemplateEngineService;
 import io.gumga.application.service.JasyptGumgaPasswordService;
 import io.gumga.core.GumgaValues;
@@ -38,7 +39,7 @@ public class SpringConfig {
     @Bean
     @Autowired
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-        GumgaQueryParserProvider.defaultMap = GumgaQueryParserProvider.getOracleLikeMap();
+        GumgaQueryParserProvider.defaultMap = GumgaQueryParserProvider.getH2LikeMap();
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
@@ -47,7 +48,7 @@ public class SpringConfig {
         Properties properties = new Properties();
         properties.put("eclipselink.weaving", "false");
         properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.format_sql", "true");
+        properties.put("hibernate.format_sql", "false");
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);

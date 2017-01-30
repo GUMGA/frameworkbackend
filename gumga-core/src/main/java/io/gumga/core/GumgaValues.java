@@ -126,6 +126,6 @@ public interface GumgaValues {
      *
      * @return nome do software
      */
-    String getSoftwareName();
+    default String getSoftwareName() {return "";};
 
 }

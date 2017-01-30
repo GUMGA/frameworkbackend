@@ -5,6 +5,7 @@ import io.gumga.domain.GumgaModel;
 import io.gumga.domain.customfields.GumgaCustomField;
 import io.gumga.domain.customfields.GumgaCustomFieldValue;
 import io.gumga.domain.customfields.GumgaCustomizableModel;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class GumgaCustomEnhancerService {
             return;
         }
         GumgaCustomizableModel gumgaCustomizable = (GumgaCustomizableModel) object;
-        List<GumgaCustomField> customFields = customFieldService.findByClass(gumgaCustomizable.getClass());
+        List<GumgaCustomField> customFields = loadAllCustomFields(gumgaCustomizable.getClass());
         for (GumgaCustomField cf : customFields) {
             GumgaCustomFieldValue newValue = newValue(cf);
             gumgaCustomizable.getGumgaCustomFields().put(cf.getName(), newValue);
@@ -54,7 +55,7 @@ public class GumgaCustomEnhancerService {
             return;
         }
         GumgaCustomizableModel gumgaCustomizable = (GumgaCustomizableModel) gumgaModel;
-        List<GumgaCustomField> customFields = customFieldService.findByClass(gumgaModel.getClass());
+        List<GumgaCustomField> customFields = loadAllCustomFields(gumgaModel.getClass());
         for (GumgaCustomField cf : customFields) {
             Object value = customFieldValueService.getValue(cf, (GumgaModel) gumgaModel);
             if (value == null) {
@@ -62,6 +63,15 @@ public class GumgaCustomEnhancerService {
             }
             gumgaCustomizable.getGumgaCustomFields().put(cf.getName(), value);
         }
+    }
+
+    public List<GumgaCustomField> loadAllCustomFields(Class gumgaModelClass) {
+        List<GumgaCustomField> customFields=new ArrayList<>();
+        if (!gumgaModelClass.getSuperclass().equals(GumgaCustomizableModel.class)){
+            customFields.addAll(loadAllCustomFields(gumgaModelClass.getSuperclass()));
+        }
+        customFields.addAll(customFieldService.findByClass(gumgaModelClass));
+        return customFields;
     }
 
     /**

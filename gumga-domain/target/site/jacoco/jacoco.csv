@@ -35,7 +35,7 @@ gumga-domain,io.gumga.domain.domains,GumgaClassification,134,0,12,0,25,0,17,0,11
 gumga-domain,io.gumga.domain.domains,GumgaCNPJ,64,0,8,0,24,0,12,0,8,0
 gumga-domain,io.gumga.domain.domains,GumgaMoneyException,0,4,0,0,0,2,0,1,0,1
 gumga-domain,io.gumga.domain.domains,GumgaFile,178,0,14,0,48,0,21,0,14,0
-gumga-domain,io.gumga.domain.domains,GumgaAddress,353,0,24,0,88,0,36,0,24,0
+gumga-domain,io.gumga.domain.domains,GumgaAddress,458,0,30,0,112,0,45,0,30,0
 gumga-domain,io.gumga.domain.domains,GumgaBoolean,76,0,12,0,26,0,16,0,10,0
 gumga-domain,io.gumga.domain.domains,GumgaEMail,64,0,8,0,24,0,12,0,8,0
 gumga-domain,io.gumga.domain.domains,GumgaBarCode,64,0,8,0,24,0,12,0,8,0
@@ -67,7 +67,7 @@ gumga-domain,io.gumga.domain.domains.usertypes,GumgaCPFUserType,76,0,10,0,24,0,1
 gumga-domain,io.gumga.domain.domains.usertypes,GumgaIP4UserType,76,0,10,0,24,0,13,0,8,0
 gumga-domain,io.gumga.domain.domains.usertypes,GumgaOiUserType,50,0,4,0,13,0,7,0,5,0
 gumga-domain,io.gumga.domain.domains.usertypes,GumgaPhoneNumberUserType,76,0,10,0,24,0,13,0,8,0
-gumga-domain,io.gumga.domain.domains.usertypes,GumgaAddressUserType,412,0,32,0,77,0,39,0,15,0
+gumga-domain,io.gumga.domain.domains.usertypes,GumgaAddressUserType,524,0,38,0,94,0,45,0,15,0
 gumga-domain,io.gumga.domain,CurrencyFormatter,178,0,8,0,38,0,16,0,12,0
 gumga-domain,io.gumga.domain,GumgaUserData,65,0,0,0,20,0,11,0,11,0
 gumga-domain,io.gumga.domain,HibernateQueryObjectException,4,0,0,0,2,0,1,0,1,0

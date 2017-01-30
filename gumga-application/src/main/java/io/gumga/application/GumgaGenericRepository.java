@@ -31,6 +31,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,6 +58,13 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     @Override
     public SearchResult<T> search(QueryObject query) {
+        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getOracleLikeMap())){
+            System.out.println("-------------> ORACLE ADJUST ");
+            entityManager.createNativeQuery("alter session set nls_comp=linguistic").executeUpdate();
+            entityManager.createNativeQuery("alter session set nls_sort=latin_ai").executeUpdate();
+            entityManager.createNativeQuery("alter session set nls_date_format = 'YYYY-MM-DD'").executeUpdate();
+            entityManager.createNativeQuery("alter session set nls_timestamp_format = 'YYYY-MM-DD HH24:MI:SS'").executeUpdate();
+        }
         if (query.isAdvanced()) {
             return advancedSearch(query);
         }
