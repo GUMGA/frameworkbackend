@@ -67,7 +67,7 @@ gumga-domain,io.gumga.domain.domains.usertypes,GumgaIP4UserType,76,0,10,0,24,0,1
 gumga-domain,io.gumga.domain.domains.usertypes,GumgaCPFUserType,76,0,10,0,24,0,13,0,8,0
 gumga-domain,io.gumga.domain.domains.usertypes,GumgaPhoneNumberUserType,76,0,10,0,24,0,13,0,8,0
 gumga-domain,io.gumga.domain.domains.usertypes,GumgaOiUserType,50,0,4,0,13,0,7,0,5,0
-gumga-domain,io.gumga.domain.domains.usertypes,GumgaAddressUserType,500,0,38,0,94,0,45,0,15,0
+gumga-domain,io.gumga.domain.domains.usertypes,GumgaAddressUserType,524,0,38,0,94,0,45,0,15,0
 gumga-domain,io.gumga.domain,CurrencyFormatter,178,0,8,0,38,0,16,0,12,0
 gumga-domain,io.gumga.domain,GumgaUserData,65,0,0,0,20,0,11,0,11,0
 gumga-domain,io.gumga.domain,HibernateQueryObjectException,4,0,0,0,2,0,1,0,1,0

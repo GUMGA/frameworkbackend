@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.hibernate.type.DoubleType;
 
 /**
  * UserType que permite serializar o tipo dentro do Hibernate
@@ -19,13 +20,13 @@ public class GumgaAddressUserType implements CompositeUserType {
 
     @Override
     public String[] getPropertyNames() {
-        return new String[]{"zipCode", "premisseType", "premisse", "number", "information", "neighbourhood", "localization", "state", "country"};
+        return new String[]{"zipCode", "premisseType", "premisse", "number", "information", "neighbourhood", "localization", "state", "country","latitude","longitude","formalCode"};
     }
 
     @Override
     public Type[] getPropertyTypes() {
         return new Type[]{StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE,
-            StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE};
+            StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE,DoubleType.INSTANCE,DoubleType.INSTANCE,StringType.INSTANCE};
     }
 
     @Override
