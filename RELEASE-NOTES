@@ -31,7 +31,7 @@ Framework Backend
    private GumgaAddress endereco;
 
    **********************************************************************
-
+   - Rescrever o metodo getSoftwareName da classe GumgaValues e colocar como retorno a String passada no construtor do @Bean GumgaRequestFilter
 
 
 1.3.0
