@@ -1,8 +1,8 @@
 io/gumga/core/QueryObjectElement.class
 io/gumga/core/service/GumgaAbstractTemplateEngineAdapter.class
 io/gumga/core/exception/ForbiddenException.class
-gumga/framework/core/utils/NumericUtils.class
 io/gumga/core/SearchUtils.class
+gumga/framework/core/utils/NumericUtils.class
 io/gumga/annotations/GumgaSwagger.class
 io/gumga/core/SearchUtils$1.class
 io/gumga/core/exception/UnauthorizedException.class
@@ -18,8 +18,8 @@ io/gumga/core/exception/TemplateEngineException.class
 io/gumga/core/exception/ConflictException.class
 io/gumga/core/GumgaIdable.class
 io/gumga/core/service/GumgaPasswordService.class
-io/gumga/core/QueryToSave.class
 io/gumga/core/utils/ReflectionUtilsException.class
+io/gumga/core/QueryToSave.class
 io/gumga/core/exception/NotFoundException.class
 io/gumga/core/FacebookRegister.class
 io/gumga/core/TenancyPublicMarking.class

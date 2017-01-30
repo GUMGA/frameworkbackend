@@ -4,6 +4,6 @@ io/gumga/validation/validator/common/NotNullValidatorTest.class
 io/gumga/validation/validator/common/IsTrueValidatorTest.class
 io/gumga/validation/GumgaValidatorTest.class
 io/gumga/validation/validator/common/FieldWithoutErrorsValidatorTest.class
-io/gumga/validation/validator/string/NotNullOrEmptyValidatorTest.class
 io/gumga/validation/validator/collection/NotEmptyCollectionValidatorTest.class
+io/gumga/validation/validator/string/NotNullOrEmptyValidatorTest.class
 io/gumga/validation/Person.class
