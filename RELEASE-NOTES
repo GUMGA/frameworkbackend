@@ -7,8 +7,30 @@
 
 =======================================
 Framework Backend
-1.3.1
+1.4.0
   - Teste unitários multibanco
+  - Herança no Gumga Customizable Fields
+  - Inclusão no GumgaAddres dos atributos latitude,longitude e formalCode (para código do IBGE e similares internacionais)
+   **************** IMPORTANTE QUEBRA DE COMPILAÇÂO *********************
+@Columns(columns = {
+       @Column(name = "cod_postal"),
+       @Column(name = "tipo_logradouro"),
+       @Column(name = "logradouro"),
+       @Column(name = "numero"),
+       @Column(name = "informacao"),
+       @Column(name = "bairro"),
+       @Column(name = "localizacao"),
+       @Column(name = "estado"),
+       @Column(name = "cidade"),
+   //ADICIONAR                 ^ 
+       @Column(name = "latitude"),
+       @Column(name = "longitude"),
+       @Column(name = "formalCode")
+   //FIM ADICIONAR
+   })
+   private GumgaAddress endereco;
+
+   **********************************************************************
 
 
 

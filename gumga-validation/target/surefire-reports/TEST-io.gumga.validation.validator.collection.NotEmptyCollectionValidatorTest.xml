@@ -62,5 +62,5 @@
     <property name="sun.cpu.isalist" value=""/>
   </properties>
   <testcase classname="io.gumga.validation.validator.collection.NotEmptyCollectionValidatorTest" name="should_be_invalid_if_the_specified_field_is_empty" time="0"/>
-  <testcase classname="io.gumga.validation.validator.collection.NotEmptyCollectionValidatorTest" name="should_be_valid_if_the_specified_field_has_no_error" time="0.009"/>
+  <testcase classname="io.gumga.validation.validator.collection.NotEmptyCollectionValidatorTest" name="should_be_valid_if_the_specified_field_has_no_error" time="0.007"/>
 </testsuite>

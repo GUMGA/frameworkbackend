@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="io.gumga.application.nlp.GumgaNLPTest" time="0.18" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="io.gumga.application.nlp.GumgaNLPTest" time="0.158" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/home/munif/java/jdk1.8.0_65/jre/lib/amd64"/>
@@ -61,5 +61,5 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="io.gumga.application.nlp.GumgaNLPTest" name="testCceateObjectsFromDocument" time="0.177"/>
+  <testcase classname="io.gumga.application.nlp.GumgaNLPTest" name="testCceateObjectsFromDocument" time="0.154"/>
 </testsuite>

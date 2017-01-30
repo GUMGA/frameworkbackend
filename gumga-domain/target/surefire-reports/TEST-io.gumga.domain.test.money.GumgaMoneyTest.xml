@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="0" name="io.gumga.domain.test.money.GumgaMoneyTest" time="0.045" errors="0" skipped="1">
+<testsuite tests="7" failures="0" name="io.gumga.domain.test.money.GumgaMoneyTest" time="0.046" errors="0" skipped="1">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/home/munif/java/jdk1.8.0_65/jre/lib/amd64"/>
@@ -65,9 +65,9 @@
   <testcase classname="io.gumga.domain.test.money.GumgaMoneyTest" name="testFormatCurrency" time="0.004">
     <skipped/>
   </testcase>
-  <testcase classname="io.gumga.domain.test.money.GumgaMoneyTest" name="testNewGumgaMoney" time="0"/>
+  <testcase classname="io.gumga.domain.test.money.GumgaMoneyTest" name="testNewGumgaMoney" time="0.001"/>
   <testcase classname="io.gumga.domain.test.money.GumgaMoneyTest" name="testGumgaMoneyDivideBy" time="0"/>
   <testcase classname="io.gumga.domain.test.money.GumgaMoneyTest" name="testGumgaMoneyMultiply" time="0"/>
-  <testcase classname="io.gumga.domain.test.money.GumgaMoneyTest" name="testGumgaMoneyPercentageOf" time="0"/>
+  <testcase classname="io.gumga.domain.test.money.GumgaMoneyTest" name="testGumgaMoneyPercentageOf" time="0.001"/>
   <testcase classname="io.gumga.domain.test.money.GumgaMoneyTest" name="testGumgaMoneySubtract" time="0"/>
 </testsuite>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="0" name="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" time="0.126" errors="0" skipped="0">
+<testsuite tests="7" failures="0" name="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" time="0.115" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/home/munif/java/jdk1.8.0_65/jre/lib/amd64"/>
@@ -61,11 +61,11 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testQueryImplementationInterfa" time="0.051"/>
-  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetJPAQuerydsl" time="0.016"/>
-  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetResultList_2args" time="0.007"/>
-  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetResultList_3args" time="0.009"/>
-  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetResultList_4args" time="0.013"/>
-  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetResultListMap" time="0.013"/>
-  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetUniqueResult" time="0.007"/>
+  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testQueryImplementationInterfa" time="0.053"/>
+  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetJPAQuerydsl" time="0.014"/>
+  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetResultList_2args" time="0.008"/>
+  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetResultList_3args" time="0.005"/>
+  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetResultList_4args" time="0.012"/>
+  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetResultListMap" time="0.007"/>
+  <testcase classname="io.gumga.application.GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest" name="testGetUniqueResult" time="0.008"/>
 </testsuite>

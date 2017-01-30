@@ -63,13 +63,13 @@
   </properties>
   <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testRemoveAllUser" time="0.001"/>
   <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testAddUser" time="0"/>
-  <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testMaximumUsersSharesExceeded" time="0.001"/>
+  <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testMaximumUsersSharesExceeded" time="0.002"/>
   <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testMaximumOrganizationsSharesExceeded" time="0.004"/>
   <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testRemoveAllOganization" time="0"/>
   <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testRemoveOganizationWithTwoValues" time="0"/>
   <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testAddOganization" time="0"/>
   <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testAddUserWithTwoValues" time="0"/>
-  <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testRemoveUser" time="0.001"/>
+  <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testRemoveUser" time="0"/>
   <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testRemoveOganization" time="0"/>
   <testcase classname="io.gumga.domain.test.money.GumgaSharedModelTest" name="testAddOganizationWithTwoValues" time="0"/>
 </testsuite>

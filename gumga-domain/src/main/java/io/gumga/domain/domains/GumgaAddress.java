@@ -30,6 +30,9 @@ public class GumgaAddress extends GumgaDomain {
     private String localization;
     private String state;
     private String country;
+    private Double latitude;
+    private Double longitude;
+    private String formalCode;
 
     public GumgaAddress() {
 
@@ -46,10 +49,13 @@ public class GumgaAddress extends GumgaDomain {
             this.localization = other.localization;
             this.state = other.state;
             this.country = other.country;
+            this.latitude = other.latitude;
+            this.longitude = other.latitude;
+            this.formalCode = other.formalCode;
         }
     }
 
-    public GumgaAddress(String zipCode, String premisseType, String premisse, String number, String information, String neighbourhood, String localization, String state, String country) {
+    public GumgaAddress(String zipCode, String premisseType, String premisse, String number, String information, String neighbourhood, String localization, String state, String country, Double latitude, Double longitude, String formalCode) {
         this.zipCode = zipCode;
         this.premisseType = premisseType;
         this.premisse = premisse;
@@ -59,6 +65,9 @@ public class GumgaAddress extends GumgaDomain {
         this.localization = localization;
         this.state = state;
         this.country = country;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.formalCode = formalCode;
     }
 
     public String getZipCode() {
@@ -133,6 +142,30 @@ public class GumgaAddress extends GumgaDomain {
         this.country = country;
     }
 
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getFormalCode() {
+        return formalCode;
+    }
+
+    public void setFormalCode(String formalCode) {
+        this.formalCode = formalCode;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -145,6 +178,9 @@ public class GumgaAddress extends GumgaDomain {
         hash = 23 * hash + Objects.hashCode(this.localization);
         hash = 23 * hash + Objects.hashCode(this.state);
         hash = 23 * hash + Objects.hashCode(this.country);
+        hash = 23 * hash + Objects.hashCode(this.latitude);
+        hash = 23 * hash + Objects.hashCode(this.longitude);
+        hash = 23 * hash + Objects.hashCode(this.formalCode);
         return hash;
     }
 
@@ -184,12 +220,21 @@ public class GumgaAddress extends GumgaDomain {
         if (!Objects.equals(this.country, other.country)) {
             return false;
         }
+        if (!Objects.equals(this.latitude, other.latitude)) {
+            return false;
+        }
+        if (!Objects.equals(this.longitude, other.longitude)) {
+            return false;
+        }
+        if (!Objects.equals(this.formalCode, other.formalCode)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "GumgaAddress{" + "zipCode=" + zipCode + ", premisseType=" + premisseType + ", premisse=" + premisse + ", number=" + number + ", information=" + information + ", neighbourhood=" + neighbourhood + ", localization=" + localization + ", state=" + state + ", country=" + country + '}';
+        return "GumgaAddress{" + "zipCode=" + zipCode + ", premisseType=" + premisseType + ", premisse=" + premisse + ", number=" + number + ", information=" + information + ", neighbourhood=" + neighbourhood + ", localization=" + localization + ", state=" + state + ", country=" + country + ", latitude=" + latitude + ", longitude=" + longitude + ", formalCode=" + formalCode + '}';
     }
 
 }
