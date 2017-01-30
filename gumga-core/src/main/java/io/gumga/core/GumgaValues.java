@@ -122,4 +122,10 @@ public interface GumgaValues {
         return "gumga-security.properties";
     }
 
+    /**
+     *
+     * @return nome do software
+     */
+    String getSoftwareName();
+
 }

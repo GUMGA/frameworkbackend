@@ -17,11 +17,13 @@ public class UserAndPassword {
     private String password;
 
     private String newPassword;
+    private String softwareName;
 
     public UserAndPassword() {
         this.user = "empty";
         this.password = null;
         this.newPassword = null;
+        this.softwareName = null;
     }
 
     public String getUser() {
@@ -53,4 +55,11 @@ public class UserAndPassword {
         return "UserAndPassword{" + "user=" + user + ", password=" + password + '}';
     }
 
+    public String getSoftwareName() {
+        return softwareName;
+    }
+
+    public void setSoftwareName(String softwareName) {
+        this.softwareName = softwareName;
+    }
 }
