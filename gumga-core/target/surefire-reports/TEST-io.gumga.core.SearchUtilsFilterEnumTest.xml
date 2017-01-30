@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.gumga.core.SearchUtilsFilterEnumTest" time="0.051" tests="8" errors="0" skipped="0" failures="0">
+<testsuite name="io.gumga.core.SearchUtilsFilterEnumTest" time="0.059" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64"/>
@@ -61,12 +61,12 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="filtroInformado" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0.039"/>
+  <testcase name="filtroInformado" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0.051"/>
   <testcase name="ordenacaoEPaginacaoComStart" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0"/>
-  <testcase name="ordenacaoDesc" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0"/>
-  <testcase name="filtroEmBranco" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0"/>
+  <testcase name="ordenacaoDesc" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0.004"/>
+  <testcase name="filtroEmBranco" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0.002"/>
   <testcase name="ordenacaoAsc" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0.001"/>
   <testcase name="paginacaoComStartMaiorQueAQuantidadeDeFiltrados" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0.001"/>
-  <testcase name="paginacao" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0.001"/>
-  <testcase name="paginacaoComResultadoSemPaginaCheia" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0.009"/>
+  <testcase name="paginacao" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0"/>
+  <testcase name="paginacaoComResultadoSemPaginaCheia" classname="io.gumga.core.SearchUtilsFilterEnumTest" time="0"/>
 </testsuite>
