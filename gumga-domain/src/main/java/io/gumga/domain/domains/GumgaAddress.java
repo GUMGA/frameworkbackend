@@ -12,8 +12,11 @@ import java.util.Objects;
  * {@literal @}Column(name = "endereco_information"),<br>
  * {@literal @}Column(name = "endereco_neighbourhood"),<br>
  * {@literal @}Column(name = "endereco_localization"),<br>
- * {@literal @}Column(name = "endereco_state"),<br> {@literal @}Column(name =
- * "endereco_country")<br>
+ * {@literal @}Column(name = "endereco_state"),<br>
+ * {@literal @}Column(name ="endereco_country"),<br>
+ * {@literal @}Column(name ="endereco_latitude"),<br>
+ * {@literal @}Column(name ="endereco_longitude"),<br>
+ * {@literal @}Column(name ="endereco_formalCode")<br>
  * })<br>
  * private GumgaAddress endereco;<br>
  *
