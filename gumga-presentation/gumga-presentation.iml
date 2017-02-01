@@ -103,6 +103,7 @@
     <orderEntry type="library" name="Maven: org.cogroo.lang.pt_br:cogroo-res-pt_br:4.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.reflections:reflections:0.9.10" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:annotations:2.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4-1202-jdbc42" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:4.2.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:4.2.6.RELEASE" level="project" />
