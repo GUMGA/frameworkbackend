@@ -10,6 +10,7 @@ import io.gumga.core.FacebookRegister;
 import io.gumga.core.GumgaValues;
 import io.gumga.core.UserAndPassword;
 import io.gumga.domain.domains.GumgaImage;
+import io.gumga.security_v2.GumgaRequestFilterV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ class GumgaSecurityProxy {
     @ApiOperation(value = "create", notes = "Cria token através do usuário e senha informados.")
     @RequestMapping(value = "/create/{user}/{password}", method = RequestMethod.GET)
     public ResponseEntity create(@PathVariable String user, @PathVariable String password) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/create/" + user + "/" + password;
+        String url = gumgaValues.getGumgaSecurityUrl() + "/token/create/" + user + "/" + password + "/" + gumgaValues.getSoftwareName();
         Map resposta = restTemplate.getForObject(url, Map.class);
         GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA, 
         if (resposta.containsKey("response")) {
@@ -59,26 +60,28 @@ class GumgaSecurityProxy {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody UserAndPassword login) {
         String url = gumgaValues.getGumgaSecurityUrl() + "/token";
+        login.setSoftwareName(gumgaValues.getSoftwareName());
         Map resposta = restTemplate.postForObject(url, login, Map.class);
-        GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA, 
+        GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA  MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA,
         if (resposta.containsKey("response")) {
             response = GumgaSecurityCode.valueOf("" + resposta.get("response"));
         }
+
         return new ResponseEntity(resposta, response.httpStatus);
     }
 
     @ApiOperation(value = "facebook", notes = "Faz o login com facebook recebendo email e token.")
     @RequestMapping(value="/facebook", method = RequestMethod.GET)
     public Map loginWithFacebook(@RequestParam("email") String email,@RequestParam("token") String facebookToken) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/facebook?email="+email+"&token="+facebookToken;
+        String url = gumgaValues.getGumgaSecurityUrl() + "/token/facebook?email="+email+"&token="+facebookToken+"&softwareName="+gumgaValues.getSoftwareName();
         Map resposta = restTemplate.getForObject(url, Map.class);
         return resposta;
     }
 
-    @ApiOperation(value = "facebook", notes = "Faz o login com github recebendo email e token.")
+    @ApiOperation(value = "github", notes = "Faz o login com github recebendo email e token.")
     @RequestMapping(value="/github", method = RequestMethod.GET)
     public Map loginWithGitHub(@RequestParam("email") String email,@RequestParam("token") String gitToken) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/github?email="+email+"&token="+gitToken;
+        String url = gumgaValues.getGumgaSecurityUrl() + "/token/github?email="+email+"&token="+gitToken+"&softwareName="+gumgaValues.getSoftwareName();
         Map resposta = restTemplate.getForObject(url, Map.class);
         return resposta;
     }
@@ -203,8 +206,8 @@ class GumgaSecurityProxy {
 
     @ApiOperation(value = "google-plus", notes = "Faz o login com google-plus recebendo email e token.")
     @RequestMapping(value="/google-plus", method = RequestMethod.GET)
-    public Map loginWithGooglePlus(@RequestParam("email") String email,@RequestParam("token") String facebookToken) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/google-plus?email="+email+"&token="+facebookToken;
+    public Map loginWithGooglePlus(@RequestParam("email") String email,@RequestParam("token") String googlePlusToken) {
+        String url = gumgaValues.getGumgaSecurityUrl() + "/token/google-plus?email="+email+"&token="+googlePlusToken+"&softwareName="+gumgaValues.getSoftwareName();
         Map resposta = restTemplate.getForObject(url, Map.class);
         return resposta;
     }

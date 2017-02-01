@@ -123,5 +123,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: mysql:mysql-connector-java:5.1.33" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: oracle:ojdbc6:11.2.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4-1202-jdbc42" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-mongodb:1.10.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.14.3" level="project" />
   </component>
 </module>
