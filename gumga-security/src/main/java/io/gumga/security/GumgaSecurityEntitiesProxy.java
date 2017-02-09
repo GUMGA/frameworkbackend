@@ -94,7 +94,7 @@ public class GumgaSecurityEntitiesProxy {
         return ResponseEntity.noContent().build();
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/remove-user-organization/{idUser}/{oi}")
+    @RequestMapping(method = RequestMethod.GET, path = "/remove-user-organization/{idUser}/{oi:.+}")
     public ResponseEntity<Void> removerUserOfOrganization(@PathVariable Long idUser, @PathVariable String oi) {
         final HttpHeaders headers = new HttpHeaders();
         headers.set("gumgaToken", GumgaThreadScope.gumgaToken.get());

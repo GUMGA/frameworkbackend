@@ -40,10 +40,11 @@ public class GumgaSecurityEmbeddedProxy {
 
     @Transactional
     @ApiOperation(value = "getOrganization", notes = "Busca a organização pelo id informado")
-    @RequestMapping(value = "/organization/{organizationId}", method = RequestMethod.GET)
-    public Map getOrganization(@PathVariable("organizationId") Long id, @RequestHeader("gumgaToken") String token){
-        String url =  getSecurityUrl () + "/api/organization/" + id + "?gumgaToken="+token;
-        return this.restTemplate.getForObject(url, Map.class);
+    @RequestMapping(value = "/organization/{organizationId:.+}", method = RequestMethod.GET)
+    public Map getOrganization(@PathVariable("organizationId") String oi, @RequestHeader("gumgaToken") String token){
+        String url =  getSecurityUrl () + "/api/organization/fatbyoi/" + oi + "?gumgaToken="+token;
+        Map result = this.restTemplate.getForObject(url, Map.class);
+        return result;
     }
 
     @Transactional
