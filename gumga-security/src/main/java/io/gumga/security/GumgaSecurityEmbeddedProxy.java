@@ -1,8 +1,13 @@
 package io.gumga.security;
 
 import com.wordnik.swagger.annotations.ApiOperation;
+import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -56,11 +61,28 @@ public class GumgaSecurityEmbeddedProxy {
     }
 
     @Transactional
+    @ApiOperation(value = "saveRole", notes = "Salva o perfil no segurança")
+    @RequestMapping(value = "/save-role", method = RequestMethod.POST)
+    public Map saveRole(@RequestBody Map roleAndList, @RequestHeader("gumgaToken") String token){
+        String url =  getSecurityUrl () + "/api/role/saveall?gumgaToken="+token;
+        return restTemplate.postForObject(url, roleAndList, Map.class);
+    }
+
+    @Transactional
     @ApiOperation(value = "saveOrganization", notes = "Salva a organização no segurança")
     @RequestMapping(value = "/save-organization", method = RequestMethod.POST)
     public Map saveOrganization(@RequestBody Map organization, @RequestHeader("gumgaToken") String token){
         String url =  getSecurityUrl () + "/api/organization?gumgaToken="+token;
         return restTemplate.postForObject(url, organization, Map.class);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/get-instance")
+    public ResponseEntity<Map> getInstance() {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.set("gumgaToken", GumgaThreadScope.gumgaToken.get());
+        final String url = getSecurityUrl () + "/api/gumga-security/get-instance";
+        final Map result = this.restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(headers), Map.class).getBody();
+        return ResponseEntity.ok(result);
     }
 
 }
