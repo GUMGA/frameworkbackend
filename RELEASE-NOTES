@@ -7,6 +7,8 @@
 
 =======================================
 Framework Backend
+1.4.2
+  - Correção na classe PostgreSqlDataSourceProvider
 1.4.0
   - Teste unitários multibanco
   - Herança no Gumga Customizable Fields

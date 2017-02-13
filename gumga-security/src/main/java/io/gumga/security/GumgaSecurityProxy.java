@@ -136,8 +136,7 @@ class GumgaSecurityProxy {
         Set resposta = restTemplate.getForObject(url, Set.class);
         return resposta;
     }
-    
-    
+
     @Transactional
     @ApiOperation(value = "organizations", notes = "Lista as operações associadas ao software e token informados.")
     @RequestMapping(value = "/operationskeys/{software}/{token:.+}", method = RequestMethod.GET)

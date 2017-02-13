@@ -34,7 +34,7 @@ public class PostgreSqlDataSourceProvider implements DataSourceProvider {
     }
 
     public static synchronized void initDefaultMap() {
-        GumgaQueryParserProvider.defaultMap = GumgaQueryParserProvider.getOracleLikeMap();
+        GumgaQueryParserProvider.defaultMap = GumgaQueryParserProvider.getPostgreSqlLikeMap();
     }
 
 }

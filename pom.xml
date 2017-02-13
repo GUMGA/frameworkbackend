@@ -53,7 +53,7 @@
 
     <groupId>io.gumga</groupId>
     <artifactId>gumga-backend-all</artifactId>
-    <version>1.4.1</version>
+    <version>1.5.0</version>
     <packaging>pom</packaging>
     <!--<name>Gumga Framework Backend</name>-->
 
@@ -318,6 +318,10 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <keyname>CEE2A825</keyname>
+                                    <passphraseServerId>qwe123qwe</passphraseServerId>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
