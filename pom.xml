@@ -318,10 +318,6 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
-                                <!--<configuration>-->
-                                    <!--<keyname>CEE2A825</keyname>-->
-                                    <!--<passphraseServerId>qwe123qwe</passphraseServerId>-->
-                                <!--</configuration>-->
                             </execution>
                         </executions>
                     </plugin>
