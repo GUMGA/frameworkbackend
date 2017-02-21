@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+1.5.1 
+  - Aplicação do HOTFIX com upgrade do guava e cogroo. Adição do repositório SNAPSHOT do cogroo pois algumas empresas evoluiram o Guava 
+    
 1.4.2
   - Correção na classe PostgreSqlDataSourceProvider
 1.4.0
