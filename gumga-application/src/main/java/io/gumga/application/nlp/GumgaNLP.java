@@ -15,6 +15,8 @@ import java.util.*;
 
 @Component
 public class GumgaNLP {
+    
+    public static final String NO_GUMGANLP = "NO_GUMGANLP";
 
     public static final String NO_NAME = "_NO_NAME";
     private Analyzer cogroo;
@@ -24,6 +26,10 @@ public class GumgaNLP {
     @Autowired
     public GumgaNLP(GumgaValues gumgaValues) {
         String basePackage = gumgaValues.getGumgaNLPBasePackage();
+        if ("NO_GUMGANLP".equalsIgnoreCase(basePackage)){
+            System.out.println("GumgaNLP ------ DISABLED");
+            return;
+        }
         try {
             ComponentFactory factory = ComponentFactory.create(new Locale("pt", "BR"));
             cogroo = factory.createPipe();

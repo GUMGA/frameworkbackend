@@ -7,6 +7,16 @@
 
 =======================================
 Framework Backend
+
+1.5.2-SNAPSHOT
+  - Permite desligar o GumgaNLP colocando NO_GumgaNLP no gumgaValues.getGumgaNLPBasePackage() por exemplo:
+
+    @Override
+    public String getGumgaNLPBasePackage() {
+        return GumgaNLP.NO_GUMGANLP;
+    }
+
+
 1.5.1 
   - Aplicação do HOTFIX com upgrade do guava e cogroo. Adição do repositório SNAPSHOT do cogroo pois algumas empresas evoluiram o Guava 
 1.5.0
