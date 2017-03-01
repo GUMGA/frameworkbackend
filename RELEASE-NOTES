@@ -8,6 +8,13 @@
 =======================================
 Framework Backend
 
+
+1.5.3-SNAPSHOT
+
+    RestTemplate
+    LogicalDelete
+
+
 1.5.2-SNAPSHOT
   - Permite desligar o GumgaNLP colocando NO_GumgaNLP no gumgaValues.getGumgaNLPBasePackage() por exemplo:
 

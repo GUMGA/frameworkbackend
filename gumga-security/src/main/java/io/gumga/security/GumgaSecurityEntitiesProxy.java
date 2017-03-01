@@ -3,6 +3,7 @@ package io.gumga.security;
 import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
+import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -24,7 +25,7 @@ public class GumgaSecurityEntitiesProxy {
     private GumgaValues gumgaValues;
 
     public GumgaSecurityEntitiesProxy() {
-        this.restTemplate = new RestTemplate();
+        this.restTemplate = new GumgaJsonRestTemplate();
     }
 
     @ApiOperation(value = "getAllOrganizations", notes = "Buscar todas as organizações.")

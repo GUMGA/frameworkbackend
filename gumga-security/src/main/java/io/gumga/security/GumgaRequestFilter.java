@@ -10,6 +10,7 @@ import io.gumga.application.GumgaLogService;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
 import io.gumga.domain.GumgaLog;
+import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +54,13 @@ public class GumgaRequestFilter extends HandlerInterceptorAdapter {
 
     public GumgaRequestFilter() {
         softwareId = "SomeSoftware";
-        restTemplate = new RestTemplate();
+        restTemplate = new GumgaJsonRestTemplate();
         mapper = new ObjectMapper();
     }
 
     public GumgaRequestFilter(String si) {
         softwareId = si;
-        restTemplate = new RestTemplate();
+        restTemplate = new GumgaJsonRestTemplate();
         mapper = new ObjectMapper();
     }
 

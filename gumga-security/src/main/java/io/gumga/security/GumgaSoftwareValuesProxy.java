@@ -9,6 +9,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
 import io.gumga.presentation.RestResponse;
+import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,7 @@ public class GumgaSoftwareValuesProxy {
 
     private RestTemplate getRestTemplate() {
         if (restTemplate == null) {
-            restTemplate = new RestTemplate();
+            restTemplate = new GumgaJsonRestTemplate();
         }
         return restTemplate;
     }
