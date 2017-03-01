@@ -39,7 +39,6 @@ public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateE
     private String templateFolder;
     private String defaultEncoding;
 
-
     public GumgaFreemarkerTemplateEngineService() {
         //É necessario deixar um construtor default
     }
@@ -63,6 +62,9 @@ public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateE
     @Override
     public void parse(Map<String, Object> values, String template, Writer out) throws TemplateEngineException {
         try {
+            if (cfg == null) {
+                initStatic();
+            }
             Template t = cfg.getTemplate(template);
             t.process(values, out);
         } catch (IOException | TemplateException ex) {
@@ -100,11 +102,10 @@ public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateE
                 throw new TemplateEngineException("An error occurred while initializating the template engine", ex);
             } catch (URISyntaxException e) {
                 throw new TemplateEngineException("An error occurred while initializating the template engine", e);
+            } catch (java.nio.file.FileSystemNotFoundException ex) {
+                System.out.println("------->Templates não encontrados." + ex);
             }
-            catch (java.nio.file.FileSystemNotFoundException ex){
-                System.out.println("------->Templates não encontrados."+ex);
-            }
-            
+
         }
     }
 

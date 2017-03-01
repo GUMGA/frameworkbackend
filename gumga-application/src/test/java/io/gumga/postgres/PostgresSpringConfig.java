@@ -1,15 +1,8 @@
 package io.gumga.postgres;
 
-import io.gumga.mysql.*;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.gumga.application.*;
-import io.gumga.application.service.GumgaFreemarkerTemplateEngineService;
-import io.gumga.application.service.JasyptGumgaPasswordService;
-import io.gumga.core.GumgaValues;
-import io.gumga.core.exception.TemplateEngineException;
-import io.gumga.core.service.GumgaAbstractTemplateEngineAdapter;
-import io.gumga.core.service.GumgaPasswordService;
 import io.gumga.domain.CriterionParser;
 import io.gumga.domain.GumgaQueryParserProvider;
 import java.util.Map;
@@ -18,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -28,9 +20,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
-import org.springframework.context.annotation.Profile;
-
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
 import org.springframework.orm.jpa.vendor.Database;
 
 @Configuration
