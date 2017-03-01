@@ -3,6 +3,7 @@ package io.gumga.security;
 import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
+import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +28,7 @@ public class GumgaSecurityEmbeddedProxy {
     private GumgaValues gumgaValues;
 
     public GumgaSecurityEmbeddedProxy() {
-        restTemplate = new RestTemplate();
+        restTemplate = new GumgaJsonRestTemplate();
     }
 
     public String getSecurityUrl(){
