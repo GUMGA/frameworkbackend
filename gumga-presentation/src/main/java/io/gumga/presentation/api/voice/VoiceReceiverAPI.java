@@ -9,6 +9,7 @@ import io.gumga.application.nlp.GumgaNLP;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static gumga.framework.core.utils.NumericUtils.unsignedToBytes;
+import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -72,7 +73,7 @@ public class VoiceReceiverAPI {
             byte[] decode = Base64.getDecoder().decode(som.substring(0, 512));
             int sampleRate = unsignedToBytes(decode[27]) * 256 * 256 * 256 + unsignedToBytes(decode[26]) * 256 * 256 + unsignedToBytes(decode[25]) * 256 + unsignedToBytes(decode[24]) * 1;
 
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = new GumgaJsonRestTemplate();
             Map<String, Object> config = new HashMap<>();
 
             config.put("encoding", "LINEAR16");

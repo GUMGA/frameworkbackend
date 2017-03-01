@@ -5,6 +5,7 @@ import io.gumga.application.GumgaLogService;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
 import io.gumga.domain.GumgaLog;
+import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import io.gumga.security.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,13 +47,13 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
     public GumgaRequestFilterV2() {
         softwareId = "SomeSoftware";
-        restTemplate = new RestTemplate();
+        restTemplate = new GumgaJsonRestTemplate();
         mapper = new ObjectMapper();
     }
 
     public GumgaRequestFilterV2(String si) {
         softwareId = si;
-        restTemplate = new RestTemplate();
+        restTemplate = new GumgaJsonRestTemplate();
         mapper = new ObjectMapper();
     }
 

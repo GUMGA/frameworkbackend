@@ -21,7 +21,7 @@ public class GumgaThirdPartProxy {
     private final RestTemplate restTemplate;
 
     public GumgaThirdPartProxy() {
-        restTemplate = new RestTemplate();
+        restTemplate = new GumgaJsonRestTemplate();
     }
 
     @ApiOperation(value = "searchCep",notes = "Pesquisa informações do cep informado.")
