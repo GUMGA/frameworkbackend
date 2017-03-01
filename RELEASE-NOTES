@@ -9,13 +9,13 @@
 Framework Backend
 
 
-1.5.3-SNAPSHOT
+1.5.3
 
-    RestTemplate
-    LogicalDelete
+    RestTemplate -> GumgaJsonRestTemplate
+    LogicalDelete -> TestCases
 
 
-1.5.2-SNAPSHOT
+1.5.2
   - Permite desligar o GumgaNLP colocando NO_GumgaNLP no gumgaValues.getGumgaNLPBasePackage() por exemplo:
 
     @Override
