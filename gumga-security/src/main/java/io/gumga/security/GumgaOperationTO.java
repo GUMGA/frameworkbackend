@@ -20,7 +20,14 @@ public class GumgaOperationTO implements Serializable {
 
     public BigDecimal thousandValue;
 
-    GumgaOperationTO(GumgaOperationKey gok) {
+    public GumgaOperationTO(String key, boolean basic) {
+        this.key = key;
+        this.description = key;
+        this.name = key;
+        this.basicOperation = basic;
+    }
+
+    public GumgaOperationTO(GumgaOperationKey gok) {
         key = gok.value();
         description = gok.value();
         name = gok.value();
