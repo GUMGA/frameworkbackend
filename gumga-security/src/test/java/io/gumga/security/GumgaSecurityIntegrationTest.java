@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -24,13 +25,13 @@ public class GumgaSecurityIntegrationTest {
 
     @Test
     public void testVerifyAndCreateOperations() {
-        gumgaSecurityIntegration.verifyAndCreateOperations(new GumgaOperationTO[]{
+        ResponseEntity responseEntity = gumgaSecurityIntegration.verifyAndCreateOperations(new GumgaOperationTO[]{
             new GumgaOperationTO("RESET_INSTANCE", false),
             new GumgaOperationTO("VERIFY_INSTANCE", true),
             new GumgaOperationTO("RESET_ORGANIZATION", false),
             new GumgaOperationTO("VERIFY_ORGANIZATION", false)
         });
-        assertTrue(true);
+        assertEquals(responseEntity.getStatusCode().value(), 200);
     }
 
 }
