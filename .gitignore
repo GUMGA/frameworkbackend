@@ -33,8 +33,11 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-
+**/gumga-application.iml
 .idea/
+rebel.xml
+nano.save
+nb_jr_remoting.cfg
 /gumga-presentation/target/
 /gumga-application/target/
 /gumga-core/target/
