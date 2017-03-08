@@ -53,7 +53,7 @@
 
     <groupId>io.gumga</groupId>
     <artifactId>gumga-backend-all</artifactId>
-    <version>1.5.3</version>
+    <version>1.5.4</version>
     <packaging>pom</packaging>
     <!--<name>Gumga Framework Backend</name>-->
 

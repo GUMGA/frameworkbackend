@@ -16,5 +16,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface GumgaOperationKey {
 
     public String value();
+    
+    public boolean basic() default false;
 
 }
