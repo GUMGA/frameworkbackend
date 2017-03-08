@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Properties;
 
 @Component
-public class GumgaValuesForTest implements GumgaValues{
+public class GumgaValuesForTest implements GumgaValues {
 
     public static final String DEFAULT_SECURITY_URL = "http://gumga.com.br";
 
