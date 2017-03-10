@@ -158,6 +158,15 @@ class GumgaSecurityProxy {
         return keys;
     }
 
+    @ApiOperation(value = "lostPassword", notes = "Permite recuperar a senha, enviando um e-mail para o login informado redirecionando o usuário para uma url.")
+    @RequestMapping(method = RequestMethod.GET, value = "/lost-my-password")
+    public Map lostMyPassword(@RequestParam("email") String login, @RequestParam("url") String urlCallback) {
+        String url = gumgaValues.getGumgaSecurityUrl() + "/token/lost-my-password";
+        url = url + "?email="+login+"&url="+urlCallback;
+        Map resposta = restTemplate.getForObject(url, Map.class);
+        return resposta;
+    }
+
     @ApiOperation(value = "lostPassword", notes = "Permite recuperar a senha, enviando um e-mail para o login informado.")
     @RequestMapping(method = RequestMethod.GET, value = "/lostpassword/{login:.+}")
     public Map lostPassword(@PathVariable String login) {
