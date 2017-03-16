@@ -8,6 +8,9 @@
 =======================================
 Framework Backend
 
+1.5.5
+    - Criado um DTO para criar instancia no security
+    - Criado um proxy para api/security-saas
 
 1.5.3
 

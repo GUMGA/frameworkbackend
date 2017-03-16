@@ -16,6 +16,7 @@ import io.gumga.core.FacebookRegister;
 import io.gumga.core.GumgaValues;
 import io.gumga.core.UserAndPassword;
 import io.gumga.domain.domains.GumgaImage;
+import io.gumga.domain.saas.GumgaSaaS;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import io.gumga.security_v2.GumgaRequestFilterV2;
 import org.springframework.beans.factory.annotation.Autowired;
