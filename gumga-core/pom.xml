@@ -5,4 +5,29 @@
     <parent>
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
+
         <version>1.5.6-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>gumga-core</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
+
+        
+
