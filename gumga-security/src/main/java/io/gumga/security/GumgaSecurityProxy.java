@@ -44,7 +44,6 @@ class GumgaSecurityProxy {
         restTemplate = new GumgaJsonRestTemplate();
     }
 
-
     @ApiOperation(value = "create", notes = "Cria token através do usuário e senha informados.")
     @RequestMapping(value = "/create/{user}/{password}", method = RequestMethod.GET)
     public ResponseEntity create(@PathVariable String user, @PathVariable String password) {
@@ -69,6 +68,20 @@ class GumgaSecurityProxy {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody UserAndPassword login) {
         String url = gumgaValues.getGumgaSecurityUrl() + "/token";
+        login.setSoftwareName(gumgaValues.getSoftwareName());
+        Map resposta = restTemplate.postForObject(url, login, Map.class);
+        GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA  MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA,
+        if (resposta.containsKey("response")) {
+            response = GumgaSecurityCode.valueOf("" + resposta.get("response"));
+        }
+
+        return new ResponseEntity(resposta, response.httpStatus);
+    }
+
+    @ApiOperation(value = "login", notes = "Faz o login recebendo o objeto UserAndPassword.")
+    @RequestMapping(method = RequestMethod.POST, value = "app")
+    public ResponseEntity loginApp(@RequestBody UserAndPassword login) {
+        String url = gumgaValues.getGumgaSecurityUrl() + "/token/app";
         login.setSoftwareName(gumgaValues.getSoftwareName());
         Map resposta = restTemplate.postForObject(url, login, Map.class);
         GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA  MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA,
