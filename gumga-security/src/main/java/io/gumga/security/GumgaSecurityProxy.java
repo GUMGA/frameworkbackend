@@ -16,6 +16,7 @@ import io.gumga.core.FacebookRegister;
 import io.gumga.core.GumgaValues;
 import io.gumga.core.UserAndPassword;
 import io.gumga.domain.domains.GumgaImage;
+import io.gumga.domain.saas.GumgaSaaS;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import io.gumga.security_v2.GumgaRequestFilterV2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,6 +170,15 @@ class GumgaSecurityProxy {
             keys.add(r.get("key"));
         }
         return keys;
+    }
+
+    @ApiOperation(value = "lostPassword", notes = "Permite recuperar a senha, enviando um e-mail para o login informado redirecionando o usuário para uma url.")
+    @RequestMapping(method = RequestMethod.GET, value = "/lost-my-password")
+    public Map lostMyPassword(@RequestParam("email") String login, @RequestParam("url") String urlCallback) {
+        String url = gumgaValues.getGumgaSecurityUrl() + "/token/lost-my-password";
+        url = url + "?email="+login+"&url="+urlCallback;
+        Map resposta = restTemplate.getForObject(url, Map.class);
+        return resposta;
     }
 
     @ApiOperation(value = "lostPassword", notes = "Permite recuperar a senha, enviando um e-mail para o login informado.")

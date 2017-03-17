@@ -4,7 +4,7 @@
     <parent>
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
-        <version>1.5.5</version>
+        <version>1.5.6</version>
     </parent>
     <artifactId>gumga-validation</artifactId>
     <dependencies>
