@@ -14,14 +14,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SpringConfig.class})
-public class GumgaFinderTest {
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(classes = {SpringConfig.class})
+public class GumgaFinderTest extends AbstractTest {
 
     public GumgaFinderTest() {
         GumgaThreadScope.organizationCode.set("1.");
@@ -37,78 +39,82 @@ public class GumgaFinderTest {
     }
 
     @Test
-    @Transactional
+//    @Transactional
     public void criaEmpresaePesquisaViaQueryObject() {
-        GumgaThreadScope.organizationCode.set("1.");
-        Company empresa = new Company();
-        empresa.setName("Gumga");
-        service.save(empresa);
-        empresa = new Company();
-        empresa.setName("Agmug");
-        service.save(empresa);
-        GumgaThreadScope.organizationCode.set("2.");
-        empresa = new Company();
-        empresa.setName("Other");
-        service.save(empresa);
-        GumgaThreadScope.organizationCode.set("1.");
+        setUpDatabase(Arrays.asList("criaEmpresaePesquisaViaQueryObject.xml"));
+//        GumgaThreadScope.organizationCode.set("1.");
+//        Company empresa = new Company();
+//        empresa.setName("Gumga");
+//        service.save(empresa);
+//        empresa = new Company();
+//        empresa.setName("Agmug");
+//        service.save(empresa);
+//        GumgaThreadScope.organizationCode.set("2.");
+//        empresa = new Company();
+//        empresa.setName("Other");
+//        service.save(empresa);
+//        GumgaThreadScope.organizationCode.set("1.");
         QueryObject query = new QueryObject();
         query.setQ("Gumga");
         query.setSearchFields("name");
         query.setSortField("name");
+
         List<Company> result = service.pesquisa(query).getValues();
         assert (!result.isEmpty());
     }
 
     @Test
-    @Transactional
     public void verificaProcuraEmTodos() {
-        GumgaThreadScope.organizationCode.set("1.");
-        Company empresa = new Company();
-        empresa.setName("Gumga");
-        service.save(empresa);
-        empresa = new Company();
-        empresa.setName("Agmug");
-        service.save(empresa);
-        GumgaThreadScope.organizationCode.set("2.");
-        empresa = new Company();
-        empresa.setName("Other");
-        service.save(empresa);
-        GumgaThreadScope.organizationCode.set("1.");
+//        GumgaThreadScope.organizationCode.set("1.");
+//        Company empresa = new Company();
+//        empresa.setName("Gumga");
+//        service.save(empresa);
+//        empresa = new Company();
+//        empresa.setName("Agmug");
+//        service.save(empresa);
+//        GumgaThreadScope.organizationCode.set("2.");
+//        empresa = new Company();
+//        empresa.setName("Other");
+//        service.save(empresa);
+//        GumgaThreadScope.organizationCode.set("1.");
+        setUpDatabase(Arrays.asList("verificaProcuraEmTodos.xml"));
         QueryObject query = new QueryObject();
+
         SearchResult<Company> pesquisa = service.pesquisa(query);
         Assert.assertEquals(2l, pesquisa.getCount().longValue());
     }
 
     @Test
-    @Transactional
     public void criaEmpresaePesquisaAvancadaViaQueryObject() {
-        GumgaThreadScope.organizationCode.set("1.");
-        Company empresa = new Company();
-        empresa.setName("Gumga");
-        service.save(empresa);
-        empresa = new Company();
-        empresa.setName("Agmug");
-        service.save(empresa);
-        GumgaThreadScope.organizationCode.set("2.");
-        empresa = new Company();
-        empresa.setName("Other");
-        service.save(empresa);
-        GumgaThreadScope.organizationCode.set("1.");
+        setUpDatabase(Arrays.asList("criaEmpresaPesquisaAvancadaViaQueryObject.xml"));
+//        GumgaThreadScope.organizationCode.set("1.");
+//        Company empresa = new Company();
+//        empresa.setName("Gumga");
+//        service.save(empresa);
+//        empresa = new Company();
+//        empresa.setName("Agmug");
+//        service.save(empresa);
+//        GumgaThreadScope.organizationCode.set("2.");
+//        empresa = new Company();
+//        empresa.setName("Other");
+//        service.save(empresa);
+//        GumgaThreadScope.organizationCode.set("1.");
         QueryObject query = new QueryObject();
         query.setAq("obj.name like '%'");
+
         SearchResult<Company> pesquisa = service.pesquisa(query);
         Assert.assertEquals(2l, pesquisa.getCount().longValue());
     }
 
     @Test
-    @Transactional
     public void criaEmpresaePesquisaAvancadaOrdenadaViaQueryObject() {
-        Company empresa = new Company();
-        empresa.setName("Gumga");
-        service.save(empresa);
-        empresa = new Company();
-        empresa.setName("Agmug");
-        service.save(empresa);
+        setUpDatabase(Arrays.asList("criaEmpresaePesquisaAvancadaOrdenadaViaQueryObject.xml"));
+//        Company empresa = new Company();
+//        empresa.setName("Gumga");
+//        service.save(empresa);
+//        empresa = new Company();
+//        empresa.setName("Agmug");
+//        service.save(empresa);
         QueryObject query = new QueryObject();
         query.setSortField("name");
         query.setAq("obj.name like '%'");

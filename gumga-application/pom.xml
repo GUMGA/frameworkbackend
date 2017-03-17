@@ -168,6 +168,17 @@
             <artifactId>javax.interceptor-api</artifactId> 
             <version>1.2</version> 
         </dependency>
+
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.github.springtestdbunit</groupId>
+            <artifactId>spring-test-dbunit</artifactId>
+            <type>jar</type>
+        </dependency>
         
     </dependencies>
 
