@@ -1,5 +1,6 @@
 package io.gumga.logicaldelete;
 
+import io.gumga.application.SpringConfig;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.mysql.MysqlSpringConfig;
@@ -20,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {MysqlSpringConfig.class})
+@ContextConfiguration(classes = {SpringConfig.class})
 public class LogicalDeleteTest {
 
     @Autowired
