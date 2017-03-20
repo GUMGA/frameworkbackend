@@ -1,5 +1,6 @@
 package io.gumga.application;
 
+import io.gumga.testmodel.CompanyRepository;
 import io.gumga.testmodel.Company;
 import io.gumga.testmodel.CompanyService;
 import io.gumga.application.SpringConfig;
@@ -30,6 +31,10 @@ public class GumgaFinderTest {
 
     @Autowired
     private CompanyService service;
+
+    @Autowired
+    private CompanyRepository companyRespository;
+
 
     @Test
     public void injectionSanityCheck() {
@@ -62,6 +67,8 @@ public class GumgaFinderTest {
     @Test
     @Transactional
     public void verificaProcuraEmTodos() {
+companyRespository.deleteAll();
+
         GumgaThreadScope.organizationCode.set("1.");
         Company empresa = new Company();
         empresa.setName("Gumga");
@@ -82,7 +89,8 @@ public class GumgaFinderTest {
     @Test
     @Transactional
     public void criaEmpresaePesquisaAvancadaViaQueryObject() {
-        GumgaThreadScope.organizationCode.set("1.");
+      companyRespository.deleteAll(); 
+       GumgaThreadScope.organizationCode.set("1.");
         Company empresa = new Company();
         empresa.setName("Gumga");
         service.save(empresa);

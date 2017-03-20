@@ -28,7 +28,7 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 @Configuration
 @ComponentScan({"io.gumga"})
 @EnableJpaRepositories(repositoryFactoryBeanClass = GumgaRepositoryFactoryBean.class, basePackages = {"io.gumga"})
-@EnableTransactionManagement(proxyTargetClass = true)
+@EnableTransactionManagement//(proxyTargetClass = true)
 public class SpringConfig {
 
     @Bean

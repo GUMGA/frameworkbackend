@@ -17,11 +17,11 @@ public class Lamp extends GumgaModel<Long> {
 
     private String description;
 
-    private GumgaBoolean on;
+    private GumgaBoolean ison;
 
-    public Lamp(String description, GumgaBoolean on) {
+    public Lamp(String description, GumgaBoolean ison) {
         this.description = description;
-        this.on = on;
+        this.ison = ison;
     }
 
     public String getDescription() {
@@ -32,12 +32,12 @@ public class Lamp extends GumgaModel<Long> {
         this.description = description;
     }
 
-    public GumgaBoolean getOn() {
-        return on;
+    public GumgaBoolean getIson() {
+        return ison;
     }
 
-    public void setOn(GumgaBoolean on) {
-        this.on = on;
+    public void setIson(GumgaBoolean ison) {
+        this.ison = ison;
     }
 
     public Integer getVersion() {
@@ -50,7 +50,7 @@ public class Lamp extends GumgaModel<Long> {
 
     @Override
     public String toString() {
-        return "Lamp{" + "version=" + version + ", description=" + description + ", on=" + on + '}';
+        return "Lamp{" + "version=" + version + ", description=" + description + ", on=" + ison + '}';
     }
 
 }
