@@ -3,6 +3,7 @@ package io.gumga.presentation;
 
 import io.gumga.application.GumgaLoggerService;
 import io.gumga.core.exception.*;
+import io.gumga.presentation.exceptionhandler.GumgaRunTimeException;
 import io.gumga.presentation.validation.ErrorResource;
 import io.gumga.presentation.validation.FieldErrorResource;
 import io.gumga.validation.exception.InvalidEntityException;
@@ -25,11 +26,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,10 +183,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody
-    ErrorResource exception(HttpServletRequest req, Exception ex) {
+    public @ResponseBody ErrorResource exception(HttpServletRequest req, Exception ex) {
         gumgaLoggerService.logToFile(ex.toString(), 4);
         logger.error("Error on operation", ex);
+        return new ErrorResource(ex.getClass().getSimpleName(), "Error on operation", ex.getMessage());
+    }
+
+    @ExceptionHandler(GumgaRunTimeException.class)
+    @ResponseBody
+    public ErrorResource gumgaRunTimeException(HttpServletResponse response, GumgaRunTimeException ex) {
+        gumgaLoggerService.logToFile(ex.toString(), 4);
+        logger.error("Error on operation", ex);
+        response.setStatus(ex.getHttpStatus().value());
         return new ErrorResource(ex.getClass().getSimpleName(), "Error on operation", ex.getMessage());
     }
 
@@ -224,4 +235,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             error.addFieldError(fieldErrorResource);
         }
     }
+
 }
