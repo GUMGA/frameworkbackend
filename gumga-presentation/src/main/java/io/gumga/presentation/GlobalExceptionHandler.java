@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,20 +42,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     private GumgaLoggerService gumgaLoggerService;
 
-    @ExceptionHandler(InvalidEntityException.class)
+    @ExceptionHandler({InvalidEntityException.class})
     public ResponseEntity<Object> handleCustomException(InvalidEntityException ex, WebRequest request) {
         ErrorResource error = new ErrorResource("InvalidRequest", ex.getMessage());
         List<FieldError> fieldErrors = ex.getErrors().getFieldErrors();
 
-        for (FieldError fieldError : fieldErrors) {
-            FieldErrorResource fieldErrorResource = new FieldErrorResource();
-            fieldErrorResource.setResource(fieldError.getObjectName());
-            fieldErrorResource.setField(fieldError.getField());
-            fieldErrorResource.setCode(fieldError.getCode());
-            fieldErrorResource.setMessage(fieldError.getDefaultMessage());
-
-            error.addFieldError(fieldErrorResource);
-        }
+        addFieldErro(error, fieldErrors);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -199,7 +192,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
             request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
         }
+        if(body instanceof ErrorResource) {
+            return new ResponseEntity<>(body, headers, status);
+        }
         return new ResponseEntity<>(new ErrorResource("BAD Request", ex.getClass().getSimpleName(), ex.getMessage()), headers, status);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        ErrorResource error = new ErrorResource("InvalidRequest", ex.getMessage());
+        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+
+        addFieldErro(error, fieldErrors);
+
+        HttpHeaders newheaders = new HttpHeaders();
+        newheaders.setContentType(MediaType.APPLICATION_JSON);
+        gumgaLoggerService.logToFile(ex.toString(), 4);
+        logger.info("InvalidEntity", ex);
+        return handleExceptionInternal(ex, error, newheaders, HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
+
+    private void addFieldErro(ErrorResource error, List<FieldError> fieldErrors) {
+        for (FieldError fieldError : fieldErrors) {
+            FieldErrorResource fieldErrorResource = new FieldErrorResource();
+            fieldErrorResource.setResource(fieldError.getObjectName());
+            fieldErrorResource.setField(fieldError.getField());
+            fieldErrorResource.setCode(fieldError.getCode());
+            fieldErrorResource.setMessage(fieldError.getDefaultMessage());
+
+            error.addFieldError(fieldErrorResource);
+        }
+    }
 }
