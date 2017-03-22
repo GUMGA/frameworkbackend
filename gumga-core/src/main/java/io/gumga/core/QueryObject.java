@@ -44,7 +44,7 @@ public class QueryObject {
     /**
      * Atributos para pesquisa simples
      */
-        private String[] searchFields;
+    private String[] searchFields;
 
     /**
      * Indica pesquisa fonética ou não
@@ -55,6 +55,11 @@ public class QueryObject {
      * Apenas conta, sem trazer os resultados
      */
     private boolean countOnly = false;
+
+    /**
+     * Acao a ser executada na api queryaction
+     */
+    private String action;
 
     public boolean isCountOnly() {
         return countOnly;
@@ -158,9 +163,17 @@ public class QueryObject {
         return !SIMPLE.equals(aq);
     }
 
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
     @Override
     public String toString() {
-        return "QueryObject{ phonetic=" + phonetic + ", aq=" + aq + ", q=" + q + ", start=" + start + ", pageSize=" + pageSize + ", sortField=" + sortField + ", sortDir=" + sortDir + ", searchFields=" + Arrays.asList(searchFields == null ? Collections.EMPTY_LIST : searchFields) + '}';
+        return "QueryObject{ phonetic=" + phonetic + ", aq=" + aq + ", q=" + q + ", start=" + start + ", pageSize=" + pageSize + ", sortField=" + sortField + ", sortDir=" + sortDir + ", action=" + action + ", searchFields=" + Arrays.asList(searchFields == null ? Collections.EMPTY_LIST : searchFields) + '}';
     }
 
 }
