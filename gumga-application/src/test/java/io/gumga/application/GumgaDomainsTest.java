@@ -12,10 +12,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringConfig.class})
-@Ignore
 public class GumgaDomainsTest {
 
     @Autowired
@@ -32,13 +32,10 @@ public class GumgaDomainsTest {
         l=lampService.save(l);
         assertEquals(0, l.getVersion().intValue());
         l=lampService.view(l.getId());
+        l.setIson(new GumgaBoolean(true));
         l=lampService.save(l);
         assertEquals(0, l.getVersion().intValue());
-
-
-
-
-        
     }
+    
 
 }

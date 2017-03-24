@@ -19,6 +19,11 @@ public class Lamp extends GumgaModel<Long> {
 
     private GumgaBoolean ison;
 
+    public Lamp() {
+    }
+    
+    
+
     public Lamp(String description, GumgaBoolean ison) {
         this.description = description;
         this.ison = ison;
