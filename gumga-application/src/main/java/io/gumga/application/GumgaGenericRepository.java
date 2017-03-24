@@ -6,6 +6,7 @@ import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.core.TenancyPublicMarking;
 import io.gumga.domain.*;
+import io.gumga.domain.logicaldelete.GumgaLDModel;
 import io.gumga.domain.repository.GumgaCrudRepository;
 import io.gumga.domain.repository.GumgaMultitenancyUtil;
 import io.gumga.domain.shared.GumgaSharedModel;
@@ -42,20 +43,21 @@ import static org.hibernate.criterion.Order.desc;
 import static org.hibernate.criterion.Projections.rowCount;
 import static org.hibernate.criterion.Restrictions.like;
 import static org.hibernate.criterion.Restrictions.or;
+import static org.hibernate.criterion.Restrictions.and;
 
 @NoRepositoryBean
 public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements GumgaCrudRepository<T, ID> {
-
+    
     protected final JpaEntityInformation<T, ID> entityInformation;
     protected final EntityManager entityManager;
     private static final Logger log = LoggerFactory.getLogger(GumgaGenericRepository.class);
-
+    
     public GumgaGenericRepository(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
         this.entityManager = entityManager;
         this.entityInformation = entityInformation;
     }
-
+    
     @Override
     public SearchResult<T> search(QueryObject query) {
         if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getOracleLikeMap())) {
@@ -68,18 +70,18 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         if (query.isAdvanced()) {
             return advancedSearch(query);
         }
-
+        
         Long count = count(query);
         List<T> data = query.isCountOnly() ? Collections.emptyList() : getOrdered(query);
-
+        
         return new SearchResult<>(query, count, data);
     }
-
+    
     private List<T> getOrdered(QueryObject query) {
         Pesquisa<T> pesquisa = getPesquisa(query);
         String sortField = query.getSortField();
         String sortType = query.getSortDir();
-
+        
         if (!sortField.isEmpty()) {
             createAliasIfNecessary(pesquisa, sortField);
             pesquisa.addOrder("asc".equals(sortType) ? asc(sortField).ignoreCase() : desc(sortField).ignoreCase());
@@ -88,20 +90,20 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
         return pesquisa.setFirstResult(query.getStart()).setMaxResults(query.getPageSize()).list();
     }
-
+    
     private Long count(QueryObject query) {
         Object uniqueResult = getPesquisa(query).setProjection(rowCount()).uniqueResult();
         return uniqueResult == null ? 0L : ((Number) uniqueResult).longValue();
     }
-
+    
     private Pesquisa<T> getPesquisa(QueryObject query) {
         if (query.getSearchFields() != null && query.getSearchFields().length == 0) {
             throw new IllegalArgumentException("Para realizar a search deve se informar pelo menos um campo a ser pesquisado.");
         }
-
+        
         Criterion[] fieldsCriterions = new HibernateQueryObject(query).getCriterions(entityInformation.getJavaType());
         Pesquisa<T> pesquisa = search().add(or(fieldsCriterions));
-
+        
         if (hasMultitenancy() && GumgaThreadScope.organizationCode.get() != null) {
             String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(entityInformation.getJavaType().getAnnotation(GumgaMultitenancy.class));
             Criterion multitenancyCriterion;
@@ -113,7 +115,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
                         like("gumgaOrganizations", "," + oiPattern + ",", MatchMode.ANYWHERE),
                         like("gumgaUsers", "," + GumgaThreadScope.login.get() + ",", MatchMode.ANYWHERE)
                 );
-
+                
                 if (gumgaMultitenancy.allowPublics()) {
                     if (gumgaMultitenancy.publicMarking() == TenancyPublicMarking.NULL) {
                         multitenancyCriterion = or(like("oi", oiPattern, MatchMode.START), Restrictions.isNull("oi"), sharedCriterion);
@@ -132,16 +134,20 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             } else {
                 multitenancyCriterion = or(like("oi", oiPattern, MatchMode.START));
             }
-
+            
             pesquisa.add(multitenancyCriterion);
+            if (hasLogicalDelete()) {
+                pesquisa.add(Restrictions.eq("gumgaActive", !query.isInactiveSearch()));
+            }
+            
         }
-
+        
         if (query.getSearchFields() != null) {
             for (String field : query.getSearchFields()) {
                 createAliasIfNecessary(pesquisa, field);
             }
         }
-
+        
         return pesquisa;
     }
 
@@ -154,26 +160,30 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     public boolean hasMultitenancy() {
         return entityInformation.getJavaType().isAnnotationPresent(GumgaMultitenancy.class);
     }
-
+    
+    public boolean hasLogicalDelete() {
+        return GumgaLDModel.class.isAssignableFrom(entityInformation.getJavaType());
+    }
+    
     public String getMultitenancyPattern() {
         GumgaMultitenancy tenacy = entityInformation.getJavaType().getAnnotation(GumgaMultitenancy.class);
         return GumgaMultitenancyUtil.getMultitenancyPattern(tenacy);
     }
-
+    
     private void createAliasIfNecessary(Pesquisa<T> pesquisa, String field) {
         String[] chain = field.split("\\.");
-
+        
         if (chain.length <= 1) {
             return;
         }
         if (pesquisa.getAliases().contains(chain[0])) {
             return;
         }
-
+        
         pesquisa.createAlias(chain[0], chain[0]);
         pesquisa.addAlias(chain[0]);
     }
-
+    
     @Override
     public Pesquisa<T> search() {
         return Pesquisa.createCriteria(session(), entityInformation.getJavaType());
@@ -197,9 +207,9 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             }
             throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
         }
-
+        
         T resource = super.findOne(id);
-
+        
         if (resource == null) {
             throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
         }
@@ -223,7 +233,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         checkOwnership(result);
         return result;
     }
-
+    
     private Session session() {
         return entityManager.unwrap(Session.class);
     }
@@ -254,6 +264,10 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 //        }
         String modelo = "from %s obj WHERE %s";
         if (hasMultitenancy()) {
+            String ld="";
+            if (hasLogicalDelete()){
+                ld=" obj.gumgaActive="+(!query.isInactiveSearch())+" and ";
+            }
             GumgaMultitenancy gumgaMultiTenancy = getDomainClass().getAnnotation(GumgaMultitenancy.class);
             String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(gumgaMultiTenancy);
             String sharedCriterion = " ";
@@ -263,15 +277,15 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             }
             if (gumgaMultiTenancy.allowPublics()) {
                 if (gumgaMultiTenancy.publicMarking() == TenancyPublicMarking.NULL) {
-                    modelo = "from %s obj WHERE (obj.oi is null OR obj.oi like '" + oiPattern + "%%' " + sharedCriterion + ")  AND (%s) ";
+                    modelo = "from %s obj WHERE ("+ld+"obj.oi is null OR obj.oi like '" + oiPattern + "%%' " + sharedCriterion + ")  AND (%s) ";
                 } else {
-                    modelo = "from %s obj WHERE (obj.oi = '" + gumgaMultiTenancy.publicMarking().getMark() + "' OR obj.oi like '" + oiPattern + "%%' " + sharedCriterion + ")  AND (%s) ";
+                    modelo = "from %s obj WHERE ("+ld+"obj.oi = '" + gumgaMultiTenancy.publicMarking().getMark() + "' OR obj.oi like '" + oiPattern + "%%' " + sharedCriterion + ")  AND (%s) ";
                 }
             } else {
-                modelo = "from %s obj WHERE (obj.oi like '" + oiPattern + "%%' " + sharedCriterion + ")  AND (%s) ";
+                modelo = "from %s obj WHERE ("+ld+"obj.oi like '" + oiPattern + "%%' " + sharedCriterion + ")  AND (%s) ";
             }
         }
-
+        
         String hqlConsulta;
         if (query.getSortField().isEmpty()) {
             hqlConsulta = String.format(modelo + " ORDER BY obj.id ", entityInformation.getEntityName(), query.getAq());
@@ -287,13 +301,13 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         List resultList = query.isCountOnly() ? Collections.emptyList() : qConsulta.getResultList();
         return new SearchResult<>(query, total, resultList);
     }
-
+    
     @Override
     public <A> SearchResult<A> advancedSearch(String selectQueryWithoutWhere, String countQuery, String ordenationId, QueryObject whereQuery) {
         if (Strings.isNullOrEmpty(ordenationId)) {
             throw new IllegalArgumentException("Para realizar a search deve se informar um OrdenationId para complementar a ordenação");
         }
-
+        
         String modelo = selectQueryWithoutWhere + " WHERE %s";
         String hqlConsulta;
         if (whereQuery.getSortField().isEmpty()) {
@@ -308,10 +322,10 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         qConsulta.setMaxResults(whereQuery.getPageSize());
         qConsulta.setFirstResult(whereQuery.getStart());
         List resultList = qConsulta.getResultList();
-
+        
         return new SearchResult<>(whereQuery, total, resultList);
     }
-
+    
     @Override
     public SearchResult<T> search(String hql, Map<String, Object> params) {
         Query query = entityManager.createQuery(hql);
@@ -324,7 +338,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         int total = result.size();
         return new SearchResult<>(0, total, total, result);
     }
-
+    
     @Override
     public SearchResult<T> search(String hql, Map<String, Object> params, int max, int first) {
         Query query = entityManager.createQuery(hql);
@@ -339,27 +353,27 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         int total = result.size();
         return new SearchResult<>(0, total, total, result);
     }
-
+    
     @Override
     protected TypedQuery<Long> getCountQuery(Specification<T> spec) {
         return super.getCountQuery(spec);
     }
-
+    
     @Override
     protected TypedQuery<T> getQuery(Specification<T> spec, Sort sort) {
         return super.getQuery(spec, sort);
     }
-
+    
     @Override
     protected TypedQuery<T> getQuery(Specification<T> spec, Pageable pageable) {
         return super.getQuery(spec, pageable);
     }
-
+    
     @Override
     protected Page<T> readPage(TypedQuery<T> query, Pageable pageable, Specification<T> spec) {
         return super.readPage(query, pageable, spec);
     }
-
+    
     @Override
     public void flush() {
         super.flush();
@@ -380,6 +394,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     /**
      * salvar entidade utilizando o Multitenancy se a entidade estiver com
+     *
      * @{@link GumgaMultitenancy}
      *
      * @param entity
@@ -403,7 +418,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     public <S extends T> S save(S entity) {
         return super.save(entity);
     }
-
+    
     @Override
     public long count(Specification<T> spec) {
         return super.count(spec);
@@ -422,6 +437,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface
+     *
      * @{@link GumgaCrudRepository} com os filtro passados
      *
      * @param spec filtro a ser utilizado na pesquisa
@@ -430,7 +446,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
      */
     @Override
     public List<T> findAll(Specification<T> spec, Sort sort) {
-
+        
         if (hasMultitenancy()) {
             throw new GumgaGenericRepositoryException(noMultiTenancyMessage());
         }
@@ -439,6 +455,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface
+     *
      * @{@link GumgaCrudRepository} com os filtro passados
      *
      * @param spec filtro a ser utilizado na pesquisa
@@ -455,6 +472,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface
+     *
      * @{@link GumgaCrudRepository} com os filtro passados
      *
      * @param spec filtro a ser utilizado na pesquisa
@@ -470,6 +488,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface
+     *
      * @{@link GumgaCrudRepository} com os filtro passados
      *
      * @param spec filtro a ser utilizado na pesquisa
@@ -485,6 +504,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface
+     *
      * @{@link GumgaCrudRepository} com os filtro passados
      *
      * @param pageable parametros da paginação
@@ -500,6 +520,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface
+     *
      * @{@link GumgaCrudRepository} com os filtro passados
      *
      * @param sort ordem de retorno dos dados
@@ -512,7 +533,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         return super.findAll(sort);
     }
-
+    
     @Override
     public List<T> findAll(Iterable<ID> ids) {
         if (ids == null || !ids.iterator().hasNext()) {
@@ -530,6 +551,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     /**
      * Pesquisa na base de dados baseado na entidade tipada na interface
+     *
      * @{@link GumgaCrudRepository} com os filtro passados
      *
      * @return resultado da pesquisa
@@ -556,6 +578,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     /**
      * Pesquisar a entidade tipada na interface @{@link GumgaCrudRepository} com
      * Multitenancy caso a entidade esteja anotada com
+     *
      * @{@link GumgaMultitenancy}
      *
      * @param id
@@ -567,7 +590,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         checkOwnership(objectFind);
         return objectFind;
     }
-
+    
     @Override
     public void deleteAllInBatch() {
         if (hasMultitenancy()) {
@@ -578,6 +601,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     /**
      * Remove todas as entidades tipada na interface
+     *
      * @{@link GumgaCrudRepository} da base dados
      */
     @Override
@@ -587,7 +611,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         super.deleteAll();
     }
-
+    
     @Override
     public void deleteInBatch(Iterable<T> entities) {
         if (hasMultitenancy()) {
@@ -596,7 +620,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         super.deleteInBatch(entities);
     }
-
+    
     @Override
     public void delete(Iterable<? extends T> entities) {
         if (hasMultitenancy()) {
@@ -617,6 +641,10 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     public void delete(T entity) {
         if (hasMultitenancy()) {
             checkOwnership(entity);
+            if (entity instanceof GumgaLDModel) {
+                ((GumgaLDModel) entity).setGumgaActive(Boolean.FALSE);
+                return;
+            }
         }
         super.delete(entity);
     }
@@ -634,17 +662,17 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         super.delete(id);
     }
-
+    
     @Override
     protected Class<T> getDomainClass() {
         return super.getDomainClass();
     }
-
+    
     @Override
     public void setRepositoryMethodMetadata(CrudMethodMetadata crudMethodMetadata) {
         super.setRepositoryMethodMetadata(crudMethodMetadata);
     }
-
+    
     @Override
     public List<GumgaObjectAndRevision> listOldVersions(ID id) {
         List<GumgaObjectAndRevision> aRetornar = new ArrayList<>();
@@ -657,7 +685,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         return aRetornar;
     }
-
+    
     private void checkOwnership(Object o) throws EntityNotFoundException {
         if (GumgaThreadScope.ignoreCheckOwnership.get() != null && GumgaThreadScope.ignoreCheckOwnership.get()) {
             return;
@@ -668,7 +696,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         if (GumgaThreadScope.organizationCode.get() == null) {
             return;
         }
-
+        
         GumgaModel object = (GumgaModel) o;
         if (hasMultitenancy()
                 && (object.getOi() != null)
@@ -676,7 +704,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             throw new EntityNotFoundException("cannot find object of " + entityInformation.getJavaType() + " with id: " + object.getId() + " in your organization: " + GumgaThreadScope.organizationCode.get());
         }
     }
-
+    
     private String noMultiTenancyMessage() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         String msg;
@@ -689,12 +717,12 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         return msg;
     }
-
+    
     @Override
     public SearchResult<T> findAllWithTenancy() {
         QueryObject qo = new QueryObject();
         qo.setPageSize(Integer.MAX_VALUE - 1);
         return search(qo);
     }
-
+    
 }

@@ -61,6 +61,22 @@ public class QueryObject {
      */
     private String action;
 
+    /**
+     * Se true, busca apenas os inativos
+     */
+    private boolean inactiveSearch=false;
+
+    public boolean isInactiveSearch() {
+        return inactiveSearch;
+    }
+
+    /**
+     * Se true, busca apenas os inativos
+     */
+    public void setInactiveSearch(boolean inactiveSearch) {
+        this.inactiveSearch = inactiveSearch;
+    }
+
     public boolean isCountOnly() {
         return countOnly;
     }

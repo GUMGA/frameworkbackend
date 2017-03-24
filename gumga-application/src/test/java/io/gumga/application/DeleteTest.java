@@ -4,8 +4,10 @@ import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.testmodel.Book;
+import io.gumga.testmodel.BookRepository;
 import io.gumga.testmodel.BookService;
 import io.gumga.testmodel.Company;
+import io.gumga.testmodel.CompanyRepository;
 import io.gumga.testmodel.CompanyService;
 import io.gumga.testmodel.MyCar;
 import io.gumga.testmodel.MyCarService;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringConfig.class})
@@ -24,7 +27,13 @@ public class DeleteTest {
     @Autowired
     private CompanyService companyService;
     @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
     private BookService bookService;
+    @Autowired
+    private BookRepository bookRepository;
+
     @Autowired
     private MyCarService myCarService;
 
@@ -35,6 +44,7 @@ public class DeleteTest {
 
     @Test
     public void deleteSimple() {
+        companyRepository.deleteAll();
         Company empresa1 = new Company("GUMGA");
         Company empresa2 = new Company("MUNIF");
         Company empresa3 = new Company("GEBARA");
@@ -52,7 +62,9 @@ public class DeleteTest {
     }
 
     @Test
+    @Transactional
     public void deleteMultiple() {
+        bookRepository.deleteAll();
         Book livro1 = new Book("The");
         Book livro2 = new Book("is");
         Book livro3 = new Book("ont");
@@ -66,11 +78,14 @@ public class DeleteTest {
 
         QueryObject query = new QueryObject();
         SearchResult<Book> pesquisa = bookService.pesquisa(query);
-
         assertEquals(5l, pesquisa.getCount().longValue());
         bookService.delete(Arrays.asList(new Book[]{livro1, livro2, livro3}));
         pesquisa = bookService.pesquisa(query);
         assertEquals(2l, pesquisa.getCount().longValue());
+        query.setInactiveSearch(true);
+        pesquisa = bookService.pesquisa(query);
+        assertEquals(3l, pesquisa.getCount().longValue());
+        
     }
 
     @Test(expected = org.springframework.orm.jpa.JpaObjectRetrievalFailureException.class)
