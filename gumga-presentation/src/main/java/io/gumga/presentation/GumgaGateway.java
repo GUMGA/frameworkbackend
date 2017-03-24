@@ -40,6 +40,11 @@ public abstract class GumgaGateway<A extends GumgaIdable<ID>, ID extends Seriali
     }
 
     @Override
+    public void delete(List<DTO> resource){
+        delegate.delete(translator.to(resource));
+    }
+
+    @Override
     public DTO save(DTO resource) {
         return translator.from(delegate.save(translator.to(resource)));
     }
