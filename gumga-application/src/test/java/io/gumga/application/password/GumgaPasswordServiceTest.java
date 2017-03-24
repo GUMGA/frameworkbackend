@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  *
  * @author gyowannyqueiroz
  */
-public class GumgaPasswordServiceTest extends AbstractTest{
+public class GumgaPasswordServiceTest extends AbstractTest {
 
     @Autowired
     private GumgaPasswordService passwordService;
@@ -43,4 +43,15 @@ public class GumgaPasswordServiceTest extends AbstractTest{
         assertFalse("The encrypted password is empty", encryptedPassword == null || encryptedPassword.isEmpty());
         assertTrue("Password doesn't match", passwordService.isPasswordCorrect(password, encryptedPassword));
     }
+
+    @Test
+    public void testEncryptPasswordWithSpecialCharacters() throws Exception {
+        assertNotNull("Password service has not been set", passwordService);
+        String password = "!@#$%Gumga@1234!";
+        String encryptedPassword = "Ujh6iHDMM+Fbln09zbYPIY6cNfRAjqyTSz1PNg==";//passwordService.encryptPassword(password);
+        System.out.println(String.format("### Password: %s - Encrypted password: %s", password, encryptedPassword));
+        assertFalse("The encrypted password is empty", encryptedPassword == null || encryptedPassword.isEmpty());
+        assertTrue("Password doesn't match", passwordService.isPasswordCorrect(password, encryptedPassword));
+    }
+
 }

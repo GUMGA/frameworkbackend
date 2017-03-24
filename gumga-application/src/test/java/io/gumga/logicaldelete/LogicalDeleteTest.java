@@ -5,6 +5,7 @@ import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.mysql.MysqlSpringConfig;
 import io.gumga.testmodel.Book;
+import io.gumga.testmodel.BookRepository;
 import io.gumga.testmodel.BookService;
 import io.gumga.testmodel.Company;
 import io.gumga.testmodel.CompanyService;
@@ -26,10 +27,13 @@ public class LogicalDeleteTest {
 
     @Autowired
     protected BookService bookService;
+    @Autowired
+    private BookRepository bookRepository;
 
     @Before
     @Transactional
     public void setUp() {
+        bookRepository.deleteAll();
         GumgaThreadScope.organizationCode.set("1.");
         bookService.save(new Book("Lord of the Rings"));
         bookService.save(new Book("Do Androids Dream of Electric Sheep?"));
@@ -49,10 +53,40 @@ public class LogicalDeleteTest {
         assertEquals(1, result.size());
     }
 
-    //@Test
-    public void zzz() {
-        System.out.println("-----> PAUSE <----");
-        new Scanner(System.in).next();
+    @Test
+    @Transactional
+    public void consultaTodos() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        List<Book> result = bookService.pesquisa(query).getValues();
+        assertEquals(4, result.size());
+    }
+
+    @Test
+    @Transactional
+    public void consultaTodosInativosViaQ() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        List<Book> result = bookService.pesquisa(query).getValues();
+        assertEquals(4, result.size());
+        bookService.delete(result);
+        query.setInactiveSearch(true);
+        result = bookService.pesquisa(query).getValues();
+        assertEquals(4, result.size());
+    }
+
+
+    @Test
+    @Transactional
+    public void deletaUm() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        List<Book> result = bookService.pesquisa(query).getValues();
+        assertEquals(4, result.size());
+        bookService.delete(result.get(0));
+        result = bookService.pesquisa(query).getValues();
+        assertEquals(3, result.size());
+
     }
 
 }
