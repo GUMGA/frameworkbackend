@@ -7,6 +7,7 @@ package io.gumga.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.gumga.application.GumgaLogService;
+import io.gumga.application.GumgaLoggerService;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
 import io.gumga.domain.GumgaLog;
@@ -39,6 +40,9 @@ public class GumgaRequestFilter extends HandlerInterceptorAdapter {
 
     @Autowired
     private GumgaLogService gls;
+
+    @Autowired
+    private GumgaLoggerService gumgaLoggerService;
 
     @Autowired
     private GumgaValues gumgaValues;
@@ -160,6 +164,7 @@ public class GumgaRequestFilter extends HandlerInterceptorAdapter {
             GumgaLog gl = new GumgaLog(ar.getLogin(), request.getRemoteAddr(), ar.getOrganizationCode(),
                     ar.getOrganization(), softwareId, operationKey, endPoint, method, allowed);
             gls.save(gl);
+            gumgaLoggerService.logToFile(gl.toString(), 4);
         }
         if (gumgaValues.isLogRequestOnConsole()) {
             String contextRoot = request.getContextPath();
@@ -176,6 +181,7 @@ public class GumgaRequestFilter extends HandlerInterceptorAdapter {
             GumgaLog gl = new GumgaLog(ar.getLogin(), requset.getRemoteAddr(), ar.getOrganizationCode(),
                     ar.getOrganization(), softwareId, operationKey, endPoint, method, a);
             gls.save(gl);
+            gumgaLoggerService.logToFile(gl.toString(), 4);
         }
     }
 

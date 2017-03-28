@@ -68,14 +68,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorResource("Unprocessable Entity", "Unprocessable Entity", ex.getMessage());
     }
 
-//    @ExceptionHandler(IllegalArgumentException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public @ResponseBody
-//    ErrorResource illegalArgument(HttpServletRequest req, Exception ex) {
-//        gumgaLoggerService.logToFile(ex.toString(), 4);
-//        logger.warn("IllegalArgument", ex);
-//        return new ErrorResource("IllegalArgument", "Invalid request", ex.getMessage());
-//    }
+
     
     
     @ExceptionHandler({ConstraintViolationException.class, DataIntegrityViolationException.class})
