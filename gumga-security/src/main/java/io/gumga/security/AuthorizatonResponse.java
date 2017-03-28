@@ -22,6 +22,8 @@ public class AuthorizatonResponse {
     private String login;
     private String reason;
     private String key;
+    private String organizationInternalCode;
+    private String userInternalCode;
 
     public AuthorizatonResponse() {
     }
@@ -33,15 +35,15 @@ public class AuthorizatonResponse {
         this.login = login;
         this.reason = reason;
         this.key = key;
-        this.organizationId=oId;
+        this.organizationId = oId;
     }
 
     public AuthorizatonResponse(Map mapAuthorizaton) {
         mapAuthorizaton.forEach((key, value) -> {
             Field[] fields = this.getClass().getDeclaredFields();
             Arrays.stream(fields).forEach(field -> {
-                if(field.getName().equals(key.toString())) {
-                    if(field.getType().isAssignableFrom(Long.class)) {
+                if (field.getName().equals(key.toString())) {
+                    if (field.getType().isAssignableFrom(Long.class)) {
                         try {
                             field.set(this, Long.valueOf(value.toString()));
                         } catch (IllegalAccessException e) {
@@ -58,7 +60,6 @@ public class AuthorizatonResponse {
             });
         });
     }
-
 
     public Long getOrganizationId() {
         return organizationId;
@@ -118,6 +119,22 @@ public class AuthorizatonResponse {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getOrganizationInternalCode() {
+        return organizationInternalCode;
+    }
+
+    public void setOrganizationInternalCode(String organizationInternalCode) {
+        this.organizationInternalCode = organizationInternalCode;
+    }
+
+    public String getUserInternalCode() {
+        return userInternalCode;
+    }
+
+    public void setUserInternalCode(String userInternalCode) {
+        this.userInternalCode = userInternalCode;
     }
 
     @Override

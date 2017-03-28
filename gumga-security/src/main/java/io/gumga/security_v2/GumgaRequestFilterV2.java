@@ -118,6 +118,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
             Map authorizatonResponse = restTemplate.getForObject(url, Map.class);
 
             ar = new AuthorizatonResponse(authorizatonResponse);
+            
 
             GumgaThreadScope.login.set(ar.getLogin());
             GumgaThreadScope.ip.set(request.getRemoteAddr());
