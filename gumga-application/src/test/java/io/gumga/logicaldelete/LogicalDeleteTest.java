@@ -69,10 +69,13 @@ public class LogicalDeleteTest {
         QueryObject query = new QueryObject();
         List<Book> result = bookService.pesquisa(query).getValues();
         assertEquals(4, result.size());
+        query.setInactiveSearch(true);
+        List<Book> result2 = bookService.pesquisa(query).getValues();
+        int excluidosAntes=result2.size();
         bookService.delete(result);
         query.setInactiveSearch(true);
         result = bookService.pesquisa(query).getValues();
-        assertEquals(4, result.size());
+        assertEquals(4+excluidosAntes, result.size());
     }
 
 
