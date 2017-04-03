@@ -13,6 +13,8 @@ import java.sql.Types;
  * UserType que permite serializar o tipo dentro do Hibernate
  */
 public class GumgaURLUserType extends MutableUserType {
+    
+    
 
     @Override
     public int[] sqlTypes() {

@@ -1,6 +1,22 @@
 package io.gumga.domain;
 
 import br.com.insula.opes.CpfCnpj;
+import io.gumga.domain.domains.GumgaAddress;
+import io.gumga.domain.domains.GumgaBarCode;
+import io.gumga.domain.domains.GumgaBoolean;
+import io.gumga.domain.domains.GumgaCEP;
+import io.gumga.domain.domains.GumgaCNPJ;
+import io.gumga.domain.domains.GumgaCPF;
+import io.gumga.domain.domains.GumgaEMail;
+import io.gumga.domain.domains.GumgaGeoLocation;
+import io.gumga.domain.domains.GumgaIP4;
+import io.gumga.domain.domains.GumgaIP6;
+import io.gumga.domain.domains.GumgaMoney;
+import io.gumga.domain.domains.GumgaMultiLineString;
+import io.gumga.domain.domains.GumgaOi;
+import io.gumga.domain.domains.GumgaPhoneNumber;
+import io.gumga.domain.domains.GumgaTime;
+import io.gumga.domain.domains.GumgaURL;
 import io.gumga.domain.domains.usertypes.*;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.MatchMode;
@@ -167,22 +183,41 @@ public class GumgaQueryParserProvider {
         parsers.put(BigDecimal.class, BIGDECIMAL_CRITERION_PARSER);
         parsers.put(Date.class, DATE_CRITERION_PARSER);
         parsers.put(CpfCnpj.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE); //Domínio da Insula utilizado na DB1
-        parsers.put(GumgaAddressUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaBooleanUserType.class, BOOLEAN_CRITERION_PARSER);
-        parsers.put(GumgaBarCodeUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaCEPUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaCNPJUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaCPFUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaEMailUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaGeoLocationUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaIP4UserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaIP6UserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaMoneyUserType.class, BIGDECIMAL_CRITERION_PARSER);
-        parsers.put(GumgaMultiLineStringUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaPhoneNumberUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaTimeUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaOiUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-        parsers.put(GumgaURLUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaAddressUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaBooleanUserType.class, BOOLEAN_CRITERION_PARSER);
+//        parsers.put(GumgaBarCodeUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaCEPUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaCNPJUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaCPFUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaEMailUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaGeoLocationUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaIP4UserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaIP6UserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaMoneyUserType.class, BIGDECIMAL_CRITERION_PARSER);
+//        parsers.put(GumgaMultiLineStringUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaPhoneNumberUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaTimeUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaOiUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+//        parsers.put(GumgaURLUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+
+        parsers.put(GumgaAddress.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaBoolean.class, BOOLEAN_CRITERION_PARSER);
+        parsers.put(GumgaBarCode.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaCEP.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaCNPJ.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaCPF.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaEMail.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaGeoLocation.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaIP4.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaIP6.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaMoney.class, BIGDECIMAL_CRITERION_PARSER);
+        parsers.put(GumgaMultiLineString.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaPhoneNumber.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaTime.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaOi.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+        parsers.put(GumgaURL.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+
+
 
         return parsers;
     }
