@@ -8,6 +8,18 @@
 =======================================
 Framework Backend
 
+1.5.7
+  Delete in Batch
+  Delete Collection
+  QueryAction
+  MultiAction
+  GumgaBoolean unittests
+  
+1.5.6
+  App Token
+  
+
+
 1.5.5
     - Criado um DTO para criar instancia no security
     - Criado um proxy para api/security-saas

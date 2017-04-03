@@ -5,8 +5,10 @@
     <parent>
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
+
         <version>1.5.9</version>
-    </parent>
+
+     </parent>
 
     <artifactId>gumga-domain</artifactId>
 
