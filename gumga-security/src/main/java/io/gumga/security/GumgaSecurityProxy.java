@@ -26,6 +26,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 /**
@@ -127,8 +129,9 @@ class GumgaSecurityProxy {
     @RequestMapping(method = RequestMethod.PUT)
     public Map changePassword(@RequestBody UserAndPassword login) {
         String url = gumgaValues.getGumgaSecurityUrl() + "/token";
-        restTemplate.put(url, login);
-        return GumgaSecurityCode.OK.response();
+        //restTemplate.put(url, login);
+        ResponseEntity<Map> exchange = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(login), Map.class);
+        return exchange.getBody();
     }
 
     @Transactional
@@ -176,7 +179,7 @@ class GumgaSecurityProxy {
     @RequestMapping(method = RequestMethod.GET, value = "/lost-my-password")
     public Map lostMyPassword(@RequestParam("email") String login, @RequestParam("url") String urlCallback) {
         String url = gumgaValues.getGumgaSecurityUrl() + "/token/lost-my-password";
-        url = url + "?email="+login+"&url="+urlCallback;
+        url = url + "?email=" + login + "&url=" + urlCallback;
         Map resposta = restTemplate.getForObject(url, Map.class);
         return resposta;
     }
