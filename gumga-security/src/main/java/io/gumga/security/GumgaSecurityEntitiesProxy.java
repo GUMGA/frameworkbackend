@@ -70,7 +70,7 @@ public class GumgaSecurityEntitiesProxy {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/create-user")
-    public ResponseEntity<Map> getUserByEmail(@RequestBody Map user) {
+    public ResponseEntity<Map> createUser(@RequestBody Map user) {
         final HttpHeaders headers = new HttpHeaders();
         headers.set("gumgaToken", GumgaThreadScope.gumgaToken.get());
         final String url = this.gumgaValues.getGumgaSecurityUrl().replace("/publicoperations", "/api/gumga-security/create-user");
@@ -82,6 +82,15 @@ public class GumgaSecurityEntitiesProxy {
             }
         }
 
+        return ResponseEntity.ok(result);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/update-user")
+    public ResponseEntity<Map> updateUser(@RequestBody Map user) {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.set("gumgaToken", GumgaThreadScope.gumgaToken.get());
+        final String url = this.gumgaValues.getGumgaSecurityUrl().replace("/publicoperations", "/api/gumga-security/update-user");
+        final Map result = this.restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<Map>(user, headers), Map.class).getBody();
         return ResponseEntity.ok(result);
     }
 
@@ -187,6 +196,4 @@ public class GumgaSecurityEntitiesProxy {
         return ResponseEntity.ok(result);
     }
 
-
 }
-
