@@ -196,3 +196,5 @@ Not yet
 mvn --batch-mode release:update-versions -DdevelopmentVersion=1.5.12-SNAPSHOT
 
 
+mvn release:update-versions -DautoVersionSubmodules=true
+
