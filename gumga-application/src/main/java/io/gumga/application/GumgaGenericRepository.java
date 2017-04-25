@@ -97,6 +97,10 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     }
     
     private Pesquisa<T> getPesquisa(QueryObject query) {
+        if (query.getQ() == null && !query.isAdvanced()) {
+            throw new IllegalArgumentException("Para realizar a pesquisa simples, q não pode ser nulo.");
+        }
+
         if (query.getSearchFields() != null && query.getSearchFields().length == 0) {
             throw new IllegalArgumentException("Para realizar a search deve se informar pelo menos um campo a ser pesquisado.");
         }

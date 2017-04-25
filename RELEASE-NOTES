@@ -189,3 +189,12 @@ ALTER SEQUENCE SEQ_GUMGA_TAG_VAL_DEF RENAME to SEQ_GTAG_VALU_DEFI
 =============
 Not yet
 
+
+
+
+
+mvn --batch-mode release:update-versions -DdevelopmentVersion=1.5.12-SNAPSHOT
+
+
+mvn release:update-versions -DautoVersionSubmodules=true
+
