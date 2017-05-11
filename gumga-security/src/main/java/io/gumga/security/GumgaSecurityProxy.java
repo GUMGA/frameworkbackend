@@ -243,6 +243,14 @@ class GumgaSecurityProxy {
         return resposta;
     }
 
+    @ApiOperation(value = "findToken", notes = "Traz as informações do token.")
+    @RequestMapping(value = "/get/{token:.+}", method = RequestMethod.GET)
+    public Map findToken(@PathVariable String token) {
+        String url = gumgaValues.getGumgaSecurityUrl() + "/token/get/" + token+"/";
+        Map resposta = restTemplate.getForObject(url, Map.class);
+        return resposta;
+    }
+
 }
 
 class UserImageDTO {
