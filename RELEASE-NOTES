@@ -8,6 +8,9 @@
 =======================================
 Framework Backend
 
+1.5.12
+ gumgaValues.isOracleAdjust() 
+
 1.5.7
   Delete in Batch
   Delete Collection
