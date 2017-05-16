@@ -21,6 +21,11 @@ import java.util.Map;
 public class GumgaThreadScope {
 
     /**
+     * Oi da organização que criou a instância
+     */
+    public static final ThreadLocal<String> instanceOi = new ThreadLocal<>();
+
+    /**
      * Ip da requisição
      */
     public static final ThreadLocal<String> ip = new ThreadLocal<>();

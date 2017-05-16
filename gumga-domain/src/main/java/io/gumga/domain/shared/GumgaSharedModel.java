@@ -15,6 +15,7 @@ import java.io.Serializable;
 public class GumgaSharedModel<ID extends Serializable> extends GumgaModel<ID> {
 
     public static final int MAX_LENGTH = 2048;
+    public static final String GLOBAL = "GLOBAL.";
     @Column(name = "gumga_orgs",length = MAX_LENGTH)
     private String gumgaOrganizations;
     @Column(name = "gumga_users",length = MAX_LENGTH)
