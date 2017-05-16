@@ -1,6 +1,7 @@
 package io.gumga.domain;
 
 import br.com.insula.opes.CpfCnpj;
+import io.gumga.core.GumgaValues;
 import io.gumga.domain.domains.GumgaAddress;
 import io.gumga.domain.domains.GumgaBarCode;
 import io.gumga.domain.domains.GumgaBoolean;
@@ -57,6 +58,15 @@ public class GumgaQueryParserProvider {
         oracleMap.put(String.class, AbstractStringCriterionParser.ORACLE_STRING_CRITERION_PARSER);
         return oracleMap;
     }
+
+    public static final Map<Class<?>, CriterionParser> getOracleLikeMapWithAdjust() {
+        Map<Class<?>, CriterionParser> oracleMapWithAdjust = new HashMap<Class<?>, CriterionParser>();
+        oracleMapWithAdjust.putAll(getOracleLikeMap());
+        oracleMapWithAdjust.put(GumgaValues.class, LONG_CRITERION_PARSER);
+        return oracleMapWithAdjust;
+    }
+
+
 
     public static final Map<Class<?>, CriterionParser> getMySqlLikeMap() {
         Map<Class<?>, CriterionParser> mySqlMap = getBaseMap();

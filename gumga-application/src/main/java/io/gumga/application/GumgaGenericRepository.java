@@ -2,6 +2,7 @@ package io.gumga.application;
 
 import com.google.common.base.Strings;
 import io.gumga.core.GumgaThreadScope;
+import io.gumga.core.GumgaValues;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.core.TenancyPublicMarking;
@@ -44,6 +45,7 @@ import static org.hibernate.criterion.Projections.rowCount;
 import static org.hibernate.criterion.Restrictions.like;
 import static org.hibernate.criterion.Restrictions.or;
 import static org.hibernate.criterion.Restrictions.and;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @NoRepositoryBean
 public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements GumgaCrudRepository<T, ID> {
@@ -60,13 +62,14 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     
     @Override
     public SearchResult<T> search(QueryObject query) {
-        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getOracleLikeMap())) {
+        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getOracleLikeMapWithAdjust())) {
             System.out.println("-------------> ORACLE ADJUST ");
             entityManager.createNativeQuery("alter session set nls_comp=linguistic").executeUpdate();
             entityManager.createNativeQuery("alter session set nls_sort=latin_ai").executeUpdate();
             entityManager.createNativeQuery("alter session set nls_date_format = 'YYYY-MM-DD'").executeUpdate();
             entityManager.createNativeQuery("alter session set nls_timestamp_format = 'YYYY-MM-DD HH24:MI:SS'").executeUpdate();
         }
+        
         if (query.isAdvanced()) {
             return advancedSearch(query);
         }
