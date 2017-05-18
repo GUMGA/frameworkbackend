@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
-        <version>1.5.12</version>
+        <version>1.5.13</version>
     </parent>
 
     <artifactId>gumga-security</artifactId>
