@@ -280,8 +280,12 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             GumgaMultitenancy gumgaMultiTenancy = getDomainClass().getAnnotation(GumgaMultitenancy.class);
             String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(gumgaMultiTenancy);
             String sharedCriterion = " ";
+
             if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType())) {
+                String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
+
                 sharedCriterion = "or (obj.gumgaOrganizations like '%%," + oiPattern + ",%%' or "
+                        + "obj.gumgaOrganizations like '%%," + instanceOi + ",%%' or "
                         + "obj.gumgaUsers like '%%," + GumgaThreadScope.login.get() + ",%%') ";
             }
             if (gumgaMultiTenancy.allowPublics()) {
