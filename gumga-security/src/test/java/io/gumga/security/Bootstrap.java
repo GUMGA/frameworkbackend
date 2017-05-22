@@ -1,11 +1,12 @@
 package io.gumga.security;
 
+import java.util.logging.Level;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class Bootstrap extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     public Bootstrap() {
-        System.out.println("---------------------> Inicio do " + this.getClass().getCanonicalName());
+        java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"INICIO");
     }
     
     @Override

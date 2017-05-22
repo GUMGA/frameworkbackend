@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import org.reflections.Reflections;
 
 public class SecurityHelper {
@@ -13,7 +14,7 @@ public class SecurityHelper {
     public static Set<GumgaOperationTO> listMyOperations(String pacote) {
         Set<GumgaOperationTO> toReturn = new HashSet<>();
         Reflections reflections = new Reflections(pacote);
-        System.out.println("ReflectionsConfiguration------->" + reflections.getConfiguration().getUrls());
+        java.util.logging.Logger.getLogger(SecurityHelper.class.getName()).log(Level.WARNING,"ReflectionsConfiguration------->" + reflections.getConfiguration().getUrls());
         Set<Class<? extends GumgaAPI>> classOfInterest = reflections.getSubTypesOf(GumgaAPI.class);
         for (Class classe : classOfInterest) {
             for (Method metodo : classe.getDeclaredMethods()) {

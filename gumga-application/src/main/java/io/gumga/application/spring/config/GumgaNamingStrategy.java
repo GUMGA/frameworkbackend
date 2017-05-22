@@ -5,10 +5,12 @@
  */
 package io.gumga.application.spring.config;
 
+import io.gumga.core.GumgaValues;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.internal.util.StringHelper;
 
@@ -37,7 +39,7 @@ public class GumgaNamingStrategy implements NamingStrategy, Serializable {
     private final List<String> reservedWords;
 
     public GumgaNamingStrategy() {
-        System.out.println("-----------------GumgaNamingStrategy BETA -----------------------------");
+        java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "-----------------GumgaNamingStrategy BETA -----------------------------");
         reservedWords = Arrays.asList(RESERVED_WORDS);
     }
 
@@ -138,7 +140,7 @@ public class GumgaNamingStrategy implements NamingStrategy, Serializable {
         name = name.substring(0, name.length() >= ORACLE_MAX_SIZE ? ORACLE_MAX_SIZE : name.length());
 
         if (loga) {
-            System.out.println("--- GumgaNamingStrategy -->" + originalName + "=>" + name);
+            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "--- GumgaNamingStrategy -->" + originalName + "=>" + name);
         }
 
         return name;

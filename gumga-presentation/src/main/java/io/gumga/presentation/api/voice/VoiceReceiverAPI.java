@@ -66,7 +66,7 @@ public class VoiceReceiverAPI {
     @RequestMapping(value = "/voice", method = RequestMethod.POST)
     public Map recebeSom(HttpServletRequest httpRequest) throws IOException {
         String som = convertStreamToString(httpRequest.getInputStream());
-        System.out.println("----->" + som);
+        java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"----->" + som);
         Map<String, Object> problemas = new HashMap<>();
         try {
             som = som.replaceFirst("data:audio/wav;base64,", "");

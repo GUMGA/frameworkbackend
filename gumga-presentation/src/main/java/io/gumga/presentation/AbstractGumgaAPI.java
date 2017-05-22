@@ -8,6 +8,7 @@ import io.gumga.domain.GumgaServiceable;
 import io.gumga.presentation.api.AbstractNoDeleteGumgaAPI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -71,7 +72,7 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
     }
 
     public void doAction(String action, T obj) {
-        System.out.println(action + "-----" + obj);
+        java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING,action + "-----" + obj);
     }
 
     protected Object selectElementsForAction(String action, Long[] ids) {

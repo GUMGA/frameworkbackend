@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import static org.hibernate.criterion.Order.asc;
 import static org.hibernate.criterion.Order.desc;
@@ -63,7 +64,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     @Override
     public SearchResult<T> search(QueryObject query) {
         if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getOracleLikeMapWithAdjust())) {
-            System.out.println("-------------> ORACLE ADJUST ");
+            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "ORACLE ADJUST" );
             entityManager.createNativeQuery("alter session set nls_comp=linguistic").executeUpdate();
             entityManager.createNativeQuery("alter session set nls_sort=latin_ai").executeUpdate();
             entityManager.createNativeQuery("alter session set nls_date_format = 'YYYY-MM-DD'").executeUpdate();

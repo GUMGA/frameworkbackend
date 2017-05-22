@@ -110,7 +110,7 @@ public interface GumgaValues {
             InputStream input = new FileInputStream(System.getProperty("user.home") + "/gumgafiles/" + getCustomPropertiesFileName());
             toReturn.load(input);
         } catch (IOException e) {
-            Logger.getLogger(GumgaValues.class.getName()).log(Level.INFO, "Utilizando properties padrão");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Utilizando properties padrão");
         }
         return toReturn;
     }
