@@ -11,6 +11,11 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.hibernate.type.DoubleType;
 
 /**
@@ -137,11 +142,11 @@ public class GumgaAddressUserType implements CompositeUserType {
         GumgaAddress object = null;
         final String zipCode = resultSet.getString(names[0]);
         //Deferred check after first read
-        if (!resultSet.wasNull()) {
+//        if (!resultSet.wasNull()) {
             object = new GumgaAddress(zipCode, resultSet.getString(names[1]), resultSet.getString(names[2]), resultSet.getString(names[3]), resultSet.getString(names[4]), 
                     resultSet.getString(names[5]), resultSet.getString(names[6]), resultSet.getString(names[7]), resultSet.getString(names[8]),
                     resultSet.getDouble(names[9]),resultSet.getDouble(names[10]),resultSet.getString(names[11]));
-        }
+//        }
         return object;
     }
 
@@ -178,8 +183,19 @@ public class GumgaAddressUserType implements CompositeUserType {
             preparedStatement.setString(property + 6, object.getLocalization());
             preparedStatement.setString(property + 7, object.getState());
             preparedStatement.setString(property + 8, object.getCountry());
-            preparedStatement.setDouble(property + 9, object.getLatitude());
-            preparedStatement.setDouble(property + 10, object.getLongitude());
+
+            if (object.getLatitude()!=null) {
+                preparedStatement.setDouble(property + 9, object.getLatitude());
+            } else {
+                preparedStatement.setNull(property + 9, java.sql.Types.DOUBLE);
+            }
+
+            if (object.getLongitude()!=null) {
+                preparedStatement.setDouble(property + 10, object.getLongitude());
+            } else {
+                preparedStatement.setNull(property + 10, java.sql.Types.DOUBLE);
+            }
+
             preparedStatement.setString(property + 11, object.getFormalCode());
         }
     }
