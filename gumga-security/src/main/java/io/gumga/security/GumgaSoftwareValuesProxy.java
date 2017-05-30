@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.Map;
+import org.springframework.web.client.RestClientException;
 
 /**
  *
@@ -62,23 +63,31 @@ public class GumgaSoftwareValuesProxy {
     @ApiOperation(value = "save", notes = "Salva o objeto correspodente.")
     @RequestMapping(method = RequestMethod.POST)
     public RestResponse save(@RequestBody Map model) {
-        String url = getBaseUrl() + "?gumgaToken=" + GumgaThreadScope.gumgaToken.get();
-        model.put("softwareName", GumgaThreadScope.softwareName.get());
-        Map response = getRestTemplate().postForObject(url, model, Map.class);
-        return new RestResponse(response);
+        try {
+            String url = getBaseUrl() + "?gumgaToken=" + GumgaThreadScope.gumgaToken.get();
+            model.put("softwareName", GumgaThreadScope.softwareName.get());
+            Map response = getRestTemplate().postForObject(url, model, Map.class);
+            return new RestResponse(response);
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @Transactional
     @ApiOperation(value = "load", notes = "Carrega entidade pela chave informada.")
     @RequestMapping(value = "/{key}", method = RequestMethod.GET)
     public Map load(@PathVariable String key) {
-        String software = GumgaThreadScope.softwareName.get();
-        String url = getBaseUrl() + "findbysoftwareandkey/" + software + "/" + key + "?gumgaToken=" + GumgaThreadScope.gumgaToken.get();
-        Map response = getRestTemplate().getForObject(url, Map.class);
-        if (response == null) {
-            response = Collections.EMPTY_MAP;
+        try {
+            String software = GumgaThreadScope.softwareName.get();
+            String url = getBaseUrl() + "findbysoftwareandkey/" + software + "/" + key + "?gumgaToken=" + GumgaThreadScope.gumgaToken.get();
+            Map response = getRestTemplate().getForObject(url, Map.class);
+            if (response == null) {
+                response = Collections.EMPTY_MAP;
+            }
+            return response;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
         }
-        return response;
     }
 
 }

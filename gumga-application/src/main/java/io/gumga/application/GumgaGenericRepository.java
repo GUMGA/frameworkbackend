@@ -2,7 +2,6 @@ package io.gumga.application;
 
 import com.google.common.base.Strings;
 import io.gumga.core.GumgaThreadScope;
-import io.gumga.core.GumgaValues;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.core.TenancyPublicMarking;
@@ -33,7 +32,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,8 +43,6 @@ import static org.hibernate.criterion.Order.desc;
 import static org.hibernate.criterion.Projections.rowCount;
 import static org.hibernate.criterion.Restrictions.like;
 import static org.hibernate.criterion.Restrictions.or;
-import static org.hibernate.criterion.Restrictions.and;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @NoRepositoryBean
 public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements GumgaCrudRepository<T, ID> {

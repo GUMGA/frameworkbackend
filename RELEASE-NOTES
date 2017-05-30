@@ -8,6 +8,9 @@
 =======================================
 Framework Backend
 
+1.5.15
+  Melhora nas mensagens quando a comunicação com o segurança está indisponível
+
 1.5.13
  Compartilhamento por dono de instância
 

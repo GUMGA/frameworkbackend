@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
+import org.springframework.web.client.RestClientException;
 
 @RestController
 @RequestMapping(path = "/api/proxy/security-saas")
@@ -43,18 +44,26 @@ public class GumgaSoftwareSaaS {
     }
 
     private ResponseEntity<Map> post(String uri, GumgaSaaS gumgaSaaS) {
-        this.restTemplate = getRestTemplate();
-        HttpEntity requestEntity = createRequestEntity(gumgaSaaS);
-        String url = getBaseUrl().concat(uri);
-        return this.restTemplate.exchange(url, HttpMethod.POST, requestEntity, Map.class);
+        try {
+            this.restTemplate = getRestTemplate();
+            HttpEntity requestEntity = createRequestEntity(gumgaSaaS);
+            String url = getBaseUrl().concat(uri);
+            return this.restTemplate.exchange(url, HttpMethod.POST, requestEntity, Map.class);
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     private HttpEntity createRequestEntity(GumgaSaaS gumgaSaaS) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", "application/json, text/plain, */*");
-        headers.set("Accept-Encoding", "gzip, deflate");
-        headers.set("Content-Type", "application/json;charset=utf-8");
-        headers.set("gumgaToken", GumgaThreadScope.gumgaToken.get());
-        return new HttpEntity(gumgaSaaS, headers);
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Accept", "application/json, text/plain, */*");
+            headers.set("Accept-Encoding", "gzip, deflate");
+            headers.set("Content-Type", "application/json;charset=utf-8");
+            headers.set("gumgaToken", GumgaThreadScope.gumgaToken.get());
+            return new HttpEntity(gumgaSaaS, headers);
+        } catch (Exception e) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", e.getMessage()).exception();
+        }
     }
 }
