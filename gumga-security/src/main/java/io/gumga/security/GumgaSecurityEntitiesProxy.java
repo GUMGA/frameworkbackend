@@ -15,12 +15,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.web.client.RestClientException;
 
 @RestController
 @RequestMapping("/api/security")
 public class GumgaSecurityEntitiesProxy {
+    
+    private static final Logger log = LoggerFactory.getLogger(GumgaSecurityEntitiesProxy.class);
 
     private final RestTemplate restTemplate;
     @Autowired
@@ -231,7 +235,6 @@ public class GumgaSecurityEntitiesProxy {
             final HttpHeaders headers = new HttpHeaders();
             headers.set("gumgaToken", GumgaThreadScope.gumgaToken.get());
             final String url = this.gumgaValues.getGumgaSecurityUrl().replace("/publicoperations", "/api/facereco/whois");
-            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "URL: " + url);
             final Map result = this.restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Map>(userImage, headers), Map.class).getBody();
             return ResponseEntity.ok(result);
         } catch (RestClientException restClientException) {

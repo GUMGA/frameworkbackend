@@ -10,15 +10,19 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
+
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.internal.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author felipe e munif
  */
 public class GumgaNamingStrategy implements NamingStrategy, Serializable {
+    
+    private static final Logger log = LoggerFactory.getLogger(GumgaNamingStrategy.class);
 
     public static final String[] RESERVED_WORDS = {
         //ORACLE
@@ -39,7 +43,7 @@ public class GumgaNamingStrategy implements NamingStrategy, Serializable {
     private final List<String> reservedWords;
 
     public GumgaNamingStrategy() {
-        java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "-----------------GumgaNamingStrategy BETA -----------------------------");
+         log.warn("-----------------GumgaNamingStrategy BETA -----------------------------");
         reservedWords = Arrays.asList(RESERVED_WORDS);
     }
 
@@ -140,7 +144,7 @@ public class GumgaNamingStrategy implements NamingStrategy, Serializable {
         name = name.substring(0, name.length() >= ORACLE_MAX_SIZE ? ORACLE_MAX_SIZE : name.length());
 
         if (loga) {
-            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "--- GumgaNamingStrategy -->" + originalName + "=>" + name);
+            log.warn("--- GumgaNamingStrategy -->" + originalName + "=>" + name);
         }
 
         return name;

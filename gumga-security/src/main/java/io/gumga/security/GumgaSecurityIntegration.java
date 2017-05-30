@@ -11,7 +11,9 @@ import java.util.stream.Stream;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
-import java.util.logging.Level;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GumgaSecurityIntegration {
+    
+    private static final Logger log = LoggerFactory.getLogger(GumgaSecurityIntegration.class);
 
     @Autowired
     private GumgaValues gumgaValues;
@@ -42,7 +46,7 @@ public class GumgaSecurityIntegration {
             throw new RuntimeException("Precisamos que você informe um token eterno no arquivo Properties usando a chave: security.token");
         }
         String securityUrl = gumgaValues.getGumgaSecurityUrl().replace("/publicoperations", "");
-        java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Verificando : "+securityUrl);
+        log.info("Verificando : "+securityUrl);
         boolean securityOnline = getResponseCode(securityUrl) == 200;
         if (securityOnline) {
             HttpHeaders headers = new HttpHeaders();
@@ -53,7 +57,7 @@ public class GumgaSecurityIntegration {
             Object resp = restTemplate().exchange(securityUrl+"/api/software/check-operations", HttpMethod.POST, new HttpEntity(request, headers), Object.class).getBody();
             return ResponseEntity.ok(resp);
         } else {
-            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"GumgaFramework Log: Security is offline!");
+            log.error("GumgaFramework Log: Security is offline!");
             return ResponseEntity.notFound().build();
         }
     }

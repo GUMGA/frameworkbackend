@@ -5,8 +5,9 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.util.Date;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Interpretador Javascript para backend
@@ -14,6 +15,8 @@ import java.util.logging.Logger;
  * @author munif
  */
 public class JavaScriptEngine {
+    
+    private static final Logger log = LoggerFactory.getLogger(JavaScriptEngine.class);
 
     private static final ScriptEngineManager engineManager = new ScriptEngineManager();
 
@@ -35,7 +38,7 @@ public class JavaScriptEngine {
             }
             return engine.eval(script);
         } catch (ScriptException ex) {
-            Logger.getLogger(JavaScriptEngine.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("Problemas ao executar javascript no backend.",ex);
         }
         return null;
     }

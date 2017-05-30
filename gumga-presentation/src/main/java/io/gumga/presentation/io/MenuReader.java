@@ -13,15 +13,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MenuReader {
+    
+       private static final Logger log = LoggerFactory.getLogger(MenuReader.class);
 
-	private static Logger logger = Logger.getLogger(MenuReader.class
-			.getCanonicalName());
-
+	
 	private MenuReader() {
 	}
 
@@ -34,12 +36,11 @@ public class MenuReader {
 				.getResourceAsStream("menu.config");
 
 		if (menuStream == null) {
-			logger.warning("menu.config não encontrado, o menu não será carregado.");
+			log.warn("menu.config não encontrado, o menu não será carregado.");
 			return Collections.emptyList();
 		}
 
-		return CharStreams
-				.readLines(new InputStreamReader(menuStream, "UTF-8"));
+		return CharStreams.readLines(new InputStreamReader(menuStream, "UTF-8"));
 	}
 
 	public static Menu digesterMenu(List<String> menuOptions) {

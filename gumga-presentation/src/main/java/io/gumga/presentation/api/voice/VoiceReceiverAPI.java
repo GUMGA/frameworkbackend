@@ -16,8 +16,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -40,6 +42,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class VoiceReceiverAPI {
+    
+    private static final Logger log = LoggerFactory.getLogger(VoiceReceiverAPI.class);
 
     @Autowired(required = false)
     private GumgaNLP gumgaNLP;
@@ -57,7 +61,7 @@ public class VoiceReceiverAPI {
         try {
             resposta.put("objects", gumgaNLP.createObjectsFromDocument(texto, "criar,lançar,fazer"));
         } catch (Exception ex) {
-            Logger.getLogger(VoiceReceiverAPI.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("Problemas no NLP.", ex);
         }
         return resposta;
 
@@ -66,7 +70,7 @@ public class VoiceReceiverAPI {
     @RequestMapping(value = "/voice", method = RequestMethod.POST)
     public Map recebeSom(HttpServletRequest httpRequest) throws IOException {
         String som = convertStreamToString(httpRequest.getInputStream());
-        java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"----->" + som);
+        log.info("----->" + som);
         Map<String, Object> problemas = new HashMap<>();
         try {
             som = som.replaceFirst("data:audio/wav;base64,", "");

@@ -24,7 +24,9 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-import java.util.logging.Level;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Template engine service implementation using the Freemarker engine.
@@ -36,8 +38,9 @@ import java.util.logging.Level;
 @Service
 public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateEngineAdapter {
 
-    private static Configuration cfg;
+    private static final Logger log = LoggerFactory.getLogger(GumgaFreemarkerTemplateEngineService.class);
 
+    private static Configuration cfg;
     private String templateFolder;
     private String defaultEncoding;
 
@@ -105,7 +108,7 @@ public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateE
             } catch (URISyntaxException e) {
                 throw new TemplateEngineException("An error occurred while initializating the template engine", e);
             } catch (java.nio.file.FileSystemNotFoundException ex) {
-                java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "------->Templates não encontrados." + ex);
+                log.warn("------->Templates não encontrados." + ex);
             }
 
         }

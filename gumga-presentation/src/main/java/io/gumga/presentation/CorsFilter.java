@@ -10,8 +10,10 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 /**
  *
@@ -19,10 +21,12 @@ import java.util.logging.Logger;
  */
 @WebFilter(filterName = "CorsFilter", urlPatterns = {"/*"},asyncSupported = true)
 public class CorsFilter implements Filter {
+    
+    private static final Logger log = LoggerFactory.getLogger(CorsFilter.class);
 
     @Override
     public void init(FilterConfig fc) throws ServletException {
-        Logger.getLogger(CorsFilter.class.getName()).log(Level.INFO,"Gumga CORS FILTER ENABLED");
+        log.info("Inicializando");
     }
 
     @Override
