@@ -20,13 +20,38 @@ public class GumgaAddressUserType implements CompositeUserType {
 
     @Override
     public String[] getPropertyNames() {
-        return new String[]{"zipCode", "premisseType", "premisse", "number", "information", "neighbourhood", "localization", "state", "country","latitude","longitude","formalCode"};
+        return new String[]{
+                "zipCode",
+                "premisseType",
+                "premisse",
+                "number",
+                "information",
+                "neighbourhood",
+                "localization",
+                "state",
+                "country",
+                "latitude",
+                "longitude",
+                "formalCode",
+                "stateCode"};
     }
 
     @Override
     public Type[] getPropertyTypes() {
-        return new Type[]{StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE,
-            StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE, StringType.INSTANCE,DoubleType.INSTANCE,DoubleType.INSTANCE,StringType.INSTANCE};
+        return new Type[]{
+                StringType.INSTANCE,
+                StringType.INSTANCE,
+                StringType.INSTANCE,
+                StringType.INSTANCE,
+                StringType.INSTANCE,
+                StringType.INSTANCE,
+                StringType.INSTANCE,
+                StringType.INSTANCE,
+                StringType.INSTANCE,
+                DoubleType.INSTANCE,
+                DoubleType.INSTANCE,
+                StringType.INSTANCE,
+                StringType.INSTANCE};
     }
 
     @Override
@@ -56,6 +81,8 @@ public class GumgaAddressUserType implements CompositeUserType {
                 return ((GumgaAddress) component).getLongitude();
             case 11:
                 return ((GumgaAddress) component).getFormalCode();
+            case 12:
+                return ((GumgaAddress) component).getStateCode();
             default:
                 return null;
 
@@ -101,6 +128,9 @@ public class GumgaAddressUserType implements CompositeUserType {
             case 11:
                 ((GumgaAddress) component).setFormalCode((String) setValue);
                 break;
+            case 12:
+                ((GumgaAddress) component).setStateCode((String) setValue);
+                break;
         }
     }
 
@@ -130,18 +160,18 @@ public class GumgaAddressUserType implements CompositeUserType {
 
     @Override
     public Object nullSafeGet(final ResultSet resultSet,
-            final String[] names,
-            final SessionImplementor paramSessionImplementor, final Object paramObject)
+                              final String[] names,
+                              final SessionImplementor paramSessionImplementor, final Object paramObject)
             throws HibernateException, SQLException {
         //owner here is of type TestUser or the actual owning Object
         GumgaAddress object = null;
         final String zipCode = resultSet.getString(names[0]);
         //Deferred check after first read
-        if (!resultSet.wasNull()) {
-            object = new GumgaAddress(zipCode, resultSet.getString(names[1]), resultSet.getString(names[2]), resultSet.getString(names[3]), resultSet.getString(names[4]), 
-                    resultSet.getString(names[5]), resultSet.getString(names[6]), resultSet.getString(names[7]), resultSet.getString(names[8]),
-                    resultSet.getDouble(names[9]),resultSet.getDouble(names[10]),resultSet.getString(names[11]));
-        }
+//        if (!resultSet.wasNull()) {
+        object = new GumgaAddress(zipCode, resultSet.getString(names[1]), resultSet.getString(names[2]), resultSet.getString(names[3]), resultSet.getString(names[4]),
+                resultSet.getString(names[5]), resultSet.getString(names[6]), resultSet.getString(names[7]), resultSet.getString(names[8]),
+                resultSet.getDouble(names[9]),resultSet.getDouble(names[10]),resultSet.getString(names[11]),resultSet.getString(names[12]));
+//        }
         return object;
     }
 
@@ -151,8 +181,8 @@ public class GumgaAddressUserType implements CompositeUserType {
      */
     @Override
     public void nullSafeSet(final PreparedStatement preparedStatement,
-            final Object value, final int property,
-            final SessionImplementor sessionImplementor)
+                            final Object value, final int property,
+                            final SessionImplementor sessionImplementor)
             throws HibernateException, SQLException {
         if (null == value) {
             preparedStatement.setNull(property + 0, java.sql.Types.VARCHAR);
@@ -167,6 +197,7 @@ public class GumgaAddressUserType implements CompositeUserType {
             preparedStatement.setNull(property + 9, java.sql.Types.DOUBLE);
             preparedStatement.setNull(property + 10, java.sql.Types.DOUBLE);
             preparedStatement.setNull(property + 11, java.sql.Types.VARCHAR);
+            preparedStatement.setNull(property + 12, java.sql.Types.VARCHAR);
         } else {
             final GumgaAddress object = (GumgaAddress) value;
             preparedStatement.setString(property + 0, object.getZipCode());
@@ -178,9 +209,22 @@ public class GumgaAddressUserType implements CompositeUserType {
             preparedStatement.setString(property + 6, object.getLocalization());
             preparedStatement.setString(property + 7, object.getState());
             preparedStatement.setString(property + 8, object.getCountry());
-            preparedStatement.setDouble(property + 9, object.getLatitude());
-            preparedStatement.setDouble(property + 10, object.getLongitude());
+
+            if (object.getLatitude()!=null) {
+                preparedStatement.setDouble(property + 9, object.getLatitude());
+            } else {
+                preparedStatement.setNull(property + 9, java.sql.Types.DOUBLE);
+            }
+
+            if (object.getLongitude()!=null) {
+                preparedStatement.setDouble(property + 10, object.getLongitude());
+            } else {
+                preparedStatement.setNull(property + 10, java.sql.Types.DOUBLE);
+            }
+
             preparedStatement.setString(property + 11, object.getFormalCode());
+            preparedStatement.setString(property + 12, object.getStateCode());
+
         }
     }
 
@@ -210,7 +254,7 @@ public class GumgaAddressUserType implements CompositeUserType {
      */
     @Override
     public Serializable disassemble(final Object value,
-            final SessionImplementor paramSessionImplementor)
+                                    final SessionImplementor paramSessionImplementor)
             throws HibernateException {
         //Thus the data Types must implement serializable
         return (Serializable) value;
@@ -221,7 +265,7 @@ public class GumgaAddressUserType implements CompositeUserType {
      */
     @Override
     public Object assemble(final Serializable cached,
-            final SessionImplementor sessionImplementor, final Object owner)
+                           final SessionImplementor sessionImplementor, final Object owner)
             throws HibernateException {
         //would work as the class is Serializable, and stored in cache as it is - see disassemble
         return cached;
@@ -232,7 +276,7 @@ public class GumgaAddressUserType implements CompositeUserType {
      */
     @Override
     public Object replace(final Object original, final Object target,
-            final SessionImplementor paramSessionImplementor, final Object owner)
+                          final SessionImplementor paramSessionImplementor, final Object owner)
             throws HibernateException {
         //        return original; // if immutable use this
         //For mutable types at bare minimum return a deep copy of first argument
