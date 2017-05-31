@@ -9,7 +9,27 @@
 Framework Backend
 
 1.5.15
-  Melhora nas mensagens quando a comunicação com o segurança está indisponível
+  - Melhora nas mensagens quando a comunicação com o segurança está indisponível
+  - Inclusão no GumgaAddres do atributo stateCode
+      **************** IMPORTANTE QUEBRA DE COMPILAÇÂO *********************
+      @Columns(columns = {
+             @Column(name = "cod_postal"),
+             @Column(name = "tipo_logradouro"),
+             @Column(name = "logradouro"),
+             @Column(name = "numero"),
+             @Column(name = "informacao"),
+             @Column(name = "bairro"),
+             @Column(name = "localizacao"),
+             @Column(name = "estado"),
+             @Column(name = "cidade"),
+             @Column(name = "latitude"),
+             @Column(name = "longitude"),
+             @Column(name = "formalCode")
+             //ADICIONAR
+             @Column(name = "stateCode")
+             //FIM ADICIONAR
+         })
+         private GumgaAddress endereco;
 
 1.5.13
  Compartilhamento por dono de instância
