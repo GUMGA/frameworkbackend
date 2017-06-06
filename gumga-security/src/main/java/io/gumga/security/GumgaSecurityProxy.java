@@ -66,7 +66,7 @@ class GumgaSecurityProxy {
     }
 
     @ApiOperation(value = "delete", notes = "Faz logout do usuário fazendo o token informado expirar.")
-    @RequestMapping(value = "/{token}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{token:.+}", method = RequestMethod.DELETE)
     public Map delete(@PathVariable String token) {
         try {
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/" + token;
