@@ -8,12 +8,17 @@ import io.gumga.domain.GumgaServiceable;
 import io.gumga.presentation.api.AbstractNoDeleteGumgaAPI;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
+    
+    private static final Logger log = LoggerFactory.getLogger(AbstractGumgaAPI.class);
 
     protected GumgaServiceable<T> service;
 
@@ -71,7 +76,7 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
     }
 
     public void doAction(String action, T obj) {
-        System.out.println(action + "-----" + obj);
+        log.info(action + "-----" + obj);
     }
 
     protected Object selectElementsForAction(String action, Long[] ids) {

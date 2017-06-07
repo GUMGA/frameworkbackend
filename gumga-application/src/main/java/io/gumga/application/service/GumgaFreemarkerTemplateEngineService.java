@@ -10,6 +10,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import io.gumga.core.GumgaValues;
 import io.gumga.core.exception.TemplateEngineException;
 import io.gumga.core.service.GumgaAbstractTemplateEngineAdapter;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Template engine service implementation using the Freemarker engine.
  * http://freemarker.org
@@ -34,8 +38,9 @@ import java.util.Map;
 @Service
 public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateEngineAdapter {
 
-    private static Configuration cfg;
+    private static final Logger log = LoggerFactory.getLogger(GumgaFreemarkerTemplateEngineService.class);
 
+    private static Configuration cfg;
     private String templateFolder;
     private String defaultEncoding;
 
@@ -103,7 +108,7 @@ public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateE
             } catch (URISyntaxException e) {
                 throw new TemplateEngineException("An error occurred while initializating the template engine", e);
             } catch (java.nio.file.FileSystemNotFoundException ex) {
-                System.out.println("------->Templates não encontrados." + ex);
+                log.warn("------->Templates não encontrados." + ex);
             }
 
         }

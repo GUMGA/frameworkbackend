@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.Map;
+import org.springframework.web.client.RestClientException;
 
 /**
  *
@@ -47,15 +48,19 @@ public class GumgaInstanceValuesProxy {
     @ApiOperation(value = "List", notes = "Carrega entidade pela chave informada.")
     @RequestMapping(method = RequestMethod.GET)
     public Map load() {
-        String software = GumgaThreadScope.softwareName.get();
-        String token = GumgaThreadScope.gumgaToken.get();
-        String url = getBaseUrl() + "/token/instance-values/" + software + "/" + token ;
-        
-        Map response = getRestTemplate().getForObject(url, Map.class);
-        if (response == null) {
-            response = Collections.EMPTY_MAP;
+        try {
+            String software = GumgaThreadScope.softwareName.get();
+            String token = GumgaThreadScope.gumgaToken.get();
+            String url = getBaseUrl() + "/token/instance-values/" + software + "/" + token;
+            
+            Map response = getRestTemplate().getForObject(url, Map.class);
+            if (response == null) {
+                response = Collections.EMPTY_MAP;
+            }
+            return response;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
         }
-        return response;
     }
 
 }

@@ -5,8 +5,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 /**
  * Classe utilitária para facilitar reflexão.
@@ -14,6 +16,8 @@ import java.util.logging.Logger;
  * @author Equipe Gumga
  */
 public class ReflectionUtils {
+    
+    private static final Logger log = LoggerFactory.getLogger(ReflectionUtils.class);
 
     private ReflectionUtils() {
     }
@@ -126,7 +130,7 @@ public class ReflectionUtils {
             field.setAccessible(true);
             field.set(object, id);
         } catch (IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(ReflectionUtils.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("Problemas ao alterar o ID.",ex);
         }
     }
 
@@ -144,7 +148,7 @@ public class ReflectionUtils {
                 field.setAccessible(true);
                 row.put(f.trim(), field.get(obj));
             } catch (Exception ex) {
-                Logger.getLogger(ReflectionUtils.class.getName()).log(Level.SEVERE, null, ex);
+                log.error("Problemas ao mapear os atributos.",ex);
             }
         }
         return row;

@@ -73,7 +73,27 @@ public class GumgaOi extends GumgaDomain implements Comparable<GumgaOi> {
         return oi;
     }
 
+    public static GumgaOi getParentOi(GumgaOi oi) {
+        String oiValue = oi.getValue();
+        oiValue = oiValue.substring(0, oiValue.lastIndexOf('.'));
+        if (oiValue.lastIndexOf('.') == -1) {
+            return null;
+        }
+        oiValue = oiValue.substring(0, oiValue.lastIndexOf('.')) + ".";
+        GumgaOi parent = new GumgaOi(oiValue);
+        return parent;
+    }
+
     public static final GumgaOi MARK_PUBLIC = new GumgaOi(TenancyPublicMarking.PUBLIC.getMark());
     public static final GumgaOi MARK_NULL = new GumgaOi(TenancyPublicMarking.NULL.getMark());
+
+    public static void main(String args[]) {
+        GumgaOi oi = new GumgaOi("1.2.3.4.5.");
+        while (oi != null) {
+            System.out.println("---->" + oi);
+            oi = GumgaOi.getParentOi(oi);
+        }
+
+    }
 
 }
