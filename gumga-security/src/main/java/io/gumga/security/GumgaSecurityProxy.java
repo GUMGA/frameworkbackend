@@ -50,7 +50,7 @@ class GumgaSecurityProxy {
     }
 
     @ApiOperation(value = "create", notes = "Cria token através do usuário e senha informados.")
-    @RequestMapping(value = "/create/{user}/{password}", method = RequestMethod.GET)
+    @RequestMapping(value = "/create/{user}/{password:.+}", method = RequestMethod.GET)
     public ResponseEntity create(@PathVariable String user, @PathVariable String password) {
         String url = gumgaValues.getGumgaSecurityUrl() + "/token/create/" + user + "/" + password + "/" + gumgaValues.getSoftwareName();
         try {
@@ -147,10 +147,10 @@ class GumgaSecurityProxy {
         }
     }
 
-    @RequestMapping(value = "/{token}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{token:.+}", method = RequestMethod.GET)
     public Map get(@PathVariable String token) {
         try {
-            String url = gumgaValues.getGumgaSecurityUrl() + "/public/token/" + token;
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/get/" + token;
             Map resposta = restTemplate.getForObject(url, Map.class);
             return resposta;
         } catch (RestClientException restClientException) {
@@ -265,7 +265,7 @@ class GumgaSecurityProxy {
     }
 
     @ApiOperation(value = "changeByTicket", notes = "Verifica se o ticket já foi utilizado e altera a senha do usuário.")
-    @RequestMapping(method = RequestMethod.GET, value = "/lostpassword/{code}/{password}")
+    @RequestMapping(method = RequestMethod.GET, value = "/lostpassword/{code}/{password:.+}")
     public Map changeByTicket(@PathVariable String code, @PathVariable String password) {
         try {
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/lostpassword/" + code + "/" + password;
@@ -289,7 +289,7 @@ class GumgaSecurityProxy {
     }
 
     @ApiOperation(value = "/organizations/users", notes = "Buscar todos os usuarios por organização.")
-    @RequestMapping(method = RequestMethod.GET, value = "/organizations/users/{token}")
+    @RequestMapping(method = RequestMethod.GET, value = "/organizations/users/{token:.+}")
     public List findAllUserByOrganization(@PathVariable String token) {
         try {
             final String url = gumgaValues.getGumgaSecurityUrl() + "/token/organization/users?gumgaToken=" + token;
