@@ -73,7 +73,22 @@ public abstract class AllDatabasesTest {
         query.setSortField("name");
         List<Company> result = service.pesquisa(query).getValues();
         System.out.println("acentosEMaiusculasBuscaSimples---->" + result);
-        Assert.isTrue(result.size()==1||result.size()==2, "Um ou dois por causa do postgress e do h2");
+        //Assert.isTrue(result.size()==1||result.size()==2, "Um ou dois por causa do postgress e do h2");
+        Assert.isTrue(result.size()==2, "Um ou dois por causa do postgress e do h2");
+    }
+    @Test
+    @Transactional
+    public void acentosEMaiusculasBuscaSimples2() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        query.setPhonetic(true);
+        query.setQ("joao");
+        query.setSearchFields("name");
+        query.setSortField("name");
+        List<Company> result = service.pesquisa(query).getValues();
+        System.out.println("acentosEMaiusculasBuscaSimples---->" + result);
+        //Assert.isTrue(result.size()==1||result.size()==2, "Um ou dois por causa do postgress e do h2");
+        Assert.isTrue(result.size()==2, "Um ou dois por causa do postgress e do h2");
     }
 
     @Test
@@ -127,7 +142,8 @@ public abstract class AllDatabasesTest {
     public void dataBuscaAvancada() {
         GumgaThreadScope.organizationCode.set("1.");
         QueryObject query = new QueryObject();
-        query.setAq("obj.date >= '1975-09-18 00:00:00' AND obj.date <= '1975-09-18 23:59:59'");
+        query.setAq("obj.date >= to_timestamp('1975-09-18 00:00:00','yyyy/MM/dd HH24:mi:ss') AND obj.date <= to_timestamp('1975-09-19 23:59:59','yyyy/MM/dd HH24:mi:ss')");
+        //query.setAq("obj.date >= '1975-09-18' AND obj.date <= '1975-09-19'");
         List<Company> result = service.pesquisa(query).getValues();
         System.out.println("\ndataBuscaSimples---->" + result + "\n");
         assertEquals(2, result.size());
@@ -138,7 +154,8 @@ public abstract class AllDatabasesTest {
     public void dataBuscaAvancada2() {
         GumgaThreadScope.organizationCode.set("1.");
         QueryObject query = new QueryObject();
-        query.setAq("obj.date > '1980-01-01'");
+        query.setAq("obj.date > to_timestamp('1980-01-11 00:00:00','yyyy/MM/dd HH24:mi:ss')");
+        //query.setAq("obj.date > '1980-01-11'");
         List<Company> result = service.pesquisa(query).getValues();
         System.out.println("\ndataBuscaSimples---->" + result + "\n");
         assertEquals(4, result.size());
