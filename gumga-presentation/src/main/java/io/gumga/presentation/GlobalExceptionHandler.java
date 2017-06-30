@@ -33,6 +33,7 @@ import org.springframework.web.util.WebUtils;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,7 +189,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         gumgaLoggerService.logToFile(ex.toString(), 4);
         logger.error("Error on operation", ex);
         response.setStatus(ex.getHttpStatus().value());
-        return new ErrorResource(ex.getClass().getSimpleName(), "Error on operation", ex.getMessage());
+        ErrorResource errorResource = new ErrorResource(ex.getClass().getSimpleName(), "Error on operation", ex.getMessage());
+        errorResource.setFieldErrors(ex.getFieldErrors());
+        return errorResource;
     }
 
     @Override
