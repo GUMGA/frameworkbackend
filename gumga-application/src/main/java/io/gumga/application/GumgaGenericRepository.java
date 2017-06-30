@@ -66,6 +66,10 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             entityManager.createNativeQuery("alter session set nls_timestamp_format = 'YYYY-MM-DD HH24:MI:SS'").executeUpdate();
         }
 
+        if (query.isAQO()){
+            return aqoSearch(query);
+        }
+
         if (query.isAdvanced()) {
             return advancedSearch(query);
         }
@@ -74,6 +78,11 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         List<T> data = query.isCountOnly() ? Collections.emptyList() : getOrdered(query);
 
         return new SearchResult<>(query, count, data);
+    }
+
+    public SearchResult<T> aqoSearch(QueryObject query) {
+        query.setAq(GumgaGenericRepositoryHelper.hql(query.getAqo()));
+        return advancedSearch(query);
     }
 
     private List<T> getOrdered(QueryObject query) {

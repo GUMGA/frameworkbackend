@@ -10,6 +10,7 @@ import java.util.Collections;
  */
 public class QueryObject {
 
+    public static final String AQO = "AQO";
     public static final String SIMPLE = "SIMPLE";
     public static final String EMPTY = "[]";
 
@@ -64,7 +65,11 @@ public class QueryObject {
     /**
      * Se true, busca apenas os inativos
      */
-    private boolean inactiveSearch=false;
+    private boolean inactiveSearch = false;
+
+    public boolean isAQO() {
+        return AQO.equals(aq);
+    }
 
     public boolean isInactiveSearch() {
         return inactiveSearch;
