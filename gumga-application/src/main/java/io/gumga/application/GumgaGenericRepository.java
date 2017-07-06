@@ -37,7 +37,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-
 import static org.hibernate.criterion.Order.asc;
 import static org.hibernate.criterion.Order.desc;
 import static org.hibernate.criterion.Projections.rowCount;
@@ -60,11 +59,15 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     @Override
     public SearchResult<T> search(QueryObject query) {
         if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getOracleLikeMapWithAdjust())) {
-            log.warn("ORACLE ADJUST" );
+            log.warn("ORACLE ADJUST");
             entityManager.createNativeQuery("alter session set nls_comp=linguistic").executeUpdate();
             entityManager.createNativeQuery("alter session set nls_sort=latin_ai").executeUpdate();
             entityManager.createNativeQuery("alter session set nls_date_format = 'YYYY-MM-DD'").executeUpdate();
             entityManager.createNativeQuery("alter session set nls_timestamp_format = 'YYYY-MM-DD HH24:MI:SS'").executeUpdate();
+        }
+
+        if (query.isAQO()){
+            return aqoSearch(query);
         }
 
         if (query.isAdvanced()) {
@@ -75,6 +78,11 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         List<T> data = query.isCountOnly() ? Collections.emptyList() : getOrdered(query);
 
         return new SearchResult<>(query, count, data);
+    }
+
+    public SearchResult<T> aqoSearch(QueryObject query) {
+        query.setAq(GumgaGenericRepositoryHelper.hql(query.getAqo()));
+        return advancedSearch(query);
     }
 
     private List<T> getOrdered(QueryObject query) {
@@ -252,6 +260,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
      * @return resultado da pesquisa
      */
     private SearchResult<T> advancedSearch(QueryObject query) {
+        System.out.println("---RECEBIDA----->"+query.getAq());
 //        if (query.getAq().startsWith("{")) {
 //            try {
 //                ObjectMapper mapper = new ObjectMapper();
@@ -261,13 +270,17 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 //                throw new RuntimeException(ex);
 //            }
 //        }
-
 //        List<QueryObjectElement> qoeFromString = GumgaGenericRepositoryHelper.qoeFromString(query.getAqo());
 //        String hqlFromQes = "";// GumgaGenericRepositoryHelper.hqlFromQoes(entityInformation,qoeFromString);
 //
 //        if (!QueryObject.EMPTY.equals(query.getAqo())) {
 //            //query.setAq(hqlFromQes);
 //        }
+        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())||
+            GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
+            query.setAq(query.getAq().replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", ""));
+        }
+        System.out.println("---CONVERTIDA----->"+query.getAq());
         String modelo = "from %s obj WHERE %s";
         if (hasMultitenancy()) {
             String ld = "";

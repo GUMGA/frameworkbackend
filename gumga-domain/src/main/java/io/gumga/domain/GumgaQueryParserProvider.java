@@ -50,7 +50,9 @@ public class GumgaQueryParserProvider {
     }
 
     public static final Map<Class<?>, CriterionParser> getH2LikeMap() {
-        return getBaseMap();
+        Map<Class<?>, CriterionParser> h2Map = getBaseMap();
+        h2Map.put(String.class, AbstractStringCriterionParser.H2_STRING_CRITERION_PARSER);
+        return h2Map;
     }
 
     public static final Map<Class<?>, CriterionParser> getOracleLikeMap() {
@@ -70,14 +72,14 @@ public class GumgaQueryParserProvider {
 
     public static final Map<Class<?>, CriterionParser> getMySqlLikeMap() {
         Map<Class<?>, CriterionParser> mySqlMap = getBaseMap();
-        mySqlMap.put(String.class, AbstractStringCriterionParser.MYSQL_STRING_CRITERION_PARSER);
+        //mySqlMap.put(String.class, AbstractStringCriterionParser.MYSQL_STRING_CRITERION_PARSER);
         return mySqlMap;
     }
 
     public static final Map<Class<?>, CriterionParser> getPostgreSqlLikeMap() {
-        Map<Class<?>, CriterionParser> mySqlMap = getBaseMap();
-        mySqlMap.put(String.class, AbstractStringCriterionParser.POSTGRESQL_STRING_CRITERION_PARSER);
-        return mySqlMap;
+        Map<Class<?>, CriterionParser> postgreSQLLikeMap = getBaseMap();
+        postgreSQLLikeMap.put(String.class, AbstractStringCriterionParser.POSTGRESQL_STRING_CRITERION_PARSER);
+        return postgreSQLLikeMap;
     }
 
     protected static final CriterionParser STRING_CRITERION_PARSER_WITHOUT_TRANSLATE = (field, value) -> {
@@ -101,7 +103,7 @@ public class GumgaQueryParserProvider {
      * @deprecated
      */
     @Deprecated
-    private static final CriterionParser STRING_CRITERION_PARSER = (field, value) -> {
+    protected static final CriterionParser STRING_CRITERION_PARSER = (field, value) -> {
 
         value = Normalizer.normalize(value, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 

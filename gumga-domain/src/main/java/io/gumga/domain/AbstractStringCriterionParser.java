@@ -58,6 +58,15 @@ public abstract class AbstractStringCriterionParser implements CriterionParser {
         }
     };
 
+
+    public static final AbstractStringCriterionParser H2_STRING_CRITERION_PARSER = new AbstractStringCriterionParser() {
+
+        @Override
+        public String createSoundexExpression(String field, String value) {
+            return "upper(translate({alias}." + field + ",'" + SOURCE_CHARS + "','" + TARGET_CHARS + "')) like (?)";
+        }
+    };
+
     /**
      * MYSQL String Criterion Parser
      */
@@ -76,7 +85,7 @@ public abstract class AbstractStringCriterionParser implements CriterionParser {
 
         @Override
         public String createSoundexExpression(String field, String value) {
-            return "dmetaphone(" + field + ") = dmetaphone( (?) )";
+            return "upper(translate({alias}." + field + ",'" + SOURCE_CHARS + "','" + TARGET_CHARS + "')) like (?)";
         }
     };
 }

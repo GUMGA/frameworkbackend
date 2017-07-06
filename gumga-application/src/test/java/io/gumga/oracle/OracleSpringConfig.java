@@ -47,7 +47,7 @@ public class OracleSpringConfig {
     private HikariConfig commonConfig() {
 //        GumgaQueryParserProvider.defaultMap = GumgaQueryParserProvider.getH2LikeMap();
 
-        GumgaQueryParserProvider.defaultMap = gumgaQueryParseProviderFactory("ORACLE");
+        GumgaQueryParserProvider.defaultMap = GumgaQueryParserProvider.getOracleLikeMap();
         HikariConfig config = new HikariConfig();
         config.setMinimumIdle(5);
         config.setMaximumPoolSize(50);

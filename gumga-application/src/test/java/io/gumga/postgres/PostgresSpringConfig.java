@@ -29,25 +29,9 @@ import org.springframework.orm.jpa.vendor.Database;
 public class PostgresSpringConfig {
    
     
-        private Map<Class<?>, CriterionParser> gumgaQueryParseProviderFactory(String name) {
-        switch (Database.valueOf(name)) {
-            case POSTGRESQL:
-                return GumgaQueryParserProvider.getPostgreSqlLikeMap();
-            case MYSQL:
-                return GumgaQueryParserProvider.getMySqlLikeMap();
-            case ORACLE:
-                return GumgaQueryParserProvider.getOracleLikeMap();
-            case H2:
-                return GumgaQueryParserProvider.getH2LikeMap();
-            default:
-                return GumgaQueryParserProvider.getH2LikeMap();
-        }
-    }
-
     private HikariConfig commonConfig() {
-//        GumgaQueryParserProvider.defaultMap = GumgaQueryParserProvider.getH2LikeMap();
 
-        GumgaQueryParserProvider.defaultMap = gumgaQueryParseProviderFactory("POSTGRESQL");
+        GumgaQueryParserProvider.defaultMap = GumgaQueryParserProvider.getPostgreSqlLikeMap();
         HikariConfig config = new HikariConfig();
         config.setMinimumIdle(5);
         config.setMaximumPoolSize(50);

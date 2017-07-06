@@ -39,7 +39,9 @@ public class HibernateQueryObject {
         
 
         if (!queryObject.isPhonetic()) {
-            this.parsers.put(String.class, GumgaQueryParserProvider.STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+            //this.parsers.put(String.class, GumgaQueryParserProvider.STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
+            //this.parsers.put(String.class, GumgaQueryParserProvider.STRING_CRITERION_PARSER);
+            
         }
         
         //Não está selecionando registros salvos no banco com acento.

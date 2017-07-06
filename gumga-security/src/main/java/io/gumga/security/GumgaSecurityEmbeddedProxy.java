@@ -3,6 +3,7 @@ package io.gumga.security;
 import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
+import io.gumga.domain.integration.IntegrationEspecificationDTO;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -111,4 +112,15 @@ public class GumgaSecurityEmbeddedProxy {
         }
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/newintegrationuser")
+    @Transactional
+    public String newIntegrationUser(@RequestBody IntegrationEspecificationDTO dto) {
+        final String url = getSecurityUrl() + "/api/integration/new";
+        final HttpHeaders headers = new HttpHeaders();
+        headers.set("gumgaToken", GumgaThreadScope.gumgaToken.get());
+        String resp = this.restTemplate.exchange(url,HttpMethod.POST, new HttpEntity(dto, headers), String.class).getBody();
+        return resp;
+    }
 }
+
+
