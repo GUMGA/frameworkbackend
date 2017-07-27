@@ -9,6 +9,18 @@
 Framework Backend
 1.5.18
 
+ - Retirado System.out.println RECEBIDA e CONVERTIDA
+ - Corrigido excessão NullPointerException ao instancia BigDecimal na classe GumgaCustomFieldValue
+ - Adicionado campo colSize na classe GumgaCustomField para poder personalizar tamanho dos campo
+
+   ***************************IMPORTANTE QUEBRA DE COMPILAÇÃO****************************************************
+   * Como foi adicionado novo campo na classe (GumgaCustomField), se utilizar liquibase, é necessário criar um  *
+   * changeset para adicionar este campo na tabela                                                              *
+   * Novo atributo : **private Integer colSize**                                                                *
+   **************************************************************************************************************
+
+ -
+
 1.5.17
   - Adicionado FieldErrors no GumgaRunTimeException
 
