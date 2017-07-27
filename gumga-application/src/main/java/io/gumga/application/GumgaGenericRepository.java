@@ -260,7 +260,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
      * @return resultado da pesquisa
      */
     private SearchResult<T> advancedSearch(QueryObject query) {
-        System.out.println("---RECEBIDA----->"+query.getAq());
+//        System.out.println("---RECEBIDA----->"+query.getAq());
 //        if (query.getAq().startsWith("{")) {
 //            try {
 //                ObjectMapper mapper = new ObjectMapper();
@@ -280,7 +280,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
             query.setAq(query.getAq().replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", ""));
         }
-        System.out.println("---CONVERTIDA----->"+query.getAq());
+//        System.out.println("---CONVERTIDA----->"+query.getAq());
         String modelo = "from %s obj WHERE %s";
         if (hasMultitenancy()) {
             String ld = "";
