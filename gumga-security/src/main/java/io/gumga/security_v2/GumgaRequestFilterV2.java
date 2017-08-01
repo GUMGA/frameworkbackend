@@ -131,6 +131,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
             GumgaThreadScope.ip.set(request.getRemoteAddr());
             GumgaThreadScope.softwareName.set(softwareId);
             GumgaThreadScope.instanceOi.set(ar.getInstanceOi());
+            GumgaThreadScope.ignoreCheckOwnership.set(Boolean.FALSE);
 
             saveLog(ar, request, operationKey, endPoint, method, ar.isAllowed());
             if (ar.isAllowed()) {

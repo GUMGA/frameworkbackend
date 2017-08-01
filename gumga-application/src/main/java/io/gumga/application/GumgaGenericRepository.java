@@ -66,7 +66,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             entityManager.createNativeQuery("alter session set nls_timestamp_format = 'YYYY-MM-DD HH24:MI:SS'").executeUpdate();
         }
 
-        if (query.isAQO()){
+        if (query.isAQO()) {
             return aqoSearch(query);
         }
 
@@ -219,7 +219,9 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             if (search.getCount() == 1) {
                 return search.getValues().get(0);
             }
-            throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
+            if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
+                throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
+            }
         }
 
         T resource = super.findOne(id);
@@ -276,8 +278,8 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 //        if (!QueryObject.EMPTY.equals(query.getAqo())) {
 //            //query.setAq(hqlFromQes);
 //        }
-        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())||
-            GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
+        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())
+                || GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
             query.setAq(query.getAq().replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", ""));
         }
 //        System.out.println("---CONVERTIDA----->"+query.getAq());
