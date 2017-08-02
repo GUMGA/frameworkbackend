@@ -22,7 +22,7 @@ mvn -v
 
 O framework da gumga está disponível através de repositório no mavencentral e para utilizá-lo recomenda-se a criação do projeto via archetype da gumga que cria a estrutura básica de um projeto.
 ```shell
-mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=io.gumga  -DarchetypeArtifactId=gumga-archetype -DarchetypeVersion=LATEST -DgroupId=br.com.gumgademo  -DartifactId=exemplo -Dversion=0.1
+mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=io.gumga  -DarchetypeArtifactId=gumga-archetype -DarchetypeVersion=LATEST -DgroupId=br.com.gumgademo  -DartifactId=exemplo -Dversion=0.1-SNAPSHOT
 ```
 
 
