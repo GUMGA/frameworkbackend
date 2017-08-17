@@ -65,7 +65,7 @@ public class GumgaSecurityEntitiesProxy {
         return response;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/user-by-email/{email}")
+    @RequestMapping(method = RequestMethod.GET, path = "/user-by-email/{email:.+}")
     public ResponseEntity<Map> getUserByEmail(@PathVariable String email) {
         final HttpHeaders headers = new HttpHeaders();
         try {
