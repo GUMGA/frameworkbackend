@@ -52,6 +52,9 @@ public class JavaScriptEngine {
      * @return valor resultante
      */
     public static Date evalForDate(String script, Map<String, Object> objects) {
+        if (script==null || script.trim().isEmpty()){
+            return null;
+        }
         String scriptForDate = "(" + script + ").getTime()";
         long mili = (long) (double) eval(scriptForDate, objects);
         return new Date(mili);

@@ -47,3 +47,5 @@ nb_jr_remoting.cfg
 /target
 
 /gumga-security/nbproject/
+/gumga-core/nbproject/
+/gumga-domain/nbproject/
