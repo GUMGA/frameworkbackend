@@ -68,6 +68,7 @@
         <module>gumga-security</module>
         <module>gumga-validation</module>
         <module>gumga-application</module>
+        <module>gumga-reports</module>
     </modules>
 
 

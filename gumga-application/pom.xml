@@ -168,7 +168,12 @@
             <artifactId>javax.interceptor-api</artifactId> 
             <version>1.2</version> 
         </dependency>
-        
+        <dependency>
+            <groupId>com.stimulsoft</groupId>
+            <artifactId>stimulsoft-reports-base</artifactId>
+            <version>2017.1.10</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <repositories>	
