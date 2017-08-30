@@ -69,6 +69,7 @@
         <module>gumga-validation</module>
         <module>gumga-application</module>
         <module>gumga-reports</module>
+        <module>gumga-amazon-ses</module>
     </modules>
 
 
