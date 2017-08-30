@@ -81,7 +81,12 @@ public class JSDataAdapterService {
                 Class.forName("org.postgresql.Driver");
                 // connectionURL = String.format("jdbc:postgresql://%s:%s/%s", getHost(params),
                 // getPort(params), getDatabase(params));
+            } else if ("Oracle".equals(dbName)) {
+                Class.forName("oracle.jdbc.OracleDriver");
+                // connectionURL = String.format("jdbc:postgresql://%s:%s/%s", getHost(params),
+                // getPort(params), getDatabase(params));
             }
+
             con = DriverManager.getConnection(getUrl(params), info);
             return onConnect(command, con);
         } catch (Exception e) {
