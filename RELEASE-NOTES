@@ -7,8 +7,17 @@
 
 =======================================
 Framework Backend
-1.5.18
 
+
+1.5.18
+ - Permite excluir múltiplos registros
+ - Criação do módulo para envio via AWS async
+ - Criação do módulo para relatórios da Simulsoft
+ - Permir utilizar datas vazias no JavaScriptEngine
+ - Correção no na busca de usuário por email
+ - Criação de endereços com latitude e longitude nulos
+ - Melhorias no AQO para validar ownership
+ - 
  - Retirado System.out.println RECEBIDA e CONVERTIDA
  - Corrigido excessão NullPointerException ao instancia BigDecimal na classe GumgaCustomFieldValue
  - Adicionado campo colSize na classe GumgaCustomField para poder personalizar tamanho dos campo
