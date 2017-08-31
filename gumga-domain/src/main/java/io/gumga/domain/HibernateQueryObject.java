@@ -2,6 +2,8 @@ package io.gumga.domain;
 
 import io.gumga.core.QueryObject;
 import io.gumga.core.utils.ReflectionUtils;
+import java.io.Serializable;
+import java.lang.reflect.Field;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
@@ -78,12 +80,18 @@ public class HibernateQueryObject {
     private Criterion createCriterion(String field, String value, Class<?> clazz) throws ParseException, NumberFormatException, UnsupportedDataTypeException {
         String[] chain = field.split("\\.");
         Class<?> type;
+        Field javaField=null;
 
         if (chain.length > 1) {
-            Class<?> superType = ReflectionUtils.findField(clazz, chain[0]).getType();
+            javaField = ReflectionUtils.findField(clazz, chain[0]);
+            Class<?> superType = javaField.getType();
             type = ReflectionUtils.findField(superType, chain[1]).getType();
         } else {
-            type = ReflectionUtils.findField(clazz, field).getType();
+            javaField=ReflectionUtils.findField(clazz, field);
+            type = javaField.getType();
+        }
+        if (javaField.getType().equals(Serializable.class)){
+            type=ReflectionUtils.inferGenericType(clazz, 0);
         }
 
         CriterionParser parser = parsers.get(type);
