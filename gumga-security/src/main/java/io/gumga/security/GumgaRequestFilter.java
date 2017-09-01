@@ -133,7 +133,7 @@ public class GumgaRequestFilter extends HandlerInterceptorAdapter {
             GumgaThreadScope.organizationCode.set(ar.getOrganizationCode());
             GumgaThreadScope.operationKey.set(operationKey);
             GumgaThreadScope.organizationId.set(ar.getOrganizationId());
-
+            GumgaThreadScope.ignoreCheckOwnership.set(Boolean.FALSE);
             GumgaThreadScope.operationKey.set(operationKey);
             GumgaThreadScope.ip.set(request.getRemoteAddr());
 

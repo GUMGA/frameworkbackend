@@ -6,6 +6,7 @@ import io.gumga.core.SearchResult;
 import io.gumga.testmodel.Book;
 import io.gumga.testmodel.BookRepository;
 import io.gumga.testmodel.BookService;
+import io.gumga.testmodel.BookType;
 import io.gumga.testmodel.Company;
 import io.gumga.testmodel.CompanyRepository;
 import io.gumga.testmodel.CompanyService;
@@ -85,7 +86,7 @@ public class DeleteTest {
         query.setInactiveSearch(true);
         pesquisa = bookService.pesquisa(query);
         assertEquals(3l, pesquisa.getCount().longValue());
-        
+
     }
 
     @Test(expected = org.springframework.orm.jpa.JpaObjectRetrievalFailureException.class)
@@ -108,6 +109,30 @@ public class DeleteTest {
         myCarService.save(carro3);
         myCarService.save(carro4);
         myCarService.delete(Arrays.asList(new MyCar[]{carro1, carro2, carro3, carro4}));
+
+    }
+
+    @Test
+    @Transactional
+    public void queryEnum() {
+        bookRepository.deleteAll();
+        Book livro1 = new Book("The", BookType.EXERCISE);
+        Book livro2 = new Book("is", BookType.TEXT);
+        Book livro3 = new Book("ont", BookType.EXERCISE);
+        Book livro4 = new Book("the", BookType.TEXT);
+        Book livro5 = new Book("table", BookType.EXERCISE);
+        bookService.save(livro1);
+        bookService.save(livro2);
+        bookService.save(livro3);
+        bookService.save(livro4);
+        bookService.save(livro5);
+
+        QueryObject query = new QueryObject();
+        query.setQ("EXERCISE");
+        query.setSearchFields("ttype");
+
+        SearchResult<Book> pesquisa = bookService.pesquisa(query);
+        assertEquals(3l, pesquisa.getCount().longValue());
 
     }
 

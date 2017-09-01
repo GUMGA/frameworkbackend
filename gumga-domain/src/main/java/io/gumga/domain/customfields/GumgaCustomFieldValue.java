@@ -12,6 +12,7 @@ import io.gumga.domain.GumgaMultitenancy;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Armazena o valor de um atributo genérico
@@ -113,9 +114,9 @@ public class GumgaCustomFieldValue extends GumgaModel<Long> {
                 break;
             case NUMBER:
                 if (value instanceof BigDecimal) {
-                    numberValue = (BigDecimal) value;
+                    numberValue = Optional.ofNullable(value).isPresent() ? (BigDecimal) value : null;
                 } else {
-                    numberValue = new BigDecimal(value.toString());
+                    numberValue = Optional.ofNullable(value).isPresent() ? new BigDecimal(value.toString()) : null;
                 }
                 break;
             case SELECTION:

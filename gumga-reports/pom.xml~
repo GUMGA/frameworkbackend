@@ -15,8 +15,6 @@
             <groupId>io.gumga</groupId>
             <artifactId>gumga-core</artifactId>
         </dependency>
-
-        
         
         <dependency>
             <groupId>io.gumga</groupId>
@@ -27,8 +25,12 @@
             <groupId>io.gumga</groupId>
             <artifactId>gumga-application</artifactId>
         </dependency>
-
         
+        <dependency>
+            <groupId>io.gumga</groupId>
+            <artifactId>gumga-presentation</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>

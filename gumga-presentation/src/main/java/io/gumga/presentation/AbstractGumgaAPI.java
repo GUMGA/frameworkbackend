@@ -39,10 +39,9 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
     }
 
     @GumgaSwagger
-    @Transactional
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "deletemulti", notes = "Deleta vários objeto com os ids correspondentes.")
-    @RequestMapping(value = "multi/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "multi/{ids}", method = RequestMethod.DELETE)
     public RestResponse<T> delete(@PathVariable List<Long> ids) {
         List<T> entities = new ArrayList<>();
         for (Long id : ids) {
