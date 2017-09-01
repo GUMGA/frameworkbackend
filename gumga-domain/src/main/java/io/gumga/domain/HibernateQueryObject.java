@@ -97,7 +97,7 @@ public class HibernateQueryObject {
         }
         CriterionParser parser = parsers.get(type);
         if (type.isEnum()) {
-            parser = parsers.get(String.class);
+            parser = parsers.get(Enum.class);
         }
         
         if (parser == null) {
