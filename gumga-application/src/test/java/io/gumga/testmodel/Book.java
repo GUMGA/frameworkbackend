@@ -3,6 +3,7 @@ package io.gumga.testmodel;
 import io.gumga.domain.GumgaModel;
 import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.logicaldelete.GumgaLDModel;
+import javax.persistence.Column;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,7 +16,7 @@ import javax.persistence.SequenceGenerator;
 public class Book extends GumgaLDModel<Long> {
 
     private String title;
-
+    @Column(name = "book_type")
     @Enumerated(EnumType.STRING)
     private BookType ttype;
 

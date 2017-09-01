@@ -173,8 +173,6 @@ public class GumgaQueryParserProvider {
     };
 
     private static final CriterionParser ENUM_PARSER = (field, value) -> {
-        System.out.println("---->" + field);
-        System.out.println("---->" + value);
         return Restrictions.sqlRestriction("{alias}." + field + " = (?)", value, StandardBasicTypes.STRING);
     };
 
