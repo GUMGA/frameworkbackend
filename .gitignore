@@ -47,3 +47,8 @@ nb_jr_remoting.cfg
 /target
 
 /gumga-security/nbproject/
+/gumga-core/nbproject/
+/gumga-domain/nbproject/
+/gumga-reports/target/
+/gumga-reports (copy)/target/
+/gumga-amazon-ses/target/

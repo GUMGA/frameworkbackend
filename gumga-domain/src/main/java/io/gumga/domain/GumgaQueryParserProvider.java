@@ -68,8 +68,6 @@ public class GumgaQueryParserProvider {
         return oracleMapWithAdjust;
     }
 
-
-
     public static final Map<Class<?>, CriterionParser> getMySqlLikeMap() {
         Map<Class<?>, CriterionParser> mySqlMap = getBaseMap();
         //mySqlMap.put(String.class, AbstractStringCriterionParser.MYSQL_STRING_CRITERION_PARSER);
@@ -174,8 +172,14 @@ public class GumgaQueryParserProvider {
         }
     };
 
+    private static final CriterionParser ENUM_PARSER = (field, value) -> {
+        return Restrictions.sqlRestriction("{alias}." + field + " = (?)", value, StandardBasicTypes.STRING);
+    };
+
     private static final Map<Class<?>, CriterionParser> getBaseMap() {
         Map<Class<?>, CriterionParser> parsers = new HashMap<>();
+
+        parsers.put(Enum.class, ENUM_PARSER);
         parsers.put(String.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
         parsers.put(Character.class, CHARACTER_CRITERION_PARSER);
         parsers.put(char.class, CHARACTER_CRITERION_PARSER);
@@ -228,8 +232,6 @@ public class GumgaQueryParserProvider {
         parsers.put(GumgaTime.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
         parsers.put(GumgaOi.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
         parsers.put(GumgaURL.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-
-
 
         return parsers;
     }

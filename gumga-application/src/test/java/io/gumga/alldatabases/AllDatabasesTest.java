@@ -36,7 +36,8 @@ public abstract class AllDatabasesTest {
         service.save(new Company("JOAO", dia.getTime(), (false)));
         dia.set(1985, 8, 18, 11, 0, 0);
         service.save(new Company("CaRlOs", dia.getTime(), (false)));
-
+        dia.set(1900, 8, 18, 11, 0, 0);
+        service.save(new Company("AMÁRILDO SANTOS", dia.getTime(), (false)));
     }
 
     @Test
@@ -104,6 +105,18 @@ public abstract class AllDatabasesTest {
 
     @Test
     @Transactional
+    public void acentosEMaiusculasBuscaAvancada2() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        query.setAq("upper(obj.name) like upper('%amá%')");
+        List<Company> result = service.pesquisa(query).getValues();
+        System.out.println("acentosEMaiusculasBuscaAvancada---->" + result);
+        assertEquals(1, result.size());
+    }
+
+
+    @Test
+    @Transactional
     public void booleanBuscaSimples() {
         GumgaThreadScope.organizationCode.set("1.");
         QueryObject query = new QueryObject();
@@ -122,7 +135,7 @@ public abstract class AllDatabasesTest {
         query.setAq("obj.ativo IS FALSE");
         List<Company> result = service.pesquisa(query).getValues();
         System.out.println("\nbooleanSimples---->" + result + "\n");
-        assertEquals(4, result.size());
+        assertEquals(5, result.size());
     }
 
     @Test

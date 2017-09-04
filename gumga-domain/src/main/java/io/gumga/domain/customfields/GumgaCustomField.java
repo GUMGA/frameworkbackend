@@ -34,6 +34,7 @@ public class GumgaCustomField extends GumgaModel<Long> {
     private Double visualizationOrder;
     private String fieldGroup;
     private String translateKey;
+    private Integer colSize;
 
     public GumgaCustomField() {
         this.name = "";
@@ -47,6 +48,7 @@ public class GumgaCustomField extends GumgaModel<Long> {
         this.visualizationOrder = 10.0;
         this.fieldGroup = "$DEFAULT";
         this.translateKey = "class.custom_field";
+        this.colSize = 12;
     }
 
     public GumgaCustomField(String clazz, String name, String description, Boolean active, CustomFieldType type, String validationDescription, String validationScript, String defaultValueScript, String options, Double visualizationOrder, String fieldGroup, String translateKey) {
@@ -62,6 +64,7 @@ public class GumgaCustomField extends GumgaModel<Long> {
         this.visualizationOrder = visualizationOrder;
         this.fieldGroup = fieldGroup;
         this.translateKey = translateKey;
+        this.colSize = 12;
     }
 
     public String getClazz() {
@@ -182,6 +185,14 @@ public class GumgaCustomField extends GumgaModel<Long> {
 
     public void setOptionsCollection(String optionsCollection) {
         this.optionsCollection = optionsCollection;
+    }
+
+    public Integer getColSize() {
+        return colSize;
+    }
+
+    public void setColSize(Integer colSize) {
+        this.colSize = colSize;
     }
 
     @Override

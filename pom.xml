@@ -55,7 +55,7 @@
     <artifactId>gumga-backend-all</artifactId>
 
 
-    <version>1.5.17</version>
+    <version>1.5.18</version>
 
 
     <packaging>pom</packaging>
@@ -68,6 +68,8 @@
         <module>gumga-security</module>
         <module>gumga-validation</module>
         <module>gumga-application</module>
+        <module>gumga-reports</module>
+        <module>gumga-amazon-ses</module>
     </modules>
 
 
