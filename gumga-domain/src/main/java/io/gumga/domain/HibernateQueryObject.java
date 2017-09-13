@@ -58,7 +58,9 @@ public class HibernateQueryObject {
 
         for (String field : queryObject.getSearchFields()) {
             try {
-                criterions.add(createCriterion(field, queryObject.getQ(), clazz));
+                Criterion criterion = createCriterion(field, queryObject.getQ(), clazz);
+
+                criterions.add(criterion);
             } catch (ParseException ex) {
                 throw new HibernateQueryObjectException("Problem creating creterion.Cannot parse field " + field);
             } catch (NumberFormatException ex) {
@@ -105,9 +107,16 @@ public class HibernateQueryObject {
         }
 
         Field findField = ReflectionUtils.findField(clazz, field);
-        String collumName = (findField.getType().isEnum() && findField.isAnnotationPresent(javax.persistence.Column.class)) ? findField.getAnnotation(javax.persistence.Column.class).name() : field;
+        String collumName = null;
+        if(findField != null) {
+            collumName = (findField.getType().isEnum() && findField.isAnnotationPresent(javax.persistence.Column.class)) ? findField.getAnnotation(javax.persistence.Column.class).name() : field;
+        } else {
+            collumName = field;
+        }
+
+
         return parser.parse(collumName, value);
-        //return parser.parse(field, value);
+//        return parser.parse(field, value);
     }
 
     protected void forceNoResults(List<Criterion> criterions) {
