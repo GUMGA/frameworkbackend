@@ -3,6 +3,9 @@ package io.gumga.alldatabases;
 import com.mysema.commons.lang.Assert;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
+import io.gumga.core.gquery.ComparisonOperator;
+import io.gumga.core.gquery.Criteria;
+import io.gumga.core.gquery.GQuery;
 import io.gumga.testmodel.Company;
 import io.gumga.testmodel.CompanyService;
 import java.util.Calendar;
@@ -25,6 +28,9 @@ public abstract class AllDatabasesTest {
         Calendar dia = Calendar.getInstance();
         dia.set(1975, 8, 18, 10, 0, 0);
         GumgaThreadScope.organizationCode.set("1.");
+        if (service.count() > 0) {
+            return;
+        }
         service.save(new Company("João", dia.getTime(), (true)));
         dia.set(1975, 8, 18, 11, 0, 0);
         service.save(new Company("José", dia.getTime(), (false)));
@@ -38,6 +44,9 @@ public abstract class AllDatabasesTest {
         service.save(new Company("CaRlOs", dia.getTime(), (false)));
         dia.set(1900, 8, 18, 11, 0, 0);
         service.save(new Company("AMÁRILDO SANTOS", dia.getTime(), (false)));
+        GumgaThreadScope.organizationCode.set("2.");
+        service.save(new Company("João da Outra", dia.getTime(), (true)));
+
     }
 
     @Test
@@ -75,8 +84,9 @@ public abstract class AllDatabasesTest {
         List<Company> result = service.pesquisa(query).getValues();
         System.out.println("acentosEMaiusculasBuscaSimples---->" + result);
         //Assert.isTrue(result.size()==1||result.size()==2, "Um ou dois por causa do postgress e do h2");
-        Assert.isTrue(result.size()==2, "Um ou dois por causa do postgress e do h2");
+        Assert.isTrue(result.size() == 2, "Um ou dois por causa do postgress e do h2");
     }
+
     @Test
     @Transactional
     public void acentosEMaiusculasBuscaSimples2() {
@@ -89,7 +99,7 @@ public abstract class AllDatabasesTest {
         List<Company> result = service.pesquisa(query).getValues();
         System.out.println("acentosEMaiusculasBuscaSimples---->" + result);
         //Assert.isTrue(result.size()==1||result.size()==2, "Um ou dois por causa do postgress e do h2");
-        Assert.isTrue(result.size()==2, "Um ou dois por causa do postgress e do h2");
+        Assert.isTrue(result.size() == 2, "Um ou dois por causa do postgress e do h2");
     }
 
     @Test
@@ -113,7 +123,6 @@ public abstract class AllDatabasesTest {
         System.out.println("acentosEMaiusculasBuscaAvancada---->" + result);
         assertEquals(1, result.size());
     }
-
 
     @Test
     @Transactional
@@ -172,6 +181,74 @@ public abstract class AllDatabasesTest {
         List<Company> result = service.pesquisa(query).getValues();
         System.out.println("\ndataBuscaSimples---->" + result + "\n");
         assertEquals(4, result.size());
+    }
+
+    @Test
+    @Transactional
+    public void gQueryEmpty() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        query.setgQuery(new GQuery());
+        List<Company> result = service.pesquisa(query).getValues();
+        assertEquals(7, result.size());
+    }
+
+    @Test
+    @Transactional
+    public void gQueryEQUAL() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        GQuery gQuery = new GQuery(new Criteria("name", ComparisonOperator.EQUAL, "carlos").addIgnoreCase());
+        query.setgQuery(gQuery);
+        List<Company> result = service.pesquisa(query).getValues();
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    @Transactional
+    public void gQueryStartsIgnoreCase() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        GQuery gQuery = new GQuery(new Criteria("name", ComparisonOperator.STARTS_WITH, "j").addIgnoreCase());
+        query.setgQuery(gQuery);
+        List<Company> result = service.pesquisa(query).getValues();
+        assertEquals(4, result.size());
+    }
+
+    @Test
+    @Transactional
+    public void gQueryActive() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        GQuery gQuery = new GQuery(new Criteria("ativo", ComparisonOperator.EQUAL, "1"));
+        query.setgQuery(gQuery);
+        List<Company> result = service.pesquisa(query).getValues();
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    @Transactional
+    public void gQueryActiveNameWithJ() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        GQuery gQuery = new GQuery(new Criteria("ativo", ComparisonOperator.EQUAL, "1"));
+        gQuery = gQuery.and(new Criteria("name", ComparisonOperator.STARTS_WITH, "j").addIgnoreCase());
+        query.setgQuery(gQuery);
+        List<Company> result = service.pesquisa(query).getValues();
+
+        System.out.println("gQueryActiveNameWithJ------>" + gQuery + "/" + result);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    @Transactional
+    public void gQueryStartsIgnoreCaseAndAcentos() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        GQuery gQuery = new GQuery(new Criteria("name", ComparisonOperator.STARTS_WITH, "jose").addIgnoreCase().addTranslate());
+        query.setgQuery(gQuery);
+        List<Company> result = service.pesquisa(query).getValues();
+        assertEquals(2, result.size());
     }
 
 }

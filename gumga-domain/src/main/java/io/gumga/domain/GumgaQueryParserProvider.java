@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.concurrent.TimeUnit.DAYS;
+import org.hibernate.Criteria;
 import static org.hibernate.criterion.Restrictions.eq;
 
 /**

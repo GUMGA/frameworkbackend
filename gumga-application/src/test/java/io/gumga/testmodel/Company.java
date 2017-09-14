@@ -63,7 +63,7 @@ public class Company extends GumgaModel<Long> {
 
     @Override
     public String toString() {
-        return "Company{" + "name=" + name + ", date=" + date + ", ativo=" + ativo + '}';
+        return "Company{ id=" + id + " ,oi=" + oi + ",name=" + name + ", date=" + date + ", ativo=" + ativo + '}';
     }
 
 }
