@@ -762,10 +762,15 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         GQuery gQuery = queryObject.getgQuery();
         
         String multitenancyPattern = "'"+getMultitenancyPattern()+"%'";
+        String gQueryWhere = gQuery.toString();
+        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())
+                || GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
+            gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
+        }
         
         String hql="FROM "+entityInformation.getEntityName()+" obj"
                 + " WHERE obj.oi like "+multitenancyPattern
-                + " AND "+gQuery.toString()
+                + " AND "+ gQueryWhere
                 
                 ;
         Query q = entityManager.createQuery(hql);

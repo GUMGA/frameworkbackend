@@ -7,20 +7,30 @@ import io.gumga.core.gquery.ComparisonOperator;
 import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.GQuery;
 import io.gumga.testmodel.Company;
+import io.gumga.testmodel.CompanyRepository;
 import io.gumga.testmodel.CompanyService;
+
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
+
+import io.gumga.testmodel.Tipo;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.Query;
+
 public abstract class AllDatabasesTest {
 
     @Autowired
     protected CompanyService service;
+    @Autowired
+    protected CompanyRepository repository;
 
     @Before
     @Transactional
@@ -31,9 +41,10 @@ public abstract class AllDatabasesTest {
         if (service.count() > 0) {
             return;
         }
-        service.save(new Company("João", dia.getTime(), (true)));
+
+        service.save(new Company(1001L, new BigDecimal("10.41"), Tipo.SIMPLES, "João", dia.getTime(), (true)));
         dia.set(1975, 8, 18, 11, 0, 0);
-        service.save(new Company("José", dia.getTime(), (false)));
+        service.save(new Company(100L, new BigDecimal(40), Tipo.AVANCADO,"José", dia.getTime(), (false)));
         dia.set(1985, 8, 18, 11, 0, 0);
         service.save(new Company("Maria", dia.getTime(), (true)));
         dia.set(1985, 8, 18, 11, 0, 0);
@@ -250,5 +261,69 @@ public abstract class AllDatabasesTest {
         List<Company> result = service.pesquisa(query).getValues();
         assertEquals(2, result.size());
     }
+
+    @Test
+    @Transactional
+    public void findCompanyEqualsIdGQuery() {
+        GumgaThreadScope.organizationCode.set("1.");
+        Company company = this.repository.findAll().get(0);
+        GQuery gQuery = new GQuery(new Criteria("id", ComparisonOperator.EQUAL, company.getId()));
+        QueryObject query = new QueryObject();
+        query.setgQuery(gQuery);
+
+        int count = service.pesquisa(query).getValues().size();
+        assertEquals(1, count);
+    }
+
+    @Test
+    @Transactional
+    public void findCompanyGreaterQuantidadeGQuery() {
+        GumgaThreadScope.organizationCode.set("1.");
+        GQuery gQuery = new GQuery(new Criteria("quantidade", ComparisonOperator.GREATER, 1000));
+        QueryObject query = new QueryObject();
+        query.setgQuery(gQuery);
+        int count = service.pesquisa(query).getValues().size();
+        assertEquals(1, count);
+    }
+
+    @Test
+    @Transactional
+    public void findCompanyEqualValorBigDecimalGQuery() {
+        GumgaThreadScope.organizationCode.set("1.");
+        GQuery gQuery = new GQuery(new Criteria("valor", ComparisonOperator.EQUAL, new BigDecimal("10.41")));
+        QueryObject query = new QueryObject();
+        query.setgQuery(gQuery);
+        int count = service.pesquisa(query).getValues().size();
+        assertEquals(1, count);
+    }
+
+    @Test
+    @Transactional
+    public void findCompanyEqualEnumGQuery() {
+        GumgaThreadScope.organizationCode.set("1.");
+        GQuery gQuery = new GQuery(new Criteria("tipo", ComparisonOperator.EQUAL, Tipo.AVANCADO));
+        QueryObject query = new QueryObject();
+        query.setgQuery(gQuery);
+        int count = service.pesquisa(query).getValues().size();
+        assertEquals(1, count);
+    }
+
+    @Test
+    @Transactional
+    public void findCompanyEqualsDateGQuery() {
+        GumgaThreadScope.organizationCode.set("1.");
+        Calendar dia = Calendar.getInstance();
+        dia.set(1900, 8, 18, 11, 0, 0);
+
+        GQuery gQuery = new GQuery(new Criteria("date", ComparisonOperator.EQUAL, dia.getTime()));
+        QueryObject query = new QueryObject();
+        query.setgQuery(gQuery);
+        System.out.println("DATE:"+gQuery.toString());
+
+        int count = service.pesquisa(query).getValues().size();
+        assertEquals(1, count);
+    }
+
+
 
 }

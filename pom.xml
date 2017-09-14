@@ -55,7 +55,7 @@
     <artifactId>gumga-backend-all</artifactId>
 
 
-    <version>1.5.20-SNAPSHOT</version>
+    <version>1.5.19-SNAPSHOT</version>
 
 
     <packaging>pom</packaging>

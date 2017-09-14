@@ -4,6 +4,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.annotations.GumgaSwagger;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
+import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.GumgaServiceable;
 import io.gumga.presentation.api.AbstractNoDeleteGumgaAPI;
 import java.util.ArrayList;
@@ -125,6 +126,16 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
             this.ids = ids;
         }
 
+    }
+
+    @GumgaSwagger
+    @Transactional
+    @ApiOperation(value = "gquery", notes = "gquery")
+    @RequestMapping(value = "gquery", method = RequestMethod.POST)
+    public SearchResult<T>  queryAction(@RequestBody GQuery query) {
+        QueryObject queryObject = new QueryObject();
+        queryObject.setgQuery(query);
+        return service.pesquisa(queryObject);
     }
 
 }

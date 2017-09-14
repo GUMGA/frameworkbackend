@@ -136,4 +136,16 @@ public class GQuery implements Serializable {
             subQuerys.stream().forEach((gq) -> gq.addIgnoreCase());
         }
     }
+
+    public static void main(String[] args) {
+        GQuery gQuery = new GQuery(new Criteria("name", ComparisonOperator.CONTAINS, "Mat"))
+                .or(new Criteria("idade", ComparisonOperator.GREATER, 3))
+                .and(new Criteria("valor", ComparisonOperator.GREATER, 5))
+                .or(new Criteria("cpf", ComparisonOperator.NOT_EQUAL, "129312312"));
+
+        System.out.println(gQuery.toString());
+
+
+
+    }
 }

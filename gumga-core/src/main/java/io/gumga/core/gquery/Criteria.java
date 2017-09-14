@@ -1,7 +1,11 @@
 package io.gumga.core.gquery;
 
+import com.sun.javafx.binding.StringFormatter;
 import io.gumga.core.GumgaThreadScope;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 
 public class Criteria implements Serializable {
 
@@ -12,7 +16,7 @@ public class Criteria implements Serializable {
 
     private String field;
     private ComparisonOperator comparisonOperator;
-    private String value;
+    private Object value;
     private String[] values;
     private String fieldFunction;
     private String valueFunction;
@@ -29,7 +33,7 @@ public class Criteria implements Serializable {
         init();
     }
 
-    public Criteria(String field, ComparisonOperator comparisonOperator, String value) {
+    public Criteria(String field, ComparisonOperator comparisonOperator, Object value) {
         init();
         this.field = field;
         this.comparisonOperator = comparisonOperator;
@@ -52,7 +56,7 @@ public class Criteria implements Serializable {
         this.comparisonOperator = comparisonOperator;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
@@ -86,7 +90,7 @@ public class Criteria implements Serializable {
 
     @Override
     public String toString() {
-        String value = this.value;
+        Object value = this.value;
         if (ComparisonOperator.STARTS_WITH.equals(this.comparisonOperator)) {
             value = value + "%";
         } else if (ComparisonOperator.ENDS_WITH.equals(this.comparisonOperator)) {
@@ -94,8 +98,47 @@ public class Criteria implements Serializable {
         } else if (ComparisonOperator.CONTAINS.equals(this.comparisonOperator)) {
             value = "%" + value + "%";
         }
-        return String.format(fieldFunction, field) + comparisonOperator.hql + String.format(valueFunction, '\'' + value + '\'');
+
+
+
+        if(value instanceof Number) {
+            return field + comparisonOperator.hql + value;
+        } else if(value instanceof Date) {
+            String format = new SimpleDateFormat("yyyy-MM-dd").format(value);
+
+            switch (this.comparisonOperator) {
+                case EQUAL:
+                    return field + " " + ComparisonOperator.GREATER_EQUAL.hql + " " + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format) + " AND " +
+                            field + " " + ComparisonOperator.LOWER_EQUAL.hql + " " + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format);
+                case GREATER_EQUAL:
+                    return field + " " + ComparisonOperator.GREATER_EQUAL.hql + " " + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
+                case GREATER:
+                    return field + " " + ComparisonOperator.GREATER.hql + " " + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
+                case LOWER_EQUAL:
+                    return field + " " + ComparisonOperator.LOWER_EQUAL.hql + " " + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
+                case LOWER:
+                    return field + " " + ComparisonOperator.LOWER.hql + " " + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
+
+            }
+        }
+
+        String s = String.format(fieldFunction, field) + comparisonOperator.hql + String.format(valueFunction, '\'' + value.toString() + '\'');
+        return s;
+
     }
+
+
+//    @Override
+//    public String toString() {
+//        return "Criteria{" +
+//                "field='" + field + '\'' +
+//                ", comparisonOperator=" + comparisonOperator +
+//                ", value=" + value +
+//                ", values=" + Arrays.toString(values) +
+//                ", fieldFunction='" + fieldFunction + '\'' +
+//                ", valueFunction='" + valueFunction + '\'' +
+//                '}';
+//    }
 
     public Criteria addIgnoreCase() {
         fieldFunction = String.format(fieldFunction, "lower(%s)");
@@ -110,5 +153,6 @@ public class Criteria implements Serializable {
         }
         return this;
     }
+
 
 }
