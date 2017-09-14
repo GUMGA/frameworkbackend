@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MysqlSpringConfig.class})
-//@Ignore
+@Ignore
 public class MysqlTest extends AllDatabasesTest {
 
     public MysqlTest() {
