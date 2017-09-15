@@ -770,15 +770,23 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         
         String hql="FROM "+entityInformation.getEntityName()+" obj"
                 + " WHERE obj.oi like "+multitenancyPattern
-                + " AND "+ gQueryWhere
+                + " AND "+ gQueryWhere;
+
+        String hqlConta="select count(obj) FROM "+entityInformation.getEntityName()+" obj"
+                + " WHERE obj.oi like "+multitenancyPattern
+                + " AND "+ gQueryWhere;
                 
                 ;
         Query q = entityManager.createQuery(hql);
+        Query qConta = entityManager.createQuery(hqlConta);
+        Long total = (Long) qConta.getSingleResult();
         q.setMaxResults(queryObject.getPageSize());
         q.setFirstResult(queryObject.getStart());
         //TODO acertar o page number....
         List<T> resultList = q.getResultList();
-        SearchResult<T> sr = new SearchResult(queryObject, -1, resultList);
+
+
+        SearchResult<T> sr = new SearchResult(queryObject, total, resultList);
         return sr;
     }
 

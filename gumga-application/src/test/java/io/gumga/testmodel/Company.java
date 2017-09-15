@@ -38,6 +38,9 @@ public class Company extends GumgaModel<Long> {
         this.date = date;
         this.ativo = ativo;
         this.tipo = Tipo.SIMPLES;
+        this.quantidade = 0L;
+        this.valor = BigDecimal.ZERO;
+        this.tipo = Tipo.SIMPLES;
     }
 
     public Company(Long quantidade, String name, Date date, Boolean ativo) {
@@ -45,6 +48,8 @@ public class Company extends GumgaModel<Long> {
         this.name = name;
         this.date = date;
         this.ativo = ativo;
+        this.valor = BigDecimal.ZERO;
+        this.tipo = Tipo.SIMPLES;
     }
 
     public Company(Long quantidade, BigDecimal valor,Tipo tipo, String name, Date date, Boolean ativo) {

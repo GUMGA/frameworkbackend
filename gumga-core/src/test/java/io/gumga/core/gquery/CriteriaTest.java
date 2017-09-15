@@ -14,43 +14,43 @@ public class CriteriaTest {
     @Test
     public void testEMPTY() {
         Criteria c = new Criteria();
-        assertEquals("1='1'", c.toString());
+        assertEquals("1 = '1'", c.toString());
     }
 
     @Test
     public void testEQUAL() {
         Criteria c = new Criteria("name", ComparisonOperator.EQUAL, "munif");
-        assertEquals("name=\'munif\'", c.toString());
+        assertEquals("name = \'munif\'", c.toString());
     }
 
     @Test
     public void testGREATER() {
         Criteria c = new Criteria("name", ComparisonOperator.GREATER, "munif");
-        assertEquals("name>\'munif\'", c.toString());
+        assertEquals("name > \'munif\'", c.toString());
     }
 
     @Test
     public void testGREATER_EQUAL() {
         Criteria c = new Criteria("name", ComparisonOperator.GREATER_EQUAL, "munif");
-        assertEquals("name>=\'munif\'", c.toString());
+        assertEquals("name >= \'munif\'", c.toString());
     }
 
     @Test
     public void testLOWER() {
         Criteria c = new Criteria("name", ComparisonOperator.LOWER, "munif");
-        assertEquals("name<\'munif\'", c.toString());
+        assertEquals("name < \'munif\'", c.toString());
     }
 
     @Test
     public void testLOWER_EQUAL() {
         Criteria c = new Criteria("name", ComparisonOperator.LOWER_EQUAL, "munif");
-        assertEquals("name<=\'munif\'", c.toString());
+        assertEquals("name <= \'munif\'", c.toString());
     }
 
     @Test
     public void testNOT_EQUAL() {
         Criteria c = new Criteria("name", ComparisonOperator.NOT_EQUAL, "munif");
-        assertEquals("name!=\'munif\'", c.toString());
+        assertEquals("name != \'munif\'", c.toString());
     }
 
     @Test

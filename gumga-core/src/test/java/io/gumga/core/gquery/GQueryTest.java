@@ -20,19 +20,19 @@ public class GQueryTest {
     @Test
     public void testEMPTY() {
         GQuery gQuery = new GQuery();
-        assertEquals("(1='1')", gQuery.toString());
+        assertEquals("(1 = '1')", gQuery.toString());
     }
 
     @Test
     public void testSIMPLE() {
         GQuery gQuery = new GQuery(new Criteria("name", ComparisonOperator.EQUAL, "munif"));
-        assertEquals("(name='munif')", gQuery.toString());
+        assertEquals("(name = 'munif')", gQuery.toString());
     }
 
     @Test
     public void testNOT_EQUAL() {
         GQuery gQuery = new GQuery(LogicalOperator.NOT, new Criteria("name", ComparisonOperator.GREATER, "munif"));
-        assertEquals("(!name>'munif')", gQuery.toString());
+        assertEquals("(!name > 'munif')", gQuery.toString());
     }
 
     @Test
@@ -42,7 +42,7 @@ public class GQueryTest {
             new GQuery(new Criteria("age", ComparisonOperator.GREATER_EQUAL, "18")),
             new GQuery(new Criteria("name", ComparisonOperator.CONTAINS, "gebara"))
         }));
-        assertEquals("((name like 'munif%') AND (age>='18') AND (name like '%gebara%'))", gQuery.toString());
+        assertEquals("((name like 'munif%') AND (age >= '18') AND (name like '%gebara%'))", gQuery.toString());
     }
 
     @Test

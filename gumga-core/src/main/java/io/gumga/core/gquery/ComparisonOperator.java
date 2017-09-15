@@ -1,13 +1,34 @@
 package io.gumga.core.gquery;
 
+import java.util.Comparator;
+
 /**
  *
  * @author munif
  */
-public enum ComparisonOperator {
+public enum ComparisonOperator{
 
-    EQUAL("="), GREATER(">"), LOWER("<"), GREATER_EQUAL(">="), LOWER_EQUAL("<="), LIKE(" like "), NOT_EQUAL("!="), STARTS_WITH(" like "), ENDS_WITH(" like "), CONTAINS(" like ");
+    EQUAL(" = "),
+    GREATER(" > "),
+    LOWER(" < "),
+    GREATER_EQUAL(" >= "),
+    LOWER_EQUAL(" <= "),
+    LIKE(" like "),
+    NOT_EQUAL(" != "),
+    STARTS_WITH(" like "),
+    ENDS_WITH(" like "),
+    CONTAINS(" like "),
+    IN(" in "),
+    IN_ELEMENTS(" in elements "),
+    IS(" is "),
+    BETWEEN(" between "),
+    NOT_CONTAINS(" not like ");
+
+
     public final String hql;
+
+
+
 
     ComparisonOperator(String s) {
         this.hql = s;

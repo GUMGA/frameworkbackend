@@ -131,11 +131,9 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
     @GumgaSwagger
     @Transactional
     @ApiOperation(value = "gquery", notes = "gquery")
-    @RequestMapping(value = "gquery", method = RequestMethod.POST)
-    public SearchResult<T>  queryAction(@RequestBody GQuery query) {
-        QueryObject queryObject = new QueryObject();
-        queryObject.setgQuery(query);
-        return service.pesquisa(queryObject);
+    @RequestMapping(path = "/gquery", method = RequestMethod.POST)
+    public SearchResult<T>  qquery(@RequestBody QueryObject query) {
+        return service.pesquisa(query);
     }
 
 }
