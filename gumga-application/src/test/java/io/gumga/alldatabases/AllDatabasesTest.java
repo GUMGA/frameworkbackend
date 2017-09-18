@@ -313,6 +313,8 @@ public abstract class AllDatabasesTest {
         GQuery gQuery = new GQuery(new Criteria("date", ComparisonOperator.EQUAL, dia.getTime()));
         QueryObject query = new QueryObject();
         query.setgQuery(gQuery);
+        query.setSortField("obj.date");
+        query.setSortDir("desc");
         System.out.println("DATE:"+gQuery.toString());
 
         int count = service.pesquisa(query).getValues().size();

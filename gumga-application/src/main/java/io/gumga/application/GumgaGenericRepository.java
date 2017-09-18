@@ -775,8 +775,15 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         String hqlConta="select count(obj) FROM "+entityInformation.getEntityName()+" obj"
                 + " WHERE obj.oi like "+multitenancyPattern
                 + " AND "+ gQueryWhere;
-                
-                ;
+
+        String sortDir = queryObject.getSortDir();
+        String sortField = queryObject.getSortField();
+        String sort = "id asc";
+        if(!sortField.isEmpty()) {
+            sort = sortField + (sortDir.equals("asc") ? " asc" : " desc");
+        }
+        hql += " order by " + sort;
+
         Query q = entityManager.createQuery(hql);
         Query qConta = entityManager.createQuery(hqlConta);
         Long total = (Long) qConta.getSingleResult();
