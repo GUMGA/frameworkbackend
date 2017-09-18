@@ -5,9 +5,13 @@ import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.domains.GumgaBoolean;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.envers.Audited;
 
 @GumgaMultitenancy
@@ -113,4 +117,5 @@ public class Company extends GumgaModel<Long> {
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
+
 }

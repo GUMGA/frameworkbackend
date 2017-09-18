@@ -120,6 +120,13 @@ public class Criteria implements Serializable {
             return  field + comparisonOperator.hql + "('" + value.toString() +"')";
         }
 
+        if(ComparisonOperator.IN_ELEMENTS.equals(this.comparisonOperator)) {
+            if(value instanceof Number) {
+                return value + comparisonOperator.hql + "(" + field + ")";
+            }
+            return "'"+value+"'" + comparisonOperator.hql + "(" + field + ")";
+        }
+
 
         if(ComparisonOperator.BETWEEN.equals(this.comparisonOperator)) {
             if(value instanceof Collection) {

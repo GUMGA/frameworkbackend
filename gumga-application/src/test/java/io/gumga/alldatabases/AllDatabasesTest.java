@@ -6,16 +6,14 @@ import io.gumga.core.QueryObject;
 import io.gumga.core.gquery.ComparisonOperator;
 import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.GQuery;
-import io.gumga.testmodel.Company;
-import io.gumga.testmodel.CompanyRepository;
-import io.gumga.testmodel.CompanyService;
+import io.gumga.testmodel.*;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-import io.gumga.testmodel.Tipo;
+import org.hibernate.envers.Audited;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -29,6 +27,8 @@ public abstract class AllDatabasesTest {
     protected CompanyService service;
     @Autowired
     protected CompanyRepository repository;
+    @Autowired
+    protected EmployeeRepository  employeeRepository;
 
     @Before
     @Transactional
@@ -47,8 +47,10 @@ public abstract class AllDatabasesTest {
         service.save(new Company("JOAO", dia.getTime(), (false)));
         dia.set(1985, 8, 18, 11, 0, 0);
         service.save(new Company("CaRlOs", dia.getTime(), (false)));
+
         dia.set(1900, 8, 18, 11, 0, 0);
         service.save(new Company("AMÁRILDO SANTOS", dia.getTime(), (false)));
+
     }
 
     @Test
@@ -434,4 +436,5 @@ public abstract class AllDatabasesTest {
         int count = service.pesquisa(query).getValues().size();
         assertEquals(1, count);
     }
+
 }

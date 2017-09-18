@@ -8,9 +8,11 @@
 =======================================
 Framework Backend
 
-1.5.20-SNAPSHOT
+1.5.20
+    - Implementação do GQuery
 
-1.5.19-SNAPSHOT
+1.5.19
+    - Correção NPE em HibernateQueryObject.createCriterion
 
 1.5.18
  - Permite excluir múltiplos registros
