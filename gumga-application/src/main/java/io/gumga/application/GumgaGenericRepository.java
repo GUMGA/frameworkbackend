@@ -27,6 +27,7 @@ import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -760,25 +761,34 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             queryObject.setgQuery(new GQuery());
         }
         GQuery gQuery = queryObject.getgQuery();
-        
-        String multitenancyPattern = "'"+getMultitenancyPattern()+"%'";
+
+        String multitenancyPattern = "";
+        if(hasMultitenancy()) {
+            multitenancyPattern = "'"+getMultitenancyPattern()+"%'";
+        }
+
+
         String gQueryWhere = gQuery.toString();
         if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())
                 || GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
             gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
         }
-        
-        String hql="FROM "+entityInformation.getEntityName()+" obj"
-                + " WHERE obj.oi like "+multitenancyPattern
-                + " AND "+ gQueryWhere;
 
-        String hqlConta="select count(obj) FROM "+entityInformation.getEntityName()+" obj"
-                + " WHERE obj.oi like "+multitenancyPattern
-                + " AND "+ gQueryWhere;
+        String whereDefault = StringUtils.isEmpty(multitenancyPattern) ? " where " + gQueryWhere : " WHERE obj.oi like "+multitenancyPattern + (StringUtils.isEmpty(gQueryWhere) ? "" : " AND "+ gQueryWhere);
+
+        String hql="FROM "+entityInformation.getEntityName()+" obj "
+                + gQuery.getJoins()
+                + whereDefault;
+
+
+        String hqlConta="select count(obj) FROM "+entityInformation.getEntityName()+" obj "
+                + gQuery.getJoins()
+                + whereDefault;
+
 
         String sortDir = queryObject.getSortDir();
         String sortField = queryObject.getSortField();
-        String sort = "id asc";
+        String sort = "obj.id asc";
         if(!sortField.isEmpty()) {
             sort = sortField + (sortDir.equals("asc") ? " asc" : " desc");
         }

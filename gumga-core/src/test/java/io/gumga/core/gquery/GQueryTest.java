@@ -20,7 +20,7 @@ public class GQueryTest {
     @Test
     public void testEMPTY() {
         GQuery gQuery = new GQuery();
-        assertEquals("(1 = '1')", gQuery.toString());
+        assertEquals("(1 = 1)", gQuery.toString());
     }
 
     @Test

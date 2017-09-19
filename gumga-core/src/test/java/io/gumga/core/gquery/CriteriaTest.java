@@ -14,7 +14,7 @@ public class CriteriaTest {
     @Test
     public void testEMPTY() {
         Criteria c = new Criteria();
-        assertEquals("1 = '1'", c.toString());
+        assertEquals("1 = 1", c.toString());
     }
 
     @Test

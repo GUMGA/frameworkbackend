@@ -14,6 +14,7 @@ public class GQuery implements Serializable {
     private LogicalOperator logicalOperator;
     private Criteria criteria;
     private List<GQuery> subQuerys;
+    private List<Join> joins = new LinkedList<>();
 
     public GQuery() {
         this.logicalOperator = LogicalOperator.SIMPLE;
@@ -39,6 +40,7 @@ public class GQuery implements Serializable {
     public GQuery(LogicalOperator logicalOperator, List<GQuery> subQuerys) {
         this.logicalOperator = logicalOperator;
         this.subQuerys = subQuerys;
+        y(this);
     }
 
     public LogicalOperator getLogicalOperator() {
@@ -101,6 +103,33 @@ public class GQuery implements Serializable {
         }
         return new GQuery(LogicalOperator.OR, Arrays.asList(new GQuery[]{this, other}));
     }
+
+    public GQuery join(Join join) {
+        this.joins.add(join);
+        return this;
+    }
+
+    public String getJoins() {
+        StringBuilder builder = new StringBuilder();
+        x(this, builder);
+        return builder.toString();
+    }
+
+    private void x(GQuery gQuery, StringBuilder builder) {
+        gQuery.joins.forEach(builder::append);
+        if(gQuery.getSubQuerys() != null) {
+            gQuery.getSubQuerys().forEach(s -> x(s, builder));
+        }
+    }
+
+    private void y(GQuery gQuery) {
+        this.joins.addAll(gQuery.joins);
+        gQuery.joins = new LinkedList<>();
+        if(gQuery.getSubQuerys() != null) {
+            gQuery.getSubQuerys().forEach(s -> y(s));
+        }
+    }
+
 
     @Override
     public String toString() {
