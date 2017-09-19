@@ -4,7 +4,9 @@
     <parent>
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
-        <version>1.5.19</version>
+
+        <version>1.5.20</version>
+
     </parent>
     <artifactId>gumga-application</artifactId>
     

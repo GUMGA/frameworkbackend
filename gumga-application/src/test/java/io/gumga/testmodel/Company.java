@@ -3,13 +3,15 @@ package io.gumga.testmodel;
 import io.gumga.domain.GumgaModel;
 import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.domains.GumgaBoolean;
-import java.util.Date;
-import javax.persistence.Column;
 
-import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.*;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.envers.Audited;
 
 @GumgaMultitenancy
@@ -23,6 +25,10 @@ public class Company extends GumgaModel<Long> {
     @Column(name = "g_data")
     private Date date;
     private Boolean ativo;
+    private Long quantidade;
+    private BigDecimal valor;
+    @Enumerated(EnumType.STRING)
+    private Tipo tipo;
 
     public Company() {
     }
@@ -35,6 +41,28 @@ public class Company extends GumgaModel<Long> {
         this.name = name;
         this.date = date;
         this.ativo = ativo;
+        this.tipo = Tipo.SIMPLES;
+        this.quantidade = 0L;
+        this.valor = BigDecimal.ZERO;
+        this.tipo = Tipo.SIMPLES;
+    }
+
+    public Company(Long quantidade, String name, Date date, Boolean ativo) {
+        this.quantidade = quantidade;
+        this.name = name;
+        this.date = date;
+        this.ativo = ativo;
+        this.valor = BigDecimal.ZERO;
+        this.tipo = Tipo.SIMPLES;
+    }
+
+    public Company(Long quantidade, BigDecimal valor,Tipo tipo, String name, Date date, Boolean ativo) {
+        this.valor = valor;
+        this.quantidade = quantidade;
+        this.name = name;
+        this.date = date;
+        this.ativo = ativo;
+        this.tipo = tipo;
     }
 
     public String getName() {
@@ -63,7 +91,31 @@ public class Company extends GumgaModel<Long> {
 
     @Override
     public String toString() {
-        return "Company{" + "name=" + name + ", date=" + date + ", ativo=" + ativo + '}';
+        return "Company{ id=" + id + " ,oi=" + oi + ",name=" + name + ", date=" + date + ", ativo=" + ativo + '}';
+    }
+
+    public Long getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Long quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
     }
 
 }

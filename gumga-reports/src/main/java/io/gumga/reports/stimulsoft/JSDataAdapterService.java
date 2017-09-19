@@ -55,7 +55,6 @@ public class JSDataAdapterService {
     }
 
     private String connect(JSONObject command) throws SQLException { //TODO_COLOCAR ORACLE
-        System.out.println("---->Connect--->" + command);
         Connection con = null;
         try {
             String dbName = command.getString("database");
@@ -99,7 +98,6 @@ public class JSDataAdapterService {
     }
 
     private String onConnect(JSONObject command, Connection con) throws JSONException {
-        System.out.println("---->onConnect--->" + command + " con " + con);
         if (command.has("queryString")) {
             return query(command.getString("queryString"), con);
         } else {
@@ -110,12 +108,12 @@ public class JSDataAdapterService {
     }
 
     private String query(String queryString, Connection con) {
-        System.out.println("---->query--->" + queryString + " con " + con);
         try {
-            //String filteredQuery = addFilterQuery(queryString);
-            
             String filteredQuery = queryString;
-            
+            if (GumgaThreadScope.organizationCode.get() != null) {
+                filteredQuery = addFilterQuery(queryString);
+            }
+
             PreparedStatement pstmt = con.prepareStatement(filteredQuery);
             ResultSet rs = pstmt.executeQuery();
             return onQuery(rs);
@@ -125,12 +123,10 @@ public class JSDataAdapterService {
     }
 
     private String addFilterQuery(String queryString) {
-        System.out.println("---->addFilterQuery--->" + queryString);
         if (StringUtils.containsIgnoreCase(queryString, "INFORMATION_SCHEMA")) {
             return queryString;
         } else if (StringUtils.containsIgnoreCase(queryString, "obj")) {
             String oo = oorganizationFilterQuery(queryString);
-            System.out.println("---SQL--->" + oo);
             return oo;
         } else {
             throw new RuntimeException("report01;;That SQL must contains on the primary table the alias obj");
@@ -138,26 +134,24 @@ public class JSDataAdapterService {
     }
 
     private String oorganizationFilterQuery(String queryString) {
-        System.out.println("---->oorganizationFilterQuery--->" + queryString);
         if (StringUtils.containsIgnoreCase(queryString, "WHERE")) {
             String queryBegin = queryString.substring(0, queryString.toLowerCase().indexOf("WHERE".toLowerCase()) + 5);
             String queryEnd = queryString.substring(queryString.toLowerCase().indexOf("WHERE".toLowerCase()) + 5, queryString.length());
-            return queryBegin.concat(" obj.oi = '" + GumgaThreadScope.organizationCode.get() + "' and ").concat(queryEnd);
+            return queryBegin.concat(" (obj.oi is null or obj.oi like '" + GumgaThreadScope.organizationCode.get() + "%') and ").concat(queryEnd);
         } else if (StringUtils.containsIgnoreCase(queryString, "GROUP BY")) {
             String queryBegin = queryString.substring(0, queryString.toLowerCase().indexOf("GROUP BY".toLowerCase()));
             String queryEnd = queryString.substring(queryString.toLowerCase().indexOf("GROUP BY".toLowerCase()), queryString.length());
-            return queryBegin.concat(" WHERE obj.oi = '" + GumgaThreadScope.organizationCode.get() + "' ").concat(queryEnd);
+            return queryBegin.concat(" WHERE (obj.oi is null or obj.oi like '" + GumgaThreadScope.organizationCode.get() + "%') ").concat(queryEnd);
         } else if (StringUtils.containsIgnoreCase(queryString, "ORDER BY")) {
             String queryBegin = queryString.substring(0, queryString.toLowerCase().indexOf("ORDER BY".toLowerCase()));
             String queryEnd = queryString.substring(queryString.toLowerCase().indexOf("ORDER BY".toLowerCase()), queryString.length());
-            return queryBegin.concat(" WHERE obj.oi = '" + GumgaThreadScope.organizationCode.get() + "' ").concat(queryEnd);
+            return queryBegin.concat(" WHERE (obj.oi is null or obj.oi like '" + GumgaThreadScope.organizationCode.get() + "%') ").concat(queryEnd);
         } else {
-            return queryString.concat(" WHERE obj.oi = '" + GumgaThreadScope.organizationCode.get() + "'");
+            return queryString.concat(" WHERE (obj.oi is null or obj.oi like '" + GumgaThreadScope.organizationCode.get() + "%')");
         }
     }
 
     private String onQuery(ResultSet rs) throws SQLException {
-        System.out.println("---->onQuery--->" + rs);
         List<String> columns = new ArrayList<String>();
         List<List<String>> rows = new ArrayList<List<String>>();
         boolean isColumnsFill = false;
@@ -181,7 +175,6 @@ public class JSDataAdapterService {
     }
 
     public String process(InputStream is) throws IOException, SQLException, JSONException {
-        System.out.println("---->process--->" + is);
         BufferedReader r = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         StringBuilder command = new StringBuilder();
         String str = null;
@@ -206,7 +199,6 @@ public class JSDataAdapterService {
     }
 
     private Map<String, String> parseParams(String string) {
-        System.out.println("---->parseParams--->" + string);
         String[] keyValues = string.split(";");
         Map<String, String> result = new HashMap<String, String>();
         for (String element : keyValues) {
@@ -220,7 +212,6 @@ public class JSDataAdapterService {
     }
 
     private String getUrl(Map<String, String> params) {
-        System.out.println("---->getUrl--->" + params);
         return getLeastOne(params, URL_KEYS);
     }
 
@@ -237,7 +228,6 @@ public class JSDataAdapterService {
     }
 
     private String getUser(Map<String, String> params) {
-        System.out.println("---->getUser--->" + params);
         return getLeastOne(params, USERS_KEYS);
     }
 

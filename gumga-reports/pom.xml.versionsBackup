@@ -5,26 +5,32 @@
     <parent>
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
-        <version>1.5.20</version>
-
+        <version>1.5.19-SNAPSHOT</version>
     </parent>
 
-    <artifactId>gumga-amazon-ses</artifactId>
+    <artifactId>gumga-reports</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>io.gumga</groupId>
+            <artifactId>gumga-core</artifactId>
+        </dependency>
         
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-ses</artifactId>
-            <version>1.11.179</version>
-            <type>jar</type>
+            <groupId>io.gumga</groupId>
+            <artifactId>gumga-domain</artifactId>
         </dependency>
+        
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-sqs</artifactId>
-            <version>1.11.113</version>
-            <type>jar</type>
+            <groupId>io.gumga</groupId>
+            <artifactId>gumga-application</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>io.gumga</groupId>
+            <artifactId>gumga-presentation</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
@@ -32,6 +38,10 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

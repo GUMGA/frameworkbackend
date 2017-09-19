@@ -5,6 +5,7 @@ import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.core.TenancyPublicMarking;
+import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.*;
 import io.gumga.domain.logicaldelete.GumgaLDModel;
 import io.gumga.domain.repository.GumgaCrudRepository;
@@ -26,6 +27,7 @@ import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -64,6 +66,10 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             entityManager.createNativeQuery("alter session set nls_sort=latin_ai").executeUpdate();
             entityManager.createNativeQuery("alter session set nls_date_format = 'YYYY-MM-DD'").executeUpdate();
             entityManager.createNativeQuery("alter session set nls_timestamp_format = 'YYYY-MM-DD HH24:MI:SS'").executeUpdate();
+        }
+
+        if (query.isGQuery()) {
+            return findByGQuery(query);
         }
 
         if (query.isAQO()) {
@@ -748,6 +754,57 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         QueryObject qo = new QueryObject();
         qo.setPageSize(Integer.MAX_VALUE - 1);
         return search(qo);
+    }
+
+    public SearchResult<T> findByGQuery(QueryObject queryObject) {
+        if (queryObject.getgQuery() == null) {
+            queryObject.setgQuery(new GQuery());
+        }
+        GQuery gQuery = queryObject.getgQuery();
+
+        String multitenancyPattern = "";
+        if(hasMultitenancy()) {
+            multitenancyPattern = "'"+getMultitenancyPattern()+"%'";
+        }
+
+
+        String gQueryWhere = gQuery.toString();
+        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())
+                || GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
+            gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
+        }
+
+        String whereDefault = StringUtils.isEmpty(multitenancyPattern) ? " where " + gQueryWhere : " WHERE obj.oi like "+multitenancyPattern + (StringUtils.isEmpty(gQueryWhere) ? "" : " AND "+ gQueryWhere);
+
+        String hql="FROM "+entityInformation.getEntityName()+" obj "
+                + gQuery.getJoins()
+                + whereDefault;
+
+
+        String hqlConta="select count(obj) FROM "+entityInformation.getEntityName()+" obj "
+                + gQuery.getJoins()
+                + whereDefault;
+
+
+        String sortDir = queryObject.getSortDir();
+        String sortField = queryObject.getSortField();
+        String sort = "obj.id asc";
+        if(!sortField.isEmpty()) {
+            sort = sortField + (sortDir.equals("asc") ? " asc" : " desc");
+        }
+        hql += " order by " + sort;
+
+        Query q = entityManager.createQuery(hql);
+        Query qConta = entityManager.createQuery(hqlConta);
+        Long total = (Long) qConta.getSingleResult();
+        q.setMaxResults(queryObject.getPageSize());
+        q.setFirstResult(queryObject.getStart());
+        //TODO acertar o page number....
+        List<T> resultList = q.getResultList();
+
+
+        SearchResult<T> sr = new SearchResult(queryObject, total, resultList);
+        return sr;
     }
 
 }
