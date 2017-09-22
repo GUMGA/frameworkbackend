@@ -102,7 +102,7 @@ public class Criteria implements Serializable {
             value = "%" + value + "%";
         }
 
-        if(value instanceof CriteriaField) {
+        if(value instanceof CriteriaField || value instanceof Boolean) {
             return field + comparisonOperator.hql + value;
         }
 

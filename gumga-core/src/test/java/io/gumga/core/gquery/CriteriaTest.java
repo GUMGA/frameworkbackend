@@ -104,4 +104,35 @@ public class CriteriaTest {
         assertEquals("lower(name) like LOWER(\'%munif\')", c.toString());
     }
 
+
+    @Test
+    public void testBoolean1() {
+        Criteria c = new Criteria("ativo", ComparisonOperator.EQUAL, false);
+
+        assertEquals("ativo = false", c.toString());
+    }
+
+    @Test
+    public void testBoolean2() {
+        Criteria c = new Criteria("ativo", ComparisonOperator.EQUAL, true);
+
+        assertEquals("ativo = true", c.toString());
+    }
+
+
+    @Test
+    public void testBoolean3() {
+        Criteria c = new Criteria("ativo", ComparisonOperator.EQUAL, Boolean.FALSE);
+
+        assertEquals("ativo = false", c.toString());
+    }
+
+    @Test
+    public void testBoolean4() {
+        Criteria c = new Criteria("ativo", ComparisonOperator.EQUAL, Boolean.TRUE);
+
+        assertEquals("ativo = true", c.toString());
+    }
+
+
 }
