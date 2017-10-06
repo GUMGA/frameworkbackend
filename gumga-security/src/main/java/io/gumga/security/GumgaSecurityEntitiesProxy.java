@@ -67,6 +67,15 @@ public class GumgaSecurityEntitiesProxy {
 
     @RequestMapping(method = RequestMethod.GET, path = "/user-by-email/{email:.+}")
     public ResponseEntity<Map> getUserByEmail(@PathVariable String email) {
+        return userByEmail(email);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/user-by-email")
+    public ResponseEntity<Map> getUserByEmailWithParam(@RequestParam("email") String email) {
+        return userByEmail(email);
+    }
+
+    private ResponseEntity<Map> userByEmail(@RequestParam("email") String email) {
         final HttpHeaders headers = new HttpHeaders();
         try {
             headers.set("gumgaToken", GumgaThreadScope.gumgaToken.get());
