@@ -17,6 +17,10 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.internal.SQLQueryImpl;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.transform.AliasToEntityMapResultTransformer;
+import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -776,7 +780,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
         String whereDefault = StringUtils.isEmpty(multitenancyPattern) ? " where " + gQueryWhere : " WHERE obj.oi like "+multitenancyPattern + (StringUtils.isEmpty(gQueryWhere) ? "" : " AND "+ gQueryWhere);
 
-        String hql="FROM "+entityInformation.getEntityName()+" obj "
+        String hql="select distinct obj FROM "+entityInformation.getEntityName()+" obj "
                 + gQuery.getJoins()
                 + whereDefault;
 
@@ -796,7 +800,10 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
         Query q = entityManager.createQuery(hql);
         Query qConta = entityManager.createQuery(hqlConta);
+
         Long total = (Long) qConta.getSingleResult();
+
+
         q.setMaxResults(queryObject.getPageSize());
         q.setFirstResult(queryObject.getStart());
         //TODO acertar o page number....

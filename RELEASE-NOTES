@@ -7,6 +7,8 @@
 
 =======================================
 Framework Backend
+1.5.21
+    - Implementação do inner e left join no GQuery
 
 1.5.20
     - Implementação do GQuery
