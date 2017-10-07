@@ -6,6 +6,8 @@ import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.domain.GumgaServiceable;
 import io.gumga.presentation.api.AbstractNoDeleteGumgaAPI;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -13,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
+public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends AbstractNoDeleteGumgaAPI<T> {
 
-    protected GumgaServiceable<T> service;
+    protected GumgaServiceable<T, ID> service;
 
-    public AbstractGumgaAPI(GumgaServiceable<T> service) {
+    public AbstractGumgaAPI(GumgaServiceable<T, ID> service) {
         super(service);
         this.service = service;
     }
@@ -27,7 +29,7 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "delete", notes = "Deleta objeto com o id correspondente.")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public RestResponse<T> delete(@PathVariable Long id) {
+    public RestResponse<T> delete(@PathVariable ID id) {
         T entity = service.view(id);
         service.delete(entity);
         return new RestResponse<>(getEntityDeletedMessage(entity));
@@ -38,9 +40,9 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "deletemulti", notes = "Deleta vários objeto com os ids correspondentes.")
     @RequestMapping(value = "multi/{id}", method = RequestMethod.DELETE)
-    public RestResponse<T> delete(@PathVariable List<Long> ids) {
+    public RestResponse<T> delete(@PathVariable List<ID> ids) {
         List<T> entities = new ArrayList<>();
-        for (Long id : ids) {
+        for (ID id : ids) {
             entities.add(service.view(id));
         }
         service.delete(entities);
@@ -49,7 +51,7 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
 
     }
 
-    public void setService(GumgaServiceable<T> service) {
+    public void setService(GumgaServiceable<T, ID> service) {
         this.service = service;
         super.setService(service);
     }
@@ -67,15 +69,15 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
     @ApiOperation(value = "multiselectionaction", notes = "Executa uma ação configurada para cada objeto da lista recebida.")
     @RequestMapping(value = "selectedaction", method = RequestMethod.POST)
     public Object multiSelectionAction(@RequestBody SelectionAndActionTO selectionAndActionTO) {
-        return selectElementsForAction(selectionAndActionTO.action, selectionAndActionTO.ids);
+        return selectElementsForAction(selectionAndActionTO.action, (ID[]) selectionAndActionTO.ids);
     }
 
     public void doAction(String action, T obj) {
         System.out.println(action + "-----" + obj);
     }
 
-    protected Object selectElementsForAction(String action, Long[] ids) {
-        for (Long id : ids) {
+    protected Object selectElementsForAction(String action, ID[] ids) {
+        for (ID id : ids) {
             T view = service.view(id);
             doAction(action, view);
         }
@@ -95,12 +97,12 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
     private static class SelectionAndActionTO {
 
         public String action;
-        public Long[] ids;
+        public Object[] ids;
 
         public SelectionAndActionTO() {
         }
 
-        public SelectionAndActionTO(String action, Long[] ids) {
+        public SelectionAndActionTO(String action, Object[] ids) {
             this.action = action;
             this.ids = ids;
         }
@@ -113,11 +115,11 @@ public abstract class AbstractGumgaAPI<T> extends AbstractNoDeleteGumgaAPI<T> {
             this.action = action;
         }
 
-        public Long[] getIds() {
+        public Object[] getIds() {
             return ids;
         }
 
-        public void setIds(Long[] ids) {
+        public void setIds(Object[] ids) {
             this.ids = ids;
         }
 

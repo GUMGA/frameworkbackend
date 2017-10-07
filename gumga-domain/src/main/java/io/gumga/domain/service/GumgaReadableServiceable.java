@@ -4,13 +4,14 @@ import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.domain.GumgaObjectAndRevision;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Service com a operação de view, find, obter a classe e listas as versões
  * anteriores
  */
-public interface GumgaReadableServiceable<T> {
+public interface GumgaReadableServiceable<T, ID extends Serializable> {
 
     /**
      * Pesquisa na entidade tipada na interface @{@link GumgaReadableServiceable}
@@ -24,7 +25,7 @@ public interface GumgaReadableServiceable<T> {
      * @param id
      * @return
      */
-    public T view(Long id);
+    public T view(ID id);
 
     public Class<T> clazz();
 
@@ -33,6 +34,6 @@ public interface GumgaReadableServiceable<T> {
      * @param id
      * @return
      */
-    public List<GumgaObjectAndRevision> listOldVersions(Long id);
+    public List<GumgaObjectAndRevision> listOldVersions(ID id);
 
 }
