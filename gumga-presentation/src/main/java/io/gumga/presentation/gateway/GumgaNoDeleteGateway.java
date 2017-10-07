@@ -10,15 +10,16 @@ import io.gumga.domain.service.GumgaWritableServiceable;
 import io.gumga.presentation.GumgaTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class GumgaNoDeleteGateway<A extends GumgaIdable<?>, DTO> implements GumgaReadableServiceable<DTO>, GumgaWritableServiceable<DTO> {
+public abstract class GumgaNoDeleteGateway<A extends GumgaIdable<ID>, DTO, ID extends Serializable> implements GumgaReadableServiceable<DTO, ID>, GumgaWritableServiceable<DTO, ID> {
 
 	@Autowired
-	private GumgaNoDeleteService<A, ?> delegate;
+	private GumgaNoDeleteService<A, ID> delegate;
 	
 	@Autowired
-	private GumgaTranslator<A, DTO> translator;
+	private GumgaTranslator<A, DTO, ID> translator;
 	
 	@Override
 	public SearchResult<DTO> pesquisa(QueryObject query) {
@@ -27,7 +28,7 @@ public abstract class GumgaNoDeleteGateway<A extends GumgaIdable<?>, DTO> implem
 	}
 
 	@Override
-	public DTO view(Long id) {
+	public DTO view(ID id) {
 		return translator.from(delegate.view(id));
 	}
 

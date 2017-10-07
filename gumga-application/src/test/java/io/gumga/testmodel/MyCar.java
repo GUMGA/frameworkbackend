@@ -4,20 +4,24 @@ import io.gumga.domain.GumgaModel;
 import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.customfields.GumgaCustomizableModel;
 import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Entity
 @SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_CAR")
 @GumgaMultitenancy
 public class MyCar extends Car {
+    
+    private static final Logger log = LoggerFactory.getLogger(MyCar.class);
 
     private String licensePlate;
 
     public MyCar() {
+        
 
     }
 
@@ -42,7 +46,7 @@ public class MyCar extends Car {
             gumgaCustomFields.setAccessible(true);
             return "MyCar{" + "licensePlate=" + licensePlate + '}' + gumgaCustomFields.get(this);
         } catch (Exception ex) {
-            Logger.getLogger(MyCar.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex.getMessage());
         }
         return "MyCar{" + "licensePlate=" + licensePlate + "} NO CUSTOM FIELDS";
     }

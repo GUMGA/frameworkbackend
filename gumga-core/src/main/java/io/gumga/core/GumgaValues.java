@@ -1,14 +1,13 @@
 package io.gumga.core;
 
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Interface que deve ser implementada para alterar comportamentos padrão do
@@ -17,10 +16,14 @@ import java.util.logging.Logger;
  * @author munif
  */
 public interface GumgaValues {
+    
+    static final Logger log = LoggerFactory.getLogger(GumgaValues.class);
 
-    default String getGumgaNLPBasePackage(){
+    default String getGumgaNLPBasePackage() {
         return "io.gumga";
-    };
+    }
+
+    ;
 
     /**
      *
@@ -109,7 +112,7 @@ public interface GumgaValues {
             InputStream input = new FileInputStream(System.getProperty("user.home") + "/gumgafiles/" + getCustomPropertiesFileName());
             toReturn.load(input);
         } catch (IOException e) {
-            Logger.getLogger(GumgaValues.class.getName()).log(Level.INFO,"Utilizando properties padrão");
+            log.info("Utilizando properties padrão");
         }
         return toReturn;
     }
@@ -126,6 +129,8 @@ public interface GumgaValues {
      *
      * @return nome do software
      */
-    default String getSoftwareName() {return "";};
+    default String getSoftwareName() {
+        return "";
+    }
 
 }

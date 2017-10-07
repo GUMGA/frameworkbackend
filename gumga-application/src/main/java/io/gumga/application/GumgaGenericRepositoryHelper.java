@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.Normalizer;
 import java.util.*;
+import org.apache.commons.lang.StringEscapeUtils;
 
 public class GumgaGenericRepositoryHelper {
 
@@ -22,7 +23,9 @@ public class GumgaGenericRepositoryHelper {
     }
 
     /**
-     * Faz substituição dos operadores especificados no atributo hqlConverter para operadores do tipo SQL
+     * Faz substituição dos operadores especificados no atributo hqlConverter
+     * para operadores do tipo SQL
+     *
      * @return operadores sql
      */
     public static Map<GumgaHqlEntry, GumgaHqlElement> getHqlConverter() {
@@ -54,6 +57,15 @@ public class GumgaGenericRepositoryHelper {
 
         }
         return hqlConverter;
+    }
+
+    public static String getHql(QueryObjectElement qoe) {
+        if ("string".equals(qoe.getAttributeType())) {
+            GumgaHqlElement ghe = getHqlConverter().get(new GumgaHqlEntry(GumgaFieldStereotype.TEXT, qoe.getHql().trim()));
+            return "obj." + qoe.getAttribute() + ghe.before + qoe.getValue() + ghe.after;
+        }
+        GumgaHqlElement ghe = getHqlConverter().get(new GumgaHqlEntry(GumgaFieldStereotype.DEFAULT, qoe.getHql().trim()));
+        return "obj." + qoe.getAttribute() + ghe.before + qoe.getValue() + ghe.after;
     }
 
     public static GumgaFieldStereotype getFieldStereotype(Class type) {
@@ -90,6 +102,7 @@ public class GumgaGenericRepositoryHelper {
 
     /**
      * Gera um Objeto QueryObjectElement através de uma String.
+     *
      * @param s
      * @return lista de QueryObjectElement
      */
@@ -103,23 +116,28 @@ public class GumgaGenericRepositoryHelper {
                 QueryObjectElement qoe = new QueryObjectElement();
                 aRetornar.add(qoe);
                 JsonNode node = elements.next();
+                System.out.println("---->" + node);
                 if (node.has("attribute")) {
-                    qoe.setAttribute(node.get("attribute").get("name").asText());
+                    qoe.setAttribute(node.get("attribute").get("field").asText());
+                    qoe.setAttributeType(node.get("attribute").get("type").asText());
                 }
-                if (node.has("hql")) {
-                    qoe.setHql(node.get("hql").get("hql").asText());
+                if (node.has("condition")) {
+                    qoe.setHql(node.get("condition").get("hql").asText());
                 }
                 qoe.setValue(node.get("value").asText());
             }
         } catch (IOException ex) {
             throw new GumgaGenericRepostoryHelperException(ex);
         }
+        System.out.println();
         return aRetornar;
 
     }
 
     /**
-     * Gera um HQL através das informações da entidade e do QueryObject especificado por parâmetro.
+     * Gera um HQL através das informações da entidade e do QueryObject
+     * especificado por parâmetro.
+     *
      * @param entityInformation
      * @param qoes
      * @return hql
@@ -135,7 +153,6 @@ public class GumgaGenericRepositoryHelper {
                 Field field = ReflectionUtils.findField(entityInformation.getJavaType(), qoe.getAttribute());
                 if (field != null) {
                     type = field.getType();
-
                 }
                 GumgaFieldStereotype fieldStereotype = getFieldStereotype(type);
                 if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getOracleLikeMap()) && fieldStereotype == GumgaFieldStereotype.TEXT) {
@@ -156,6 +173,7 @@ public class GumgaGenericRepositoryHelper {
 
     /**
      * Remove acentos do parametro especificado
+     *
      * @param str valor
      * @return parametro sem acentos
      */
@@ -164,6 +182,43 @@ public class GumgaGenericRepositoryHelper {
         str = str.replaceAll("[^\\p{ASCII}]", "");
         return str;
 
+    }
+    
+    public static String hql(String aqo){
+        aqo = StringEscapeUtils.unescapeJavaScript(aqo);
+        aqo = aqo.substring(1, aqo.length() - 1);
+        List<QueryObjectElement> qoeFromString = qoeFromString(aqo);
+        String hql="";
+        for (QueryObjectElement e : qoeFromString) {
+            hql+=e.isLogical()?e.toString():getHql(e);
+        }
+        return hql;
+    }
+    
+    public static String hql(List<QueryObjectElement> qoes){
+        String hql="";
+        for (QueryObjectElement e : qoes) {
+            hql+=e.isLogical()?e.toString():getHql(e);
+        }
+        return hql;
+        
+    }
+
+    public static void main(String args[]) {
+
+        String aqo = "\"[{\\\"attribute\\\":{\\\"field\\\":\\\"name\\\",\\\"type\\\":\\\"string\\\",\\\"label\\\":\\\"Nome\\\"},\\\"condition\\\":{\\\"hql\\\":\\\" contains \\\",\\\"label\\\":\\\" contém \\\",\\\"before\\\":\\\" like '%\\\",\\\"after\\\":\\\"%'\\\"},\\\"value\\\":\\\"Gum\\\"},{\\\"value\\\":\\\"AND\\\"},{\\\"attribute\\\":{\\\"field\\\":\\\"id\\\",\\\"type\\\":\\\"number\\\",\\\"label\\\":\\\"Id\\\"},\\\"condition\\\":{\\\"hql\\\":\\\" gt \\\",\\\"label\\\":\\\" maior que \\\",\\\"before\\\":\\\" >   \\\",\\\"after\\\":\\\"\\\"},\\\"value\\\":2}]\"";
+        
+        System.out.println (hql(aqo));
+/*        
+        aqo = StringEscapeUtils.unescapeJavaScript(aqo);
+        aqo = aqo.substring(1, aqo.length() - 1);
+        System.out.println("--->" + aqo + "\n");
+        List<QueryObjectElement> qoeFromString = qoeFromString(aqo);
+        String hql="";
+        for (QueryObjectElement e : qoeFromString) {
+            System.out.println("--->" + (e.isLogical()?e.toString():getHql(e)));
+        }
+        System.out.println("\n--->>" + qoeFromString);*/
     }
 
 }

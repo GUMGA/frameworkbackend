@@ -17,6 +17,7 @@ import java.util.Objects;
  * {@literal @}Column(name ="endereco_latitude"),<br>
  * {@literal @}Column(name ="endereco_longitude"),<br>
  * {@literal @}Column(name ="endereco_formalCode")<br>
+ * {@literal @}Column(name ="endereco_stateCode")<br>
  * })<br>
  * private GumgaAddress endereco;<br>
  *
@@ -36,6 +37,7 @@ public class GumgaAddress extends GumgaDomain {
     private Double latitude;
     private Double longitude;
     private String formalCode;
+    private String stateCode;
 
     public GumgaAddress() {
 
@@ -53,9 +55,22 @@ public class GumgaAddress extends GumgaDomain {
             this.state = other.state;
             this.country = other.country;
             this.latitude = other.latitude;
-            this.longitude = other.latitude;
+            this.longitude = other.longitude;
             this.formalCode = other.formalCode;
+            this.stateCode = other.stateCode;
         }
+    }
+
+    public GumgaAddress(String zipCode, String premisseType, String premisse, String number, String information, String neighbourhood, String localization, String state, String country) {
+        this.zipCode = zipCode;
+        this.premisseType = premisseType;
+        this.premisse = premisse;
+        this.number = number;
+        this.information = information;
+        this.neighbourhood = neighbourhood;
+        this.localization = localization;
+        this.state = state;
+        this.country = country;
     }
 
     public GumgaAddress(String zipCode, String premisseType, String premisse, String number, String information, String neighbourhood, String localization, String state, String country, Double latitude, Double longitude, String formalCode) {
@@ -71,6 +86,22 @@ public class GumgaAddress extends GumgaDomain {
         this.latitude = latitude;
         this.longitude = longitude;
         this.formalCode = formalCode;
+    }
+
+    public GumgaAddress(String zipCode, String premisseType, String premisse, String number, String information, String neighbourhood, String localization, String state, String country, Double latitude, Double longitude, String formalCode, String stateCode) {
+        this.zipCode = zipCode;
+        this.premisseType = premisseType;
+        this.premisse = premisse;
+        this.number = number;
+        this.information = information;
+        this.neighbourhood = neighbourhood;
+        this.localization = localization;
+        this.state = state;
+        this.country = country;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.formalCode = formalCode;
+        this.stateCode = stateCode;
     }
 
     public String getZipCode() {
@@ -169,6 +200,14 @@ public class GumgaAddress extends GumgaDomain {
         this.formalCode = formalCode;
     }
 
+    public String getStateCode() {
+        return stateCode;
+    }
+
+    public void setStateCode(String stateCode) {
+        this.stateCode = stateCode;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -184,6 +223,7 @@ public class GumgaAddress extends GumgaDomain {
         hash = 23 * hash + Objects.hashCode(this.latitude);
         hash = 23 * hash + Objects.hashCode(this.longitude);
         hash = 23 * hash + Objects.hashCode(this.formalCode);
+        hash = 23 * hash + Objects.hashCode(this.stateCode);
         return hash;
     }
 
@@ -232,12 +272,15 @@ public class GumgaAddress extends GumgaDomain {
         if (!Objects.equals(this.formalCode, other.formalCode)) {
             return false;
         }
+        if (!Objects.equals(this.stateCode, other.stateCode)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "GumgaAddress{" + "zipCode=" + zipCode + ", premisseType=" + premisseType + ", premisse=" + premisse + ", number=" + number + ", information=" + information + ", neighbourhood=" + neighbourhood + ", localization=" + localization + ", state=" + state + ", country=" + country + ", latitude=" + latitude + ", longitude=" + longitude + ", formalCode=" + formalCode + '}';
+        return "GumgaAddress{" + "zipCode=" + zipCode + ", premisseType=" + premisseType + ", premisse=" + premisse + ", number=" + number + ", information=" + information + ", neighbourhood=" + neighbourhood + ", localization=" + localization + ", state=" + state + ", country=" + country + ", latitude=" + latitude + ", longitude=" + longitude + ", formalCode=" + formalCode + ", stateCode=" + stateCode + '}';
     }
 
 }

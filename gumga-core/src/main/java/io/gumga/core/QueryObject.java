@@ -1,5 +1,6 @@
 package io.gumga.core;
 
+import io.gumga.core.gquery.GQuery;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -10,8 +11,14 @@ import java.util.Collections;
  */
 public class QueryObject {
 
+    public static final String AQO = "AQO";
     public static final String SIMPLE = "SIMPLE";
     public static final String EMPTY = "[]";
+
+    /**
+     * Objeto representa uma pequisa OO
+     */
+    private GQuery gQuery = null;
 
     /**
      * Objeto JSON que representa uma pequisa avançada
@@ -64,7 +71,15 @@ public class QueryObject {
     /**
      * Se true, busca apenas os inativos
      */
-    private boolean inactiveSearch=false;
+    private boolean inactiveSearch = false;
+
+    public boolean isGQuery() {
+        return gQuery != null;
+    }
+
+    public boolean isAQO() {
+        return AQO.equals(aq);
+    }
 
     public boolean isInactiveSearch() {
         return inactiveSearch;
@@ -185,6 +200,14 @@ public class QueryObject {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public GQuery getgQuery() {
+        return gQuery;
+    }
+
+    public void setgQuery(GQuery gQuery) {
+        this.gQuery = gQuery;
     }
 
     @Override

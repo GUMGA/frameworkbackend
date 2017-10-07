@@ -4,18 +4,24 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.annotations.GumgaSwagger;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
+import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.GumgaServiceable;
 import io.gumga.presentation.api.AbstractNoDeleteGumgaAPI;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends AbstractNoDeleteGumgaAPI<T> {
+public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends AbstractNoDeleteGumgaAPI<T, ID> {
+
+    private static final Logger log = LoggerFactory.getLogger(AbstractGumgaAPI.class);
 
     protected GumgaServiceable<T, ID> service;
 
@@ -36,7 +42,6 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
     }
 
     @GumgaSwagger
-    @Transactional
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "deletemulti", notes = "Deleta vários objeto com os ids correspondentes.")
     @RequestMapping(value = "multi/{id}", method = RequestMethod.DELETE)
@@ -73,7 +78,7 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
     }
 
     public void doAction(String action, T obj) {
-        System.out.println(action + "-----" + obj);
+        log.info(action + "-----" + obj);
     }
 
     protected Object selectElementsForAction(String action, ID[] ids) {
@@ -123,6 +128,14 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
             this.ids = ids;
         }
 
+    }
+
+    @GumgaSwagger
+    @Transactional
+    @ApiOperation(value = "gquery", notes = "gquery")
+    @RequestMapping(path = "/gquery", method = RequestMethod.POST)
+    public SearchResult<T>  qquery(@RequestBody QueryObject query) {
+        return service.pesquisa(query);
     }
 
 }

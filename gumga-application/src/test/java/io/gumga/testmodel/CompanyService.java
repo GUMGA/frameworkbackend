@@ -14,12 +14,16 @@ public class CompanyService extends GumgaService<Company, Long> {
 
     @Override
     public void afterSave(Company entity) {
-        System.out.println("after save");
+        
     }
 
     @Override
     public void afterUpdate(Company entity) {
-        System.out.println("after update");
+        
+    }
+
+    public long count() {
+        return repository.count();
     }
 
 }

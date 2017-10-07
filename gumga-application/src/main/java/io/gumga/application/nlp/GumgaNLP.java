@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class GumgaNLP {
     
@@ -22,23 +25,24 @@ public class GumgaNLP {
     private Analyzer cogroo;
     private Reflections reflections;
     private Set<Class<?>> classOfInterest;
+    private static final Logger log = LoggerFactory.getLogger(GumgaNLP.class);
 
     @Autowired
     public GumgaNLP(GumgaValues gumgaValues) {
         String basePackage = gumgaValues.getGumgaNLPBasePackage();
         if ("NO_GUMGANLP".equalsIgnoreCase(basePackage)){
-            System.out.println("GumgaNLP ------ DISABLED");
+            log.warn("GumgaNLP ------ DISABLED");
             return;
         }
         try {
             ComponentFactory factory = ComponentFactory.create(new Locale("pt", "BR"));
             cogroo = factory.createPipe();
             reflections = new Reflections(basePackage);
-            System.out.println("ReflectionsConfiguration------->" + reflections.getConfiguration().getUrls());
+            log.info("ReflectionsConfiguration------->" + reflections.getConfiguration().getUrls());
             classOfInterest = reflections.getTypesAnnotatedWith(GumgaNLPThing.class);
-            System.out.println("GumgaNLP ------" + basePackage + "----->" + classOfInterest);
+            log.warn("GumgaNLP ------" + basePackage + "----->" + classOfInterest);
         } catch (Exception ex) {
-            System.out.println("GumgaNLP ------" + basePackage + "-----> NOT WORKING IN THIS SYSTEM " + ex);
+            log.error("GumgaNLP ------" + basePackage + "-----> NOT WORKING IN THIS SYSTEM " + ex);
         }
     }
 
@@ -61,7 +65,6 @@ public class GumgaNLP {
             int i = 0;
             List<Token> tokens = sentence.getTokens();
             while (i < tokens.size()) {
-                System.out.print(estado + " ");
                 Token token = sentence.getTokens().get(i);
                 if (token.getPOSTag().startsWith("v-")) {
                     for (String v : verbs) {
@@ -100,7 +103,6 @@ public class GumgaNLP {
             }
 
         }
-        System.out.println("---------->" + toReturn);
         return toReturn;
 
     }

@@ -3,10 +3,11 @@ package io.gumga.presentation;
 import io.gumga.core.GumgaIdable;
 import io.gumga.core.utils.ReflectionUtils;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class GumgaTranslator<BusinessObject extends GumgaIdable<?>, ServiceObject> {
+public abstract class GumgaTranslator<BusinessObject extends GumgaIdable<ID>, ServiceObject, ID extends Serializable> {
 	
 	public abstract BusinessObject to(ServiceObject serviceObject);
 	

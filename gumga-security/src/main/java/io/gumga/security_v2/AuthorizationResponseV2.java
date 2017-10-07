@@ -13,43 +13,44 @@ public class AuthorizationResponseV2 {
     private String login;
     private String reason;
     private String key;
+    private String instanceOi;
 
     public AuthorizationResponseV2() {
     }
 
-    public AuthorizationResponseV2(String response, String organization, String organizationCode, String login, String reason, String key, Long oId) {
+    public AuthorizationResponseV2(String response, String organization, String organizationCode, String login, String reason, String key, Long oId, String instanceOi) {
         this.response = response;
         this.organization = organization;
         this.organizationCode = organizationCode;
         this.login = login;
         this.reason = reason;
         this.key = key;
-        this.organizationId=oId;
+        this.organizationId = oId;
+        this.instanceOi = instanceOi;
     }
 
     public AuthorizationResponseV2(Map mapAuthorizaton) {
         mapAuthorizaton.forEach((key, value) -> {
-                Field[] fields = this.getClass().getDeclaredFields();
-                Arrays.stream(fields).forEach(field -> {
-                    if(field.getName().equals(key.toString())) {
-                        if(field.getType().isAssignableFrom(Long.class)) {
-                            try {
-                                field.set(this, Long.valueOf(value.toString()));
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                field.set(this, value);
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
+            Field[] fields = this.getClass().getDeclaredFields();
+            Arrays.stream(fields).forEach(field -> {
+                if (field.getName().equals(key.toString())) {
+                    if (field.getType().isAssignableFrom(Long.class)) {
+                        try {
+                            field.set(this, Long.valueOf(value.toString()));
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            field.set(this, value);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
                         }
                     }
-                });
+                }
+            });
         });
     }
-
 
     public Long getOrganizationId() {
         return organizationId;
@@ -111,9 +112,17 @@ public class AuthorizationResponseV2 {
         this.key = key;
     }
 
+    public String getInstanceOi() {
+        return instanceOi;
+    }
+
+    public void setInstanceOi(String instanceOi) {
+        this.instanceOi = instanceOi;
+    }
+
     @Override
     public String toString() {
-        return "AuthorizatonResponse{" + "response=" + response + ", organization=" + organization + ", organizationCode=" + organizationCode + ", login=" + login + ", reason=" + reason + ", key=" + key + '}';
+        return "AuthorizationResponseV2{" + "response=" + response + ", organizationId=" + organizationId + ", organization=" + organization + ", organizationCode=" + organizationCode + ", login=" + login + ", reason=" + reason + ", key=" + key + ", instaceOi=" + instanceOi + '}';
     }
 
 }

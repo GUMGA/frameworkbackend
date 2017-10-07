@@ -1,11 +1,16 @@
 package io.gumga.security;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class Bootstrap extends AbstractAnnotationConfigDispatcherServletInitializer {
+    
+    private static final Logger log = LoggerFactory.getLogger(Bootstrap.class);
 
     public Bootstrap() {
-        System.out.println("---------------------> Inicio do " + this.getClass().getCanonicalName());
+        log.info("INICIO");
     }
     
     @Override

@@ -3,9 +3,11 @@ package io.gumga.presentation.dto;
 import io.gumga.presentation.api.AbstractReadOnlyGumgaAPI;
 import io.gumga.presentation.gateway.GumgaReadOnlyGateway;
 
-public abstract class GumgaReadOnlyDTOAPI<T> extends AbstractReadOnlyGumgaAPI<T> {
+import java.io.Serializable;
+
+public abstract class GumgaReadOnlyDTOAPI<T, ID extends Serializable> extends AbstractReadOnlyGumgaAPI<T, ID> {
 	
-	public GumgaReadOnlyDTOAPI(GumgaReadOnlyGateway<?, T> gateway) {
+	public GumgaReadOnlyDTOAPI(GumgaReadOnlyGateway<?, T, ID> gateway) {
 		super(gateway);
 	}
 

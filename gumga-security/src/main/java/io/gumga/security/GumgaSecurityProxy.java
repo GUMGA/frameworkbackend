@@ -18,6 +18,7 @@ import io.gumga.core.UserAndPassword;
 import io.gumga.domain.domains.GumgaImage;
 import io.gumga.domain.saas.GumgaSaaS;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
+import io.gumga.presentation.exceptionhandler.GumgaRunTimeException;
 import io.gumga.security_v2.GumgaRequestFilterV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,9 @@ import javax.transaction.Transactional;
 import java.util.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestClientException;
 
 /**
  *
@@ -47,200 +50,290 @@ class GumgaSecurityProxy {
     }
 
     @ApiOperation(value = "create", notes = "Cria token através do usuário e senha informados.")
-    @RequestMapping(value = "/create/{user}/{password}", method = RequestMethod.GET)
+    @RequestMapping(value = "/create/{user}/{password:.+}", method = RequestMethod.GET)
     public ResponseEntity create(@PathVariable String user, @PathVariable String password) {
         String url = gumgaValues.getGumgaSecurityUrl() + "/token/create/" + user + "/" + password + "/" + gumgaValues.getSoftwareName();
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA, 
-        if (resposta.containsKey("response")) {
-            response = GumgaSecurityCode.valueOf("" + resposta.get("response"));
+        try {
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA, 
+            if (resposta.containsKey("response")) {
+                response = GumgaSecurityCode.valueOf("" + resposta.get("response"));
+            }
+            return new ResponseEntity(resposta, response.httpStatus);
+        } catch (Exception ex) {
+            return new ResponseEntity(new ProxyProblemResponse("Problema na comunicação com o sergurança.", ex.getMessage()), HttpStatus.SERVICE_UNAVAILABLE);
         }
-        return new ResponseEntity(resposta, response.httpStatus);
     }
 
     @ApiOperation(value = "delete", notes = "Faz logout do usuário fazendo o token informado expirar.")
-    @RequestMapping(value = "/{token}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{token:.+}", method = RequestMethod.DELETE)
     public Map delete(@PathVariable String token) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/" + token;
-        restTemplate.delete(url);
-        return GumgaSecurityCode.OK.response();
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/" + token;
+            restTemplate.delete(url);
+            return GumgaSecurityCode.OK.response();
+        } catch (RestClientException ex) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", ex.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "login", notes = "Faz o login recebendo o objeto UserAndPassword.")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody UserAndPassword login) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token";
-        login.setSoftwareName(gumgaValues.getSoftwareName());
-        Map resposta = restTemplate.postForObject(url, login, Map.class);
-        GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA  MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA,
-        if (resposta.containsKey("response")) {
-            response = GumgaSecurityCode.valueOf("" + resposta.get("response"));
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token";
+            login.setSoftwareName(gumgaValues.getSoftwareName());
+            Map resposta = restTemplate.postForObject(url, login, Map.class);
+            GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA  MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA,
+            if (resposta.containsKey("response")) {
+                response = GumgaSecurityCode.valueOf("" + resposta.get("response"));
+            }
+            return new ResponseEntity(resposta, response.httpStatus);
+        } catch (RestClientException ex) {
+            return new ResponseEntity(new ProxyProblemResponse("Problema na comunicação com o sergurança.", ex.getMessage()), HttpStatus.SERVICE_UNAVAILABLE);
         }
-
-        return new ResponseEntity(resposta, response.httpStatus);
     }
 
     @ApiOperation(value = "login", notes = "Faz o login recebendo o objeto UserAndPassword.")
     @RequestMapping(method = RequestMethod.POST, value = "app")
     public ResponseEntity loginApp(@RequestBody UserAndPassword login) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/app";
-        login.setSoftwareName(gumgaValues.getSoftwareName());
-        Map resposta = restTemplate.postForObject(url, login, Map.class);
-        GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA  MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA,
-        if (resposta.containsKey("response")) {
-            response = GumgaSecurityCode.valueOf("" + resposta.get("response"));
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/app";
+            login.setSoftwareName(gumgaValues.getSoftwareName());
+            Map resposta = restTemplate.postForObject(url, login, Map.class);
+            GumgaSecurityCode response = GumgaSecurityCode.OK; //TODO ESTÁ PARA  MANTER COMPATÍVEL COM A VERSÃO ANTERIOR DO SEGURANÇA,
+            if (resposta.containsKey("response")) {
+                response = GumgaSecurityCode.valueOf("" + resposta.get("response"));
+            }
+            return new ResponseEntity(resposta, response.httpStatus);
+        } catch (RestClientException restClientException) {
+            return new ResponseEntity(new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()), HttpStatus.SERVICE_UNAVAILABLE);
         }
-
-        return new ResponseEntity(resposta, response.httpStatus);
     }
 
     @ApiOperation(value = "facebook", notes = "Faz o login com facebook recebendo email e token.")
     @RequestMapping(value = "/facebook", method = RequestMethod.GET)
     public Map loginWithFacebook(@RequestParam("email") String email, @RequestParam("token") String facebookToken) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/facebook?email=" + email + "&token=" + facebookToken + "&softwareName=" + gumgaValues.getSoftwareName();
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/facebook?email=" + email + "&token=" + facebookToken + "&softwareName=" + gumgaValues.getSoftwareName();
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "github", notes = "Faz o login com github recebendo email e token.")
     @RequestMapping(value = "/github", method = RequestMethod.GET)
     public Map loginWithGitHub(@RequestParam("email") String email, @RequestParam("token") String gitToken) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/github?email=" + email + "&token=" + gitToken + "&softwareName=" + gumgaValues.getSoftwareName();
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/github?email=" + email + "&token=" + gitToken + "&softwareName=" + gumgaValues.getSoftwareName();
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "register-facebook", notes = "Cria usuário e organização com facebook")
     @RequestMapping(value = "/register-facebook", method = RequestMethod.POST)
     public Map loginWithFacebook(@RequestBody FacebookRegister facebookRegister) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/register-facebook";
-        Map resposta = restTemplate.postForObject(url, facebookRegister, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/register-facebook";
+            Map resposta = restTemplate.postForObject(url, facebookRegister, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
-    @RequestMapping(value = "/{token}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{token:.+}", method = RequestMethod.GET)
     public Map get(@PathVariable String token) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/public/token/" + token;
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/get/" + token;
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "changePassword", notes = "Altera a senha do usuário informados pelo objeto UserAndPassword.")
     @RequestMapping(method = RequestMethod.PUT)
     public Map changePassword(@RequestBody UserAndPassword login) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token";
-        //restTemplate.put(url, login);
-        ResponseEntity<Map> exchange = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(login), Map.class);
-        return exchange.getBody();
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token";
+            ResponseEntity<Map> exchange = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(login), Map.class);
+            return exchange.getBody();
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @Transactional
     @ApiOperation(value = "organizations", notes = "Lista as organizações associadas ao token informado.")
     @RequestMapping(value = "/organizations/{token:.+}", method = RequestMethod.GET)
     public List organizations(@PathVariable String token) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/organizations/" + token;
-        List resposta = restTemplate.getForObject(url, List.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/organizations/" + token;
+            List resposta = restTemplate.getForObject(url, List.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @Transactional
     @ApiOperation(value = "change organization", notes = "Altera a organização do token.")
     @RequestMapping(value = "/changeorganization/{token}/{orgId}", method = RequestMethod.GET)
     public Object changeOrganization(@PathVariable String token, @PathVariable Long orgId) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/changeorganization/" + token + "/" + orgId;
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/changeorganization/" + token + "/" + orgId;
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @Transactional
     @ApiOperation(value = "organizations", notes = "Lista as operações associadas ao software e token informados.")
     @RequestMapping(value = "/operations/{software}/{token:.+}", method = RequestMethod.GET)
     public Set operations(@PathVariable String software, @PathVariable String token) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/operations/" + software + "/" + token + "/";
-        Set resposta = restTemplate.getForObject(url, Set.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/operations/" + software + "/" + token + "/";
+            Set resposta = restTemplate.getForObject(url, Set.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @Transactional
     @ApiOperation(value = "organizations", notes = "Lista as operações associadas ao software e token informados.")
     @RequestMapping(value = "/operationskeys/{software}/{token:.+}", method = RequestMethod.GET)
     public Set operationsKeys(@PathVariable String software, @PathVariable String token) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/operations/" + software + "/" + token + "/";
-        Set resposta = restTemplate.getForObject(url, Set.class);
-        HashSet<Object> keys = new HashSet<>();
-        for (Iterator it = resposta.iterator(); it.hasNext();) {
-            Map r = (Map) it.next();
-            keys.add(r.get("key"));
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/operations/" + software + "/" + token + "/";
+            Set resposta = restTemplate.getForObject(url, Set.class);
+            HashSet<Object> keys = new HashSet<>();
+            for (Iterator it = resposta.iterator(); it.hasNext();) {
+                Map r = (Map) it.next();
+                keys.add(r.get("key"));
+            }
+            return keys;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
         }
-        return keys;
     }
 
     @ApiOperation(value = "lostPassword", notes = "Permite recuperar a senha, enviando um e-mail para o login informado redirecionando o usuário para uma url.")
     @RequestMapping(method = RequestMethod.GET, value = "/lost-my-password")
     public Map lostMyPassword(@RequestParam("email") String login, @RequestParam("url") String urlCallback) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/lost-my-password";
-        url = url + "?email=" + login + "&url=" + urlCallback;
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/lost-my-password";
+            url = url + "?email=" + login + "&url=" + urlCallback;
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "lostPassword", notes = "Permite recuperar a senha, enviando um e-mail para o login informado.")
     @RequestMapping(method = RequestMethod.GET, value = "/lostpassword/{login:.+}")
     public Map lostPassword(@PathVariable String login) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/lostpassword/" + login + "/";
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/lostpassword/" + login + "/";
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "lostSoftwarePassword", notes = "Permite recuperar a senha, enviando um e-mail para o login informado.")
     @RequestMapping(method = RequestMethod.GET, value = "/lostsoftwarepassword/{software}/{login:.+}")
     public Map lostSoftwarePassword(@PathVariable String software, @PathVariable String login) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/lostsoftwarepassword/" + software + "/" + login + "/";
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/lostsoftwarepassword/" + software + "/" + login + "/";
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "changeByTicket", notes = "Verifica se o ticket já foi utilizado e altera a senha do usuário.")
-    @RequestMapping(method = RequestMethod.GET, value = "/lostpassword/{code}/{password}")
+    @RequestMapping(method = RequestMethod.GET, value = "/lostpassword/{code}/{password:.+}")
     public Map changeByTicket(@PathVariable String code, @PathVariable String password) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/lostpassword/" + code + "/" + password;
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/lostpassword/" + code + "/" + password;
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "findByTicket", notes = "Busca um ticket pelo código.")
     @RequestMapping(method = RequestMethod.GET, value = "/searchticket/{code}")
     public Map findByTicket(@PathVariable String code) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/searchticket/" + code;
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/searchticket/" + code;
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "/organizations/users", notes = "Buscar todos os usuarios por organização.")
-    @RequestMapping(method = RequestMethod.GET, value = "/organizations/users/{token}")
+    @RequestMapping(method = RequestMethod.GET, value = "/organizations/users/{token:.+}")
     public List findAllUserByOrganization(@PathVariable String token) {
-
-        final String url = gumgaValues.getGumgaSecurityUrl() + "/token/organization/users?gumgaToken=" + token;
-
-        List result = this.restTemplate.getForObject(url, List.class);
-
-        return result;
+        try {
+            final String url = gumgaValues.getGumgaSecurityUrl() + "/token/organization/users?gumgaToken=" + token;
+            List result = this.restTemplate.getForObject(url, List.class);
+            return result;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "/roles", notes = "Buscar todos os perfis.")
     @RequestMapping(method = RequestMethod.GET, value = "/roles")
     public List getAllRoles() {
-        final String url = gumgaValues.getGumgaSecurityUrl() + "/token/roles";
-        List result = this.restTemplate.getForObject(url, List.class);
-        return result;
+        try {
+            final String url = gumgaValues.getGumgaSecurityUrl() + "/token/roles";
+            List result = this.restTemplate.getForObject(url, List.class);
+            return result;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
     @ApiOperation(value = "google-plus", notes = "Faz o login com google-plus recebendo email e token.")
     @RequestMapping(value = "/google-plus", method = RequestMethod.GET)
     public Map loginWithGooglePlus(@RequestParam("email") String email, @RequestParam("token") String googlePlusToken) {
-        String url = gumgaValues.getGumgaSecurityUrl() + "/token/google-plus?email=" + email + "&token=" + googlePlusToken + "&softwareName=" + gumgaValues.getSoftwareName();
-        Map resposta = restTemplate.getForObject(url, Map.class);
-        return resposta;
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/google-plus?email=" + email + "&token=" + googlePlusToken + "&softwareName=" + gumgaValues.getSoftwareName();
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
+    }
+
+    @ApiOperation(value = "findToken", notes = "Traz as informações do token.")
+    @RequestMapping(value = "/get/{token:.+}", method = RequestMethod.GET)
+    public Map findToken(@PathVariable String token) {
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/get/" + token + "/";
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+        }
     }
 
 }

@@ -67,7 +67,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
         String token;
         String errorMessage = "Error";
         String errorResponse = GumgaSecurityCode.SECURITY_INTERNAL_ERROR.toString();
-        AuthorizatonResponse ar = new AuthorizatonResponse();
+        AuthorizationResponseV2 ar=new AuthorizationResponseV2();
         String operationKey = "NOOP";
 
         try {
@@ -108,7 +108,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
                 operationKey = apiName + "_" + hm.getMethod().getName();
             }
             if (endPoint.contains("public") || endPoint.contains("api-docs")) {
-                saveLog(new AuthorizatonResponse("allow", "public", "public", "public", "public", "public", null), request, operationKey, endPoint, method, true);
+                saveLog(new AuthorizationResponseV2("allow", "public", "public", "public", "public", "public", null,"no instance"), request, operationKey, endPoint, method, true);
                 return true;
             }
 
@@ -117,7 +117,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 //            ar = restTemplate.getForObject(url, AuthorizatonResponse.class);
             Map authorizatonResponse = restTemplate.getForObject(url, Map.class);
 
-            ar = new AuthorizatonResponse(authorizatonResponse);
+            ar = new AuthorizationResponseV2(authorizatonResponse);
             
 
             GumgaThreadScope.login.set(ar.getLogin());
@@ -130,6 +130,8 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
             GumgaThreadScope.operationKey.set(operationKey);
             GumgaThreadScope.ip.set(request.getRemoteAddr());
             GumgaThreadScope.softwareName.set(softwareId);
+            GumgaThreadScope.instanceOi.set(ar.getInstanceOi());
+            GumgaThreadScope.ignoreCheckOwnership.set(Boolean.FALSE);
 
             saveLog(ar, request, operationKey, endPoint, method, ar.isAllowed());
             if (ar.isAllowed()) {
@@ -169,7 +171,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
         }
     }
 
-    public void saveLog(AuthorizatonResponse ar, HttpServletRequest requset, String operationKey, String endPoint, String method, boolean a) {
+    public void saveLog(AuthorizationResponseV2 ar, HttpServletRequest requset, String operationKey, String endPoint, String method, boolean a) {
         if (gumgaValues.isLogActive()) {
             GumgaLog gl = new GumgaLog(ar.getLogin(), requset.getRemoteAddr(), ar.getOrganizationCode(),
                     ar.getOrganization(), softwareId, operationKey, endPoint, method, a);

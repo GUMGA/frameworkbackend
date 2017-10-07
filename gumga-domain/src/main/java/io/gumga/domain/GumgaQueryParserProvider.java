@@ -1,6 +1,7 @@
 package io.gumga.domain;
 
 import br.com.insula.opes.CpfCnpj;
+import io.gumga.core.GumgaValues;
 import io.gumga.domain.domains.GumgaAddress;
 import io.gumga.domain.domains.GumgaBarCode;
 import io.gumga.domain.domains.GumgaBoolean;
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.concurrent.TimeUnit.DAYS;
+import org.hibernate.Criteria;
 import static org.hibernate.criterion.Restrictions.eq;
 
 /**
@@ -49,7 +51,9 @@ public class GumgaQueryParserProvider {
     }
 
     public static final Map<Class<?>, CriterionParser> getH2LikeMap() {
-        return getBaseMap();
+        Map<Class<?>, CriterionParser> h2Map = getBaseMap();
+        h2Map.put(String.class, AbstractStringCriterionParser.H2_STRING_CRITERION_PARSER);
+        return h2Map;
     }
 
     public static final Map<Class<?>, CriterionParser> getOracleLikeMap() {
@@ -58,16 +62,23 @@ public class GumgaQueryParserProvider {
         return oracleMap;
     }
 
+    public static final Map<Class<?>, CriterionParser> getOracleLikeMapWithAdjust() {
+        Map<Class<?>, CriterionParser> oracleMapWithAdjust = new HashMap<Class<?>, CriterionParser>();
+        oracleMapWithAdjust.putAll(getOracleLikeMap());
+        oracleMapWithAdjust.put(GumgaValues.class, LONG_CRITERION_PARSER);
+        return oracleMapWithAdjust;
+    }
+
     public static final Map<Class<?>, CriterionParser> getMySqlLikeMap() {
         Map<Class<?>, CriterionParser> mySqlMap = getBaseMap();
-        mySqlMap.put(String.class, AbstractStringCriterionParser.MYSQL_STRING_CRITERION_PARSER);
+        //mySqlMap.put(String.class, AbstractStringCriterionParser.MYSQL_STRING_CRITERION_PARSER);
         return mySqlMap;
     }
 
     public static final Map<Class<?>, CriterionParser> getPostgreSqlLikeMap() {
-        Map<Class<?>, CriterionParser> mySqlMap = getBaseMap();
-        mySqlMap.put(String.class, AbstractStringCriterionParser.POSTGRESQL_STRING_CRITERION_PARSER);
-        return mySqlMap;
+        Map<Class<?>, CriterionParser> postgreSQLLikeMap = getBaseMap();
+        postgreSQLLikeMap.put(String.class, AbstractStringCriterionParser.POSTGRESQL_STRING_CRITERION_PARSER);
+        return postgreSQLLikeMap;
     }
 
     protected static final CriterionParser STRING_CRITERION_PARSER_WITHOUT_TRANSLATE = (field, value) -> {
@@ -91,7 +102,7 @@ public class GumgaQueryParserProvider {
      * @deprecated
      */
     @Deprecated
-    private static final CriterionParser STRING_CRITERION_PARSER = (field, value) -> {
+    protected static final CriterionParser STRING_CRITERION_PARSER = (field, value) -> {
 
         value = Normalizer.normalize(value, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 
@@ -162,8 +173,14 @@ public class GumgaQueryParserProvider {
         }
     };
 
+    private static final CriterionParser ENUM_PARSER = (field, value) -> {
+        return Restrictions.sqlRestriction("{alias}." + field + " = (?)", value, StandardBasicTypes.STRING);
+    };
+
     private static final Map<Class<?>, CriterionParser> getBaseMap() {
         Map<Class<?>, CriterionParser> parsers = new HashMap<>();
+
+        parsers.put(Enum.class, ENUM_PARSER);
         parsers.put(String.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
         parsers.put(Character.class, CHARACTER_CRITERION_PARSER);
         parsers.put(char.class, CHARACTER_CRITERION_PARSER);
@@ -216,8 +233,6 @@ public class GumgaQueryParserProvider {
         parsers.put(GumgaTime.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
         parsers.put(GumgaOi.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
         parsers.put(GumgaURL.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
-
-
 
         return parsers;
     }

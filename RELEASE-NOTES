@@ -7,6 +7,68 @@
 
 =======================================
 Framework Backend
+1.5.21
+    - Implementação do inner e left join no GQuery
+
+1.5.20
+    - Implementação do GQuery
+
+1.5.19
+    - Correção NPE em HibernateQueryObject.createCriterion
+
+1.5.18
+ - Permite excluir múltiplos registros
+ - Criação do módulo para envio via AWS async
+ - Criação do módulo para relatórios da Simulsoft
+ - Permir utilizar datas vazias no JavaScriptEngine
+ - Correção no na busca de usuário por email
+ - Criação de endereços com latitude e longitude nulos
+ - Melhorias no AQO para validar ownership
+ - 
+ - Retirado System.out.println RECEBIDA e CONVERTIDA
+ - Corrigido excessão NullPointerException ao instancia BigDecimal na classe GumgaCustomFieldValue
+ - Adicionado campo colSize na classe GumgaCustomField para poder personalizar tamanho dos campo
+
+   ***************************IMPORTANTE QUEBRA DE COMPILAÇÃO****************************************************
+   * Como foi adicionado novo campo na classe (GumgaCustomField), se utilizar liquibase, é necessário criar um  *
+   * changeset para adicionar este campo na tabela                                                              *
+   * Novo atributo : **private Integer colSize**                                                                *
+   **************************************************************************************************************
+
+ -
+
+1.5.17
+  - Adicionado FieldErrors no GumgaRunTimeException
+
+1.5.15
+  - Melhora nas mensagens quando a comunicação com o segurança está indisponível
+  - Inclusão no GumgaAddres do atributo stateCode
+      **************** IMPORTANTE QUEBRA DE COMPILAÇÂO *********************
+      @Columns(columns = {
+             @Column(name = "cod_postal"),
+             @Column(name = "tipo_logradouro"),
+             @Column(name = "logradouro"),
+             @Column(name = "numero"),
+             @Column(name = "informacao"),
+             @Column(name = "bairro"),
+             @Column(name = "localizacao"),
+             @Column(name = "estado"),
+             @Column(name = "cidade"),
+             @Column(name = "latitude"),
+             @Column(name = "longitude"),
+             @Column(name = "formalCode")
+             //ADICIONAR
+             @Column(name = "stateCode")
+             //FIM ADICIONAR
+         })
+         private GumgaAddress endereco;
+
+1.5.13
+ Compartilhamento por dono de instância
+
+
+1.5.12
+ gumgaValues.isOracleAdjust() 
 
 1.5.7
   Delete in Batch
@@ -188,4 +250,13 @@ ALTER SEQUENCE SEQ_GUMGA_TAG_VAL_DEF RENAME to SEQ_GTAG_VALU_DEFI
 1.2.13 and Before
 =============
 Not yet
+
+
+
+
+
+mvn --batch-mode release:update-versions -DdevelopmentVersion=1.5.12-SNAPSHOT
+
+
+mvn release:update-versions -DautoVersionSubmodules=true
 
