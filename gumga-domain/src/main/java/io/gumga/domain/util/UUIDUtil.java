@@ -20,13 +20,6 @@ public class UUIDUtil {
 
     }
 
-    public static void main(String[] args) {
-        System.out.println(generate());
-        System.out.println(generate());
-        System.out.println(generate());
-        System.out.println(generate());
-    }
-
     public static synchronized String generate() {
         long localId = System.currentTimeMillis()*10000;
 
