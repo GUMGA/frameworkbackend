@@ -8,6 +8,8 @@
 =======================================
 Framework Backend
 1.5.22
+    - Criado duas classe base GumgaModelUUID e GumgaSharedModelUUID
+    - Removido as dependencias do insula.opes
     - Correção no GQuery com comparação de data
 
 1.5.21

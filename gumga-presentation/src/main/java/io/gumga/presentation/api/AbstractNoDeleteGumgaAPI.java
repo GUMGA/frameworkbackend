@@ -12,15 +12,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.Serializable;
 import java.util.List;
 
 @RestController
-public abstract class AbstractNoDeleteGumgaAPI<T> extends
-        AbstractReadOnlyGumgaAPI<T> {
+public abstract class AbstractNoDeleteGumgaAPI<T, ID extends Serializable> extends
+        AbstractReadOnlyGumgaAPI<T, ID> {
 
-    protected GumgaWritableServiceable<T> service;
+    protected GumgaWritableServiceable<T, ID> service;
 
-    public AbstractNoDeleteGumgaAPI(GumgaWritableServiceable<T> service) {
+    public AbstractNoDeleteGumgaAPI(GumgaWritableServiceable<T, ID> service) {
         super(service);
         this.service = service;
     }
@@ -55,7 +56,7 @@ public abstract class AbstractNoDeleteGumgaAPI<T> extends
     }
 
     @Override
-    public void setService(GumgaServiceable<T> service) {
+    public void setService(GumgaServiceable<T, ID> service) {
         this.service = service;
         super.setService(service);
     }

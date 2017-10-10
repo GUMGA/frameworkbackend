@@ -21,13 +21,6 @@
 
 
     <dependencies>
-        
-        <dependency>
-            <groupId>br.com.insula</groupId>
-            <artifactId>opes</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.hibernate</groupId>

@@ -9,15 +9,16 @@ import io.gumga.domain.service.GumgaReadableServiceable;
 import io.gumga.presentation.GumgaTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class GumgaReadOnlyGateway<A extends GumgaIdable<?>, DTO> implements GumgaReadableServiceable<DTO> {
+public abstract class GumgaReadOnlyGateway<A extends GumgaIdable<ID>, DTO, ID extends Serializable> implements GumgaReadableServiceable<DTO, ID> {
 	
 	@Autowired
-	private GumgaService<A, ?> delegate;
+	private GumgaService<A, ID> delegate;
 	
 	@Autowired
-	private GumgaTranslator<A, DTO> translator;
+	private GumgaTranslator<A, DTO, ID> translator;
 	
 	@Override
 	public SearchResult<DTO> pesquisa(QueryObject query) {
@@ -26,10 +27,15 @@ public abstract class GumgaReadOnlyGateway<A extends GumgaIdable<?>, DTO> implem
 	}
 
 	@Override
-	public DTO view(Long id) {
+	public DTO view(ID id) {
 		return translator.from(delegate.view(id));
 	}
-	
+
+	//	@Override
+//	public DTO view(Long id) {
+//		return translator.from(delegate.view(id));
+//	}
+//
 	@SuppressWarnings("unchecked")
 	public Class<DTO> clazz() {
 		return (Class<DTO>) ReflectionUtils.inferGenericType(getClass());
