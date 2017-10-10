@@ -1,21 +1,42 @@
 package io.gumga.domain.util;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.time.Instant;
 import java.util.Enumeration;
-import java.util.UUID;
+
 
 public class UUIDUtil {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UUIDUtil.class);
+
     private static String macAddress;
+    private static long lastLocalId;
 
     protected UUIDUtil() {
 
     }
 
-    public static String generate() {
-        return Instant.now().toEpochMilli() + UUID.randomUUID().toString().replaceAll("-", "").toUpperCase() + getMacValue();
+    public static void main(String[] args) {
+        System.out.println(generate());
+        System.out.println(generate());
+        System.out.println(generate());
+        System.out.println(generate());
+    }
+
+    public static synchronized String generate() {
+        long localId = System.currentTimeMillis()*10000;
+
+        while (localId <= lastLocalId) {
+            localId++;
+        }
+
+        lastLocalId = localId;
+
+        return "" + Long.toHexString(localId).toUpperCase() + String.format("%06X", ((long)( Math.random() * 0x1000000))) + getMacValue();
     }
 
     private static String getMacValue() {
@@ -34,18 +55,18 @@ public class UUIDUtil {
                         sb.append(String.format("%02X", mac[i]));
                     }
                     toReturn += sb.toString();
+                    break;
                 }
 
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             if (toReturn.length() == 0) {
-                 macAddress = "E9B85E1E6F3D";
-                 return macAddress;
+                macAddress = "6D756E696666";
+                return macAddress;
             }
-
             macAddress = toReturn;
-            return toReturn;
+            return macAddress;
         }
 
         return macAddress;
