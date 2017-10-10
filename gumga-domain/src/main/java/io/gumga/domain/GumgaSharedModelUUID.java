@@ -1,11 +1,11 @@
 package io.gumga.domain;
 
-import br.com.insula.opes.CpfCnpj;
 import io.gumga.core.GumgaIdable;
 import io.gumga.core.GumgaThreadScope;
-import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.domains.*;
 import io.gumga.domain.domains.usertypes.*;
+import io.gumga.domain.util.UUIDUtil;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
@@ -13,12 +13,8 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.UUID;
+import java.util.Objects;
 
-/**
- * Created by felipesabadinifacina on 07/10/17.
- */
 @MappedSuperclass
 @TypeDefs({
         @TypeDef(name = "gumgaaddress", defaultForType = GumgaAddress.class, typeClass = GumgaAddressUserType.class),
@@ -39,22 +35,25 @@ import java.util.UUID;
         @TypeDef(name = "gumgatime", defaultForType = GumgaTime.class, typeClass = GumgaTimeUserType.class),
         @TypeDef(name = "gumgaoi", defaultForType = GumgaOi.class, typeClass = GumgaOiUserType.class),
         @TypeDef(name = "gumgaurl", defaultForType = GumgaURL.class, typeClass = GumgaURLUserType.class),
-        @TypeDef(name = "cpfcnpj", defaultForType = CpfCnpj.class, typeClass = CpfCnpjUserType.class)
 })
-public abstract class GumgaModelV2  implements GumgaIdable<String>, Serializable {
+public abstract class GumgaSharedModelUUID  implements GumgaIdable<String>, Serializable {
     public static final int MAX_LENGTH = 2048;
 
     @Id
     @Column(name = "id")
     protected String id;
+
     @Column(name = "oi")
     protected GumgaOi oi;
+
     @Column(name = "gumga_orgs",length = MAX_LENGTH)
     protected String gumgaOrganizations;
+
     @Column(name = "gumga_users",length = MAX_LENGTH)
     protected String gumgaUsers;
 
-    public GumgaModelV2() {
+
+    public GumgaSharedModelUUID() {
         Class classe = this.getClass();
         if (classe.isAnnotationPresent(GumgaMultitenancy.class)) {
             String oc = GumgaThreadScope.organizationCode.get();
@@ -64,16 +63,7 @@ public abstract class GumgaModelV2  implements GumgaIdable<String>, Serializable
             }
             oi = new GumgaOi(oc);
         }
-        id = generateHash();
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    private  String generateHash() {
-        return Instant.now().getEpochSecond()+ UUID.randomUUID().toString().replaceAll("-", "");
+        this.id = UUIDUtil.generate();
     }
 
     public GumgaOi getOi() {
@@ -111,6 +101,40 @@ public abstract class GumgaModelV2  implements GumgaIdable<String>, Serializable
     public void removeAllUser() {
         gumgaUsers = GumgaStringList.removeAll();
     }
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        if (id == null) {
+            return super.hashCode();
+        }
+        hash = 29 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GumgaSharedModelUUID other = (GumgaSharedModelUUID) obj;
+
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
 }
-
-
