@@ -13,6 +13,7 @@ import io.gumga.domain.repository.GumgaMultitenancyUtil;
 import io.gumga.domain.shared.GumgaSharedModel;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.envers.AuditReader;
@@ -131,7 +132,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             Criterion multitenancyCriterion;
             Criterion sharedCriterion;
             GumgaMultitenancy gumgaMultitenancy = getDomainClass().getAnnotation(GumgaMultitenancy.class);
-            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType())) {
+            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
                 String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
                 sharedCriterion = or(
                         //  like("1","1",MatchMode.EXACT)
@@ -303,7 +304,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(gumgaMultiTenancy);
             String sharedCriterion = " ";
 
-            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType())) {
+            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
                 String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
 
                 sharedCriterion = "or (obj.gumgaOrganizations like '%%," + oiPattern + ",%%' or "
@@ -760,6 +761,26 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         return search(qo);
     }
 
+    private String getWhereMultiTenancy() {
+        String tenant = " where ";
+        if (hasMultitenancy() && GumgaThreadScope.organizationCode.get() != null) {
+            String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(entityInformation.getJavaType().getAnnotation(GumgaMultitenancy.class));
+            String oi = "obj.oi like '" + oiPattern + "%'";
+            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
+                String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
+
+                tenant = tenant.concat("(".concat(oi)).concat("or (obj.gumgaOrganizations like '%," + oiPattern + ",%' or "
+                        + "obj.gumgaOrganizations like '%," + instanceOi + ",%' or "
+                        + "obj.gumgaUsers like '%," + GumgaThreadScope.login.get() + ",%') )");
+            } else {
+                tenant = tenant.concat(oi);
+            }
+        } else {
+            tenant = tenant.concat(" 1=1");
+        }
+        return tenant;
+    }
+
     public SearchResult<T> findByGQuery(QueryObject queryObject) {
         if (queryObject.getgQuery() == null) {
             queryObject.setgQuery(new GQuery());
@@ -812,6 +833,25 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
         SearchResult<T> sr = new SearchResult(queryObject, total, resultList);
         return sr;
+    }
+
+    @Override
+    public T fetchOne(GQuery gQuery) {
+        String query = "select distinct obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+
+        String gQueryWhere = gQuery.toString();
+        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())
+                || GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
+            gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
+        }
+
+        String where = getWhereMultiTenancy().concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
+
+        Query search = entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
+        search.setMaxResults(1);
+
+        T singleResult = (T) search.getSingleResult();
+        return singleResult;
     }
 
 }

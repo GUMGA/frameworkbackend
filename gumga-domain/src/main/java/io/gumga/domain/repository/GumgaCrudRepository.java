@@ -2,6 +2,7 @@ package io.gumga.domain.repository;
 
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
+import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.GumgaObjectAndRevision;
 import io.gumga.domain.GumgaRepository;
 import io.gumga.domain.Pesquisa;
@@ -84,4 +85,6 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
      */
     SearchResult<T> findAllWithTenancy();
 
+
+    T fetchOne(GQuery gQuery);
 }
