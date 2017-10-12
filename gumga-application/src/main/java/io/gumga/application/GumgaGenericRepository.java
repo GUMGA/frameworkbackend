@@ -733,7 +733,38 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             return;
         }
 
-        GumgaModel object = (GumgaModel) o;
+        if(o instanceof GumgaModel) {
+            gumgaModel((GumgaModel) o);
+        } else {
+            if(o instanceof GumgaModelUUID) {
+                gumgaModelUUID((GumgaModelUUID) o);
+            } else {
+                gumgaModelSharedUUID((GumgaSharedModelUUID) o);
+            }
+        }
+
+    }
+
+    private void gumgaModel(GumgaModel object) {
+
+        if (hasMultitenancy()
+                && (object.getOi() != null)
+                && (GumgaThreadScope.organizationCode.get() == null || !object.getOi().getValue().startsWith(getMultitenancyPattern()))) {
+            throw new EntityNotFoundException("cannot find object of " + entityInformation.getJavaType() + " with id: " + object.getId() + " in your organization: " + GumgaThreadScope.organizationCode.get());
+        }
+    }
+
+    private void gumgaModelSharedUUID(GumgaSharedModelUUID object) {
+
+        if (hasMultitenancy()
+                && (object.getOi() != null)
+                && (GumgaThreadScope.organizationCode.get() == null || !object.getOi().getValue().startsWith(getMultitenancyPattern()))) {
+            throw new EntityNotFoundException("cannot find object of " + entityInformation.getJavaType() + " with id: " + object.getId() + " in your organization: " + GumgaThreadScope.organizationCode.get());
+        }
+    }
+
+    private void gumgaModelUUID(GumgaModelUUID object) {
+
         if (hasMultitenancy()
                 && (object.getOi() != null)
                 && (GumgaThreadScope.organizationCode.get() == null || !object.getOi().getValue().startsWith(getMultitenancyPattern()))) {
@@ -787,10 +818,10 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         GQuery gQuery = queryObject.getgQuery();
 
-        String multitenancyPattern = "";
-        if(hasMultitenancy()) {
-            multitenancyPattern = "'"+getMultitenancyPattern()+"%'";
-        }
+//        String multitenancyPattern = "";
+//        if(hasMultitenancy()) {
+//            multitenancyPattern = "'"+getMultitenancyPattern()+"%'";
+//        }
 
 
         String gQueryWhere = gQuery.toString();
@@ -799,7 +830,9 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
         }
 
-        String whereDefault = StringUtils.isEmpty(multitenancyPattern) ? " where " + gQueryWhere : " WHERE obj.oi like "+multitenancyPattern + (StringUtils.isEmpty(gQueryWhere) ? "" : " AND "+ gQueryWhere);
+//        String whereDefault = StringUtils.isEmpty(multitenancyPattern) ? " where " + gQueryWhere : " WHERE obj.oi like "+multitenancyPattern + (StringUtils.isEmpty(gQueryWhere) ? "" : " AND "+ gQueryWhere);
+        String whereDefault = getWhereMultiTenancy().concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
+
 
         String hql="select distinct obj FROM "+entityInformation.getEntityName()+" obj "
                 + gQuery.getJoins()
