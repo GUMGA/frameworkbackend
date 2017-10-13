@@ -870,6 +870,23 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     @Override
     public T fetchOne(GQuery gQuery) {
+        Query search = createQueryWithGQuery(gQuery);
+        search.setMaxResults(1);
+
+        T singleResult = (T) search.getSingleResult();
+        return singleResult;
+    }
+
+    @Override
+    public List<T> findAll(GQuery gQuery) {
+        Query search = createQueryWithGQuery(gQuery);
+        search.setMaxResults(Integer.MAX_VALUE);
+
+        List<T> resultList = search.getResultList();
+        return resultList;
+    }
+
+    private Query createQueryWithGQuery(GQuery gQuery) {
         String query = "select distinct obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String gQueryWhere = gQuery.toString();
@@ -880,11 +897,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
         String where = getWhereMultiTenancy().concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
 
-        Query search = entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
-        search.setMaxResults(1);
-
-        T singleResult = (T) search.getSingleResult();
-        return singleResult;
+        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
     }
 
 }

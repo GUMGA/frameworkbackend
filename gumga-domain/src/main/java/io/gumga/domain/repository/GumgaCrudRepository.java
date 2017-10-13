@@ -87,4 +87,5 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
 
 
     T fetchOne(GQuery gQuery);
+    List<T> findAll(GQuery gQuery);
 }

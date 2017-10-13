@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-public class GumgaGenericMongoRepository<T extends GumgaMongoModel>implements GumgaCrudRepository<T,String> {
+public class GumgaGenericMongoRepository<T extends GumgaMongoModel> implements GumgaCrudRepository<T,String> {
 
     @Override
     public <A> SearchResult<A> advancedSearch(String selectQueryWithoutWhere, String countObjt, String ordenationId, QueryObject whereQuery) {
@@ -86,7 +86,12 @@ public class GumgaGenericMongoRepository<T extends GumgaMongoModel>implements Gu
 
     @Override
     public T fetchOne(GQuery gQuery) {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<T> findAll(GQuery gQuery) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

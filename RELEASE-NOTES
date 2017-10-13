@@ -11,6 +11,7 @@ Framework Backend
     - Criado duas classe de entidade base GumgaModelUUID e GumgaSharedModelUUID
     - Retirada a dependência do insula.opes
     - Correção na busca por data com GQuery nas operações LOWER_EQUAL e LOWER
+    - GumgaCrudRepository fetchOne e findAll por GQuery
 
 1.5.22
     - Correção no GQuery com comparação de data
