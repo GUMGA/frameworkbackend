@@ -40,7 +40,7 @@ public abstract class AbstractNoDeleteGumgaAPI<T, ID extends Serializable> exten
     @Transactional
     @ApiOperation(value = "update", notes = "Atualiza o objeto pelo id correspondente.")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
-    public RestResponse<T> update(@PathVariable("id") Long id,
+    public RestResponse<T> update(@PathVariable("id") ID id,
             @Valid @RequestBody T model, BindingResult result) {
         beforeUpdate(id, model);
         T entity = saveOrCry(model, result);
@@ -65,7 +65,7 @@ public abstract class AbstractNoDeleteGumgaAPI<T, ID extends Serializable> exten
 
     }
 
-    protected void beforeUpdate(Long id, T model) {
+    protected void beforeUpdate(ID id, T model) {
 
     }
 

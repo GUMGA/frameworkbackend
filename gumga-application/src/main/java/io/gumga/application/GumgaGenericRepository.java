@@ -830,55 +830,6 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         queryWithGQuery.setFirstResult(queryObject.getStart());
 
         return new SearchResult(queryObject, total, queryWithGQuery.getResultList());
-
-//        String multitenancyPattern = "";
-//        if(hasMultitenancy()) {
-//            multitenancyPattern = "'"+getMultitenancyPattern()+"%'";
-//        }
-
-
-//        String gQueryWhere = gQuery.toString();
-//        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())
-//                || GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
-//            gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
-//        }
-//
-////        String whereDefault = StringUtils.isEmpty(multitenancyPattern) ? " where " + gQueryWhere : " WHERE obj.oi like "+multitenancyPattern + (StringUtils.isEmpty(gQueryWhere) ? "" : " AND "+ gQueryWhere);
-//        String whereDefault = getWhereMultiTenancy().concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
-//
-//
-//        String hql="select distinct obj FROM "+entityInformation.getEntityName()+" obj "
-//                + gQuery.getJoins()
-//                + whereDefault;
-//
-//
-//        String hqlConta="select count(obj) FROM "+entityInformation.getEntityName()+" obj "
-//                + gQuery.getJoins()
-//                + whereDefault;
-//
-//
-//        String sortDir = queryObject.getSortDir();
-//        String sortField = queryObject.getSortField();
-//        String sort = "obj.id asc";
-//        if(!sortField.isEmpty()) {
-//            sort = sortField + (sortDir.equals("asc") ? " asc" : " desc");
-//        }
-//        hql += " order by " + sort;
-//
-//        Query q = entityManager.createQuery(hql);
-//        Query qConta = entityManager.createQuery(hqlConta);
-//
-//        Long total = (Long) qConta.getSingleResult();
-//
-//
-//        q.setMaxResults(queryObject.getPageSize());
-//        q.setFirstResult(queryObject.getStart());
-//        //TODO acertar o page number....
-//        List<T> resultList = q.getResultList();
-//
-//
-//        SearchResult<T> sr = new SearchResult(queryObject, total, resultList);
-//        return sr;
     }
 
     @Override
