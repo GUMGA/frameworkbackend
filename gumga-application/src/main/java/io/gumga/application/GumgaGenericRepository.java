@@ -5,6 +5,8 @@ import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.core.TenancyPublicMarking;
+import io.gumga.core.gquery.ComparisonOperator;
+import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.*;
 import io.gumga.domain.logicaldelete.GumgaLDModel;
@@ -224,16 +226,17 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
      */
     @Override
     public T findOne(ID id) {
-        if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType())) {
-            QueryObject qo = new QueryObject();
-            qo.setAq("obj.id=" + id);
-            SearchResult<T> search = this.search(qo);
-            if (search.getCount() == 1) {
-                return search.getValues().get(0);
-            }
-            if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
-                throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
-            }
+        if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
+            return fetchOne(new GQuery(new Criteria("obj.id", ComparisonOperator.EQUAL, id)));
+//            QueryObject qo = new QueryObject();
+//            qo.setAq("obj.id=" + id);
+//            SearchResult<T> search = this.search(qo);
+//            if (search.getCount() == 1) {
+//                return search.getValues().get(0);
+//            }
+//            if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
+//                throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
+//            }
         }
 
         T resource = super.findOne(id);
