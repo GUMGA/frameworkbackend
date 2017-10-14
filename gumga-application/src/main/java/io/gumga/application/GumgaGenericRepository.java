@@ -227,7 +227,14 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     @Override
     public T findOne(ID id) {
         if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
-            return fetchOne(new GQuery(new Criteria("obj.id", ComparisonOperator.EQUAL, id)));
+            T result = fetchOne(new GQuery(new Criteria("obj.id", ComparisonOperator.EQUAL, id)));
+            if(result != null) {
+                return result;
+            } else {
+                if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
+                    throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
+                }
+            }
 //            QueryObject qo = new QueryObject();
 //            qo.setAq("obj.id=" + id);
 //            SearchResult<T> search = this.search(qo);
