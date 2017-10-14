@@ -48,7 +48,7 @@ public abstract class GumgaModelUUID implements GumgaIdable<String>, Serializabl
 
     public GumgaModelUUID() {
         Class classe = this.getClass();
-        if (classe.isAnnotationPresent(GumgaMultitenancy.class)) {
+        if (classe.isAnnotationPresent(GumgaMultitenancy.class) && oi == null) {
             String oc = GumgaThreadScope.organizationCode.get();
             if (oc == null) {
                 GumgaMultitenancy tenancy = this.getClass().getAnnotation(GumgaMultitenancy.class);

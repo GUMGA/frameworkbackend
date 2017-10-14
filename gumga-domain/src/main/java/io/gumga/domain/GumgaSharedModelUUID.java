@@ -55,7 +55,7 @@ public abstract class GumgaSharedModelUUID  implements GumgaIdable<String>, Seri
 
     public GumgaSharedModelUUID() {
         Class classe = this.getClass();
-        if (classe.isAnnotationPresent(GumgaMultitenancy.class)) {
+        if (classe.isAnnotationPresent(GumgaMultitenancy.class) && oi == null) {
             String oc = GumgaThreadScope.organizationCode.get();
             if (oc == null) {
                 GumgaMultitenancy tenancy = this.getClass().getAnnotation(GumgaMultitenancy.class);
