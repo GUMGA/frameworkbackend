@@ -837,8 +837,8 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         Query search = createQueryWithGQuery(gQuery);
         search.setMaxResults(1);
 
-        T singleResult = (T) search.getSingleResult();
-        return singleResult;
+        Object singleResult = search.getSingleResult();
+        return singleResult != null ? (T) singleResult : null;
     }
 
     @Override
