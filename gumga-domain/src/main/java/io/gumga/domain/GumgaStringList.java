@@ -8,6 +8,9 @@ import io.gumga.domain.shared.MaximumSharesExceededException;
 class GumgaStringList {
 
     public static String add(String base, String value, int max) {
+        if(base == null) {
+            base = "";
+        }
         if (!contains(base, value)) {
             String toReturn = base + value + ",";
             if (toReturn.length() > max) {

@@ -47,10 +47,10 @@ public abstract class GumgaSharedModelUUID  implements GumgaIdable<String>, Seri
     protected GumgaOi oi;
 
     @Column(name = "gumga_orgs",length = MAX_LENGTH)
-    protected String gumgaOrganizations;
+    protected String gumgaOrganizations = ",";
 
     @Column(name = "gumga_users",length = MAX_LENGTH)
-    protected String gumgaUsers;
+    protected String gumgaUsers = ",";
 
 
     public GumgaSharedModelUUID() {
