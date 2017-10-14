@@ -47,6 +47,7 @@ import java.util.Map;
 import static org.hibernate.criterion.Order.asc;
 import static org.hibernate.criterion.Order.desc;
 import static org.hibernate.criterion.Projections.rowCount;
+import static org.hibernate.criterion.Restrictions.isNull;
 import static org.hibernate.criterion.Restrictions.like;
 import static org.hibernate.criterion.Restrictions.or;
 
@@ -794,7 +795,8 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     private String getWhereMultiTenancy() {
         String tenant = " where ";
-        if (hasMultitenancy() && GumgaThreadScope.organizationCode.get() != null) {
+
+        if (hasMultitenancy() && GumgaThreadScope.organizationCode.get() != null && (GumgaThreadScope.ignoreCheckOwnership.get() == null || !GumgaThreadScope.ignoreCheckOwnership.get())) {
             String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(entityInformation.getJavaType().getAnnotation(GumgaMultitenancy.class));
             String oi = "obj.oi like '" + oiPattern + "%'";
             if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
@@ -818,54 +820,65 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         GQuery gQuery = queryObject.getgQuery();
 
+
+        Query queryCountWithGQuery = createQueryCountWithGQuery(gQuery);
+        Long total = (Long) queryCountWithGQuery.getSingleResult();
+
+        Query queryWithGQuery = createQueryGQueryWithQueryObject(queryObject);
+
+        queryWithGQuery.setMaxResults(queryObject.getPageSize());
+        queryWithGQuery.setFirstResult(queryObject.getStart());
+
+        return new SearchResult(queryObject, total, queryWithGQuery.getResultList());
+
 //        String multitenancyPattern = "";
 //        if(hasMultitenancy()) {
 //            multitenancyPattern = "'"+getMultitenancyPattern()+"%'";
 //        }
 
 
-        String gQueryWhere = gQuery.toString();
-        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())
-                || GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
-            gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
-        }
-
-//        String whereDefault = StringUtils.isEmpty(multitenancyPattern) ? " where " + gQueryWhere : " WHERE obj.oi like "+multitenancyPattern + (StringUtils.isEmpty(gQueryWhere) ? "" : " AND "+ gQueryWhere);
-        String whereDefault = getWhereMultiTenancy().concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
-
-
-        String hql="select distinct obj FROM "+entityInformation.getEntityName()+" obj "
-                + gQuery.getJoins()
-                + whereDefault;
-
-
-        String hqlConta="select count(obj) FROM "+entityInformation.getEntityName()+" obj "
-                + gQuery.getJoins()
-                + whereDefault;
-
-
-        String sortDir = queryObject.getSortDir();
-        String sortField = queryObject.getSortField();
-        String sort = "obj.id asc";
-        if(!sortField.isEmpty()) {
-            sort = sortField + (sortDir.equals("asc") ? " asc" : " desc");
-        }
-        hql += " order by " + sort;
-
-        Query q = entityManager.createQuery(hql);
-        Query qConta = entityManager.createQuery(hqlConta);
-
-        Long total = (Long) qConta.getSingleResult();
-
-
-        q.setMaxResults(queryObject.getPageSize());
-        q.setFirstResult(queryObject.getStart());
-        //TODO acertar o page number....
-        List<T> resultList = q.getResultList();
-
-
-        SearchResult<T> sr = new SearchResult(queryObject, total, resultList);
-        return sr;
+//        String gQueryWhere = gQuery.toString();
+//        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())
+//                || GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
+//            gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
+//        }
+//
+////        String whereDefault = StringUtils.isEmpty(multitenancyPattern) ? " where " + gQueryWhere : " WHERE obj.oi like "+multitenancyPattern + (StringUtils.isEmpty(gQueryWhere) ? "" : " AND "+ gQueryWhere);
+//        String whereDefault = getWhereMultiTenancy().concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
+//
+//
+//        String hql="select distinct obj FROM "+entityInformation.getEntityName()+" obj "
+//                + gQuery.getJoins()
+//                + whereDefault;
+//
+//
+//        String hqlConta="select count(obj) FROM "+entityInformation.getEntityName()+" obj "
+//                + gQuery.getJoins()
+//                + whereDefault;
+//
+//
+//        String sortDir = queryObject.getSortDir();
+//        String sortField = queryObject.getSortField();
+//        String sort = "obj.id asc";
+//        if(!sortField.isEmpty()) {
+//            sort = sortField + (sortDir.equals("asc") ? " asc" : " desc");
+//        }
+//        hql += " order by " + sort;
+//
+//        Query q = entityManager.createQuery(hql);
+//        Query qConta = entityManager.createQuery(hqlConta);
+//
+//        Long total = (Long) qConta.getSingleResult();
+//
+//
+//        q.setMaxResults(queryObject.getPageSize());
+//        q.setFirstResult(queryObject.getStart());
+//        //TODO acertar o page number....
+//        List<T> resultList = q.getResultList();
+//
+//
+//        SearchResult<T> sr = new SearchResult(queryObject, total, resultList);
+//        return sr;
     }
 
     @Override
@@ -886,18 +899,63 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         return resultList;
     }
 
+
+    private Query createQueryGQueryWithQueryObject(QueryObject queryObject) {
+        if(queryObject.getgQuery() == null) {
+            queryObject.setgQuery(new GQuery());
+        }
+        GQuery gQuery = queryObject.getgQuery();
+
+        String sortDir = queryObject.getSortDir();
+        String sortField = queryObject.getSortField();
+        String sort = "obj.id asc";
+        if(!sortField.isEmpty()) {
+            sort = sortField + ("asc".equals(sortDir) ? " asc" : " desc");
+        }
+
+        String query = "select distinct obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+
+        String where = createWhere(gQuery);
+
+        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where).concat(" order by ").concat(sort));
+    }
+
     private Query createQueryWithGQuery(GQuery gQuery) {
         String query = "select distinct obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
-        String gQueryWhere = gQuery.toString();
-        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())
-                || GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
-            gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
-        }
-
-        String where = getWhereMultiTenancy().concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
+        String where = createWhere(gQuery);
 
         return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
+    }
+
+    private Query createQueryCountWithGQuery(GQuery gQuery) {
+        String query = "select distinct count(obj) FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+
+        String where = createWhere(gQuery);
+
+        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
+    }
+
+    private String createWhere(GQuery gQuery) {
+        String gQueryWhere = gQuery.toString();
+
+        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())) {
+            gQueryWhere = removeFunctionToTimestamp(gQueryWhere)
+                    .replaceAll("translate\\(", "")
+                    .replaceAll(",'âàãáÁÂÀÃéêÉÊíÍóôõÓÔÕüúÜÚÇç','AAAAAAAAEEEEIIOOOOOOUUUUCC'\\)", "");
+        } else {
+            if(GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())){
+                gQueryWhere = removeFunctionToTimestamp(gQueryWhere);
+            }
+        }
+
+        return getWhereMultiTenancy().concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
+    }
+
+    private String removeFunctionToTimestamp(String gQueryWhere) {
+        gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "")
+                .replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
+        return gQueryWhere;
     }
 
 }

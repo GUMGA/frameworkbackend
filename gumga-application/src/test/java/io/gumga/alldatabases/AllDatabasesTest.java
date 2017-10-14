@@ -441,27 +441,27 @@ public abstract class AllDatabasesTest {
     }
 
 
-    @Test
-    @Transactional
-    public void findByID() {
-        GumgaThreadScope.organizationCode.set("1.");
-
-
-//        Calendar dia2 = Calendar.getInstance();
-//        dia2.set( 1900, 8, 18, 10, 0, 0);
+//    @Test
+//    @Transactional
+//    public void findByID() {
+//        GumgaThreadScope.organizationCode.set("1.");
 //
-//        GQuery gQuery = new GQuery(new Criteria("date", ComparisonOperator.BETWEEN, Arrays.asList(dia2.getTime())));
-//        QueryObject query = new QueryObject();
-//        query.setgQuery(gQuery);
 //
-//        System.out.println("aqui--->"+gQuery.toString());
-
-//        int count = service.pesquisa(query).getValues().size();
-//        assertEquals(1, count);
-        Company company = repository.fetchOne(new GQuery(new Criteria("obj.id", ComparisonOperator.EQUAL, 1)));
-
-        assertNotNull(company);
-    }
+////        Calendar dia2 = Calendar.getInstance();
+////        dia2.set( 1900, 8, 18, 10, 0, 0);
+////
+////        GQuery gQuery = new GQuery(new Criteria("date", ComparisonOperator.BETWEEN, Arrays.asList(dia2.getTime())));
+////        QueryObject query = new QueryObject();
+////        query.setgQuery(gQuery);
+////
+////        System.out.println("aqui--->"+gQuery.toString());
+//
+////        int count = service.pesquisa(query).getValues().size();
+////        assertEquals(1, count);
+//        Company company = repository.fetchOne(new GQuery());
+//
+//        assertNotNull(company);
+//    }
 
 
 

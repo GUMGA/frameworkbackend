@@ -12,6 +12,7 @@ Framework Backend
     - Retirada a dependência do insula.opes
     - Correção na busca por data com GQuery nas operações LOWER_EQUAL e LOWER
     - GumgaCrudRepository fetchOne e findAll por GQuery
+    - Validar ownership com GQuery
 
 1.5.22
     - Correção no GQuery com comparação de data
