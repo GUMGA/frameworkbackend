@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public abstract class GumgaDTOAPI<T, ID extends Serializable> extends AbstractGumgaAPI<T, ID> {
 
-	public GumgaDTOAPI(GumgaGateway<?, T, ID> gateway) {
+	public GumgaDTOAPI(GumgaGateway<?, ID, T> gateway) {
 		super(gateway);
 	}
 	

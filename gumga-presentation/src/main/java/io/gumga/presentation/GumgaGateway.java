@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class GumgaGateway<A extends GumgaIdable<ID>, DTO, ID extends Serializable> implements GumgaServiceable<DTO, ID> {
+public abstract class GumgaGateway<A extends GumgaIdable<ID>, ID extends Serializable, DTO> implements GumgaServiceable<DTO, ID> {
 
     @Autowired
     protected GumgaService<A, ID> delegate;
