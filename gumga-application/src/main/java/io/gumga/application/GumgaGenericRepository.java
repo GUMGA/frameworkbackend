@@ -906,7 +906,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())) {
             gQueryWhere = removeFunctionToTimestamp(gQueryWhere)
                     .replaceAll("translate\\(", "")
-                    .replaceAll(",'âàãáÁÂÀÃéêÉÊíÍóôõÓÔÕüúÜÚÇç','AAAAAAAAEEEEIIOOOOOOUUUUCC'\\)", "");
+                    .replaceAll(", 'âàãáÁÂÀÃéêÉÊíÍóôõÓÔÕüúÜÚÇç','AAAAAAAAEEEEIIOOOOOOUUUUCC'\\)", "");
         } else {
             if(GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())){
                 gQueryWhere = removeFunctionToTimestamp(gQueryWhere);
