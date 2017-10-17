@@ -37,7 +37,7 @@ public class JSDataAdapterAPI {
     private void process(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String result = jsDataAdapterService.process(req.getInputStream());
-            System.out.println("----->RESULT--->"+result);
+//            System.out.println("----->RESULT--->"+result);
             resp.setHeader("Access-Control-Allow-Origin", "*");
             resp.setHeader("Content-Type", "application/json;charset=UTF-8");
             resp.setHeader("Cache-Control", "no-cache");
