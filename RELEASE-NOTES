@@ -14,6 +14,7 @@ Framework Backend
     - GumgaCrudRepository fetchOne e findAll por GQuery
     - Validar ownership com GQuery
     - Nas classes que extends GumgaTranslator será necessario colocar Long, exemplo PessoaDTOTranslator extends GumgaTranslator<Pessoa, PessoaDTO, Long>
+    - Correção no GumgaBoolean com GQuery
 
 1.5.22
     - Correção no GQuery com comparação de data

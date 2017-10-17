@@ -38,6 +38,7 @@ public class Criteria implements Serializable {
     public Criteria(Object field, ComparisonOperator comparisonOperator, Object value) {
         init();
         this.field = field;
+
         this.comparisonOperator = comparisonOperator;
         this.value = value;
     }

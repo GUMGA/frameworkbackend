@@ -5,17 +5,21 @@
  */
 package io.gumga.domain.domains;
 
+import org.hibernate.usertype.ParameterizedType;
+
+import java.util.Properties;
+
 /**
  * Representa um boolean, criado para introduzir os domínios da GUMGA
  *
  * @author munif
  */
-public class GumgaBoolean extends GumgaDomain {
+public class GumgaBoolean extends GumgaDomain{
 
-    private static final String TRUE_LABEL = "TRUE";
-    private static final String FALSE_LABEL = "FALSE";
+    private static final String TRUE_LABEL = "true";
+    private static final String FALSE_LABEL = "false";
 
-    private boolean value;
+    private Boolean value;
 
     public GumgaBoolean() {
     }
@@ -30,15 +34,15 @@ public class GumgaBoolean extends GumgaDomain {
         }
     }
 
-    public boolean is() {
+    public Boolean is() {
         return value;
     }
 
-    public boolean isValue() {
+    public Boolean isValue() {
         return value;
     }
 
-    public boolean getValue() {
+    public Boolean getValue() {
         return value;
     }
 

@@ -3,9 +3,11 @@ package io.gumga.alldatabases;
 import com.mysema.commons.lang.Assert;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
+import io.gumga.core.SearchResult;
 import io.gumga.core.gquery.ComparisonOperator;
 import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.GQuery;
+import io.gumga.domain.domains.GumgaBoolean;
 import io.gumga.testmodel.*;
 
 import java.math.BigDecimal;
@@ -463,6 +465,25 @@ public abstract class AllDatabasesTest {
 //        assertNotNull(company);
 //    }
 
+
+//    @Test
+//    @Transactional
+//    public void searchGQueryGumgaBoolean() {
+//        GumgaThreadScope.organizationCode.set("1.");
+//        GumgaBoolean gumgaBoolean = new GumgaBoolean(false);
+//        if(gumgaBoolean != null && !gumgaBoolean.getValue()) {
+//            System.out.println("ok");
+//        }
+//
+//        GQuery gQuery = new GQuery(new Criteria("obj.gumgaBoolean", ComparisonOperator.EQUAL,true));
+//        QueryObject query = new QueryObject();
+//        query.setgQuery(gQuery);
+//
+//        System.out.println("aqui--->"+gQuery.toString());
+//        SearchResult<Company> pesquisa = service.pesquisa(query);
+//
+//        assertEquals(7l, pesquisa.getCount().longValue());
+//    }
 
 
 }
