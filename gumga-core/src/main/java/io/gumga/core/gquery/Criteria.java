@@ -1,7 +1,5 @@
 package io.gumga.core.gquery;
 
-import com.sun.javafx.binding.StringFormatter;
-import io.gumga.core.GumgaThreadScope;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
