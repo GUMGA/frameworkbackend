@@ -808,7 +808,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
         if (hasMultitenancy() && GumgaThreadScope.organizationCode.get() != null && (GumgaThreadScope.ignoreCheckOwnership.get() == null || !GumgaThreadScope.ignoreCheckOwnership.get())) {
             String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(entityInformation.getJavaType().getAnnotation(GumgaMultitenancy.class));
-            String oi = "obj.oi like '" + oiPattern + "%'";
+            String oi = "obj.oi is null or obj.oi like '" + oiPattern + "%'";
             if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
                 String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
 
