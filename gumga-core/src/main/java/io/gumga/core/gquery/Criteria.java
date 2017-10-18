@@ -3,7 +3,10 @@ package io.gumga.core.gquery;
 import com.sun.javafx.binding.StringFormatter;
 import io.gumga.core.GumgaThreadScope;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Criteria implements Serializable {
@@ -35,6 +38,7 @@ public class Criteria implements Serializable {
     public Criteria(Object field, ComparisonOperator comparisonOperator, Object value) {
         init();
         this.field = field;
+
         this.comparisonOperator = comparisonOperator;
         this.value = value;
     }
@@ -139,20 +143,26 @@ public class Criteria implements Serializable {
 
                     if(objects[0] instanceof Number) {
                         return field + comparisonOperator.hql +  objects[0] + " AND " + objects[1];
-                    } else if(objects[0] instanceof Date) {
-                        String format1 = new SimpleDateFormat("yyyy-MM-dd").format(objects[0]);
-                        String format2 = new SimpleDateFormat("yyyy-MM-dd").format(objects[1]);
+                    } else {
+                        Date parse = parse(String.valueOf(value));
+                        if(isDate(objects[0], parse)) {
+                            String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]);
+                            String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[1]);
 
-                        return field + comparisonOperator.hql +  String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format1) + " AND " + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format2);
+                            return field + comparisonOperator.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format1) + " AND " + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format2);
+                        }
                     }
                     return field + comparisonOperator.hql + "'" + objects[0] + "' AND '" + objects[1] + "'";
                 }
 
                 if(objects[0] instanceof Number) {
                     return field + comparisonOperator.hql +  objects[0] + " AND " + objects[0];
-                } else if(objects[0] instanceof Date) {
-                    String format1 = new SimpleDateFormat("yyyy-MM-dd").format(objects[0]);
-                    return field + comparisonOperator.hql +  String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format1) + " AND " + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format1);
+                } else {
+                    Date parse = parse(String.valueOf(value));
+                    if(isDate(objects[0], parse)) {
+                        String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]);
+                        return field + comparisonOperator.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format1) + " AND " + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format1);
+                    }
                 }
 
                 return field + comparisonOperator.hql + "'" + objects[0] + "' AND '" + objects[0] + "'";
@@ -160,9 +170,12 @@ public class Criteria implements Serializable {
 
             if(value instanceof Number) {
                 return field + comparisonOperator.hql +  value + " AND " + value;
-            } else if(value instanceof Date) {
-                String format1 = new SimpleDateFormat("yyyy-MM-dd").format(value);
-                return field + comparisonOperator.hql +  String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format1) + " AND " + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format1);
+            }  else {
+                Date parse = parse(String.valueOf(value));
+                if(isDate(value, parse)) {
+                    String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : value);
+                    return field + comparisonOperator.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format1) + " AND " + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format1);
+                }
             }
 
             return field + comparisonOperator.hql + "'" + value + "' AND '" + value + "'";
@@ -170,28 +183,31 @@ public class Criteria implements Serializable {
 
 
 
-
         if(value instanceof Number) {
             return field + comparisonOperator.hql + value;
 
-        } else if(value instanceof Date) {
-            String format = new SimpleDateFormat("yyyy-MM-dd").format(value);
+        } else {
+            Date parse = parse(String.valueOf(value));
+            if(isDate(value, parse)) {
+                String format = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : value);
 
-            switch (this.comparisonOperator) {
-                case EQUAL:
-                    return field + ComparisonOperator.GREATER_EQUAL.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format) + " AND " +
-                            field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format);
-                case GREATER_EQUAL:
-                    return field + ComparisonOperator.GREATER_EQUAL.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
-                case GREATER:
-                    return field + ComparisonOperator.GREATER.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
-                case LOWER_EQUAL:
-                    return field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
-                case LOWER:
-                    return field + ComparisonOperator.LOWER.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
+                switch (this.comparisonOperator) {
+                    case EQUAL:
+                        return field + ComparisonOperator.GREATER_EQUAL.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format) + " AND " +
+                                field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format);
+                    case GREATER_EQUAL:
+                        return field + ComparisonOperator.GREATER_EQUAL.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
+                    case GREATER:
+                        return field + ComparisonOperator.GREATER.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
+                    case LOWER_EQUAL:
+                        return field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format);
+                    case LOWER:
+                        return field + ComparisonOperator.LOWER.hql + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format);
 
+                }
             }
         }
+
 
         return String.format(fieldFunction, field) + comparisonOperator.hql + String.format(valueFunction, "\'" + value + "\'");
     }
@@ -213,7 +229,35 @@ public class Criteria implements Serializable {
         return this;
     }
 
+    private final String[] formats = {
+            "yyyy-MM-dd'T'HH:mm:ss'Z'",   "yyyy-MM-dd'T'HH:mm:ssZ",
+            "yyyy-MM-dd'T'HH:mm:ss",      "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "yyyy-MM-dd HH:mm:ss",
+            "MM/dd/yyyy HH:mm:ss",        "MM/dd/yyyy'T'HH:mm:ss.SSS'Z'",
+            "MM/dd/yyyy'T'HH:mm:ss.SSSZ", "MM/dd/yyyy'T'HH:mm:ss.SSS",
+            "MM/dd/yyyy'T'HH:mm:ssZ",     "MM/dd/yyyy'T'HH:mm:ss",
+            "yyyy:MM:dd HH:mm:ss",
+            "yyyy-MM-dd", "yyyy/MM/dd"
+    };
 
+    private Date parse(String d) {
+        SimpleDateFormat sdf;
+        if (d != null) {
+            for (String parse : formats) {
+                sdf = new SimpleDateFormat(parse);
+                try {
+                    return sdf.parse(d);
+                } catch (ParseException e) {
+//                    System.out.println("Trying to converter date to pattern: " + parse);
+                }
+            }
+        }
+        return null;
+    }
+
+    private Boolean isDate(Object value, Date parse) {
+        return value instanceof Date || value instanceof LocalDate || value instanceof LocalDateTime || parse != null;
+    }
 }
 
 

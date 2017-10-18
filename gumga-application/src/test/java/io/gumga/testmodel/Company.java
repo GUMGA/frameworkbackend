@@ -29,6 +29,7 @@ public class Company extends GumgaModel<Long> {
     private BigDecimal valor;
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
+    private GumgaBoolean gumgaBoolean = new GumgaBoolean(true);
 
     public Company() {
     }
@@ -63,6 +64,14 @@ public class Company extends GumgaModel<Long> {
         this.date = date;
         this.ativo = ativo;
         this.tipo = tipo;
+    }
+
+    public GumgaBoolean getGumgaBoolean() {
+        return gumgaBoolean;
+    }
+
+    public void setGumgaBoolean(GumgaBoolean gumgaBoolean) {
+        this.gumgaBoolean = gumgaBoolean;
     }
 
     public String getName() {

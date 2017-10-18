@@ -14,13 +14,13 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class GumgaGateway<A extends GumgaIdable<ID>, ID extends Serializable, DTO> implements GumgaServiceable<DTO> {
+public abstract class GumgaGateway<A extends GumgaIdable<ID>, ID extends Serializable, DTO> implements GumgaServiceable<DTO, ID> {
 
     @Autowired
     protected GumgaService<A, ID> delegate;
 
     @Autowired
-    protected GumgaTranslator<A, DTO> translator;
+    protected GumgaTranslator<A, DTO, ID> translator;
 
     @Override
     public SearchResult<DTO> pesquisa(QueryObject query) {
@@ -30,7 +30,7 @@ public abstract class GumgaGateway<A extends GumgaIdable<ID>, ID extends Seriali
 
     @Override
     @Transactional(readOnly = true)
-    public DTO view(Long id) {
+    public DTO view(ID id) {
         return translator.from(delegate.view(id));
     }
 
@@ -55,7 +55,7 @@ public abstract class GumgaGateway<A extends GumgaIdable<ID>, ID extends Seriali
     }
 
     @Override
-    public List<GumgaObjectAndRevision> listOldVersions(Long id) {
+    public List<GumgaObjectAndRevision> listOldVersions(ID id) {
         return Collections.EMPTY_LIST;
     }
 

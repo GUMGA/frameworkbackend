@@ -92,7 +92,7 @@ public class HibernateQueryObject {
         }
         if (javaField.getType().equals(Serializable.class)) {
             Class c = clazz;
-            while (!((c.getSuperclass().equals(GumgaModel.class) || c.getSuperclass().equals(Object.class)))) {
+            while (!((c.getSuperclass().equals(GumgaModel.class) || c.getSuperclass().equals(GumgaModelUUID.class) || c.getSuperclass().equals(Object.class)))) {
                 c = c.getSuperclass();
             }
             type = ReflectionUtils.inferGenericType(c, 0);

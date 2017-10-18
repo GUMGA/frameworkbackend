@@ -7,6 +7,20 @@
 
 =======================================
 Framework Backend
+2.0.0
+    - Criado duas classe de entidade base GumgaModelUUID e GumgaSharedModelUUID
+    - Retirada a dependência do insula.opes
+    - Correção na busca por data com GQuery nas operações LOWER_EQUAL e LOWER
+    - GumgaCrudRepository fetchOne e findAll por GQuery
+    - Validar ownership com GQuery
+    - Nas classes que extends GumgaTranslator será necessario colocar Long, exemplo PessoaDTOTranslator extends GumgaTranslator<Pessoa, PessoaDTO, Long>
+    - Correção no GumgaBoolean com GQuery
+
+1.5.22
+    - Correção no GQuery com comparação de data
+
+1.5.21
+    - Implementação do inner e left join no GQuery
 
 1.5.20
     - Implementação do GQuery

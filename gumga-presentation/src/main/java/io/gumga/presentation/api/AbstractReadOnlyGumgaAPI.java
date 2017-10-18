@@ -24,14 +24,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-public abstract class AbstractReadOnlyGumgaAPI<T> extends AbstractProtoGumgaAPI<T> {
+public abstract class AbstractReadOnlyGumgaAPI<T, ID extends Serializable> extends AbstractProtoGumgaAPI<T, ID> {
 
-    protected GumgaReadableServiceable<T> service;
+    protected GumgaReadableServiceable<T, ID> service;
     @Autowired
     protected GumgaUserDataService guds;
     @Autowired
@@ -39,7 +40,7 @@ public abstract class AbstractReadOnlyGumgaAPI<T> extends AbstractProtoGumgaAPI<
     @Autowired
     protected GumgaTagService gts;
 
-    public AbstractReadOnlyGumgaAPI(GumgaReadableServiceable<T> service) {
+    public AbstractReadOnlyGumgaAPI(GumgaReadableServiceable<T, ID> service) {
         this.service = service;
     }
 
@@ -95,7 +96,7 @@ public abstract class AbstractReadOnlyGumgaAPI<T> extends AbstractProtoGumgaAPI<
     @Transactional
     @ApiOperation(value = "load", notes = "Carrega entidade pelo id informado.")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public T load(@PathVariable Long id) {
+    public T load(@PathVariable ID id) {
         //String gumgaFields = request.getHeader("gumgaFields");
         T view = service.view(id);
         //if (gumgaFields != null) {
@@ -107,11 +108,11 @@ public abstract class AbstractReadOnlyGumgaAPI<T> extends AbstractProtoGumgaAPI<
     @Transactional
     @ApiOperation(value = "listOldVersions", notes = "Mostra versões anteriores do objeto.")
     @RequestMapping(value = "listoldversions/{id}", method = RequestMethod.GET)
-    public List<GumgaObjectAndRevision> listOldVersions(@PathVariable Long id) {
+    public List<GumgaObjectAndRevision> listOldVersions(@PathVariable ID id) {
         return service.listOldVersions(id);
     }
 
-    public void setService(GumgaServiceable<T> service) {
+    public void setService(GumgaServiceable<T, ID> service) {
         this.service = service;
     }
 

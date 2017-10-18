@@ -1,6 +1,5 @@
 package io.gumga.domain;
 
-import br.com.insula.opes.CpfCnpj;
 import io.gumga.core.GumgaIdable;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.domain.domains.*;
@@ -42,8 +41,6 @@ import java.util.Objects;
     @TypeDef(name = "gumgatime", defaultForType = GumgaTime.class, typeClass = GumgaTimeUserType.class),
     @TypeDef(name = "gumgaoi", defaultForType = GumgaOi.class, typeClass = GumgaOiUserType.class),
     @TypeDef(name = "gumgaurl", defaultForType = GumgaURL.class, typeClass = GumgaURLUserType.class),
-    @TypeDef(name = "cpfcnpj", defaultForType = CpfCnpj.class, typeClass = CpfCnpjUserType.class)
-
 })
 public abstract class GumgaModel<ID extends Serializable> implements GumgaIdable<ID>, Serializable {
 

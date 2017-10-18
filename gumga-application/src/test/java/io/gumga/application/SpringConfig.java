@@ -55,6 +55,7 @@ public class SpringConfig {
         factory.setPackagesToScan("io.gumga");
         factory.setDataSource(dataSource);
 
+
         factory.setJpaProperties(properties);
         factory.afterPropertiesSet();
 

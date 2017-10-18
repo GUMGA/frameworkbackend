@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 @RestController
-public abstract class AbstractProtoGumgaAPI<T> {
+public abstract class AbstractProtoGumgaAPI<T, ID extends Serializable> {
 
     @Autowired
     private Validator validator;

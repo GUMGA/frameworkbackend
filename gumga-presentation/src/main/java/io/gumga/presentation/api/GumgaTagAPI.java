@@ -5,10 +5,12 @@ import io.gumga.application.GumgaService;
 import io.gumga.application.tag.GumgaTagService;
 import io.gumga.domain.tag.GumgaTag;
 import io.gumga.presentation.GumgaAPI;
+import io.gumga.presentation.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @RestController
@@ -20,10 +22,11 @@ public class GumgaTagAPI extends GumgaAPI<GumgaTag, Long> {
         super(service);
     }
 
-    @Override
-    public GumgaTag load(@PathVariable Long id) {
-        return getService().loadGumgaTagFat(id);
-    }
+
+//    @Override
+//    public GumgaTag load(@PathVariable Long id) {
+//        return getService().loadGumgaTagFat(id);
+//    }
 
     @ApiOperation(value = "find", notes = "Retorna as tags pelo tipo e id do objeto associado")
     @RequestMapping(value = "find/{objectType}/{objectId}")

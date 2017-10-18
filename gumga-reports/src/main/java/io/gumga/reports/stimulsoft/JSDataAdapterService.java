@@ -232,7 +232,7 @@ public class JSDataAdapterService {
     }
 
     private String getPassword(Map<String, String> params) {
-        System.out.println("---->getPassword--->" + params);
+//        System.out.println("---->getPassword--->" + params);
         return getLeastOne(params, PASSWORD_KEYS);
     }
 

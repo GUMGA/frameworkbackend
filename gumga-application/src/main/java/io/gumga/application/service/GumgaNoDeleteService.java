@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 @Service
 @Scope("prototype")
-public abstract class GumgaNoDeleteService<T extends GumgaIdable<?>, ID extends Serializable> extends AbstractGumgaService<T, ID> implements GumgaReadableServiceable<T>, GumgaWritableServiceable<T> {
+public abstract class GumgaNoDeleteService<T extends GumgaIdable<ID>, ID extends Serializable> extends AbstractGumgaService<T, ID> implements GumgaReadableServiceable<T, ID>, GumgaWritableServiceable<T, ID> {
 
 	public GumgaNoDeleteService(GumgaCrudRepository<T, ID> repository) {
 		super(repository);
