@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+1.5.23
+    - Retirada a dependência do insula.opes
+
 1.5.22
     - Correção no GQuery com comparação de data
 
