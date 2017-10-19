@@ -812,11 +812,11 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
                 String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
 
-                tenant = tenant.concat("(".concat(oi)).concat("or (obj.gumgaOrganizations like '%," + oiPattern + ",%' or "
+                tenant = tenant.concat("(".concat(oi)).concat(" or obj.gumgaOrganizations like '%," + oiPattern + ",%' or "
                         + "obj.gumgaOrganizations like '%," + instanceOi + ",%' or "
-                        + "obj.gumgaUsers like '%," + GumgaThreadScope.login.get() + ",%') )");
+                        + "obj.gumgaUsers like '%," + GumgaThreadScope.login.get() + ",%') ");
             } else {
-                tenant = tenant.concat(oi);
+                tenant = tenant.concat("(").concat(oi).concat(")");
             }
         } else {
             tenant = tenant.concat(" 1=1");
