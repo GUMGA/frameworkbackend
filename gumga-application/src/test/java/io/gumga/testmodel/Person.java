@@ -1,4 +1,4 @@
-package io.gumga.testmodelv2;
+package io.gumga.testmodel;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -13,14 +13,21 @@ import javax.persistence.*;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = Employee.class, name = "Empregado"),
-                @JsonSubTypes.Type(value = Supplier.class, name = "Fornecedor")
+                @JsonSubTypes.Type(value = Employee.class, name = "Employee"),
+                @JsonSubTypes.Type(value = Supplier.class, name = "Supplier")
         }
 )
 public class Person extends GumgaModelUUID {
 
     @Column
     private String name;
+
+    public Person() {
+    }
+
+    public Person(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;

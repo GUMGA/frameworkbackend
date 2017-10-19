@@ -1,14 +1,15 @@
 package io.gumga.testmodel;
 
+
 import javax.persistence.Entity;
 
 @Entity
-public class Employee extends Person {
+public class Supplier extends Person {
 
-    public Employee() {
+    public Supplier() {
     }
 
-    public Employee(String name) {
+    public Supplier(String name) {
         super(name);
     }
 }

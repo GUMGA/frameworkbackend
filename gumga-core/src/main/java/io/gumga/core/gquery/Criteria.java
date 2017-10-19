@@ -104,16 +104,12 @@ public class Criteria implements Serializable {
             value = "%" + value + "%";
         }
 
-        if(value instanceof CriteriaField || value instanceof Boolean) {
-            return field + comparisonOperator.hql + value;
-        }
-
         if(ComparisonOperator.IN.equals(this.comparisonOperator)) {
             if(value instanceof Collection) {
                 Collection values = (Collection) value;
                 String v = "";
                 for (Object object :values) {
-                    if(object instanceof Number) {
+                    if(object instanceof Number || object instanceof CriteriaField) {
                         v += object + ",";
                     } else {
                         v += "'"+ object.toString() + "',";
@@ -121,8 +117,17 @@ public class Criteria implements Serializable {
                 }
                 v = v.substring(0, v.length()-1);
                 return field + comparisonOperator.hql + "(" + v + ")";
+            } else {
+                if(value instanceof Number || value instanceof CriteriaField) {
+                    return  field + comparisonOperator.hql + "(" + value.toString() +")";
+                }
             }
+
             return  field + comparisonOperator.hql + "('" + value.toString() +"')";
+        }
+
+        if(value instanceof CriteriaField || value instanceof Boolean) {
+            return field + comparisonOperator.hql + value;
         }
 
         if(ComparisonOperator.IN_ELEMENTS.equals(this.comparisonOperator)) {

@@ -3,11 +3,10 @@ package io.gumga.alldatabases;
 import com.mysema.commons.lang.Assert;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
-import io.gumga.core.SearchResult;
 import io.gumga.core.gquery.ComparisonOperator;
 import io.gumga.core.gquery.Criteria;
+import io.gumga.core.gquery.CriteriaField;
 import io.gumga.core.gquery.GQuery;
-import io.gumga.domain.domains.GumgaBoolean;
 import io.gumga.testmodel.*;
 
 import java.math.BigDecimal;
@@ -16,10 +15,8 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.hibernate.envers.Audited;
-import org.junit.After;
+import io.gumga.testmodel.Employee;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +27,10 @@ public abstract class AllDatabasesTest {
     protected CompanyService service;
     @Autowired
     protected CompanyRepository repository;
+
+
     @Autowired
-    protected EmployeeRepository  employeeRepository;
+    protected PersonRepository personRepository;
 
     @Before
     @Transactional
@@ -54,6 +53,8 @@ public abstract class AllDatabasesTest {
         dia.set(1900, 8, 18, 11, 0, 0);
         service.save(new Company("AMÁRILDO SANTOS", dia.getTime(), (false)));
 
+        this.personRepository.saveAndFlush(new Employee("João"));
+        this.personRepository.saveAndFlush(new Supplier("Marcio"));
     }
 
     @Test
@@ -486,4 +487,30 @@ public abstract class AllDatabasesTest {
 //    }
 
 
+    @Test
+    @Transactional
+    public void testInheritanceWithClass() {
+        GQuery gQuery = new GQuery(new Criteria("obj.class", ComparisonOperator.IN, Arrays.asList(new CriteriaField("Employee"), new CriteriaField("Supplier"))));
+        List<Person> all = this.personRepository.findAll(gQuery);
+
+        assertEquals(2l, all.size());
+    }
+
+    @Test
+    @Transactional
+    public void testInheritanceWithClass2() {
+        GQuery gQuery = new GQuery(new Criteria("obj.class", ComparisonOperator.IN, Arrays.asList(new CriteriaField("Employee"))));
+        List<Person> all = this.personRepository.findAll(gQuery);
+
+        assertEquals(1l, all.size());
+    }
+
+    @Test
+    @Transactional
+    public void testInheritanceWithType() {
+        GQuery gQuery = new GQuery(new Criteria("type(obj)", ComparisonOperator.NOT_EQUAL, new CriteriaField("Employee")));
+        List<Person> all = this.personRepository.findAll(gQuery);
+
+        assertEquals(1l, all.size());
+    }
 }
