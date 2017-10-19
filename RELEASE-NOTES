@@ -14,6 +14,7 @@ Framework Backend
     - Validar ownership com GQuery
     - Nas classes que extends GumgaTranslator será necessario colocar Long, exemplo PessoaDTOTranslator extends GumgaTranslator<Pessoa, PessoaDTO, Long>
     - Correção no GumgaBoolean com GQuery
+    - Adicionado SQS para buscar filas e mensagens
 
 1.5.23
     - Retirada a dependência do insula.opes
