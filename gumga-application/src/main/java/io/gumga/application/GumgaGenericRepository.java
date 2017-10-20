@@ -106,9 +106,13 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
         if (!sortField.isEmpty()) {
             createAliasIfNecessary(pesquisa, sortField);
-            pesquisa.addOrder("asc".equals(sortType) ? asc(sortField).ignoreCase() : desc(sortField).ignoreCase());
+            getOrderField(pesquisa, sortField, sortType);
+//            pesquisa.addOrder();
+//            pesquisa.addOrder("asc".equals(sortType) ? asc(sortField).ignoreCase() : desc(sortField).ignoreCase());
+        } else {
+            pesquisa.addOrder(asc("id")); //GUMGA-478
         }
-        pesquisa.addOrder(asc("id")); //GUMGA-478
+
 
         return pesquisa.setFirstResult(query.getStart()).setMaxResults(query.getPageSize()).list();
     }
@@ -337,7 +341,8 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         if (query.getSortField().isEmpty()) {
             hqlConsulta = String.format(modelo + " ORDER BY obj.id ", entityInformation.getEntityName(), query.getAq());
         } else {
-            hqlConsulta = String.format(modelo + " ORDER BY %s %s, obj.id", entityInformation.getEntityName(), query.getAq(), query.getSortField(), query.getSortDir());
+            String orderField = getOrderField(query.getSortField(), query.getSortDir());
+            hqlConsulta = String.format(modelo + " ORDER BY %s", entityInformation.getEntityName(), query.getAq(), orderField);
         }
         String hqlConta = String.format("SELECT count(obj) " + modelo, entityInformation.getEntityName(), query.getAq());
         Query qConta = entityManager.createQuery(hqlConta);
@@ -870,18 +875,87 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         GQuery gQuery = queryObject.getgQuery();
 
-        String sortDir = queryObject.getSortDir();
-        String sortField = queryObject.getSortField();
-        String sort = "obj.id asc";
-        if(!sortField.isEmpty()) {
-            sort = sortField + ("asc".equals(sortDir) ? " asc" : " desc");
-        }
+//        String sortDir = queryObject.getSortDir();
+//        String sortField = queryObject.getSortField();
+//        String sort = "obj.id asc";
+//        if(!sortField.isEmpty()) {
+//            sort = sortField + ("asc".equals(sortDir) ? " asc" : " desc");
+//        }
+        String sort = getOrderField(queryObject.getSortField(), queryObject.getSortDir());
 
         String query = "select distinct obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
 
         return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where).concat(" order by ").concat(sort));
+    }
+    private void getOrderField(Pesquisa<T> pesquisa, String sortField, String sorDir) {
+        String orderColumns = sortField;
+        String orderType = sorDir;
+
+        String[] columns = null;
+        if(orderColumns.indexOf(",") > 0) {
+            columns = orderColumns.split(",");
+        } else {
+            columns = new String[]{orderColumns};
+        }
+
+        String[] types = null;
+        if(orderType.indexOf(",") > 0) {
+            types = orderType.split(",");
+        } else {
+            types = new String[]{orderType};
+        }
+
+        Boolean existsID = Boolean.FALSE;
+        for (int i = 0; i < columns.length; i++) {
+            pesquisa.addOrder(i < types.length && !types[i].trim().isEmpty() && types[i].trim().equalsIgnoreCase("desc") ? desc(columns[i]) : asc(columns[i]));
+            if(columns[i].trim().equalsIgnoreCase("id")) {
+                existsID = Boolean.TRUE;
+            }
+        }
+
+        if(!existsID) {
+            pesquisa.addOrder(asc("id"));
+        }
+    }
+
+    private String getOrderField(String sortField, String sorDir) {
+        if(sortField != null && sorDir != null && !sortField.trim().isEmpty()) {
+            String orderColumns = sortField;
+            String orderType = sorDir;
+
+            String[] columns = null;
+            if(orderColumns.indexOf(",") > 0) {
+                columns = orderColumns.split(",");
+            } else {
+                columns = new String[]{orderColumns};
+            }
+
+            String[] types = null;
+            if(orderType.indexOf(",") > 0) {
+                types = orderType.split(",");
+            } else {
+                types = new String[]{orderType};
+            }
+
+            String ordem = "";
+            Boolean existsID = Boolean.FALSE;
+            for (int i = 0; i < columns.length; i++) {
+                ordem = ordem.concat(columns[i]).concat(i < types.length ? " ".concat(types[i].trim().isEmpty() ? "asc" : types[i]) : " asc").concat(",");
+                if(columns[i].trim().equalsIgnoreCase("id")) {
+                    existsID = Boolean.TRUE;
+                }
+            }
+
+            if(!existsID) {
+                ordem = ordem.concat("id asc,");
+            }
+
+           return ordem.substring(0, ordem.length() -1);
+        }
+
+        return "obj.id asc";
     }
 
     private Query createQueryWithGQuery(GQuery gQuery) {
