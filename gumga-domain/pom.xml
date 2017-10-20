@@ -10,16 +10,6 @@
 
     <artifactId>gumga-domain</artifactId>
 
-    <repositories>
-        <repository>
-            <id>maven-oss-insula</id>
-            <name>Insula Maven OSS Releases Repository</name>
-            <url>http://maven-oss.insula.com.br/releases</url>
-        </repository>
-    </repositories>
-
-
-
     <dependencies>
 
         <dependency>
