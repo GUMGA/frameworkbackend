@@ -11,18 +11,19 @@ import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.domain.GumgaMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-@Controller
-public class GumgaNotificationsServlet extends HttpServlet {
+//@Component
+public class GumgaNotificationsServlet {//extends HttpServlet {
     
     private static final long cycleTime = 5 * 60 * 1000l;
     private static final long intervalTime = 1000l;
@@ -60,7 +61,7 @@ public class GumgaNotificationsServlet extends HttpServlet {
             try {
                 Thread.sleep(intervalTime);
             } catch (InterruptedException e) {
-                log(e.getMessage());
+//                log(e.getMessage());
             }
         }
         writer.close();

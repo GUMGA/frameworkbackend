@@ -15,6 +15,7 @@ import io.gumga.domain.repository.ISpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.data.querydsl.QSort;
@@ -61,6 +62,11 @@ public class GumgaQueryDSLRepositoryImpl<T, ID extends Serializable> extends Gum
         return findAll(toSpecification(predicate), path);
     }
 
+    @Override
+    public Iterable<T> findAll(Predicate predicate, Sort sort) {
+        return null;
+    }
+
     /**
      * Pesquisa todos os registro da entidade tipada na classe {@link GumgaQueryDSLRepositoryImpl}
      * @param predicate filtro da pesquisa
@@ -71,6 +77,11 @@ public class GumgaQueryDSLRepositoryImpl<T, ID extends Serializable> extends Gum
         JPQLQuery query = createQuery(predicate);
         query = querydsl.applySorting(new QSort(orders), query);
         return query.list(path);
+    }
+
+    @Override
+    public Iterable<T> findAll(OrderSpecifier<?>[] orderSpecifiers) {
+        return null;
     }
 
     @Override
@@ -138,6 +149,11 @@ public class GumgaQueryDSLRepositoryImpl<T, ID extends Serializable> extends Gum
     @Override
     public long count(Predicate predicate) {
         return createQuery(predicate).count();
+    }
+
+    @Override
+    public boolean exists(Predicate predicate) {
+        return false;
     }
 
     private <A> SearchResult<A> createResultFromPageResult(Pageable page, Page<A> result) {

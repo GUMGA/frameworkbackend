@@ -36,14 +36,14 @@ public class GumgaRepositoryFactoryBean<R extends JpaRepository<T, I>, T, I exte
 		protected Object getTargetRepository(RepositoryMetadata metadata) {
 			Class<?> repositoryInterface = metadata.getRepositoryInterface();
 			Class<?> domainClass = metadata.getDomainType();
-			                 
+
 			if (isQueryDslExecutor(repositoryInterface)) {
-				return new GumgaQueryDSLRepositoryImpl<>((JpaEntityInformation<?, Serializable>) JpaEntityInformationSupport.getMetadata(domainClass, entityManager), entityManager);
-                        }else if(isQueryNoTyped(repositoryInterface)){                     
-                                return new GumgaCrudAndQueryNotOnlyTypedRepositoryImpl<>((JpaEntityInformation<?, Serializable>) JpaEntityInformationSupport.getMetadata(domainClass, entityManager), entityManager);
-                        }
-                       
-                        return new GumgaGenericRepository(JpaEntityInformationSupport.getMetadata(domainClass, entityManager), entityManager);
+				return new GumgaQueryDSLRepositoryImpl<>((JpaEntityInformation<?, Serializable>) JpaEntityInformationSupport.getEntityInformation(domainClass, entityManager), entityManager);
+			} else if(isQueryNoTyped(repositoryInterface)){
+				return new GumgaCrudAndQueryNotOnlyTypedRepositoryImpl<>((JpaEntityInformation<?, Serializable>) JpaEntityInformationSupport.getEntityInformation(domainClass, entityManager), entityManager);
+			}
+
+			return new GumgaGenericRepository(JpaEntityInformationSupport.getEntityInformation(domainClass, entityManager), entityManager);
 		}
 
 		protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
