@@ -850,10 +850,10 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     @Override
     public T fetchOne(GQuery gQuery) {
         Query search = createQueryWithGQuery(gQuery);
-        search.setMaxResults(1);
         try {
-            Object singleResult = search.getSingleResult();
-            return singleResult != null ? (T) singleResult : null;
+            List<T> resultList = search.getResultList();
+            return resultList.isEmpty() ? null : resultList.get(0);
+//            return singleResult != null ? (T) singleResult : null;
         } catch (Exception e) {
             return null;
         }
