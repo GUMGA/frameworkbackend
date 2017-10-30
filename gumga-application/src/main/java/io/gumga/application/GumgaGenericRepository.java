@@ -5,6 +5,8 @@ import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.core.TenancyPublicMarking;
+import io.gumga.core.gquery.ComparisonOperator;
+import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.*;
 import io.gumga.domain.logicaldelete.GumgaLDModel;
@@ -13,6 +15,7 @@ import io.gumga.domain.repository.GumgaMultitenancyUtil;
 import io.gumga.domain.shared.GumgaSharedModel;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.envers.AuditReader;
@@ -46,6 +49,7 @@ import java.util.Map;
 import static org.hibernate.criterion.Order.asc;
 import static org.hibernate.criterion.Order.desc;
 import static org.hibernate.criterion.Projections.rowCount;
+import static org.hibernate.criterion.Restrictions.isNull;
 import static org.hibernate.criterion.Restrictions.like;
 import static org.hibernate.criterion.Restrictions.or;
 
@@ -102,9 +106,13 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
         if (!sortField.isEmpty()) {
             createAliasIfNecessary(pesquisa, sortField);
-            pesquisa.addOrder("asc".equals(sortType) ? asc(sortField).ignoreCase() : desc(sortField).ignoreCase());
+            getOrderField(pesquisa, sortField, sortType);
+//            pesquisa.addOrder();
+//            pesquisa.addOrder("asc".equals(sortType) ? asc(sortField).ignoreCase() : desc(sortField).ignoreCase());
+        } else {
+            pesquisa.addOrder(asc("id")); //GUMGA-478
         }
-        pesquisa.addOrder(asc("id")); //GUMGA-478
+
 
         return pesquisa.setFirstResult(query.getStart()).setMaxResults(query.getPageSize()).list();
     }
@@ -131,7 +139,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             Criterion multitenancyCriterion;
             Criterion sharedCriterion;
             GumgaMultitenancy gumgaMultitenancy = getDomainClass().getAnnotation(GumgaMultitenancy.class);
-            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType())) {
+            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
                 String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
                 sharedCriterion = or(
                         //  like("1","1",MatchMode.EXACT)
@@ -222,16 +230,24 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
      */
     @Override
     public T findOne(ID id) {
-        if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType())) {
-            QueryObject qo = new QueryObject();
-            qo.setAq("obj.id=" + id);
-            SearchResult<T> search = this.search(qo);
-            if (search.getCount() == 1) {
-                return search.getValues().get(0);
+        if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
+            T result = fetchOne(new GQuery(new Criteria("obj.id", ComparisonOperator.EQUAL, id)));
+            if(result != null) {
+                return result;
+            } else {
+                if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
+                    throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
+                }
             }
-            if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
-                throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
-            }
+//            QueryObject qo = new QueryObject();
+//            qo.setAq("obj.id=" + id);
+//            SearchResult<T> search = this.search(qo);
+//            if (search.getCount() == 1) {
+//                return search.getValues().get(0);
+//            }
+//            if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
+//                throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
+//            }
         }
 
         T resource = super.findOne(id);
@@ -303,7 +319,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(gumgaMultiTenancy);
             String sharedCriterion = " ";
 
-            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType())) {
+            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
                 String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
 
                 sharedCriterion = "or (obj.gumgaOrganizations like '%%," + oiPattern + ",%%' or "
@@ -325,7 +341,8 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         if (query.getSortField().isEmpty()) {
             hqlConsulta = String.format(modelo + " ORDER BY obj.id ", entityInformation.getEntityName(), query.getAq());
         } else {
-            hqlConsulta = String.format(modelo + " ORDER BY %s %s, obj.id", entityInformation.getEntityName(), query.getAq(), query.getSortField(), query.getSortDir());
+            String orderField = getOrderField(query.getSortField(), query.getSortDir());
+            hqlConsulta = String.format(modelo + " ORDER BY %s", entityInformation.getEntityName(), query.getAq(), orderField);
         }
         String hqlConta = String.format("SELECT count(obj) " + modelo, entityInformation.getEntityName(), query.getAq());
         Query qConta = entityManager.createQuery(hqlConta);
@@ -732,7 +749,38 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             return;
         }
 
-        GumgaModel object = (GumgaModel) o;
+        if(o instanceof GumgaModel) {
+            gumgaModel((GumgaModel) o);
+        } else {
+            if(o instanceof GumgaModelUUID) {
+                gumgaModelUUID((GumgaModelUUID) o);
+            } else {
+                gumgaModelSharedUUID((GumgaSharedModelUUID) o);
+            }
+        }
+
+    }
+
+    private void gumgaModel(GumgaModel object) {
+
+        if (hasMultitenancy()
+                && (object.getOi() != null)
+                && (GumgaThreadScope.organizationCode.get() == null || !object.getOi().getValue().startsWith(getMultitenancyPattern()))) {
+            throw new EntityNotFoundException("cannot find object of " + entityInformation.getJavaType() + " with id: " + object.getId() + " in your organization: " + GumgaThreadScope.organizationCode.get());
+        }
+    }
+
+    private void gumgaModelSharedUUID(GumgaSharedModelUUID object) {
+
+        if (hasMultitenancy()
+                && (object.getOi() != null)
+                && (GumgaThreadScope.organizationCode.get() == null || !object.getOi().getValue().startsWith(getMultitenancyPattern()))) {
+            throw new EntityNotFoundException("cannot find object of " + entityInformation.getJavaType() + " with id: " + object.getId() + " in your organization: " + GumgaThreadScope.organizationCode.get());
+        }
+    }
+
+    private void gumgaModelUUID(GumgaModelUUID object) {
+
         if (hasMultitenancy()
                 && (object.getOi() != null)
                 && (GumgaThreadScope.organizationCode.get() == null || !object.getOi().getValue().startsWith(getMultitenancyPattern()))) {
@@ -760,58 +808,192 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         return search(qo);
     }
 
+    private String getWhereMultiTenancy() {
+        String tenant = " where ";
+
+        if (hasMultitenancy() && GumgaThreadScope.organizationCode.get() != null && (GumgaThreadScope.ignoreCheckOwnership.get() == null || !GumgaThreadScope.ignoreCheckOwnership.get())) {
+            String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(entityInformation.getJavaType().getAnnotation(GumgaMultitenancy.class));
+            String oi = "obj.oi is null or obj.oi like '" + oiPattern + "%'";
+            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
+                String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
+
+                tenant = tenant.concat("(".concat(oi)).concat(" or obj.gumgaOrganizations like '%," + oiPattern + ",%' or "
+                        + "obj.gumgaOrganizations like '%," + instanceOi + ",%' or "
+                        + "obj.gumgaUsers like '%," + GumgaThreadScope.login.get() + ",%') ");
+            } else {
+                tenant = tenant.concat("(").concat(oi).concat(")");
+            }
+        } else {
+            tenant = tenant.concat(" 1=1");
+        }
+        return tenant;
+    }
+
     public SearchResult<T> findByGQuery(QueryObject queryObject) {
         if (queryObject.getgQuery() == null) {
             queryObject.setgQuery(new GQuery());
         }
         GQuery gQuery = queryObject.getgQuery();
 
-        String multitenancyPattern = "";
-        if(hasMultitenancy()) {
-            multitenancyPattern = "'"+getMultitenancyPattern()+"%'";
+
+        Query queryCountWithGQuery = createQueryCountWithGQuery(gQuery);
+        Long total = (Long) queryCountWithGQuery.getSingleResult();
+
+        Query queryWithGQuery = createQueryGQueryWithQueryObject(queryObject);
+
+        queryWithGQuery.setMaxResults(queryObject.getPageSize());
+        queryWithGQuery.setFirstResult(queryObject.getStart());
+
+        return new SearchResult(queryObject, total, queryWithGQuery.getResultList());
+    }
+
+    @Override
+    public T fetchOne(GQuery gQuery) {
+        Query search = createQueryWithGQuery(gQuery);
+        search.setMaxResults(1);
+        try {
+            Object singleResult = search.getSingleResult();
+            return singleResult != null ? (T) singleResult : null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<T> findAll(GQuery gQuery) {
+        Query search = createQueryWithGQuery(gQuery);
+        search.setMaxResults(Integer.MAX_VALUE);
+
+        List<T> resultList = search.getResultList();
+        return resultList;
+    }
+
+
+    private Query createQueryGQueryWithQueryObject(QueryObject queryObject) {
+        if(queryObject.getgQuery() == null) {
+            queryObject.setgQuery(new GQuery());
+        }
+        GQuery gQuery = queryObject.getgQuery();
+
+//        String sortDir = queryObject.getSortDir();
+//        String sortField = queryObject.getSortField();
+//        String sort = "obj.id asc";
+//        if(!sortField.isEmpty()) {
+//            sort = sortField + ("asc".equals(sortDir) ? " asc" : " desc");
+//        }
+        String sort = getOrderField(queryObject.getSortField(), queryObject.getSortDir());
+
+        String query = "select distinct obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+
+        String where = createWhere(gQuery);
+
+        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where).concat(" order by ").concat(sort));
+    }
+    private void getOrderField(Pesquisa<T> pesquisa, String sortField, String sorDir) {
+        String orderColumns = sortField;
+        String orderType = sorDir;
+
+        String[] columns = null;
+        if(orderColumns.indexOf(",") > 0) {
+            columns = orderColumns.split(",");
+        } else {
+            columns = new String[]{orderColumns};
         }
 
+        String[] types = null;
+        if(orderType.indexOf(",") > 0) {
+            types = orderType.split(",");
+        } else {
+            types = new String[]{orderType};
+        }
 
+        Boolean existsID = Boolean.FALSE;
+        for (int i = 0; i < columns.length; i++) {
+            pesquisa.addOrder(i < types.length && !types[i].trim().isEmpty() && types[i].trim().equalsIgnoreCase("desc") ? desc(columns[i]) : asc(columns[i]));
+            if(columns[i].trim().equalsIgnoreCase("id")) {
+                existsID = Boolean.TRUE;
+            }
+        }
+
+        if(!existsID) {
+            pesquisa.addOrder(asc("id"));
+        }
+    }
+
+    private String getOrderField(String sortField, String sorDir) {
+        if(sortField != null && sorDir != null && !sortField.trim().isEmpty()) {
+            String orderColumns = sortField;
+            String orderType = sorDir;
+
+            String[] columns = null;
+            if(orderColumns.indexOf(",") > 0) {
+                columns = orderColumns.split(",");
+            } else {
+                columns = new String[]{orderColumns};
+            }
+
+            String[] types = null;
+            if(orderType.indexOf(",") > 0) {
+                types = orderType.split(",");
+            } else {
+                types = new String[]{orderType};
+            }
+
+            String ordem = "";
+            Boolean existsID = Boolean.FALSE;
+            for (int i = 0; i < columns.length; i++) {
+                ordem = ordem.concat(columns[i]).concat(i < types.length ? " ".concat(types[i].trim().isEmpty() ? "asc" : types[i]) : " asc").concat(",");
+                if(columns[i].trim().equalsIgnoreCase("id")) {
+                    existsID = Boolean.TRUE;
+                }
+            }
+
+            if(!existsID) {
+                ordem = ordem.concat("id asc,");
+            }
+
+           return ordem.substring(0, ordem.length() -1);
+        }
+
+        return "obj.id asc";
+    }
+
+    private Query createQueryWithGQuery(GQuery gQuery) {
+        String query = "select distinct obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+
+        String where = createWhere(gQuery);
+
+        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
+    }
+
+    private Query createQueryCountWithGQuery(GQuery gQuery) {
+        String query = "select distinct count(obj) FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+
+        String where = createWhere(gQuery);
+
+        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
+    }
+
+    private String createWhere(GQuery gQuery) {
         String gQueryWhere = gQuery.toString();
-        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())
-                || GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
-            gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "").replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
+
+        if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())) {
+            gQueryWhere = removeFunctionToTimestamp(gQueryWhere)
+                    .replaceAll("translate\\(", "")
+                    .replaceAll(", 'âàãáÁÂÀÃéêÉÊíÍóôõÓÔÕüúÜÚÇç','AAAAAAAAEEEEIIOOOOOOUUUUCC'\\)", "");
+        } else {
+            if(GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())){
+                gQueryWhere = removeFunctionToTimestamp(gQueryWhere);
+            }
         }
 
-        String whereDefault = StringUtils.isEmpty(multitenancyPattern) ? " where " + gQueryWhere : " WHERE obj.oi like "+multitenancyPattern + (StringUtils.isEmpty(gQueryWhere) ? "" : " AND "+ gQueryWhere);
+        return getWhereMultiTenancy().concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
+    }
 
-        String hql="select distinct obj FROM "+entityInformation.getEntityName()+" obj "
-                + gQuery.getJoins()
-                + whereDefault;
-
-
-        String hqlConta="select count(obj) FROM "+entityInformation.getEntityName()+" obj "
-                + gQuery.getJoins()
-                + whereDefault;
-
-
-        String sortDir = queryObject.getSortDir();
-        String sortField = queryObject.getSortField();
-        String sort = "obj.id asc";
-        if(!sortField.isEmpty()) {
-            sort = sortField + (sortDir.equals("asc") ? " asc" : " desc");
-        }
-        hql += " order by " + sort;
-
-        Query q = entityManager.createQuery(hql);
-        Query qConta = entityManager.createQuery(hqlConta);
-
-        Long total = (Long) qConta.getSingleResult();
-
-
-        q.setMaxResults(queryObject.getPageSize());
-        q.setFirstResult(queryObject.getStart());
-        //TODO acertar o page number....
-        List<T> resultList = q.getResultList();
-
-
-        SearchResult<T> sr = new SearchResult(queryObject, total, resultList);
-        return sr;
+    private String removeFunctionToTimestamp(String gQueryWhere) {
+        gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "")
+                .replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
+        return gQueryWhere;
     }
 
 }

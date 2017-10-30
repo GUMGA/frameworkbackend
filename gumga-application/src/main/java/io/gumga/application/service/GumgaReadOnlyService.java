@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 @Service
 @Scope("prototype")
-public abstract class GumgaReadOnlyService<T extends GumgaIdable<?>, ID extends Serializable> extends AbstractGumgaService<T, ID> implements GumgaReadableServiceable<T> {
+public abstract class GumgaReadOnlyService<T extends GumgaIdable<?>, ID extends Serializable> extends AbstractGumgaService<T, ID> implements GumgaReadableServiceable<T, ID> {
 
     public GumgaReadOnlyService(GumgaCrudRepository<T, ID> repository) {
         super(repository);

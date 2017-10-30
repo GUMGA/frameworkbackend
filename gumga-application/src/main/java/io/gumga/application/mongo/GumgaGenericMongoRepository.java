@@ -2,6 +2,7 @@ package io.gumga.application.mongo;
 
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
+import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.GumgaObjectAndRevision;
 import io.gumga.domain.Pesquisa;
 import io.gumga.domain.repository.GumgaCrudRepository;
@@ -11,8 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-public class GumgaGenericMongoRepository<T extends GumgaMongoModel>implements GumgaCrudRepository<T,String> {
-
+public class GumgaGenericMongoRepository{//<T extends GumgaMongoModel> implements GumgaCrudRepository<T,String> {
+/*
     @Override
     public <A> SearchResult<A> advancedSearch(String selectQueryWithoutWhere, String countObjt, String ordenationId, QueryObject whereQuery) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -84,6 +85,16 @@ public class GumgaGenericMongoRepository<T extends GumgaMongoModel>implements Gu
     }
 
     @Override
+    public T fetchOne(GQuery gQuery) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<T> findAll(GQuery gQuery) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public T findOne(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -142,6 +153,6 @@ public class GumgaGenericMongoRepository<T extends GumgaMongoModel>implements Gu
     public SearchResult<T> search(String hql, Map<String, Object> params, int max, int first) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+*/
     
 }

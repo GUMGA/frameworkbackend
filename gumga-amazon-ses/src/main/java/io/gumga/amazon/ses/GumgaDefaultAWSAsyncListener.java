@@ -1,5 +1,7 @@
 package io.gumga.amazon.ses;
 
+import com.amazonaws.AmazonWebServiceRequest;
+import com.amazonaws.AmazonWebServiceResult;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import com.amazonaws.services.simpleemail.model.SendEmailResult;
 import org.slf4j.Logger;
@@ -21,7 +23,7 @@ public class GumgaDefaultAWSAsyncListener implements GumgaAWSAsyncListener {
         logger.error("On error ", ex);
     }
 
-    public void onSuccess(SendEmailRequest rqst, SendEmailResult result) {
+    public void onSuccess(AmazonWebServiceRequest rqst, AmazonWebServiceResult result) {
         logger.info(rqst.toString() + " ---> " + result.toString());
     }
 

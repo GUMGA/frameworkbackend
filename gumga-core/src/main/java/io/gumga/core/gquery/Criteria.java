@@ -1,7 +1,5 @@
 package io.gumga.core.gquery;
 
-import com.sun.javafx.binding.StringFormatter;
-import io.gumga.core.GumgaThreadScope;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +36,7 @@ public class Criteria implements Serializable {
     public Criteria(Object field, ComparisonOperator comparisonOperator, Object value) {
         init();
         this.field = field;
+
         this.comparisonOperator = comparisonOperator;
         this.value = value;
     }
@@ -105,16 +104,12 @@ public class Criteria implements Serializable {
             value = "%" + value + "%";
         }
 
-        if(value instanceof CriteriaField || value instanceof Boolean) {
-            return field + comparisonOperator.hql + value;
-        }
-
         if(ComparisonOperator.IN.equals(this.comparisonOperator)) {
             if(value instanceof Collection) {
                 Collection values = (Collection) value;
                 String v = "";
                 for (Object object :values) {
-                    if(object instanceof Number) {
+                    if(object instanceof Number || object instanceof CriteriaField) {
                         v += object + ",";
                     } else {
                         v += "'"+ object.toString() + "',";
@@ -122,8 +117,17 @@ public class Criteria implements Serializable {
                 }
                 v = v.substring(0, v.length()-1);
                 return field + comparisonOperator.hql + "(" + v + ")";
+            } else {
+                if(value instanceof Number || value instanceof CriteriaField) {
+                    return  field + comparisonOperator.hql + "(" + value.toString() +")";
+                }
             }
+
             return  field + comparisonOperator.hql + "('" + value.toString() +"')";
+        }
+
+        if(value instanceof CriteriaField || value instanceof Boolean) {
+            return field + comparisonOperator.hql + value;
         }
 
         if(ComparisonOperator.IN_ELEMENTS.equals(this.comparisonOperator)) {
@@ -199,9 +203,9 @@ public class Criteria implements Serializable {
                     case GREATER:
                         return field + ComparisonOperator.GREATER.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
                     case LOWER_EQUAL:
-                        return field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
+                        return field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format);
                     case LOWER:
-                        return field + ComparisonOperator.LOWER.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format);
+                        return field + ComparisonOperator.LOWER.hql + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format);
 
                 }
             }

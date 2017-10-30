@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @Scope("prototype")
-public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Serializable> extends AbstractGumgaService<T, ID> implements GumgaServiceable<T> {
+public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Serializable> extends AbstractGumgaService<T, ID> implements GumgaServiceable<T, ID> {
 
     public GumgaService(GumgaCrudRepository<T, ID> repository) {
         super(repository);

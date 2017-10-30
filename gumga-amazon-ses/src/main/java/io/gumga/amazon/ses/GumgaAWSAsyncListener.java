@@ -1,5 +1,7 @@
 package io.gumga.amazon.ses;
 
+import com.amazonaws.AmazonWebServiceRequest;
+import com.amazonaws.AmazonWebServiceResult;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import com.amazonaws.services.simpleemail.model.SendEmailResult;
 
@@ -13,6 +15,6 @@ public interface GumgaAWSAsyncListener {
 
     void onError(Exception ex);
 
-    void onSuccess(SendEmailRequest rqst, SendEmailResult result);
+    void onSuccess(AmazonWebServiceRequest rqst, AmazonWebServiceResult result);
 
 }

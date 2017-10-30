@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.concurrent.TimeUnit.DAYS;
-import org.hibernate.Criteria;
 import static org.hibernate.criterion.Restrictions.eq;
 
 /**
@@ -198,6 +197,7 @@ public class GumgaQueryParserProvider {
         parsers.put(BigInteger.class, BIGINTEGER_CRITERION_PARSER);
         parsers.put(BigDecimal.class, BIGDECIMAL_CRITERION_PARSER);
         parsers.put(Date.class, DATE_CRITERION_PARSER);
+//        parsers.put(CpfCnpj.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE); //Domínio da Insula utilizado na DB1
 //        parsers.put(GumgaAddressUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);
 //        parsers.put(GumgaBooleanUserType.class, BOOLEAN_CRITERION_PARSER);
 //        parsers.put(GumgaBarCodeUserType.class, STRING_CRITERION_PARSER_WITHOUT_TRANSLATE);

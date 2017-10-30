@@ -57,16 +57,18 @@ public class HibernateQueryObject {
         List<Criterion> criterions = new ArrayList<>();
 
         for (String field : queryObject.getSearchFields()) {
-            try {
-                Criterion criterion = createCriterion(field, queryObject.getQ(), clazz);
+            if(field != null && !field.trim().isEmpty()) {
+                try {
+                    Criterion criterion = createCriterion(field, queryObject.getQ(), clazz);
 
-                criterions.add(criterion);
-            } catch (ParseException ex) {
-                throw new HibernateQueryObjectException("Problem creating creterion.Cannot parse field " + field);
-            } catch (NumberFormatException ex) {
-                throw new HibernateQueryObjectException("Problem creating creterion.Number format problem in field  " + field);
-            } catch (UnsupportedDataTypeException ex) {
-                throw new HibernateQueryObjectException("Problem creating creterion.Unsupported data type in field " + field);
+                    criterions.add(criterion);
+                } catch (ParseException ex) {
+                    throw new HibernateQueryObjectException("Problem creating creterion.Cannot parse field " + field);
+                } catch (NumberFormatException ex) {
+                    throw new HibernateQueryObjectException("Problem creating creterion.Number format problem in field  " + field);
+                } catch (UnsupportedDataTypeException ex) {
+                    throw new HibernateQueryObjectException("Problem creating creterion.Unsupported data type in field " + field);
+                }
             }
         }
 
@@ -92,7 +94,7 @@ public class HibernateQueryObject {
         }
         if (javaField.getType().equals(Serializable.class)) {
             Class c = clazz;
-            while (!((c.getSuperclass().equals(GumgaModel.class) || c.getSuperclass().equals(Object.class)))) {
+            while (!((c.getSuperclass().equals(GumgaModel.class) || c.getSuperclass().equals(GumgaModelUUID.class) || c.getSuperclass().equals(Object.class)))) {
                 c = c.getSuperclass();
             }
             type = ReflectionUtils.inferGenericType(c, 0);
