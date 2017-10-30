@@ -47,10 +47,18 @@ public abstract class GumgaModelUUID implements GumgaIdable<String>, Serializabl
         return this.id;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+    public void setId(String id) {
+        this.id = id;
     }
+
+    public void setOi(GumgaOi oi) {
+        this.oi = oi;
+    }
+
+//        @Override
+//    public String toString() {
+//        return ToStringBuilder.reflectionToString(this);
+//    }
 
     @Override
     public int hashCode() {
