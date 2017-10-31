@@ -231,23 +231,23 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     @Override
     public T findOne(ID id) {
         if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
-            T result = fetchOne(new GQuery(new Criteria("obj.id", ComparisonOperator.EQUAL, id)));
-            if(result != null) {
-                return result;
-            } else {
-                if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
-                    throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
-                }
+//            T result = fetchOne(new GQuery(new Criteria("obj.id", ComparisonOperator.EQUAL, id)));
+//            if(result != null) {
+//                return result;
+//            } else {
+//                if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
+//                    throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
+//                }
+//            }
+            QueryObject qo = new QueryObject();
+            qo.setAq("obj.id=" + id);
+            SearchResult<T> search = this.search(qo);
+            if (search.getCount() == 1) {
+                return search.getValues().get(0);
             }
-//            QueryObject qo = new QueryObject();
-//            qo.setAq("obj.id=" + id);
-//            SearchResult<T> search = this.search(qo);
-//            if (search.getCount() == 1) {
-//                return search.getValues().get(0);
-//            }
-//            if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
-//                throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
-//            }
+            if (!GumgaThreadScope.ignoreCheckOwnership.get()) {
+                throw new EntityNotFoundException("cannot find " + entityInformation.getJavaType() + " with id: " + id);
+            }
         }
 
         T resource = super.findOne(id);
