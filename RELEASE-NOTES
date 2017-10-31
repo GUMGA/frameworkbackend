@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+2.0.1
+    - Correção fetchOne
+
 2.0.0
     - Criado duas classe de entidade base GumgaModelUUID e GumgaSharedModelUUID
     - Correção na busca por data com GQuery nas operações LOWER_EQUAL e LOWER
