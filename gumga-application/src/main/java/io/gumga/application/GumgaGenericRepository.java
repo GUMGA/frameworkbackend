@@ -240,7 +240,12 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 //                }
 //            }
             QueryObject qo = new QueryObject();
-            qo.setAq("obj.id=" + id);
+            if(GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
+                qo.setAq("obj.id='" + id+"'");
+            } else {
+                qo.setAq("obj.id=" + id);
+            }
+
             SearchResult<T> search = this.search(qo);
             if (search.getCount() == 1) {
                 return search.getValues().get(0);
