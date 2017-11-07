@@ -7,6 +7,10 @@
 
 =======================================
 Framework Backend
+2.0.2
+    - GumgaGateway, GumgaDTOAPI: Deprecated, Utilizar GumgaGatewayV2 e GumgaDTOAPIV2
+    - Correção no Criteria ao utilizar between com valores do tipo date
+
 2.0.1
     - Correção fetchOne
 

@@ -513,4 +513,13 @@ public abstract class AllDatabasesTest {
 
         assertEquals(1l, all.size());
     }
+
+    @Test
+    @Transactional
+    public void testIs() {
+        GQuery gQuery = new GQuery(new Criteria("obj.name", ComparisonOperator.IS, new CriteriaField("null")));
+        List<Person> all = this.personRepository.findAll(gQuery);
+
+        assertEquals(0l, all.size());
+    }
 }
