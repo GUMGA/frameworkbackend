@@ -97,9 +97,14 @@ public class JSDataAdapterService {
         }
     }
 
+    private boolean isCreatingDataSourceOracle(JSONObject command) throws JSONException {
+        return (command.getString("queryString").contains("OWNER") || command.getString("queryString").contains("TABLE_NAME"))
+                && command.getString("database").equals("Oracle");
+    }
+
     private String onConnect(JSONObject command, Connection con) throws JSONException {
         if (command.has("queryString")) {
-            return query(command.getString("queryString"), con);
+            return query(command, con);
         } else {
             HashMap<String, Object> result = new HashMap<String, Object>();
             result.put("success", true);
@@ -107,9 +112,27 @@ public class JSDataAdapterService {
         }
     }
 
+    private String query(JSONObject command, Connection con) {
+        try {
+            String filteredQuery = command.getString("queryString");
+            if (!isCreatingDataSourceOracle(command)) {
+                if (GumgaThreadScope.organizationCode.get() != null) {
+                    filteredQuery = addFilterQuery(command.getString("queryString"));
+                }
+            }
+
+            PreparedStatement pstmt = con.prepareStatement(filteredQuery);
+            ResultSet rs = pstmt.executeQuery();
+            return onQuery(rs);
+        } catch (Exception e) {
+            return onError(e);
+        }
+    }
+
     private String query(String queryString, Connection con) {
         try {
             String filteredQuery = queryString;
+
             if (GumgaThreadScope.organizationCode.get() != null) {
                 filteredQuery = addFilterQuery(queryString);
             }

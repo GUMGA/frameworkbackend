@@ -240,7 +240,12 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 //                }
 //            }
             QueryObject qo = new QueryObject();
-            qo.setAq("obj.id=" + id);
+            if(GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
+                qo.setAq("obj.id='" + id+"'");
+            } else {
+                qo.setAq("obj.id=" + id);
+            }
+
             SearchResult<T> search = this.search(qo);
             if (search.getCount() == 1) {
                 return search.getValues().get(0);
@@ -943,13 +948,13 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             Boolean existsID = Boolean.FALSE;
             for (int i = 0; i < columns.length; i++) {
                 ordem = ordem.concat(columns[i]).concat(i < types.length ? " ".concat(types[i].trim().isEmpty() ? "asc" : types[i]) : " asc").concat(",");
-                if(columns[i].trim().equalsIgnoreCase("id")) {
+                if(columns[i].trim().equalsIgnoreCase("id") || columns[i].trim().equalsIgnoreCase("obj.id")) {
                     existsID = Boolean.TRUE;
                 }
             }
 
             if(!existsID) {
-                ordem = ordem.concat("id asc,");
+                ordem = ordem.concat("obj.id asc,");
             }
 
            return ordem.substring(0, ordem.length() -1);

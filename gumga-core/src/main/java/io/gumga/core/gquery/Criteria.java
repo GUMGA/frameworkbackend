@@ -89,10 +89,29 @@ public class Criteria implements Serializable {
         this.valueFunction = valueFunction;
     }
 
-
+    private Object convertMapInCriteriaField(Object value) {
+        Map cast = Map.class.cast(value);
+        if(cast.containsKey("field")) {
+            Object field = cast.get("field");
+            value = new CriteriaField(field.toString());
+        }
+        return value;
+    }
     @Override
     public String toString() {
         Object value = this.value;
+
+        if(value == null) {
+            return field + comparisonOperator.hql + " null";
+        }
+
+        if(value instanceof Map) {
+            Object result = convertMapInCriteriaField(value);
+            if(result instanceof CriteriaField) {
+                this.value = result;
+            }
+            value = result;
+        }
 //        ComparisonOperatorProcess comparisonOperatorProcess = new ComparisionOperatorProcessEqual();
 //        return comparisonOperatorProcess.process(field, comparisonOperator, value, fieldFunction, valueFunction);
 
@@ -147,7 +166,7 @@ public class Criteria implements Serializable {
                     if(objects[0] instanceof Number) {
                         return field + comparisonOperator.hql +  objects[0] + " AND " + objects[1];
                     } else {
-                        Date parse = parse(String.valueOf(value));
+                        Date parse = parse(String.valueOf(objects[0]));
                         if(isDate(objects[0], parse)) {
                             String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]);
                             String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[1]);
@@ -161,7 +180,7 @@ public class Criteria implements Serializable {
                 if(objects[0] instanceof Number) {
                     return field + comparisonOperator.hql +  objects[0] + " AND " + objects[0];
                 } else {
-                    Date parse = parse(String.valueOf(value));
+                    Date parse = parse(String.valueOf(objects[0]));
                     if(isDate(objects[0], parse)) {
                         String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]);
                         return field + comparisonOperator.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format1) + " AND " + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format1);
@@ -260,6 +279,19 @@ public class Criteria implements Serializable {
 
     private Boolean isDate(Object value, Date parse) {
         return value instanceof Date || value instanceof LocalDate || value instanceof LocalDateTime || parse != null;
+    }
+
+    public static void main(String[] args) {
+        GQuery unconcilied = new GQuery(new Criteria("obj.conciliation.id", ComparisonOperator.EQUAL, 1))
+                .and(new Criteria("obj.situation", ComparisonOperator.EQUAL, "UNCONCILIED"))
+                .and(new Criteria("obj.justified", ComparisonOperator.EQUAL, false));
+        GQuery join = new GQuery(new Criteria("acc.type", ComparisonOperator.NOT_EQUAL, "NOT_FOUND"))
+                .join(new Join("obj.accusations as acc", JoinType.LEFT));
+        GQuery and = unconcilied.and(join);
+        System.out.println(and.toString());
+        System.out.println(and.getJoins());
+
+
     }
 }
 
