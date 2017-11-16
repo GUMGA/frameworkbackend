@@ -1,9 +1,7 @@
 package io.gumga.core.gquery;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -15,6 +13,7 @@ public class GQuery implements Serializable {
     private Criteria criteria;
     private List<GQuery> subQuerys;
     private List<Join> joins = new LinkedList<>();
+    private Boolean useDistinct = Boolean.FALSE;
 
     public GQuery() {
         this.logicalOperator = LogicalOperator.SIMPLE;
@@ -130,6 +129,23 @@ public class GQuery implements Serializable {
         }
     }
 
+    public Boolean useDistinct() {
+        Map<String, Boolean> result = new HashMap();
+        result.put("useDistinct", Boolean.FALSE);
+        this.searchUseDistinct(this, result);
+        return result.get("useDistinct");
+    }
+
+    private void searchUseDistinct(GQuery gQuery, Map<String, Boolean> map) {
+        if(gQuery.getSubQuerys() != null) {
+            for (GQuery query : gQuery.getSubQuerys()) {
+                if(!map.get("useDistinct")) {
+                    map.put("useDistinct", query.getUseDistinct());
+                }
+                searchUseDistinct(query, map);
+            }
+        }
+    }
 
     @Override
     public String toString() {
@@ -165,14 +181,27 @@ public class GQuery implements Serializable {
             subQuerys.stream().forEach((gq) -> gq.addIgnoreCase());
         }
     }
-//
+
+    public Boolean getUseDistinct() {
+        return useDistinct;
+    }
+
+    public void setUseDistinct(Boolean useDistinct) {
+        this.useDistinct = useDistinct;
+    }
+
 //    public static void main(String[] args) {
+//        GQuery disticnt = new GQuery(new Criteria("cpf", ComparisonOperator.NOT_EQUAL, "129312312"));
+////        disticnt.setUseDistinct(true);
 //        GQuery gQuery = new GQuery(new Criteria("name", ComparisonOperator.CONTAINS, "Mat"))
 //                .or(new Criteria("idade", ComparisonOperator.GREATER, 3))
 //                .and(new Criteria("valor", ComparisonOperator.GREATER, 5))
-//                .or(new Criteria("cpf", ComparisonOperator.NOT_EQUAL, "129312312"));
+//                .or(disticnt);
 //
-//        System.out.println(gQuery.toString());
+//
+//
+//
+//        System.out.println(gQuery.useDistinct());
 //
 //
 //
