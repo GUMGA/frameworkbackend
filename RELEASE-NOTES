@@ -7,6 +7,10 @@
 
 =======================================
 Framework Backend
+2.0.3
+    - QueryObject com a opção de fazer o count na tabela, por padrão ele vem true
+    - GQuery com a opção de utilizar distinct no select, por padrão ele vem false
+
 2.0.2
     - GumgaGateway, GumgaDTOAPI: Deprecated, Utilizar GumgaGatewayV2 e GumgaDTOAPIV2
     - Correção no Criteria ao utilizar between com valores do tipo date
