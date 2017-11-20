@@ -15,8 +15,8 @@ import org.hibernate.envers.Audited;
 public class GumgaReport extends GumgaModel<Long> implements Serializable {
 
     private String name;
-//    @Column(length = 16 * 1024)
     @Lob
+    @Column(name = "definition")
     private String definition;
 
     public String getName() {
