@@ -6,6 +6,8 @@ import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,8 @@ import java.util.*;
  */
 @Service
 public class JSDataAdapterService {
+
+    private final static Logger LOG = LoggerFactory.getLogger(JSDataAdapterService.class);
 
     @Autowired
     public JSDataAdapterService(GumgaValues gumgaValues) {
@@ -157,6 +161,11 @@ public class JSDataAdapterService {
     }
 
     private String oorganizationFilterQuery(String queryString) {
+        if (!queryString.contains(" obj")) {
+            LOG.warn("Alias obj was not found. The query will not run.");
+            return queryString;
+        }
+
         if (StringUtils.containsIgnoreCase(queryString, "WHERE")) {
             String queryBegin = queryString.substring(0, queryString.toLowerCase().indexOf("WHERE".toLowerCase()) + 5);
             String queryEnd = queryString.substring(queryString.toLowerCase().indexOf("WHERE".toLowerCase()) + 5, queryString.length());

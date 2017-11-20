@@ -3,10 +3,8 @@ package io.gumga.reports.stimulsoft;
 import io.gumga.domain.GumgaModel;
 import io.gumga.domain.GumgaMultitenancy;
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import org.hibernate.envers.Audited;
 
 @GumgaMultitenancy
@@ -17,7 +15,8 @@ import org.hibernate.envers.Audited;
 public class GumgaReport extends GumgaModel<Long> implements Serializable {
 
     private String name;
-    @Column(length = 16 * 1024)
+//    @Column(length = 16 * 1024)
+    @Lob
     private String definition;
 
     public String getName() {
