@@ -102,7 +102,9 @@ public class JSDataAdapterService {
     }
 
     private boolean isCreatingDataSourceOracle(JSONObject command) throws JSONException {
-        return (command.getString("queryString").contains("OWNER") || command.getString("queryString").contains("TABLE_NAME"))
+        return (command.getString("queryString").contains("OWNER")
+                || command.getString("queryString").contains("TABLE_NAME")
+                || command.getString("queryString").contains("ALL_TAB_COLS"))
                 && command.getString("database").equals("Oracle");
     }
 
@@ -123,6 +125,8 @@ public class JSDataAdapterService {
                 if (GumgaThreadScope.organizationCode.get() != null) {
                     filteredQuery = addFilterQuery(command.getString("queryString"));
                 }
+            } else {
+                filteredQuery = filteredQuery.concat(" AND ROWNUM <= " + getProperties().getProperty("stimulsoft.datasource.limitPresentationTables", "20"));
             }
 
             PreparedStatement pstmt = con.prepareStatement(filteredQuery);
