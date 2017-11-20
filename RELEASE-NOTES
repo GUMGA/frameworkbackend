@@ -11,6 +11,50 @@ Framework Backend
     - GumgaGateway, GumgaDTOAPI: Deprecated, Utilizar GumgaGatewayV2 e GumgaDTOAPIV2
     - Correção no Criteria ao utilizar between com valores do tipo date
 
+    ------------------------------------- ATENÇÃO ------------------------------------------
+    - Devido a diversas solicitações, foi alterado o tipo da entidade GumgaReport para Lob;
+         * Se você utiliza liquibase, deve-se alterar o tipo da coluna:
+
+           ** MySQL **
+           <changeSet author="liquibase-docs" id="modifyDataType-example">
+               <preConditions onFail="MARK_RAN">
+                   <not>
+                       <columnExists tableName="gum_rep" columnName="definition"></columnExists>
+                   </not>
+               </preConditions>
+               <modifyDataType
+                       columnName="definition"
+                       newDataType="LONGTEXT"
+                       tableName="gum_rep"/>
+           </changeSet>
+
+           ** Oracle **
+            <changeSet author="liquibase-docs" id="modifyDataType-example">
+               <preConditions onFail="MARK_RAN">
+                  <not>
+                      <columnExists tableName="gum_rep" columnName="definition"></columnExists>
+                  </not>
+               </preConditions>
+               <modifyDataType
+                       columnName="definition"
+                       newDataType="CLOB"
+                       tableName="gum_rep"/>
+           </changeSet>
+
+           ** PostgreSql **
+           <changeSet author="liquibase-docs" id="modifyDataType-example">
+              <preConditions onFail="MARK_RAN">
+                  <not>
+                      <columnExists tableName="gum_rep" columnName="definition"></columnExists>
+                  </not>
+              </preConditions>
+              <modifyDataType
+                      columnName="definition"
+                      newDataType="TEXT"
+                      tableName="gum_rep"/>
+           </changeSet>
+    -----------------------------------------------------------------------------------------
+
 2.0.1
     - Correção fetchOne
 
