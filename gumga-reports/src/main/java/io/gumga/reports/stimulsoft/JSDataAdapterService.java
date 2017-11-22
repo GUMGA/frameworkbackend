@@ -143,11 +143,18 @@ public class JSDataAdapterService {
     private String addFilterQuery(JSONObject command) throws JSONException {
         String queryString = command.getString("queryString");
         queryString = queryString.replaceAll("\\[\\[oi\\]\\]", GumgaThreadScope.organizationCode.get());
+        queryString = queryString.replaceAll("\\[\\[login\\]\\]", GumgaThreadScope.login.get());
+        queryString = queryString.replaceAll("\\[\\[gumgaToken\\]\\]", GumgaThreadScope.gumgaToken.get());
+        queryString = queryString.replaceAll("\\[\\[ip\\]\\]", GumgaThreadScope.ip.get());
+        queryString = queryString.replaceAll("\\[\\[organization\\]\\]", GumgaThreadScope.organization.get());
+        queryString = queryString.replaceAll("\\[\\[instanceOi\\]\\]", GumgaThreadScope.instanceOi.get());
+        queryString = queryString.replaceAll("\\[\\[softwareName\\]\\]", GumgaThreadScope.softwareName.get());
 
         if (StringUtils.containsIgnoreCase(queryString, "INFORMATION_SCHEMA")) {
             return queryString;
         } else if (isCreatingDataSourceOracle(command)) {
-            return queryString.concat(" AND ROWNUM <= " + getProperties().getProperty("stimulsoft.datasource.limitPresentationTables", "20"));
+            String limitPresentationTables = getProperties().getProperty("stimulsoft.datasource.limitPresentationTables", "20");
+            return "ALL".equals(limitPresentationTables) ? queryString : queryString.concat(" AND ROWNUM <= " + limitPresentationTables);
         }
 
         if (BooleanUtils.toBooleanObject(getProperties().getProperty("stimulsoft.search.usesObj", "false")) && GumgaThreadScope.organizationCode.get() != null) {
