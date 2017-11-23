@@ -7,6 +7,8 @@
 
 =======================================
 Framework Backend
+3.0.0
+    -
 2.0.3
     - QueryObject com a opção de fazer o count na tabela, por padrão ele vem true
     - GQuery com a opção de utilizar distinct no select, por padrão ele vem false
