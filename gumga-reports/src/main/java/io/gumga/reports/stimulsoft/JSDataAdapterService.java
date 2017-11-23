@@ -4,8 +4,11 @@ import com.stimulsoft.base.json.JSONException;
 import com.stimulsoft.base.json.JSONObject;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +19,16 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by gelatti on 29/06/17. Updated by Munif
  */
 @Service
 public class JSDataAdapterService {
+
+    private final static Logger LOG = LoggerFactory.getLogger(JSDataAdapterService.class);
 
     @Autowired
     public JSDataAdapterService(GumgaValues gumgaValues) {
@@ -31,12 +38,20 @@ public class JSDataAdapterService {
     private GumgaValues gumgaValues;
 
     private Properties properties;
+    public static String urlProperties;
 
     private Properties getProperties() {
         if (properties == null) {
             properties = gumgaValues.getCustomFileProperties();
         }
         return properties;
+    }
+
+    private String getProperty(String value) {
+        if (!getProperties().contains(value)) {
+            properties = gumgaValues.getCustomFileProperties();
+        }
+        return properties.getProperty(value);
     }
 
     private final List<String> USERS_KEYS = Arrays.asList(new String[]{"jdbc.username", "username", "uid", "user", "user id", "userId", "connection.username"});
@@ -98,7 +113,9 @@ public class JSDataAdapterService {
     }
 
     private boolean isCreatingDataSourceOracle(JSONObject command) throws JSONException {
-        return (command.getString("queryString").contains("OWNER") || command.getString("queryString").contains("TABLE_NAME"))
+        return (command.getString("queryString").contains("OWNER")
+                || command.getString("queryString").contains("TABLE_NAME")
+                || command.getString("queryString").contains("ALL_TAB_COLS"))
                 && command.getString("database").equals("Oracle");
     }
 
@@ -114,13 +131,7 @@ public class JSDataAdapterService {
 
     private String query(JSONObject command, Connection con) {
         try {
-            String filteredQuery = command.getString("queryString");
-            if (!isCreatingDataSourceOracle(command)) {
-                if (GumgaThreadScope.organizationCode.get() != null) {
-                    filteredQuery = addFilterQuery(command.getString("queryString"));
-                }
-            }
-
+            String filteredQuery = addFilterQuery(command);
             PreparedStatement pstmt = con.prepareStatement(filteredQuery);
             ResultSet rs = pstmt.executeQuery();
             return onQuery(rs);
@@ -129,48 +140,66 @@ public class JSDataAdapterService {
         }
     }
 
-    private String query(String queryString, Connection con) {
-        try {
-            String filteredQuery = queryString;
+    private String addFilterQuery(JSONObject command) throws JSONException {
+        String queryString = command.getString("queryString");
+        queryString = queryString.replaceAll("\\[\\[oi\\]\\]", GumgaThreadScope.organizationCode.get());
+        queryString = queryString.replaceAll("\\[\\[login\\]\\]", GumgaThreadScope.login.get());
+        queryString = queryString.replaceAll("\\[\\[gumgaToken\\]\\]", GumgaThreadScope.gumgaToken.get());
+        queryString = queryString.replaceAll("\\[\\[ip\\]\\]", GumgaThreadScope.ip.get());
+        queryString = queryString.replaceAll("\\[\\[organization\\]\\]", GumgaThreadScope.organization.get());
+        queryString = queryString.replaceAll("\\[\\[instanceOi\\]\\]", GumgaThreadScope.instanceOi.get());
+        queryString = queryString.replaceAll("\\[\\[softwareName\\]\\]", GumgaThreadScope.softwareName.get());
 
-            if (GumgaThreadScope.organizationCode.get() != null) {
-                filteredQuery = addFilterQuery(queryString);
-            }
-
-            PreparedStatement pstmt = con.prepareStatement(filteredQuery);
-            ResultSet rs = pstmt.executeQuery();
-            return onQuery(rs);
-        } catch (Exception e) {
-            return onError(e);
-        }
-    }
-
-    private String addFilterQuery(String queryString) {
         if (StringUtils.containsIgnoreCase(queryString, "INFORMATION_SCHEMA")) {
             return queryString;
-        } else if (StringUtils.containsIgnoreCase(queryString, "obj")) {
-            String oo = oorganizationFilterQuery(queryString);
-            return oo;
-        } else {
-            throw new RuntimeException("report01;;That SQL must contains on the primary table the alias obj");
+        } else if (isCreatingDataSourceOracle(command)) {
+            String limitPresentationTables = getProperties().getProperty("stimulsoft.datasource.limitPresentationTables", "20");
+            return "ALL".equals(limitPresentationTables) ? queryString : queryString.concat(" AND ROWNUM <= " + limitPresentationTables);
         }
+
+        if (BooleanUtils.toBooleanObject(getProperties().getProperty("stimulsoft.search.usesObj", "false")) && GumgaThreadScope.organizationCode.get() != null) {
+            if (!StringUtils.containsIgnoreCase(queryString, " obj")) {
+                throw new RuntimeException("report01;;That SQL must contains on the primary table the alias obj");
+            } else {
+                return oorganizationFilterQuery("obj", queryString);
+            }
+        }
+
+        if (StringUtils.containsIgnoreCase(queryString, "[[filterOi:") && GumgaThreadScope.organizationCode.get() != null) {
+            return filterOi(queryString);
+        }
+
+        return queryString;
     }
 
-    private String oorganizationFilterQuery(String queryString) {
+    public static String filterOi(String select) {
+        String newSelect = select;
+        Matcher m = Pattern.compile("\\[\\[filterOi:\\w+\\]\\]").matcher(select);
+        while (m.find()) {
+            String substring = select.substring(m.start(), m.end());
+            String[] split = substring.split(":");
+            String alias = split[1].substring(0, split[1].length() - 2);
+            String oiFilter = ("(" + alias + ".oi is null or " + alias + ".oi like '" + GumgaThreadScope.organizationCode.get() + "%')");
+            newSelect = newSelect.replace(substring, oiFilter);
+        }
+        return newSelect;
+    }
+
+    private String oorganizationFilterQuery(String alias, String queryString) {
         if (StringUtils.containsIgnoreCase(queryString, "WHERE")) {
             String queryBegin = queryString.substring(0, queryString.toLowerCase().indexOf("WHERE".toLowerCase()) + 5);
             String queryEnd = queryString.substring(queryString.toLowerCase().indexOf("WHERE".toLowerCase()) + 5, queryString.length());
-            return queryBegin.concat(" (obj.oi is null or obj.oi like '" + GumgaThreadScope.organizationCode.get() + "%') and ").concat(queryEnd);
+            return queryBegin.concat(" (" + alias + ".oi is null or " + alias + ".oi like '" + GumgaThreadScope.organizationCode.get() + "%') and ").concat(queryEnd);
         } else if (StringUtils.containsIgnoreCase(queryString, "GROUP BY")) {
             String queryBegin = queryString.substring(0, queryString.toLowerCase().indexOf("GROUP BY".toLowerCase()));
             String queryEnd = queryString.substring(queryString.toLowerCase().indexOf("GROUP BY".toLowerCase()), queryString.length());
-            return queryBegin.concat(" WHERE (obj.oi is null or obj.oi like '" + GumgaThreadScope.organizationCode.get() + "%') ").concat(queryEnd);
+            return queryBegin.concat(" WHERE (" + alias + ".oi is null or " + alias + ".oi like '" + GumgaThreadScope.organizationCode.get() + "%') ").concat(queryEnd);
         } else if (StringUtils.containsIgnoreCase(queryString, "ORDER BY")) {
             String queryBegin = queryString.substring(0, queryString.toLowerCase().indexOf("ORDER BY".toLowerCase()));
             String queryEnd = queryString.substring(queryString.toLowerCase().indexOf("ORDER BY".toLowerCase()), queryString.length());
-            return queryBegin.concat(" WHERE (obj.oi is null or obj.oi like '" + GumgaThreadScope.organizationCode.get() + "%') ").concat(queryEnd);
+            return queryBegin.concat(" WHERE (" + alias + ".oi is null or " + alias + ".oi like '" + GumgaThreadScope.organizationCode.get() + "%') ").concat(queryEnd);
         } else {
-            return queryString.concat(" WHERE (obj.oi is null or obj.oi like '" + GumgaThreadScope.organizationCode.get() + "%')");
+            return queryString.concat(" WHERE (" + alias + ".oi is null or " + alias + ".oi like '" + GumgaThreadScope.organizationCode.get() + "%')");
         }
     }
 
@@ -208,6 +237,18 @@ public class JSDataAdapterService {
         return connect(new JSONObject(command.toString()));
     }
 
+
+    private String replaceProperties(String str) {
+        String newStr = str;
+        Matcher m = Pattern.compile("\\[\\[[\\w\\.]+\\]\\]").matcher(str);
+        while (m.find()) {
+            String substring = str.substring(m.start(), m.end());
+            String property = "stimulsoft." + substring.substring(2, substring.length() - 2);
+            newStr = newStr.replace(substring, getProperty(property));
+        }
+        return newStr;
+    }
+
     private StringBuilder mountConnection(StringBuilder command) {
         StrBuilder conn = new StrBuilder();
         conn.append(command.toString());
@@ -217,7 +258,7 @@ public class JSDataAdapterService {
         conn.replaceFirst("%user", getProperties().getProperty("stimulsoft.database.user"));
         conn.replaceFirst("%pass", getProperties().getProperty("stimulsoft.database.password"));
         StringBuilder comm = new StringBuilder();
-        comm.append(conn.toString());
+        comm.append(replaceProperties(conn.toString()));
         return comm;
     }
 

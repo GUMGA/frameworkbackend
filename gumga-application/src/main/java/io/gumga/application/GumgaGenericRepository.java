@@ -40,6 +40,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,8 +89,11 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         if (query.isAdvanced()) {
             return advancedSearch(query);
         }
+        Long count = 0l;
+        if(query.isSearchCount()) {
+            count = count(query);
+        }
 
-        Long count = count(query);
         List<T> data = query.isCountOnly() ? Collections.emptyList() : getOrdered(query);
 
         return new SearchResult<>(query, count, data);
@@ -349,10 +354,16 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             String orderField = getOrderField(query.getSortField(), query.getSortDir());
             hqlConsulta = String.format(modelo + " ORDER BY %s", entityInformation.getEntityName(), query.getAq(), orderField);
         }
-        String hqlConta = String.format("SELECT count(obj) " + modelo, entityInformation.getEntityName(), query.getAq());
-        Query qConta = entityManager.createQuery(hqlConta);
+
+        Long total = 0l;
+        if(query.isSearchCount()) {
+            String hqlConta = String.format("SELECT count(obj) " + modelo, entityInformation.getEntityName(), query.getAq());
+            Query qConta = entityManager.createQuery(hqlConta);
+            total = (Long) qConta.getSingleResult();
+        }
+
+
         Query qConsulta = entityManager.createQuery(hqlConsulta);
-        Long total = (Long) qConta.getSingleResult();
         qConsulta.setMaxResults(query.getPageSize());
         qConsulta.setFirstResult(query.getStart());
         List resultList = query.isCountOnly() ? Collections.emptyList() : qConsulta.getResultList();
@@ -840,9 +851,11 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         GQuery gQuery = queryObject.getgQuery();
 
-
-        Query queryCountWithGQuery = createQueryCountWithGQuery(gQuery);
-        Long total = (Long) queryCountWithGQuery.getSingleResult();
+        Long total = 0l;
+        if(queryObject.isSearchCount()) {
+            Query queryCountWithGQuery = createQueryCountWithGQuery(gQuery);
+            total =(Long) queryCountWithGQuery.getSingleResult();
+        }
 
         Query queryWithGQuery = createQueryGQueryWithQueryObject(queryObject);
 
@@ -887,8 +900,8 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 //            sort = sortField + ("asc".equals(sortDir) ? " asc" : " desc");
 //        }
         String sort = getOrderField(queryObject.getSortField(), queryObject.getSortDir());
-
-        String query = "select distinct obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+        Boolean useDistinct = gQuery.getUseDistinct();
+        String query = useDistinct ? "select distinct" : "select" +" obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
 
@@ -964,7 +977,8 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     }
 
     private Query createQueryWithGQuery(GQuery gQuery) {
-        String query = "select distinct obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+        Boolean useDistinct = gQuery.useDistinct();
+        String query = useDistinct ? "select distinct" : "select" + " obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
 
@@ -972,9 +986,12 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     }
 
     private Query createQueryCountWithGQuery(GQuery gQuery) {
-        String query = "select distinct count(obj) FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+        Boolean useDistinct = gQuery.useDistinct();
+        String query = useDistinct ? "select distinct" : "select" + " count(obj) FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//        criteriaBuilder.
 
         return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
     }
