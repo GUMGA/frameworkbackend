@@ -8,7 +8,8 @@
 =======================================
 Framework Backend
 3.0.0
-    -
+    - O tamanho das colunas gumga_orgs e gumga_users da classe GumgaSharedModel foi aumentado para 4000 caracteres.
+
 2.0.3
     - QueryObject com a opção de fazer o count na tabela, por padrão ele vem true
     - GQuery com a opção de utilizar distinct no select, por padrão ele vem false
