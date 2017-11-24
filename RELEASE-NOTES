@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+3.0.1
+    - Correção no endpoint(/operationskeys/{software}/{token:.+}) da classe GumgaSecurityProxy. Validar se o valor é diferente de null
+
 3.0.0
     - O tamanho das colunas gumga_orgs e gumga_users da classe GumgaSharedModel foi aumentado para 4000 caracteres.
 

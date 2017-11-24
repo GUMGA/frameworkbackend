@@ -219,7 +219,7 @@ class GumgaSecurityProxy {
             HashSet<Object> keys = new HashSet<>();
             for (Iterator it = resposta.iterator(); it.hasNext();) {
                 Map r = (Map) it.next();
-                if(r.containsKey("key") && r.get("key") != null) {
+                if(r != null && r.containsKey("key") && r.get("key") != null) {
                     keys.add(r.get("key"));
                 }
             }
