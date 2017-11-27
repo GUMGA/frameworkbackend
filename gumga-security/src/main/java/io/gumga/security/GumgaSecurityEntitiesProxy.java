@@ -83,7 +83,7 @@ public class GumgaSecurityEntitiesProxy {
             final Map result = this.restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(email, headers), Map.class).getBody();
             return ResponseEntity.ok(result);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -103,9 +103,9 @@ public class GumgaSecurityEntitiesProxy {
 
             return ResponseEntity.ok(result);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         } catch (NumberFormatException numberFormatException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", numberFormatException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", numberFormatException.getMessage()).exception();
         }
     }
 
@@ -118,7 +118,7 @@ public class GumgaSecurityEntitiesProxy {
             final Map result = this.restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<Map>(user, headers), Map.class).getBody();
             return ResponseEntity.ok(result);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -131,7 +131,7 @@ public class GumgaSecurityEntitiesProxy {
             final Map result = this.restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(headers), Map.class).getBody();
             return ResponseEntity.noContent().build();
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -144,7 +144,7 @@ public class GumgaSecurityEntitiesProxy {
             final Map result = this.restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(headers), Map.class).getBody();
             return ResponseEntity.noContent().build();
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -157,7 +157,7 @@ public class GumgaSecurityEntitiesProxy {
             final List<Map> result = this.restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(headers), List.class).getBody();
             return ResponseEntity.ok(result);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -170,7 +170,7 @@ public class GumgaSecurityEntitiesProxy {
             final Map result = this.restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(headers), Map.class).getBody();
             return ResponseEntity.noContent().build();
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -183,7 +183,7 @@ public class GumgaSecurityEntitiesProxy {
             final Map result = this.restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(headers), Map.class).getBody();
             return ResponseEntity.noContent().build();
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -196,7 +196,7 @@ public class GumgaSecurityEntitiesProxy {
             final Map result = this.restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Map>(userImage, headers), Map.class).getBody();
             return ResponseEntity.ok(result);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -209,7 +209,7 @@ public class GumgaSecurityEntitiesProxy {
             final List<Map> result = this.restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<List>(headers), List.class).getBody();
             return ResponseEntity.ok(result);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -222,7 +222,7 @@ public class GumgaSecurityEntitiesProxy {
             this.restTemplate.exchange(url, HttpMethod.DELETE, new HttpEntity<List>(headers), Map.class);
             return ResponseEntity.noContent().build();
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -234,7 +234,7 @@ public class GumgaSecurityEntitiesProxy {
             Map resposta = restTemplate.postForObject(url, userImageDTO, Map.class);
             return resposta;
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -247,7 +247,7 @@ public class GumgaSecurityEntitiesProxy {
             final Map result = this.restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Map>(userImage, headers), Map.class).getBody();
             return ResponseEntity.ok(result);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 

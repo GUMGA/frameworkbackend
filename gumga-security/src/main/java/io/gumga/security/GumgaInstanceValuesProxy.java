@@ -59,7 +59,7 @@ public class GumgaInstanceValuesProxy {
             }
             return response;
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 

@@ -46,7 +46,7 @@ public class GumgaSecurityEmbeddedProxy {
             List<Map> result = this.restTemplate.getForObject(url, List.class);
             return result;
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -59,7 +59,7 @@ public class GumgaSecurityEmbeddedProxy {
             Map result = this.restTemplate.getForObject(url, Map.class);
             return result;
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -71,7 +71,7 @@ public class GumgaSecurityEmbeddedProxy {
             String url = getSecurityUrl() + "/api/user?gumgaToken=" + token;
             return restTemplate.postForObject(url, user, Map.class);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -83,7 +83,7 @@ public class GumgaSecurityEmbeddedProxy {
             String url = getSecurityUrl() + "/api/role/saveall?gumgaToken=" + token;
             return restTemplate.postForObject(url, roleAndList, Map.class);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -95,7 +95,7 @@ public class GumgaSecurityEmbeddedProxy {
             String url = getSecurityUrl() + "/api/organization?gumgaToken=" + token;
             return restTemplate.postForObject(url, organization, Map.class);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -108,7 +108,7 @@ public class GumgaSecurityEmbeddedProxy {
             final Map result = this.restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(headers), Map.class).getBody();
             return ResponseEntity.ok(result);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
