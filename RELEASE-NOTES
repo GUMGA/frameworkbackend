@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+3.0.2
+    - Correção no GQuery com distinct
+
 3.0.1
     - Correção no endpoint(/operationskeys/{software}/{token:.+}) da classe GumgaSecurityProxy. Validar se o valor é diferente de null
 
