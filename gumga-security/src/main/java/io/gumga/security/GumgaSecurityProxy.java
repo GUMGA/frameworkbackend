@@ -72,9 +72,9 @@ class GumgaSecurityProxy {
     @RequestMapping(value = "/{token:.+}", method = RequestMethod.DELETE)
     public Map delete(@PathVariable String token) {
         try {
+            this.requestFilterV2Repository.remove(token);
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/" + token;
             restTemplate.delete(url);
-            this.requestFilterV2Repository.remove(token);
             return GumgaSecurityCode.OK.response();
         } catch (RestClientException ex) {
             throw new ProxyProblemResponse("Problema na comunicação com o segurança.", ex.getMessage()).exception();
@@ -192,6 +192,7 @@ class GumgaSecurityProxy {
     @RequestMapping(value = "/changeorganization/{token}/{orgId}", method = RequestMethod.GET)
     public Object changeOrganization(@PathVariable String token, @PathVariable Long orgId) {
         try {
+            this.requestFilterV2Repository.remove(token);
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/changeorganization/" + token + "/" + orgId;
             Map resposta = restTemplate.getForObject(url, Map.class);
             return resposta;

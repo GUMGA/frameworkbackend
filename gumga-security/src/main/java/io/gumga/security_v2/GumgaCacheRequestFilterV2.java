@@ -25,6 +25,10 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+        String endPoint = request.getRequestURL().toString();
+        if (endPoint.contains("public") || endPoint.contains("api-docs")) {
+            return super.preHandle(request, response, o);
+        }
         String token = request.getHeader("gumgaToken");
 
         if (token == null) {
@@ -45,6 +49,7 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
         Map<String, Object> data = getData();
         repository.add(token, data);
         setGumgaThreadScope(data);
+
         return result;
     }
 
