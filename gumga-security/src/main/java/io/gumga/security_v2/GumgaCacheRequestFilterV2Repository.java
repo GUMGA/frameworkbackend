@@ -24,8 +24,7 @@ public class GumgaCacheRequestFilterV2Repository {
 
     public Boolean isValid(String token, Long seconds) {
         Map<String, Object> result = cache.get(token);
-        return result != null && result.containsKey("created") &&
-                ((LocalDateTime)result.get("created")).isBefore((LocalDateTime)((LocalDateTime) result.get("created")).plusSeconds(seconds));
+        return result != null && result.containsKey("created") && ((LocalDateTime)result.get("created")).isAfter(LocalDateTime.now().minusSeconds(seconds));
     }
 
     public Map<String, Object> getData(String token) {

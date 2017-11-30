@@ -19,6 +19,7 @@ import io.gumga.domain.domains.GumgaImage;
 import io.gumga.domain.saas.GumgaSaaS;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import io.gumga.presentation.exceptionhandler.GumgaRunTimeException;
+import io.gumga.security_v2.GumgaCacheRequestFilterV2Repository;
 import io.gumga.security_v2.GumgaRequestFilterV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,8 @@ class GumgaSecurityProxy {
     private final RestTemplate restTemplate;
     @Autowired
     private GumgaValues gumgaValues;
+    @Autowired
+    private GumgaCacheRequestFilterV2Repository requestFilterV2Repository;
 
     public GumgaSecurityProxy() {
         restTemplate = new GumgaJsonRestTemplate();
@@ -71,6 +74,7 @@ class GumgaSecurityProxy {
         try {
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/" + token;
             restTemplate.delete(url);
+            this.requestFilterV2Repository.remove(token);
             return GumgaSecurityCode.OK.response();
         } catch (RestClientException ex) {
             throw new ProxyProblemResponse("Problema na comunicação com o segurança.", ex.getMessage()).exception();
