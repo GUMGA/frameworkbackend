@@ -75,7 +75,6 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
         data.put("created", LocalDateTime.now());
         try {
             GumgaThreadScope.userRecognition.set(request.getHeader("userRecognition"));
-            data.put("userRecognition", GumgaThreadScope.userRecognition.get());
             token = request.getHeader("gumgaToken");
             if (token == null) {
                 token = request.getParameter("gumgaToken");
@@ -84,7 +83,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
                 token = "no token";
             }
             GumgaThreadScope.gumgaToken.set(token);
-            data.put("gumgaToken", GumgaThreadScope.gumgaToken.get());
+
             String endPoint = request.getRequestURL().toString();
             String method = request.getMethod();
 
@@ -117,6 +116,8 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
                 return true;
             }
 
+
+
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/authorize/" + softwareId + "/" + token + "/" + request.getRemoteAddr() + "/" + operationKey + "?version=v2";
 
 //            ar = restTemplate.getForObject(url, AuthorizatonResponse.class);
@@ -139,13 +140,15 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
             GumgaThreadScope.ignoreCheckOwnership.set(Boolean.FALSE);
 
 
-            data.put("login", GumgaThreadScope.login.get());
-            data.put("organization", GumgaThreadScope.organization.get());
-            data.put("organizationCode", GumgaThreadScope.organizationCode.get());
-            data.put("organizationId", GumgaThreadScope.organizationId.get());
-            data.put("authorizationResponse", GumgaThreadScope.authorizationResponse.get());
-            data.put("softwareName", GumgaThreadScope.softwareName.get());
-            data.put("instanceOi", GumgaThreadScope.instanceOi.get());
+            data.put("userRecognition", request.getHeader("userRecognition"));
+            data.put("gumgaToken", token);
+            data.put("login", ar.getLogin());
+            data.put("organization", ar.getOrganization());
+            data.put("organizationCode", ar.getOrganizationCode());
+            data.put("organizationId", ar.getOrganizationId());
+            data.put("authorizationResponse", authorizatonResponse);
+            data.put("softwareName", softwareId);
+            data.put("instanceOi", ar.getInstanceOi());
 
 
 

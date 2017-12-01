@@ -5,6 +5,7 @@ import io.gumga.core.GumgaThreadScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.method.HandlerMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,10 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+        if (!(o instanceof HandlerMethod)) {
+            return true;
+        }
+
         String endPoint = request.getRequestURL().toString();
         if (endPoint.contains("public") || endPoint.contains("api-docs")) {
             return super.preHandle(request, response, o);
@@ -36,7 +41,7 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
         }
 
         if (token == null) {
-            token = "no token";
+            return super.preHandle(request, response, o);
         }
 
         if(repository.isValid(token, tokenDuration)) {
@@ -44,11 +49,14 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
             log.info("Pegou do cache a autorização!");
             return true;
         }
+
         log.info("Não pegou do cache a autorização!");
         boolean result = super.preHandle(request, response, o);
-        Map<String, Object> data = getData();
-        repository.add(token, data);
-        setGumgaThreadScope(data);
+        if(result) {
+            Map<String, Object> data = getData();
+            repository.add(token, data);
+            setGumgaThreadScope(data);
+        }
 
         return result;
     }

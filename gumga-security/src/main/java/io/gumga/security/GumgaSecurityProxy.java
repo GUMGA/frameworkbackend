@@ -193,7 +193,7 @@ class GumgaSecurityProxy {
     public Object changeOrganization(@PathVariable String token, @PathVariable Long orgId) {
         try {
             this.requestFilterV2Repository.remove(token);
-            String url = gumgaValues.getGumgaSecurityUrl() + "/token/changeorganization/" + token + "/" + orgId;
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/changeorganizationandtoken/" + token + "/" + orgId;
             Map resposta = restTemplate.getForObject(url, Map.class);
             return resposta;
         } catch (RestClientException restClientException) {
