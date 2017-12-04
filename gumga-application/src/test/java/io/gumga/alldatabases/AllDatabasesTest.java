@@ -51,10 +51,10 @@ public abstract class AllDatabasesTest {
         service.save(new Company("CaRlOs", dia.getTime(), (false)));
 
         dia.set(1900, 8, 18, 11, 0, 0);
-        service.save(new Company("AMÁRILDO SANTOS", dia.getTime(), (false)));
+        service.save(new Company("AMÁRILDO SANTOS'", dia.getTime(), (false)));
 
         this.personRepository.saveAndFlush(new Employee("João"));
-        this.personRepository.saveAndFlush(new Supplier("Marcio"));
+        this.personRepository.saveAndFlush(new Supplier("Marcio' Roberto's"));
     }
 
     @Test
@@ -522,4 +522,27 @@ public abstract class AllDatabasesTest {
 
         assertEquals(0l, all.size());
     }
+
+    @Test
+    @Transactional
+    public void testeStringComAspasSimples() {
+        GQuery gQuery = new GQuery(new Criteria("obj.name", ComparisonOperator.CONTAINS, "Marcio' Roberto's"));
+        List<Person> all = this.personRepository.findAll(gQuery);
+
+        assertEquals(1l, all.size());
+    }
+
+    @Test
+    @Transactional
+    public void testeStringComAspasSimples2() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        query.setSearchFields("name");
+        query.setQ("AMÁRILDO SANTOS'");
+        List<Company> result = service.pesquisa(query).getValues();
+        assertEquals(1, result.size());
+    }
+
+
+
 }

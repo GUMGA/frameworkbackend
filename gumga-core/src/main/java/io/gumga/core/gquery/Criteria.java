@@ -231,7 +231,7 @@ public class Criteria implements Serializable {
         }
 
 
-        return String.format(fieldFunction, field) + comparisonOperator.hql + String.format(valueFunction, "\'" + value + "\'");
+        return String.format(fieldFunction, field) + comparisonOperator.hql + String.format(valueFunction, "\'" + value.toString().replaceAll("\'", "''") + "\'");
     }
 
 
@@ -282,15 +282,18 @@ public class Criteria implements Serializable {
     }
 
     public static void main(String[] args) {
-        GQuery unconcilied = new GQuery(new Criteria("obj.conciliation.id", ComparisonOperator.EQUAL, 1))
-                .and(new Criteria("obj.situation", ComparisonOperator.EQUAL, "UNCONCILIED"))
-                .and(new Criteria("obj.justified", ComparisonOperator.EQUAL, false));
-        GQuery join = new GQuery(new Criteria("acc.type", ComparisonOperator.NOT_EQUAL, "NOT_FOUND"))
-                .join(new Join("obj.accusations as acc", JoinType.LEFT));
-        GQuery and = unconcilied.and(join);
-        System.out.println(and.toString());
-        System.out.println(and.getJoins());
+//        GQuery unconcilied = new GQuery(new Criteria("obj.conciliation.id", ComparisonOperator.EQUAL, 1))
+//                .and(new Criteria("obj.situation", ComparisonOperator.EQUAL, "UNCONCILIED"))
+//                .and(new Criteria("obj.justified", ComparisonOperator.EQUAL, false));
+//        GQuery join = new GQuery(new Criteria("acc.type", ComparisonOperator.NOT_EQUAL, "NOT_FOUND"))
+//                .join(new Join("obj.accusations as acc", JoinType.LEFT));
+//        GQuery and = unconcilied.and(join);
+//        System.out.println(and.toString());
+//        System.out.println(and.getJoins());
 
+        Number value = 10l;
+
+        System.out.println(String.format("prod.nome = '%s'", value.toString().replaceAll("\'", "''")));
 
     }
 }
