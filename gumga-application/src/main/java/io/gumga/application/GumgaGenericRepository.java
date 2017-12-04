@@ -900,7 +900,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 //            sort = sortField + ("asc".equals(sortDir) ? " asc" : " desc");
 //        }
         String sort = getOrderField(queryObject.getSortField(), queryObject.getSortDir());
-        Boolean useDistinct = gQuery.getUseDistinct();
+        Boolean useDistinct = gQuery.useDistinct();
         String query = (useDistinct ? "select distinct" : "select")  + " obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);

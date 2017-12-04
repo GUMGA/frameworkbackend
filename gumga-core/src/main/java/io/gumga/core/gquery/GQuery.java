@@ -137,6 +137,10 @@ public class GQuery implements Serializable {
     }
 
     private void searchUseDistinct(GQuery gQuery, Map<String, Boolean> map) {
+        if(!map.get("useDistinct")) {
+            map.put("useDistinct", gQuery.getUseDistinct());
+        }
+
         if(gQuery.getSubQuerys() != null) {
             for (GQuery query : gQuery.getSubQuerys()) {
                 if(!map.get("useDistinct")) {
@@ -197,7 +201,7 @@ public class GQuery implements Serializable {
 //                .or(new Criteria("idade", ComparisonOperator.GREATER, 3))
 //                .and(new Criteria("valor", ComparisonOperator.GREATER, 5))
 //                .or(disticnt);
-//
+////        gQuery.setUseDistinct(true);
 //
 //
 //

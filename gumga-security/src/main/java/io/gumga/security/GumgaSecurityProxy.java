@@ -19,6 +19,7 @@ import io.gumga.domain.domains.GumgaImage;
 import io.gumga.domain.saas.GumgaSaaS;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import io.gumga.presentation.exceptionhandler.GumgaRunTimeException;
+import io.gumga.security_v2.GumgaCacheRequestFilterV2Repository;
 import io.gumga.security_v2.GumgaRequestFilterV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,8 @@ class GumgaSecurityProxy {
     private final RestTemplate restTemplate;
     @Autowired
     private GumgaValues gumgaValues;
+    @Autowired
+    private GumgaCacheRequestFilterV2Repository requestFilterV2Repository;
 
     public GumgaSecurityProxy() {
         restTemplate = new GumgaJsonRestTemplate();
@@ -69,6 +72,7 @@ class GumgaSecurityProxy {
     @RequestMapping(value = "/{token:.+}", method = RequestMethod.DELETE)
     public Map delete(@PathVariable String token) {
         try {
+            this.requestFilterV2Repository.remove(token);
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/" + token;
             restTemplate.delete(url);
             return GumgaSecurityCode.OK.response();
@@ -188,7 +192,8 @@ class GumgaSecurityProxy {
     @RequestMapping(value = "/changeorganization/{token}/{orgId}", method = RequestMethod.GET)
     public Object changeOrganization(@PathVariable String token, @PathVariable Long orgId) {
         try {
-            String url = gumgaValues.getGumgaSecurityUrl() + "/token/changeorganization/" + token + "/" + orgId;
+            this.requestFilterV2Repository.remove(token);
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/changeorganizationandtoken/" + token + "/" + orgId;
             Map resposta = restTemplate.getForObject(url, Map.class);
             return resposta;
         } catch (RestClientException restClientException) {

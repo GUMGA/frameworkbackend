@@ -16,6 +16,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
     @Autowired(required = false)
     private ApiOperationTranslator aot;
+    private Map<String, Object> data;
 
     public void setAot(ApiOperationTranslator aot) {
         this.aot = aot;
@@ -69,10 +71,10 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
         String errorResponse = GumgaSecurityCode.SECURITY_INTERNAL_ERROR.toString();
         AuthorizationResponseV2 ar=new AuthorizationResponseV2();
         String operationKey = "NOOP";
-
+        data = new HashMap<>();
+        data.put("created", LocalDateTime.now());
         try {
             GumgaThreadScope.userRecognition.set(request.getHeader("userRecognition"));
-
             token = request.getHeader("gumgaToken");
             if (token == null) {
                 token = request.getParameter("gumgaToken");
@@ -100,6 +102,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
             } else {
                 operationKey = aot.getOperation(endPoint, method, request);
             }
+
             if (operationKey.equals("NOOP")) {
                 String apiName = hm.getBean().getClass().getSimpleName();
                 if (apiName.contains("$$")) {
@@ -107,10 +110,13 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
                 }
                 operationKey = apiName + "_" + hm.getMethod().getName();
             }
+
             if (endPoint.contains("public") || endPoint.contains("api-docs")) {
                 saveLog(new AuthorizationResponseV2("allow", "public", "public", "public", "public", "public", null,"no instance"), request, operationKey, endPoint, method, true);
                 return true;
             }
+
+
 
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/authorize/" + softwareId + "/" + token + "/" + request.getRemoteAddr() + "/" + operationKey + "?version=v2";
 
@@ -132,6 +138,19 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
             GumgaThreadScope.softwareName.set(softwareId);
             GumgaThreadScope.instanceOi.set(ar.getInstanceOi());
             GumgaThreadScope.ignoreCheckOwnership.set(Boolean.FALSE);
+
+
+            data.put("userRecognition", request.getHeader("userRecognition"));
+            data.put("gumgaToken", token);
+            data.put("login", ar.getLogin());
+            data.put("organization", ar.getOrganization());
+            data.put("organizationCode", ar.getOrganizationCode());
+            data.put("organizationId", ar.getOrganizationId());
+            data.put("authorizationResponse", authorizatonResponse);
+            data.put("softwareName", softwareId);
+            data.put("instanceOi", ar.getInstanceOi());
+
+
 
             saveLog(ar, request, operationKey, endPoint, method, ar.isAllowed());
             if (ar.isAllowed()) {
@@ -189,5 +208,11 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
         GumgaThreadScope.operationKey.remove();
         GumgaThreadScope.organizationId.remove();
     }
+
+
+    protected Map<String, Object> getData() {
+        return data;
+    }
+
 
 }

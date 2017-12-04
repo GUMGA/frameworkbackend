@@ -116,7 +116,8 @@
     <groupId>io.gumga</groupId>
     <artifactId>gumga-backend-all</artifactId>
 
-    <version>3.0.2</version>
+    <version>3.0.3</version>
+
 
 
     <packaging>pom</packaging>

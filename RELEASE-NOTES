@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+3.0.3
+    - GumgaCacheRequestFilterV2
+
 3.0.2
     - Correção no GQuery com distinct
 
