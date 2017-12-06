@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+3.0.4
+    - Adicionado a rota("/changeorganizationandtoken/{token}/{orgId}") para troca de organização
+
 3.0.3
     - GumgaCacheRequestFilterV2
 
