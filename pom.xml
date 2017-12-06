@@ -117,7 +117,7 @@
     <artifactId>gumga-backend-all</artifactId>
 
 
-    <version>3.0.4-SNAPSHOT</version>
+    <version>3.0.5</version>
 
 
     <packaging>pom</packaging>
