@@ -193,6 +193,20 @@ class GumgaSecurityProxy {
     public Object changeOrganization(@PathVariable String token, @PathVariable Long orgId) {
         try {
             this.requestFilterV2Repository.remove(token);
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/changeorganization/" + token + "/" + orgId;
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
+        }
+    }
+
+    @Transactional
+    @ApiOperation(value = "change organization and token", notes = "Altera a organização do token.")
+    @RequestMapping(value = "/changeorganizationandtoken/{token}/{orgId}", method = RequestMethod.GET)
+    public Object changeorganizationandtoken(@PathVariable String token, @PathVariable Long orgId) {
+        try {
+            this.requestFilterV2Repository.remove(token);
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/changeorganizationandtoken/" + token + "/" + orgId;
             Map resposta = restTemplate.getForObject(url, Map.class);
             return resposta;
