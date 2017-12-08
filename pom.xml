@@ -131,6 +131,7 @@
         <module>gumga-application</module>
         <module>gumga-reports</module>
         <module>gumga-amazon-ses</module>
+        <module>gumga-freshdesk</module>
     </modules>
 
 
@@ -164,6 +165,11 @@
             <dependency>
                 <groupId>io.gumga</groupId>
                 <artifactId>gumga-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.gumga</groupId>
+                <artifactId>gumga-freshdesk</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

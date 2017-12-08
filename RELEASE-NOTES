@@ -9,6 +9,7 @@
 Framework Backend
 3.0.5
     - Retirado a verificação de limite de compartilhamento das entidades que utilizam como base as classes GumgaSharedModel e GumgaSharedModelUUID
+    - Novo modulo chamado gumga-freshdesk que facilita a criação de ticket no freshdesk pela aplicação.
 
 3.0.4
     - Adicionado a rota("/changeorganizationandtoken/{token}/{orgId}") para troca de organização
