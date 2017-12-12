@@ -3,6 +3,7 @@ package io.gumga.alldatabases;
 import com.mysema.commons.lang.Assert;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
+import io.gumga.core.SearchResult;
 import io.gumga.core.gquery.ComparisonOperator;
 import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.CriteriaField;
@@ -19,6 +20,7 @@ import io.gumga.testmodel.Employee;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 public abstract class AllDatabasesTest {
