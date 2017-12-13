@@ -7,6 +7,12 @@
 
 =======================================
 Framework Backend
+3.0.7
+    -
+
+3.0.6
+    - Correção no GQuery com between com datas.
+
 3.0.5
     - Retirado a verificação de limite de compartilhamento das entidades que utilizam como base as classes GumgaSharedModel e GumgaSharedModelUUID
     - Novo modulo chamado gumga-freshdesk que facilita a criação de ticket no freshdesk pela aplicação.
