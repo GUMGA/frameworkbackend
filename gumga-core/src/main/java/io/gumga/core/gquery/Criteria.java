@@ -168,8 +168,9 @@ public class Criteria implements Serializable {
                     } else {
                         Date parse = parse(String.valueOf(objects[0]));
                         if(isDate(objects[0], parse)) {
-                            String format1 = new SimpleDateFormat("yyyy-MM-dd").format(objects[0]);
-                            String format2 = new SimpleDateFormat("yyyy-MM-dd").format(objects[1]);
+                            Date parse2 = parse(String.valueOf(objects[1]));
+                            String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]);
+                            String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse2 != null ? parse2 : objects[1]);
 
                             return field + comparisonOperator.hql + String.format("to_timestamp('%s 00:00:00','yyyy/MM/dd HH24:mi:ss')", format1) + " AND " + String.format("to_timestamp('%s 23:59:59','yyyy/MM/dd HH24:mi:ss')", format2);
                         }
