@@ -5,16 +5,24 @@
     <parent>
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
+<<<<<<< HEAD
         <version>1.5.19-SNAPSHOT</version>
     </parent>
 
     <artifactId>gumga-reports</artifactId>
+=======
+        <version>3.0.5</version>
+    </parent>
+
+    <artifactId>gumga-freshdesk</artifactId>
+>>>>>>> develop
 
     <dependencies>
         <dependency>
             <groupId>io.gumga</groupId>
             <artifactId>gumga-core</artifactId>
         </dependency>
+<<<<<<< HEAD
         
         <dependency>
             <groupId>io.gumga</groupId>
@@ -55,12 +63,15 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
         </dependency>
+=======
+>>>>>>> develop
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+<<<<<<< HEAD
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -120,4 +131,10 @@
     
     
 
+=======
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+    </dependencies>
+
+>>>>>>> develop
 </project>
