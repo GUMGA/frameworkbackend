@@ -31,7 +31,8 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
         }
 
         String endPoint = request.getRequestURL().toString();
-        if (endPoint.contains("public") || endPoint.contains("api-docs")) {
+        if (request.getServletPath().equals("/api/security/facereco/whois") || endPoint.contains("public") || endPoint.contains("api-docs")) {
+            log.info("Não pegou do cache a autorização!");
             return super.preHandle(request, response, o);
         }
         String token = request.getHeader("gumgaToken");
@@ -41,6 +42,7 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
         }
 
         if (token == null) {
+            log.info("Não pegou do cache a autorização!");
             return super.preHandle(request, response, o);
         }
 
