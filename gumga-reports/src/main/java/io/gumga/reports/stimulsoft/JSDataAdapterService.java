@@ -142,13 +142,13 @@ public class JSDataAdapterService {
 
     private String addFilterQuery(JSONObject command) throws JSONException {
         String queryString = command.getString("queryString");
-        String oi = GumgaThreadScope.organizationCode.get() != null ? "'" + GumgaThreadScope.organizationCode.get() + "'" : "null";
-        String login = GumgaThreadScope.login.get() != null ? "'" + GumgaThreadScope.login.get() + "'" : "null";
-        String gumgaToken = GumgaThreadScope.gumgaToken.get() != null ? "'" + GumgaThreadScope.gumgaToken.get() + "'" : "null";
-        String ip = GumgaThreadScope.ip.get() != null ? "'" + GumgaThreadScope.ip.get() + "'" : "null";
-        String oorganization = GumgaThreadScope.organization.get() != null ? "'" + GumgaThreadScope.organization.get() + "'" : "null";
-        String instanceOi = GumgaThreadScope.instanceOi.get() != null ? "'" + GumgaThreadScope.instanceOi.get() + "'" : "null";
-        String softwareName = GumgaThreadScope.softwareName.get() != null ? "'" + GumgaThreadScope.softwareName.get() + "'" : "null";
+        String oi = GumgaThreadScope.organizationCode.get() != null ? GumgaThreadScope.organizationCode.get() : "null";
+        String login = GumgaThreadScope.login.get() != null ? GumgaThreadScope.login.get() : "null";
+        String gumgaToken = GumgaThreadScope.gumgaToken.get() != null ? GumgaThreadScope.gumgaToken.get() : "null";
+        String ip = GumgaThreadScope.ip.get() != null ? GumgaThreadScope.ip.get() : "null";
+        String oorganization = GumgaThreadScope.organization.get() != null ? GumgaThreadScope.organization.get() : "null";
+        String instanceOi = GumgaThreadScope.instanceOi.get() != null ? GumgaThreadScope.instanceOi.get() : "null";
+        String softwareName = GumgaThreadScope.softwareName.get() != null ? GumgaThreadScope.softwareName.get() : "null";
         queryString = queryString.replaceAll("\\[\\[oi\\]\\]", oi);
         queryString = queryString.replaceAll("\\[\\[login\\]\\]", login);
         queryString = queryString.replaceAll("\\[\\[gumgaToken\\]\\]", gumgaToken);
