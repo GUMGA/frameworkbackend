@@ -8,7 +8,7 @@
 =======================================
 Framework Backend
 3.0.7
-    -
+    - findAll e DeleteAll com tenancy.
 
 3.0.6
     - Correção no GQuery com between com datas.

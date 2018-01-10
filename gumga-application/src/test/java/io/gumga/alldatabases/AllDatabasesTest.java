@@ -8,6 +8,7 @@ import io.gumga.core.gquery.ComparisonOperator;
 import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.CriteriaField;
 import io.gumga.core.gquery.GQuery;
+import io.gumga.domain.domains.GumgaOi;
 import io.gumga.testmodel.*;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 public abstract class AllDatabasesTest {
@@ -545,6 +547,33 @@ public abstract class AllDatabasesTest {
         assertEquals(1, result.size());
     }
 
+    @Rollback
+    @Test
+    @Transactional
+    public void deleteAllWithTenancy() {
+        Company company1 = new Company();
+        company1.setOi(new GumgaOi("10."));
+        Company company2 = new Company();
+        company2.setOi(new GumgaOi("10.2."));
+        Company company3 = new Company();
+        company3.setOi(new GumgaOi("10.3."));
+        Company company4 = new Company();
+        company4.setOi(new GumgaOi("10.2."));
+        Company company5 = new Company();
+        company5.setOi(new GumgaOi("11."));
+
+        this.repository.save(company1);
+        this.repository.save(company2);
+        this.repository.save(company3);
+        this.repository.save(company4);
+        this.repository.save(company5);
+
+
+        GumgaThreadScope.organizationCode.set("10.2.");
+        this.repository.deleteAll();
+        GumgaThreadScope.organizationCode.set("10.");
+        assertEquals(2, this.repository.findAll().size());
+    }
 
 
 }

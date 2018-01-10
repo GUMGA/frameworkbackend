@@ -627,7 +627,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     @Override
     public List<T> findAll() {
         if (hasMultitenancy()) {
-            log.error("NOMULTITENACYIMPL -> " + noMultiTenancyMessage());
+            return findAll(new GQuery());
         }
         return super.findAll();
     }
@@ -675,9 +675,12 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     @Override
     public void deleteAll() {
         if (hasMultitenancy()) {
-            log.error("NOMULTITENACYIMPL -> " + noMultiTenancyMessage());
+            for (T entity : findAll()) {
+                delete(entity);
+            }
+        } else {
+            super.deleteAll();
         }
-        super.deleteAll();
     }
 
     @Override

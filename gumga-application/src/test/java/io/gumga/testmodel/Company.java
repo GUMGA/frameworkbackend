@@ -2,6 +2,7 @@ package io.gumga.testmodel;
 
 import io.gumga.domain.GumgaModel;
 import io.gumga.domain.GumgaMultitenancy;
+import io.gumga.domain.GumgaMultitenancyPolicy;
 import io.gumga.domain.domains.GumgaBoolean;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
+import io.gumga.domain.domains.GumgaOi;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.envers.Audited;
@@ -125,6 +127,10 @@ public class Company extends GumgaModel<Long> {
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
+    }
+
+    public void setOi(GumgaOi oi) {
+        this.oi = oi;
     }
 
 }
