@@ -9,6 +9,7 @@
 Framework Backend
 3.0.7
     - findAll e DeleteAll com tenancy.
+    - QueryDsl do GumgaReport e IGumgaReport
 
 3.0.6
     - Correção no GQuery com between com datas.
