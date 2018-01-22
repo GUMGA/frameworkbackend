@@ -1,6 +1,7 @@
 package io.gumga.security_v2;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -15,16 +16,23 @@ public class GumgaCacheRequestFilterV2Repository {
     }
 
     public void add(String token, Map<String, Object> data) {
-        cache.put(token, data);
+        if(!StringUtils.isEmpty(token)) {
+            cache.put(token, data);
+        }
     }
 
     public void remove(String token) {
-        cache.remove(token);
+        if(!StringUtils.isEmpty(token)) {
+            cache.remove(token);
+        }
     }
 
     public Boolean isValid(String token, Long seconds) {
-        Map<String, Object> result = cache.get(token);
-        return result != null && result.containsKey("created") && ((LocalDateTime)result.get("created")).isAfter(LocalDateTime.now().minusSeconds(seconds));
+        if(!StringUtils.isEmpty(token)) {
+            Map<String, Object> result = cache.get(token);
+            return result != null && result.containsKey("created") && ((LocalDateTime)result.get("created")).isAfter(LocalDateTime.now().minusSeconds(seconds));
+        }
+        return Boolean.FALSE;
     }
 
     public Map<String, Object> getData(String token) {
