@@ -7,6 +7,12 @@
 
 =======================================
 Framework Backend
+
+3.0.7
+    - findAll e DeleteAll com tenancy.
+    - QueryDsl do GumgaReport e IGumgaReport
+    - Novo endpoint para buscar organizações por token com paginação -> /public/token/v2/organizations/{TOKEN}/?page=&pageSize=
+
 3.0.6
     - Correção no GQuery com between com datas.
 

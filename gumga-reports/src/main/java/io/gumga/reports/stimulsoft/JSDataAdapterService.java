@@ -142,13 +142,20 @@ public class JSDataAdapterService {
 
     private String addFilterQuery(JSONObject command) throws JSONException {
         String queryString = command.getString("queryString");
-        queryString = queryString.replaceAll("\\[\\[oi\\]\\]", GumgaThreadScope.organizationCode.get());
-        queryString = queryString.replaceAll("\\[\\[login\\]\\]", GumgaThreadScope.login.get());
-        queryString = queryString.replaceAll("\\[\\[gumgaToken\\]\\]", GumgaThreadScope.gumgaToken.get());
-        queryString = queryString.replaceAll("\\[\\[ip\\]\\]", GumgaThreadScope.ip.get());
-        queryString = queryString.replaceAll("\\[\\[organization\\]\\]", GumgaThreadScope.organization.get());
-        queryString = queryString.replaceAll("\\[\\[instanceOi\\]\\]", GumgaThreadScope.instanceOi.get());
-        queryString = queryString.replaceAll("\\[\\[softwareName\\]\\]", GumgaThreadScope.softwareName.get());
+        String oi = GumgaThreadScope.organizationCode.get() != null ? GumgaThreadScope.organizationCode.get() : "null";
+        String login = GumgaThreadScope.login.get() != null ? GumgaThreadScope.login.get() : "null";
+        String gumgaToken = GumgaThreadScope.gumgaToken.get() != null ? GumgaThreadScope.gumgaToken.get() : "null";
+        String ip = GumgaThreadScope.ip.get() != null ? GumgaThreadScope.ip.get() : "null";
+        String oorganization = GumgaThreadScope.organization.get() != null ? GumgaThreadScope.organization.get() : "null";
+        String instanceOi = GumgaThreadScope.instanceOi.get() != null ? GumgaThreadScope.instanceOi.get() : "null";
+        String softwareName = GumgaThreadScope.softwareName.get() != null ? GumgaThreadScope.softwareName.get() : "null";
+        queryString = queryString.replaceAll("\\[\\[oi\\]\\]", oi);
+        queryString = queryString.replaceAll("\\[\\[login\\]\\]", login);
+        queryString = queryString.replaceAll("\\[\\[gumgaToken\\]\\]", gumgaToken);
+        queryString = queryString.replaceAll("\\[\\[ip\\]\\]", ip);
+        queryString = queryString.replaceAll("\\[\\[organization\\]\\]", oorganization);
+        queryString = queryString.replaceAll("\\[\\[instanceOi\\]\\]", instanceOi);
+        queryString = queryString.replaceAll("\\[\\[softwareName\\]\\]", softwareName);
 
         if (StringUtils.containsIgnoreCase(queryString, "INFORMATION_SCHEMA")) {
             return queryString;
@@ -244,14 +251,19 @@ public class JSDataAdapterService {
         while (m.find()) {
             String substring = str.substring(m.start(), m.end());
             String property = "stimulsoft." + substring.substring(2, substring.length() - 2);
-            newStr = newStr.replace(substring, getProperty(property));
+            String propertyReplaced = getProperty(property);
+            newStr = newStr.replace(substring, propertyReplaced);
         }
         return newStr;
     }
 
-    private StringBuilder mountConnection(StringBuilder command) {
+    private StringBuilder mountConnection(StringBuilder command) throws JSONException {
         StrBuilder conn = new StrBuilder();
-        conn.append(command.toString());
+        JSONObject jsonObject = new JSONObject(command.toString());
+        if (jsonObject.has("queryString")) {
+            jsonObject.put("queryString", addFilterQuery(jsonObject));
+        }
+        conn.append(jsonObject.toString());
         conn.replaceFirst("%address", getProperties().getProperty("stimulsoft.database.url"));
         conn.replaceFirst("%db", getProperties().getProperty("stimulsoft.database.name"));
         conn.replaceFirst("%schema", getProperties().getProperty("stimulsoft.schema.name"));

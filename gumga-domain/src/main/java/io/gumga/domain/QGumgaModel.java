@@ -10,6 +10,8 @@ import io.gumga.domain.domains.GumgaOi;
 
 import javax.annotation.Generated;
 
+import java.io.Serializable;
+
 import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 /**
@@ -22,7 +24,7 @@ public class QGumgaModel extends EntityPathBase<GumgaModel<? extends java.io.Ser
 
     public static final QGumgaModel gumgaModel = new QGumgaModel("gumgaModel");
 
-    public final SimplePath<java.io.Serializable> id = createSimple("id", java.io.Serializable.class);
+    public final SimplePath<Serializable> id = createSimple("id", Serializable.class);
 
     public final NumberPath<Integer> version = createNumber("version", Integer.class);
 

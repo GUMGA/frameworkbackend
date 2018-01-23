@@ -22,6 +22,7 @@ import io.gumga.presentation.exceptionhandler.GumgaRunTimeException;
 import io.gumga.security_v2.GumgaCacheRequestFilterV2Repository;
 import io.gumga.security_v2.GumgaRequestFilterV2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -182,6 +183,19 @@ class GumgaSecurityProxy {
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/organizations/" + token;
             List resposta = restTemplate.getForObject(url, List.class);
             return resposta;
+
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
+        }
+    }
+
+    @Transactional
+    @ApiOperation(value = "getOrganizationsByToken", notes = "Lista as organizações associadas ao token informado.")
+    @RequestMapping(value = "/v2/organizations/{token:.+}", method = RequestMethod.GET)
+    public Map getOrganizationsByToken(@PathVariable String token, @RequestParam(name = "page") int page, @RequestParam(name = "pageSize") int pageSize) {
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/v2/organizations/" + token+ String.format("?page=%d&pageSize=%d", page, pageSize);
+            return restTemplate.getForObject(url, Map.class);
         } catch (RestClientException restClientException) {
             throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
