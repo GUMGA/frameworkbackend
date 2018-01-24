@@ -14,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 
+/**
+ * Classe abstrata que contém métodos para criação de serviços para manipulação de entidade (criação, alteração, deleção e busca)
+ * @param <T> Classe que contenha um identificador padrão, exemplo: ID do registro
+ * @param <ID> Tipo do identificador contido na classe
+ */
 public abstract class AbstractGumgaService<T, ID extends Serializable> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -31,12 +36,20 @@ public abstract class AbstractGumgaService<T, ID extends Serializable> {
         return (Class<T>) ReflectionUtils.inferGenericType(getClass());
     }
 
+    /**
+     * Carrega atributos customizados da entidade recebida por parâmetro, a mesma deve extender a entidade GumgaCustomizableModel
+     * @param entity Entidade Customizavel
+     */
     public void loadGumgaCustomFields(Object entity) {
         if (entity instanceof GumgaCustomizableModel) {
-            gces.loadCustomFields((GumgaCustomizableModel) entity);
+            gces.loadCustomFields(entity);
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public GumgaOi gumgaOiForSearch() {
         try {
             String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(clazz().getAnnotation(GumgaMultitenancy.class));
