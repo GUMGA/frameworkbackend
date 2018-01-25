@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
+ * Classe auxiliar para tratamento dos campos customizados
  * @author munif
  */
 @Service
@@ -25,6 +25,10 @@ public class GumgaCustomEnhancerService {
     @Autowired
     private GumgaCustomFieldValueService customFieldValueService;
 
+    /**
+     *
+     * @param object
+     */
     public void setDefaultValues(Object object) {
         if (!(object instanceof GumgaCustomizableModel)) {
             return;

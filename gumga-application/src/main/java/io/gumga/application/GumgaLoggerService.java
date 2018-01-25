@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Classe para manipulação de Logs do sistema
+ */
 @Service
 public class GumgaLoggerService {
 
@@ -51,10 +54,10 @@ public class GumgaLoggerService {
     }
 
     /**
-     *
+     * Cria uma mensagem de Log formatada de acordo com a classe que está sendo executada
      * @param msg mensagem do log
      * @param level index da execption do StrackTrace
-     * @return dados do log
+     * @return dados do log no padrão (Data, nome da classe, método e número da classe)
      */
     public String createLogLine(String msg, int level) {
         StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[level];

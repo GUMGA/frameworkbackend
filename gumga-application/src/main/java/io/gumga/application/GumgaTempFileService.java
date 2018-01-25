@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.Random;
 
+/**
+ * Classe para manipulação de arquivos temporários
+ */
 @Service
 public class GumgaTempFileService {
     
@@ -25,7 +28,7 @@ public class GumgaTempFileService {
 
     /**
      * Criar um arquivo temporario
-     * @param gumgaFile
+     * @param gumgaFile Arquivo a ser criado
      * @return dados do arquivo
      */
     public String create(GumgaFile gumgaFile) {
