@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,17 +17,17 @@ import org.slf4j.LoggerFactory;
  * @author munif
  */
 public interface GumgaValues {
-    
+
     static final Logger log = LoggerFactory.getLogger(GumgaValues.class);
 
+    /**
+     * @return Pacote onde se encontram as classes utilizadas no NLP
+     */
     default String getGumgaNLPBasePackage() {
         return "io.gumga";
-    }
-
-    ;
+    };
 
     /**
-     *
      * @return Tempo padrão de expiração do ticket para troca de senha.
      */
     default long getDefaultExpirationForChangePassword() {
@@ -103,7 +104,6 @@ public interface GumgaValues {
     }
 
     /**
-     *
      * @return propeties de configuração do usuario
      */
     default Properties getCustomFileProperties() {
@@ -118,7 +118,6 @@ public interface GumgaValues {
     }
 
     /**
-     *
      * @return arquivo de configuração da applicação
      */
     default String getCustomPropertiesFileName() {
@@ -126,7 +125,6 @@ public interface GumgaValues {
     }
 
     /**
-     *
      * @return nome do software
      */
     default String getSoftwareName() {
