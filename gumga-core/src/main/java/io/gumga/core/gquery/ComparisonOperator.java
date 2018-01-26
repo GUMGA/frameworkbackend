@@ -3,7 +3,7 @@ package io.gumga.core.gquery;
 import java.util.Comparator;
 
 /**
- *
+ * Operadores de comparação
  * @author munif
  */
 public enum ComparisonOperator{

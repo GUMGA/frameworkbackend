@@ -17,7 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Classe que implementa o NamingStrategy, responsável por gerir a estratégia de nomeação das entidades no Banco de dados
+ * @see <a href="https://docs.jboss.org/hibernate/orm/3.2/api/org/hibernate/cfg/NamingStrategy.html">NamingStrategy</a>
  * @author felipe e munif
  */
 public class GumgaNamingStrategy implements NamingStrategy, Serializable {
@@ -43,16 +44,30 @@ public class GumgaNamingStrategy implements NamingStrategy, Serializable {
     private final List<String> reservedWords;
 
     public GumgaNamingStrategy() {
-         log.warn("-----------------GumgaNamingStrategy BETA -----------------------------");
+        log.warn("-----------------GumgaNamingStrategy BETA -----------------------------");
         reservedWords = Arrays.asList(RESERVED_WORDS);
     }
 
+    /**
+     * Retorna um nome de tabela de acordo com o nome da classe
+     * @param string Nome da Classe
+     * @return Nome da tabela para o Banco
+     */
     @Override
     public String classToTableName(String string) {
         String table = StringHelper.unqualify(string);
         return oracleSafe(table).toUpperCase();
     }
 
+    /**
+     * Retorna um nome de tabela baseado numa coleção de nomes de classe, ex. uma associação que possua um join
+     * @param ownerEntity
+     * @param ownerEntityTable
+     * @param associatedEntity
+     * @param associatedEntityTable
+     * @param propertyName
+     * @return String com o nome da tabela
+     */
     @Override
     public String collectionTableName(String ownerEntity, String ownerEntityTable, String associatedEntity, String associatedEntityTable,
             String propertyName) {
@@ -66,11 +81,24 @@ public class GumgaNamingStrategy implements NamingStrategy, Serializable {
         );
     }
 
+    /**
+     * Altera o nome da coluna de acordo com o critério implementado, ex. retorna um nome compatível com Banco de Dados Oracle
+     * @param string Nome a ser alterado
+     * @return Nome alterado
+     */
     @Override
     public String columnName(String string) {
         return oracleSafe(string);
     }
 
+    /**
+ *"
+     * @param propertyName
+     * @param propertyEntityName
+     * @param propertyTableName
+     * @param referencedColumnName
+     * @return
+     */
     @Override
     public String foreignKeyColumnName(String propertyName, String propertyEntityName, String propertyTableName, String referencedColumnName) {
         String header = propertyName != null ? StringHelper.unqualify(propertyName) : propertyTableName;

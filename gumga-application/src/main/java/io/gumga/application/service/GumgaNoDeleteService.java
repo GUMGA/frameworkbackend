@@ -12,6 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 
+/**
+ * Classe abstrata que contém métodos para criação de serviços para manipulação de entidade (criação, alteração, busca exceto exclusão)
+ * @param <T> Classe que contenha um identificador padrão, exemplo: ID do registro
+ * @param <ID> Tipo do identificador contido na classe
+ */
 @Service
 @Scope("prototype")
 public abstract class GumgaNoDeleteService<T extends GumgaIdable<ID>, ID extends Serializable> extends AbstractGumgaService<T, ID> implements GumgaReadableServiceable<T, ID>, GumgaWritableServiceable<T, ID> {
@@ -22,13 +27,13 @@ public abstract class GumgaNoDeleteService<T extends GumgaIdable<ID>, ID extends
 
 	/**
 	 * Processo executado antes do método Pesquisa da classe {@link GumgaNoDeleteService}
-	 * @param query
+	 * @param query Objeto de pesquisa
 	 */
 	public void beforePesquisa(QueryObject query) { }
 
 	/**
 	 * Processo executado apos do método Pesquisa da classe {@link GumgaNoDeleteService}
-	 * @param result
+	 * @param result Resultado da pesquisa
 	 */
 	public void afterPesquisa(SearchResult<T> result) { }
 	
@@ -43,19 +48,19 @@ public abstract class GumgaNoDeleteService<T extends GumgaIdable<ID>, ID extends
 
 	/**
 	 * Processo executado antes do método view da classe {@link GumgaNoDeleteService}
-	 * @param id
+	 * @param id Id da Entidade
 	 */
 	public void beforeView(ID id) {}
 
 	/**
 	 * Processo executado apos do método view da classe {@link GumgaNoDeleteService}
-	 * @param entity
+	 * @param entity Id da Entidade
 	 */
 	public void afterView(T entity) {}
 
 	/**
 	 * Pesquisa a entidade tipada na classe {@link GumgaNoDeleteService} pela primary key
-	 * @param id
+	 * @param id Id da Entidade
 	 * @return
 	 */
 	@Transactional(readOnly = true)
@@ -70,7 +75,7 @@ public abstract class GumgaNoDeleteService<T extends GumgaIdable<ID>, ID extends
 
 	/**
 	 * Processo executado antes do método save e update da classe {@link GumgaNoDeleteService}
-	 * @param entity
+	 * @param entity Entidade
 	 */
 	private void beforeSaveOrUpdate(T entity) {
 		if (entity.getId() == null)
@@ -81,7 +86,7 @@ public abstract class GumgaNoDeleteService<T extends GumgaIdable<ID>, ID extends
 
 	/**
 	 * Processo executado apos do método save e update da classe {@link GumgaNoDeleteService}
-	 * @param entity
+	 * @param entity Entidade
 	 */
 	private void afterSaveOrUpdate(T entity) {
 		if (entity.getId() == null)
@@ -92,31 +97,31 @@ public abstract class GumgaNoDeleteService<T extends GumgaIdable<ID>, ID extends
 
 	/**
 	 * Processo executado antes do método save da classe {@link GumgaNoDeleteService}
-	 * @param entity
+	 * @param entity Entidade
 	 */
 	public void beforeSave(T entity) {}
 
 	/**
 	 * Processo executado antes do método update da classe {@link GumgaNoDeleteService}
-	 * @param entity
+	 * @param entity Entidade
 	 */
 	public void beforeUpdate(T entity) {}
 
 	/**
 	 * Processo executado apos do método save da classe {@link GumgaNoDeleteService}
-	 * @param entity
+	 * @param entity Entidade
 	 */
 	public void afterSave(T entity) {}
 
 	/**
 	 * Processo executado apos do método update da classe {@link GumgaNoDeleteService}
-	 * @param entity
+	 * @param entity Entidade
 	 */
 	public void afterUpdate(T entity) {}
 
 	/**
 	 * Salvar entidade na base de dados
-	 * @param resource
+	 * @param resource Entidade a ser salva
 	 * @return
 	 */
 	@Transactional

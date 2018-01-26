@@ -216,7 +216,6 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
 
     protected Map<String, Object> getData() {
-        logGumga.info("DataCache: " + data.toString());
         return data;
     }
 

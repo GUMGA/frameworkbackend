@@ -11,7 +11,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * Anotação para habilitar a inclusão de determinado recurso na documentação do Swagger
+ * @see <a href="https://swagger.io/">Swagger</a>
  * @author munif
  */
 @Retention(RetentionPolicy.RUNTIME)

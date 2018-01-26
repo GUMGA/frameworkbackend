@@ -9,6 +9,9 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe que permite o gerenciamento de todas as variáveis de ambiente da aplicação
+ */
 @Component
 public class GumgaManagerProperties {
     private final Map<String, Object> properties = new HashMap<>();
@@ -16,6 +19,9 @@ public class GumgaManagerProperties {
     @Autowired
     private ConfigurableEnvironment configurableEnvironment;
 
+    /**
+     * Carrega todos os arquivos de propriedades da aplicação
+     */
     @PostConstruct
     private void loadProperties() {
         this.configurableEnvironment
@@ -29,14 +35,28 @@ public class GumgaManagerProperties {
                 });
     }
 
+    /**
+     * Busca propriedade que se encontra em qualquer parte da aplicação
+     * @param key Nome da proprieade (Variável de ambiente)
+     * @return Valor da propriedade (Variável de ambiente)
+     */
     public String getProperty(String key) {
         return this.properties.get(key).toString();
     }
 
+    /**
+     * Busca propriedade que se encontra em qualquer parte da aplicação, porém se não houver nenhum, retorna um valor padrão
+     * @param key Nome da proprieade (Variável de ambiente)
+     * @return Valor da propriedade (Variável de ambiente)
+     */
     public String getProperty(String key, String defaultValue) {
         return this.properties.getOrDefault(key, defaultValue).toString();
     }
 
+    /**
+     * Adiciona mapa de propriedades como variáveis de ambiente na aplicação
+     * @param properties Mapa de propriedades
+     */
     private void addAll(Map<String, Object> properties) {
         this.properties.putAll(properties);
     }

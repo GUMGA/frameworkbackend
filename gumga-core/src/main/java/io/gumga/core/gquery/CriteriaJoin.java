@@ -1,7 +1,16 @@
 package io.gumga.core.gquery;
 
+/**
+ * Critério de Junção utilizado no {@link GQuery}
+ */
 public class CriteriaJoin {
+    /**
+     * Critério de busca
+     */
     private Criteria criteria;
+    /**
+     * Critério da junção
+     */
     private CriteriaJoinType type;
 
     protected CriteriaJoin(){}
