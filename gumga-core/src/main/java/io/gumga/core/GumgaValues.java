@@ -64,18 +64,14 @@ public interface GumgaValues {
     }
 
     /**
-     * Para não logar no banco
-     *
-     * @return
+     * @return Log da requisições aparece no console
      */
     default boolean isLogRequestOnConsole() {
         return false;
     }
 
     /**
-     * Lista de paths de urls que serão ignoradas do log
-     *
-     * @return
+     * @return Lista de paths de urls que serão ignoradas do log
      */
     default Set<String> getUrlsToNotLog() {
         return new HashSet<>();
@@ -84,14 +80,15 @@ public interface GumgaValues {
     /**
      * @return diretório para armazenar aquivos vindos do upload
      */
+
     default String getUploadTempDir() {
         return System.getProperty("user.home").concat("/gumgafiles/tempupload");
-
     }
 
     /**
      * @return diretório para armazenar aquivos de log
      */
+
     default String getLogDir() {
         return System.getProperty("user.home").concat("/gumgafiles/logs");
     }
@@ -99,13 +96,14 @@ public interface GumgaValues {
     /**
      * @return diretório para armazenar templates como email
      */
+
     default String getTemplatesFolder() {
         return System.getProperty("user.home").concat("/gumgafiles/templates");
     }
-
     /**
      * @return propeties de configuração do usuario
      */
+
     default Properties getCustomFileProperties() {
         Properties toReturn = new Properties();
         try {

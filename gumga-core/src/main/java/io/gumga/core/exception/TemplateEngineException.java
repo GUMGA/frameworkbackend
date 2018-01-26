@@ -6,7 +6,7 @@
 package io.gumga.core.exception;
 
 /**
- *
+ * Exception thrown when the occurs problems in template engine
  * @author gyowannyqueiroz
  */
 public class TemplateEngineException extends Exception {

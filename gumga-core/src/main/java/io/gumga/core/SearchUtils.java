@@ -42,12 +42,26 @@ public class SearchUtils {
         return new SearchResult<>(query, filtered.size(), paginated);
     }
 
+    /**
+     * Aplica paginação em determinada lista
+     * @param start início
+     * @param pageSize tamanho da página
+     * @param filtered Lista
+     * @param <T> Tipo da lista
+     * @return Lista paginada
+     */
     private static <T> List<T> paginate(int start, int pageSize, List<T> filtered) {
         int paginationStart = Math.min(start, filtered.size());
         int paginationEnd = Math.min(start + pageSize, filtered.size());
         return filtered.subList(paginationStart, paginationEnd);
     }
 
+    /**
+     * Aplica ordenação a uma lista de enumerações
+     * @param direction Direção ascendente ou decrescente (asc|desc)
+     * @param filtered Lista
+     * @param <E> Tipo da Enumerção
+     */
     private static <E extends Enum<E>> void sortEnum(String direction, List<E> filtered) {
         if ("asc".equalsIgnoreCase(direction)) {
             sort(filtered, new EnumNameComparator<>());
@@ -58,7 +72,6 @@ public class SearchUtils {
     }
 
     private static class EnumNameComparator<E extends Enum<E>> implements Comparator<E> {
-
         @Override
         public int compare(E o1, E o2) {
             return o1.name().compareTo(o2.name());
