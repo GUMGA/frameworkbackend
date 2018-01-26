@@ -1,6 +1,7 @@
 package io.gumga.alldatabases;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.expr.BooleanExpression;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
@@ -16,11 +17,14 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import io.gumga.testmodel.Employee;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +36,16 @@ public abstract class AllDatabasesTest {
     @Autowired
     protected CompanyRepository repository;
 
-
     @Autowired
     protected PersonRepository personRepository;
+
+    @Autowired
+    private StockRepository stockRepository;
+    @Autowired
+    private MarketPlaceRepository marketPlaceRepository;
+
+    @Autowired
+    private CarRepository carRepository;
 
     @Before
     @Transactional
@@ -59,6 +70,40 @@ public abstract class AllDatabasesTest {
 
         this.personRepository.saveAndFlush(new Employee("João"));
         this.personRepository.saveAndFlush(new Supplier("Marcio' Roberto's"));
+
+
+
+        Map<String, String> values = new HashMap<>();
+        values.put("mp_key", "teste");
+
+        MarketPlace marketPlace = new MarketPlace();
+        marketPlace.setNome("AWS");
+        marketPlace.setFields(values);
+        this.marketPlaceRepository.save(marketPlace);
+
+        List<MarketPlace> marketPlaceList = new ArrayList<>();
+        marketPlaceList.add(marketPlace);
+
+        Stock stock = new Stock();
+        stock.setNome("stock");
+        stock.setMarketPlaces(marketPlaceList);
+        this.stockRepository.save(stock);
+
+
+        GumgaThreadScope.organizationCode.set("1");
+        carRepository.save(new Car("vermelho"));
+        carRepository.save(new Car("azul"));
+        carRepository.save(new Car("branco"));
+        carRepository.save(new Car("verde"));
+        carRepository.save(new Car("marrom"));
+        carRepository.save(new Car("ciano"));
+        carRepository.save(new Car("amarelo"));
+        carRepository.save(new Car("bege"));
+
+        GumgaThreadScope.organizationCode.set("2");
+        carRepository.save(new Car("vermelho"));
+        carRepository.save(new Car("azul"));
+        carRepository.save(new Car("branco"));
     }
 
     @Test
@@ -576,4 +621,69 @@ public abstract class AllDatabasesTest {
     }
 
 
+    @Rollback
+    @Test
+    @Transactional
+    public void querydslComMapPath() {
+        BooleanExpression contains = QStock.stock.marketPlaces.any().fields.contains("mp_key", "teste");
+        Stock one = this.stockRepository.findOne(contains);
+        assertNotNull(one);
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydslComMapPath2() {
+        Stock one = this.stockRepository.findOne(QStock.stock.marketPlaces.any().nome.eq("AWS"));
+        assertNotNull(one);
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydsl1() {
+        Stock one = this.stockRepository.findOne(QStock.stock.nome.eq("stock"));
+        assertNotNull(one);
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydsl2() {
+        GumgaThreadScope.organizationCode.set("2");
+        assertNull(carRepository.findOne(QCar.car.color.eq("bege")));
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydsl3() {
+        BooleanExpression expression = QCar.car.color.startsWith("ver");
+
+        GumgaThreadScope.organizationCode.set("1");
+        assertEquals(2, carRepository.findAll(query -> query.where(expression), QCar.car.color).size());
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydsl4() {
+        GumgaThreadScope.organizationCode.set("1");
+        assertEquals(2, carRepository.findAll(QCar.car.color.startsWith("ver")).size());
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydsl5() {
+        BooleanExpression predicate = QCar.car.color.length().goe(5);
+
+        GumgaThreadScope.organizationCode.set("1");
+        Pageable page = new PageRequest(0, 4);
+        SearchResult<String> result = carRepository.search(predicate, page, QCar.car.color);
+        assertEquals(4, result.getPageSize());
+        assertEquals(0, result.getStart());
+        assertEquals(Long.valueOf(6), result.getCount());
+
+    }
 }

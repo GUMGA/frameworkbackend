@@ -66,7 +66,7 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
             Map<String, Object> data = repository.getData(token);
             data.put("userRecognition", request.getHeader("userRecognition"));
             setGumgaThreadScope(data);
-            log.info("Pegou do cache a autorização!");
+//            log.info("Pegou do cache a autorização!");
             return true;
         }
 
@@ -74,7 +74,7 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
     }
 
     private boolean callSecurity(HttpServletRequest request, HttpServletResponse response, Object o, String token, Boolean saveToken) throws Exception {
-        log.info("Não pegou do cache a autorização!");
+//        log.info("Não pegou do cache a autorização!");
         boolean result = super.preHandle(request, response, o);
         if(saveToken && result && !StringUtils.isEmpty(token)) {
             Map<String, Object> data = getData();
