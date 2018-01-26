@@ -7,18 +7,38 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * Critério de busca utilizado no {@link GQuery}
+ */
 public class Criteria implements Serializable {
 
     public static final String SOURCE_CHARS = "'âàãáÁÂÀÃéêÉÊíÍóôõÓÔÕüúÜÚÇç'";
     public static final String TARGET_CHARS = "'AAAAAAAAEEEEIIOOOOOOUUUUCC'";
 
     public static boolean doTranslate = true;
-
+    /**
+     * Campo a ser levado em consideração no critério de busca
+     */
     private Object field;
+    /**
+     * Operador de comparação
+     */
     private ComparisonOperator comparisonOperator;
+    /**
+     * Valor a ser levado em consideração no critério de busca
+     */
     private Object value;
+    /**
+     * Valores a ser levado em consideração no critério de busca
+     */
     private Object[] values;
+    /**
+     * Função de formatação do campo, exemplo: %s
+     */
     private String fieldFunction;
+    /**
+     * Função de formatação do valor, exemplo: %s
+     */
     private String valueFunction;
 
     private void init() {
@@ -89,6 +109,11 @@ public class Criteria implements Serializable {
         this.valueFunction = valueFunction;
     }
 
+    /**
+     * Converte Mapa de campos (Map<field, algumvalor>) para Campos utilizados no critério de busca
+     * @param value
+     * @return
+     */
     private Object convertMapInCriteriaField(Object value) {
         Map cast = Map.class.cast(value);
         if(cast.containsKey("field")) {
@@ -235,15 +260,16 @@ public class Criteria implements Serializable {
         return String.format(fieldFunction, field) + comparisonOperator.hql + String.format(valueFunction, "\'" + value.toString().replaceAll("\'", "''") + "\'");
     }
 
-
-
-
     public Criteria addIgnoreCase() {
         fieldFunction = String.format(fieldFunction, "lower(%s)");
         valueFunction = String.format(valueFunction, "lower(%s)");
         return this;
     }
 
+    /**
+     * Adiciona translate no critério (ignora caracteres especiais)
+     * @return Critério de busca
+     */
     public Criteria addTranslate() {
         if (doTranslate) {
             fieldFunction = String.format(fieldFunction, "translate(%s," + SOURCE_CHARS + "," + TARGET_CHARS + ")");
@@ -252,6 +278,9 @@ public class Criteria implements Serializable {
         return this;
     }
 
+    /**
+     * Formatos de datas utilizados na conversão das mesmas no critério de busca
+     */
     private final String[] formats = {
             "yyyy-MM-dd'T'HH:mm:ss'Z'",   "yyyy-MM-dd'T'HH:mm:ssZ",
             "yyyy-MM-dd'T'HH:mm:ss",      "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
@@ -263,6 +292,11 @@ public class Criteria implements Serializable {
             "yyyy-MM-dd", "yyyy/MM/dd"
     };
 
+    /**
+     * Cria data a partir de uma String levando em consideração os formatos possíveis
+     * @param d String
+     * @return Data
+     */
     private Date parse(String d) {
         SimpleDateFormat sdf;
         if (d != null) {

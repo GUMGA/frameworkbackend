@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Representa um tag genérica
+ * Representa uma tag genérica
  *
  * @author munif
  */

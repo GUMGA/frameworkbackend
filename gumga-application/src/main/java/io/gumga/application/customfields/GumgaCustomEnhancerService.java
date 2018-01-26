@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
+ * Classe auxiliar para tratamento dos campos customizados
  * @author munif
  */
 @Service
@@ -25,6 +25,10 @@ public class GumgaCustomEnhancerService {
     @Autowired
     private GumgaCustomFieldValueService customFieldValueService;
 
+    /**
+     * Configura valores padrões nos atributos customizados do objeto
+     * @param object Objeto com atributos customizados
+     */
     public void setDefaultValues(Object object) {
         if (!(object instanceof GumgaCustomizableModel)) {
             return;
@@ -38,17 +42,17 @@ public class GumgaCustomEnhancerService {
     }
 
     /**
-     * Criar uma nova instancia de um attributo generico
-     * @param cf
-     * @return
+     * Cria uma nova instância de um atributo customizado genérico
+     * @param cf Atributo customizado
+     * @return Valor de um atributo customizado
      */
     public GumgaCustomFieldValue newValue(GumgaCustomField cf) {
         return new GumgaCustomFieldValue(cf);
     }
 
     /**
-     * Carregar os attributos genericos do objeto
-     * @param gumgaModel
+     * Carrega os atributos customizados genéricos do <b>objeto</b>
+     * @param gumgaModel Objeto com atributo customizado
      */
     public void loadCustomFields(Object gumgaModel) {
         if (!(gumgaModel instanceof GumgaCustomizableModel)) {
@@ -65,6 +69,11 @@ public class GumgaCustomEnhancerService {
         }
     }
 
+    /**
+     * Busca todos os atributos customizados da <b>classe</b>
+     * @param gumgaModelClass Classe a ser feita a busca dos campos customizados
+     * @return Lista de campos customizados
+     */
     public List<GumgaCustomField> loadAllCustomFields(Class gumgaModelClass) {
         List<GumgaCustomField> customFields=new ArrayList<>();
         if (!gumgaModelClass.getSuperclass().equals(GumgaCustomizableModel.class)){
@@ -75,8 +84,8 @@ public class GumgaCustomEnhancerService {
     }
 
     /**
-     * Salvar atributos genericos
-     * @param gumgaModel
+     * Salva atributos genéricos do objeto
+     * @param gumgaModel Objeto
      */
     public void saveCustomFields(GumgaIdable gumgaModel) {
         if (!(gumgaModel instanceof GumgaCustomizableModel)) {
@@ -95,8 +104,8 @@ public class GumgaCustomEnhancerService {
     }
 
     /**
-     * Remover atributos genericos
-     * @param gumgaModel
+     * Remove atributos genéricos do objeto
+     * @param gumgaModel Objeto
      */
     public void deleteCustomFields(GumgaIdable gumgaModel) {
         if (!(gumgaModel instanceof GumgaCustomizableModel)) {
