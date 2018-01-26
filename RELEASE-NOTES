@@ -7,6 +7,10 @@
 
 =======================================
 Framework Backend
+3.0.8
+    - As depedências do querydsl foram alteradas para 3.6.0
+    - Endpoint proxy para validar se o email já existe no security
+
 3.0.7
     - findAll e DeleteAll com tenancy.
     - QueryDsl do GumgaReport e IGumgaReport

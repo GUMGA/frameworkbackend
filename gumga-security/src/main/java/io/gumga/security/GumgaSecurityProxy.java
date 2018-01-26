@@ -371,6 +371,18 @@ class GumgaSecurityProxy {
         }
     }
 
+    @ApiOperation(value = "verifiedUserProxySecurity", notes = "Verifica a existência de um usuário através do login.")
+    @RequestMapping(value = "/verified/{login:.*}", method = RequestMethod.GET)
+    public Map verifiedUser(@PathVariable("login") String login) {
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/verified/" + login+ "/";
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
+        }
+    }
+
 }
 
 class UserImageDTO {
