@@ -4,68 +4,120 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- *
+ * Classe para criação de objetos de pesquisa orientada a objeto (consulta no banco de dados)
  * @author munif
  */
 public class GQuery implements Serializable {
 
+    /**
+     * Operador Lógico de consulta
+     */
     private LogicalOperator logicalOperator;
+    /**
+     * Critério de busca
+     */
     private Criteria criteria;
+    /**
+     * Sub-consultas
+     */
     private List<GQuery> subQuerys;
+    /**
+     * Junções de pesquisa, exemplo: inner join, left join...
+     */
     private List<Join> joins = new LinkedList<>();
+    /**
+     * Indica se adicionara DISTINCT na consulta para evitar repetição de registros
+     */
     private Boolean useDistinct = Boolean.FALSE;
 
+    /**
+     * Construtor da classe que iniciará uma modelo de consulta simples
+     */
     public GQuery() {
         this.logicalOperator = LogicalOperator.SIMPLE;
         this.criteria = new Criteria();
     }
-
+    /**
+     * Construtor da classe que iniciará um modelo com determinado operador lógico, critério e uma lista de sub-consultas
+     * @param logicalOperator Operador lógico
+     * @param criteria Critério
+     * @param subQuerys Sub-consultas
+     */
     public GQuery(LogicalOperator logicalOperator, Criteria criteria, List<GQuery> subQuerys) {
         this.logicalOperator = logicalOperator;
         this.criteria = criteria;
         this.subQuerys = subQuerys;
     }
-
+    /**
+     * Construtor da classe que iniciará um modelo com determinado operador lógico e critério de busca
+     * @param logicalOperator Operador lógico
+     * @param criteria Critério de busca
+     */
     public GQuery(LogicalOperator logicalOperator, Criteria criteria) {
         this.logicalOperator = logicalOperator;
         this.criteria = criteria;
     }
-
+    /**
+     * Construtor da classe que iniciará um modelo com critério de busca
+     * @param criteria Critério de busca
+     */
     public GQuery(Criteria criteria) {
         this.logicalOperator = logicalOperator.SIMPLE;
         this.criteria = criteria;
     }
-
+    /**
+     * Construtor da classe que iniciará um modelo com determinado operador lógico e sub-consultas
+     * @param logicalOperator Operador lógico
+     * @param subQuerys Sub-consultas
+     */
     public GQuery(LogicalOperator logicalOperator, List<GQuery> subQuerys) {
         this.logicalOperator = logicalOperator;
         this.subQuerys = subQuerys;
         y(this);
     }
 
+    /**
+     * @return Operador lógico
+     */
     public LogicalOperator getLogicalOperator() {
         return logicalOperator;
     }
-
+    /**
+     * @param logicalOperator Operador lógico
+     */
     public void setLogicalOperator(LogicalOperator logicalOperator) {
         this.logicalOperator = logicalOperator;
     }
-
+    /**
+     * @return Critério de busca
+     */
     public Criteria getCriteria() {
         return criteria;
     }
-
+    /**
+     * @param criteria Critério de busca
+     */
     public void setCriteria(Criteria criteria) {
         this.criteria = criteria;
     }
-
+    /**
+     * @return Sub-consultas
+     */
     public List<GQuery> getSubQuerys() {
         return subQuerys;
     }
-
+    /**
+     * @param subQuerys Sub-consultas
+     */
     public void setSubQuerys(List<GQuery> subQuerys) {
         this.subQuerys = subQuerys;
     }
 
+    /**
+     * Adiciona nova consulta à atual com operador lógico AND
+     * @param other GQuery
+     * @return GQuery
+     */
     public GQuery and(GQuery other) {
         if (LogicalOperator.AND.equals(this.logicalOperator)) {
             this.subQuerys.add(other);
@@ -74,6 +126,11 @@ public class GQuery implements Serializable {
         return new GQuery(LogicalOperator.AND, Arrays.asList(new GQuery[]{this, other}));
     }
 
+    /**
+     * Adiciona nova consulta à atual com operador lógico OR
+     * @param other GQuery
+     * @return GQuery
+     */
     public GQuery or(GQuery other) {
         if (LogicalOperator.OR.equals(this.logicalOperator)) {
             this.subQuerys = new LinkedList<>(subQuerys);
@@ -83,6 +140,11 @@ public class GQuery implements Serializable {
         return new GQuery(LogicalOperator.OR, Arrays.asList(new GQuery[]{this, other}));
     }
 
+    /**
+     * Adiciona novo critério à consulta atual com operador lógico AND
+     * @param criteria Criteria
+     * @return GQuery
+     */
     public GQuery and(Criteria criteria) {
         GQuery other = new GQuery(criteria);
         if (LogicalOperator.AND.equals(this.logicalOperator)) {
@@ -93,6 +155,11 @@ public class GQuery implements Serializable {
         return new GQuery(LogicalOperator.AND, Arrays.asList(new GQuery[]{this, other}));
     }
 
+    /**
+     * Adiciona novo critério à consulta atual com operador lógico OR
+     * @param criteria Criteria
+     * @return GQuery
+     */
     public GQuery or(Criteria criteria) {
         GQuery other = new GQuery(criteria);
         if (LogicalOperator.OR.equals(this.logicalOperator)) {
@@ -103,17 +170,30 @@ public class GQuery implements Serializable {
         return new GQuery(LogicalOperator.OR, Arrays.asList(new GQuery[]{this, other}));
     }
 
+    /**
+     * Adiciona Junção à consulta atual
+     * @param join Junção
+     * @return GQuery
+     */
     public GQuery join(Join join) {
         this.joins.add(join);
         return this;
     }
 
+    /**
+     * @return Parte da hql onde se encontram as junções
+     */
     public String getJoins() {
         StringBuilder builder = new StringBuilder();
         x(this, builder);
         return builder.toString();
     }
 
+    /**
+     * Na busca de joins, este método monta as junções de consultas e sub-consultas em uma String
+     * @param gQuery Consulta
+     * @param builder String
+     */
     private void x(GQuery gQuery, StringBuilder builder) {
         gQuery.joins.forEach(builder::append);
         if(gQuery.getSubQuerys() != null) {
@@ -121,6 +201,10 @@ public class GQuery implements Serializable {
         }
     }
 
+    /**
+     * Na busca de joins, este método monta as junções de consultas e sub-consultas
+     * @param gQuery Consulta
+     */
     private void y(GQuery gQuery) {
         this.joins.addAll(gQuery.joins);
         gQuery.joins = new LinkedList<>();
@@ -129,6 +213,9 @@ public class GQuery implements Serializable {
         }
     }
 
+    /**
+     * @return Utilização do distinct
+     */
     public Boolean useDistinct() {
         Map<String, Boolean> result = new HashMap();
         result.put("useDistinct", Boolean.FALSE);
@@ -136,6 +223,11 @@ public class GQuery implements Serializable {
         return result.get("useDistinct");
     }
 
+    /**
+     * Mapeia todas as consultas e sub-consultas para verificar utilização do distinct
+     * @param gQuery Consulta
+     * @param map Mapa de utilização do distinct
+     */
     private void searchUseDistinct(GQuery gQuery, Map<String, Boolean> map) {
         if(!map.get("useDistinct")) {
             map.put("useDistinct", gQuery.getUseDistinct());
