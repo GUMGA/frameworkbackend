@@ -343,7 +343,7 @@ public class Pesquisa<T> implements Criteria {
 
     /**
      * @return Lista de critérios
-     * @throws HibernateException Excessão
+     * @throws HibernateException Exceção
      */
     @Override
     public List<T> list() throws HibernateException {
@@ -358,7 +358,7 @@ public class Pesquisa<T> implements Criteria {
      * Método para busca de resultados anteriores e próximos, também conhecido como Infinite scroll
      * @See <a href="http://www.massapi.com/method/org/hibernate/Criteria.scroll.html">Exemplos</a>
      * @return Objeto {@link ScrollableResults}
-     * @throws HibernateException Excessão na rolagem dos resultados
+     * @throws HibernateException Exceção na rolagem dos resultados
      */
     @Override
     public ScrollableResults scroll() throws HibernateException {
@@ -378,7 +378,7 @@ public class Pesquisa<T> implements Criteria {
 
     /**
      * @return Resultado único
-     * @throws HibernateException Excessão na busca
+     * @throws HibernateException Exceção na busca
      */
     @Override
     public T uniqueResult() throws HibernateException {

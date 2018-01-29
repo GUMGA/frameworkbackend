@@ -147,7 +147,7 @@ public class HibernateQueryObject {
 }
 
 /**
- * Classe de excessão do HibernateQueryObject
+ * Classe de Exceção do HibernateQueryObject
  */
 class HibernateQueryObjectException extends RuntimeException {
 

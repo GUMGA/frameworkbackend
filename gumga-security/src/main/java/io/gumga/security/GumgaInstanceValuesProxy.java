@@ -21,7 +21,7 @@ import java.util.Map;
 import org.springframework.web.client.RestClientException;
 
 /**
- *
+ * Classe para busca de valores adicionais de determinada instância
  * @author munif
  */
 @RestController
@@ -44,6 +44,10 @@ public class GumgaInstanceValuesProxy {
         return restTemplate;
     }
 
+    /**
+     * Busca valores da instância atual
+     * @return Mapa com valores da instância
+     */
     @Transactional
     @ApiOperation(value = "List", notes = "Carrega entidade pela chave informada.")
     @RequestMapping(method = RequestMethod.GET)
