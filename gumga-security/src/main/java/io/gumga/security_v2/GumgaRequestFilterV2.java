@@ -21,6 +21,9 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Filtro das requisições
+ */
 public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(HandlerInterceptorAdapter.class);

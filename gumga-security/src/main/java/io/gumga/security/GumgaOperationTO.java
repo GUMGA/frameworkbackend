@@ -6,18 +6,39 @@ import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.Column;
 
+/**
+ * DTO para operação
+ */
 public class GumgaOperationTO implements Serializable {
 
+    /**
+     * Nome da operação
+     */
     public String name;
 
+    /**
+     * Descrição
+     */
     public String description;
 
+    /**
+     * Identificador da operação
+     */
     public String key;
 
+    /**
+     * Operação básica ou padrão
+     */
     public Boolean basicOperation;
 
+    /**
+     * Operação bilhetada
+     */
     public Boolean billed;
 
+    /**
+     * Valor a cada mil requisições
+     */
     public BigDecimal thousandValue;
 
     public GumgaOperationTO(String key, boolean basic) {

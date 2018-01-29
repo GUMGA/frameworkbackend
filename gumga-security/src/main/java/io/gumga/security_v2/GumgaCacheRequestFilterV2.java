@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Filtro das requisições com cache
+ */
 public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
 
     private static final Logger log = LoggerFactory.getLogger(GumgaCacheRequestFilterV2.class);

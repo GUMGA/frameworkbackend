@@ -6,7 +6,7 @@
 package io.gumga.domain.shared;
 
 /**
- * Excessão disparada quando exceder o limite de compartilhamentos de registro
+ * Exceção disparada quando exceder o limite de compartilhamentos de registro
  * @author munif
  */
 public class MaximumSharesExceededException extends RuntimeException {

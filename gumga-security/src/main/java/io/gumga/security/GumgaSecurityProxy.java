@@ -36,7 +36,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestClientException;
 
 /**
- *
+ * Classe com métodos de integração utilizando token
  * @author munif
  */
 @RestController
@@ -53,6 +53,12 @@ class GumgaSecurityProxy {
         restTemplate = new GumgaJsonRestTemplate();
     }
 
+    /**
+     * Cria token através do usuário e senha informados
+     * @param user Usuário
+     * @param password Senha
+     * @return Token
+     */
     @ApiOperation(value = "create", notes = "Cria token através do usuário e senha informados.")
     @RequestMapping(value = "/create/{user}/{password:.+}", method = RequestMethod.GET)
     public ResponseEntity create(@PathVariable String user, @PathVariable String password) {
@@ -69,6 +75,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Faz logout do usuário fazendo o token informado expirar
+     * @param token Token
+     * @return Token
+     */
     @ApiOperation(value = "delete", notes = "Faz logout do usuário fazendo o token informado expirar.")
     @RequestMapping(value = "/{token:.+}", method = RequestMethod.DELETE)
     public Map delete(@PathVariable String token) {
@@ -82,6 +93,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Faz o login recebendo o objeto UserAndPassword
+     * @param login Login do usuário {@link UserAndPassword}
+     * @return Token
+     */
     @ApiOperation(value = "login", notes = "Faz o login recebendo o objeto UserAndPassword.")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody UserAndPassword login) {
@@ -99,6 +115,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Faz o login recebendo o objeto UserAndPassword
+     * @param login Login do usuário {@link UserAndPassword}
+     * @return Token
+     */
     @ApiOperation(value = "login", notes = "Faz o login recebendo o objeto UserAndPassword.")
     @RequestMapping(method = RequestMethod.POST, value = "app")
     public ResponseEntity loginApp(@RequestBody UserAndPassword login) {
@@ -116,6 +137,12 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Faz o login com facebook recebendo email e token
+     * @param email E-mail do usuário
+     * @param facebookToken Token do usuário no facebook
+     * @return Token
+     */
     @ApiOperation(value = "facebook", notes = "Faz o login com facebook recebendo email e token.")
     @RequestMapping(value = "/facebook", method = RequestMethod.GET)
     public Map loginWithFacebook(@RequestParam("email") String email, @RequestParam("token") String facebookToken) {
@@ -128,6 +155,12 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Faz o login com github recebendo email e token
+     * @param email E-mail do usuário
+     * @param gitToken Token do usuário no github
+     * @return Token
+     */
     @ApiOperation(value = "github", notes = "Faz o login com github recebendo email e token.")
     @RequestMapping(value = "/github", method = RequestMethod.GET)
     public Map loginWithGitHub(@RequestParam("email") String email, @RequestParam("token") String gitToken) {
@@ -140,6 +173,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Cria usuário e organização com facebook
+     * @param facebookRegister Objeto de registro no facebook {@link FacebookRegister}
+     * @return  Token
+     */
     @ApiOperation(value = "register-facebook", notes = "Cria usuário e organização com facebook")
     @RequestMapping(value = "/register-facebook", method = RequestMethod.POST)
     public Map loginWithFacebook(@RequestBody FacebookRegister facebookRegister) {
@@ -152,6 +190,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Token
+     * @param token Token
+     * @return Token
+     */
     @RequestMapping(value = "/{token:.+}", method = RequestMethod.GET)
     public Map get(@PathVariable String token) {
         try {
@@ -163,6 +206,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Altera a senha do usuário informados pelo objeto {@link UserAndPassword}
+     * @param login {@link UserAndPassword}
+     * @return Login
+     */
     @ApiOperation(value = "changePassword", notes = "Altera a senha do usuário informados pelo objeto UserAndPassword.")
     @RequestMapping(method = RequestMethod.PUT)
     public Map changePassword(@RequestBody UserAndPassword login) {
@@ -175,6 +223,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Organizações de determinado token
+     * @param token Token
+     * @return Lista de organizações
+     */
     @Transactional
     @ApiOperation(value = "organizations", notes = "Lista as organizações associadas ao token informado.")
     @RequestMapping(value = "/organizations/{token:.+}", method = RequestMethod.GET)
@@ -189,6 +242,13 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Lista as organizações associadas ao token informado com paginação
+     * @param token Token
+     * @param page Página
+     * @param pageSize Tamanho da página
+     * @return Lista de Organizações
+     */
     @Transactional
     @ApiOperation(value = "getOrganizationsByToken", notes = "Lista as organizações associadas ao token informado.")
     @RequestMapping(value = "/v2/organizations/{token:.+}", method = RequestMethod.GET)
@@ -201,6 +261,12 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Altera a organização mantendo o token atual
+     * @param token Token
+     * @param orgId Id do organização
+     * @return Organização
+     */
     @Transactional
     @ApiOperation(value = "change organization", notes = "Altera a organização do token.")
     @RequestMapping(value = "/changeorganization/{token}/{orgId}", method = RequestMethod.GET)
@@ -215,6 +281,12 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Altera a organização e token
+     * @param token Token
+     * @param orgId Id da organização
+     * @return Token
+     */
     @Transactional
     @ApiOperation(value = "change organization and token", notes = "Altera a organização do token.")
     @RequestMapping(value = "/changeorganizationandtoken/{token}/{orgId}", method = RequestMethod.GET)
@@ -229,6 +301,12 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Lista as operações associadas ao software e token informados
+     * @param software Software
+     * @param token Token
+     * @return Coleção de Operações
+     */
     @Transactional
     @ApiOperation(value = "organizations", notes = "Lista as operações associadas ao software e token informados.")
     @RequestMapping(value = "/operations/{software}/{token:.+}", method = RequestMethod.GET)
@@ -242,6 +320,12 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Lista as operações associadas ao software e token informados
+     * @param software Software
+     * @param token Token
+     * @return Coleção de Operações
+     */
     @Transactional
     @ApiOperation(value = "organizations", notes = "Lista as operações associadas ao software e token informados.")
     @RequestMapping(value = "/operationskeys/{software}/{token:.+}", method = RequestMethod.GET)
@@ -262,6 +346,12 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Permite recuperar a senha, enviando um e-mail para o login informado redirecionando o usuário para uma url
+     * @param login E-mail
+     * @param urlCallback Url onde será redirecion
+     * @return
+     */
     @ApiOperation(value = "lostPassword", notes = "Permite recuperar a senha, enviando um e-mail para o login informado redirecionando o usuário para uma url.")
     @RequestMapping(method = RequestMethod.GET, value = "/lost-my-password")
     public Map lostMyPassword(@RequestParam("email") String login, @RequestParam("url") String urlCallback) {
@@ -275,6 +365,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Permite recuperar a senha, enviando um e-mail para o login informado
+     * @param login E-mail do usuário
+     * @return Recuperação de senha
+     */
     @ApiOperation(value = "lostPassword", notes = "Permite recuperar a senha, enviando um e-mail para o login informado.")
     @RequestMapping(method = RequestMethod.GET, value = "/lostpassword/{login:.+}")
     public Map lostPassword(@PathVariable String login) {
@@ -287,6 +382,12 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Permite recuperar a senha, enviando um e-mail para o login informado
+     * @param software Software
+     * @param login E-mail do usuário
+     * @return Recuperação de senha
+     */
     @ApiOperation(value = "lostSoftwarePassword", notes = "Permite recuperar a senha, enviando um e-mail para o login informado.")
     @RequestMapping(method = RequestMethod.GET, value = "/lostsoftwarepassword/{software}/{login:.+}")
     public Map lostSoftwarePassword(@PathVariable String software, @PathVariable String login) {
@@ -299,6 +400,12 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Verifica se o ticket já foi utilizado e altera a senha do usuário
+     * @param code Código
+     * @param password Senha
+     * @return Verificação de ticket
+     */
     @ApiOperation(value = "changeByTicket", notes = "Verifica se o ticket já foi utilizado e altera a senha do usuário.")
     @RequestMapping(method = RequestMethod.GET, value = "/lostpassword/{code}/{password:.+}")
     public Map changeByTicket(@PathVariable String code, @PathVariable String password) {
@@ -311,6 +418,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Busca um ticket pelo código
+     * @param code Ticket
+     * @return Ticket
+     */
     @ApiOperation(value = "findByTicket", notes = "Busca um ticket pelo código.")
     @RequestMapping(method = RequestMethod.GET, value = "/searchticket/{code}")
     public Map findByTicket(@PathVariable String code) {
@@ -323,6 +435,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Busca todos os usuarios por organização
+     * @param token Token
+     * @return Usuários
+     */
     @ApiOperation(value = "/organizations/users", notes = "Buscar todos os usuarios por organização.")
     @RequestMapping(method = RequestMethod.GET, value = "/organizations/users/{token:.+}")
     public List findAllUserByOrganization(@PathVariable String token) {
@@ -335,6 +452,10 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Busca todos os perfis
+     * @return Perfis
+     */
     @ApiOperation(value = "/roles", notes = "Buscar todos os perfis.")
     @RequestMapping(method = RequestMethod.GET, value = "/roles")
     public List getAllRoles() {
@@ -347,6 +468,12 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Faz o login com google-plus recebendo email e token
+     * @param email E-mail
+     * @param googlePlusToken Token do google plus
+     * @return Token
+     */
     @ApiOperation(value = "google-plus", notes = "Faz o login com google-plus recebendo email e token.")
     @RequestMapping(value = "/google-plus", method = RequestMethod.GET)
     public Map loginWithGooglePlus(@RequestParam("email") String email, @RequestParam("token") String googlePlusToken) {
@@ -359,6 +486,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Traz as informações do token
+     * @param token Token
+     * @return Informações do Token
+     */
     @ApiOperation(value = "findToken", notes = "Traz as informações do token.")
     @RequestMapping(value = "/get/{token:.+}", method = RequestMethod.GET)
     public Map findToken(@PathVariable String token) {
@@ -371,6 +503,11 @@ class GumgaSecurityProxy {
         }
     }
 
+    /**
+     * Verifica a existência de um usuário através do login
+     * @param login E-mail do usuário
+     * @return Usuário
+     */
     @ApiOperation(value = "verifiedUserProxySecurity", notes = "Verifica a existência de um usuário através do login.")
     @RequestMapping(value = "/verified/{login:.*}", method = RequestMethod.GET)
     public Map verifiedUser(@PathVariable("login") String login) {

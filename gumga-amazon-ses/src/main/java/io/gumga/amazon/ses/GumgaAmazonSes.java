@@ -30,6 +30,9 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Properties;
 
+/**
+ * Serviço para gerenciamento de e-mails
+ */
 @Service
 public class GumgaAmazonSes {
 
@@ -38,6 +41,9 @@ public class GumgaAmazonSes {
     private AmazonSimpleEmailServiceAsyncClientBuilder asesacb;
     private AmazonSimpleEmailServiceAsync client;
 
+    /**
+     * Método que inicia o serviço
+     */
     @PostConstruct
     public void init() {
         System.out.println("-----> INIT " + this.getClass().getSimpleName());
@@ -46,6 +52,9 @@ public class GumgaAmazonSes {
         client = asesacb.build();
     }
 
+    /**
+     * Método executado no fim do serviço
+     */
     @PreDestroy
     public void destroy() {
         System.out.println("-----> Destroy " + this.getClass().getSimpleName());
@@ -53,6 +62,16 @@ public class GumgaAmazonSes {
         client = null;
     }
 
+    /**
+     * Envia e-mail assíncrono
+     * @param listener Interface que contém métodos de status da execução da chamada assíncrona do método
+     * @param HTMLBODY Texto HTML
+     * @param TEXTBODY Texto Simples
+     * @param SUBJECT Assunto
+     * @param FROM De
+     * @param TO Para
+     * @throws IOException Exceção no envio de e-mail
+     */
     public void sendAsysncEmail(GumgaAWSAsyncListener listener, String HTMLBODY, String TEXTBODY, String SUBJECT, String FROM, String... TO) throws IOException {
         SendEmailRequest request = getSendEmailRequest(HTMLBODY, TEXTBODY, SUBJECT, FROM, TO);
 
@@ -75,11 +94,29 @@ public class GumgaAmazonSes {
         });
     }
 
+    /**
+     * Envia e-mail síncrono
+     * @param HTMLBODY Texto HTML
+     * @param TEXTBODY Texto Simples
+     * @param SUBJECT Assunto
+     * @param FROM De
+     * @param TO Para
+     * @return Resultado de envio do E-mail
+     */
     public SendEmailResult sendEmail(String HTMLBODY, String TEXTBODY, String SUBJECT, String FROM, String... TO) {
         SendEmailRequest request = getSendEmailRequest(HTMLBODY, TEXTBODY, SUBJECT, FROM, TO);
         return client.sendEmail(request);
     }
 
+    /**
+     * Modelo de requisição do e-mail
+     * @param HTMLBODY Texto HTML
+     * @param TEXTBODY Texto Simples
+     * @param SUBJECT Assunto
+     * @param FROM De
+     * @param TO Para
+     * @return
+     */
     public SendEmailRequest getSendEmailRequest(String HTMLBODY, String TEXTBODY, String SUBJECT, String FROM, String[] TO) {
         return new SendEmailRequest()
                 .withDestination(new Destination().withToAddresses(TO))
@@ -89,6 +126,17 @@ public class GumgaAmazonSes {
                                 .withCharset("UTF-8").withData(SUBJECT))).withSource(FROM);
     }
 
+    /**
+     * Envia e-mail com anexo de forma assíncrona
+     * @param listener Interface que contém métodos de status da execução da chamada assíncrona do método
+     * @param HTMLBODY Texto HTML
+     * @param SUBJECT Assunto
+     * @param FROM De
+     * @param raw Binário dos arquivos
+     * @param TO Para
+     * @throws IOException Exceção
+     * @throws MessagingException Exceção
+     */
     public void sendAsysncEmail(GumgaAWSAsyncListener listener, String HTMLBODY, String SUBJECT, String FROM, ByteArrayOutputStream raw, String... TO) throws IOException, MessagingException {
         SendRawEmailRequest request = getSendRawEmailRequest(HTMLBODY, SUBJECT, FROM, raw, TO);
 
@@ -111,14 +159,34 @@ public class GumgaAmazonSes {
         });
     }
 
+    /**
+     * Envia e-mail com anexo de forma síncrona
+     * @param HTMLBODY Texto HTML
+     * @param SUBJECT Assunto
+     * @param FROM De
+     * @param raw Binário dos arquivos
+     * @param TO Para
+     * @return Objeto
+     * @throws IOException Exceção
+     * @throws MessagingException Exceção
+     */
     public SendRawEmailResult sendEmail(String HTMLBODY, String SUBJECT, String FROM, ByteArrayOutputStream raw, String... TO) throws IOException, MessagingException {
         SendRawEmailRequest request = getSendRawEmailRequest(HTMLBODY, SUBJECT, FROM, raw, TO);
         return client.sendRawEmail(request);
     }
 
+    /**
+     * Objeto de envio de anexos
+     * @param HTMLBODY Texto HTML
+     * @param SUBJECT Assunto
+     * @param FROM De
+     * @param raw Binário dos arquivos
+     * @param TO Para
+     * @return Objeto
+     * @throws MessagingException Exceção
+     * @throws IOException Exceção
+     */
     public SendRawEmailRequest getSendRawEmailRequest(String HTMLBODY, String SUBJECT, String FROM, ByteArrayOutputStream raw, String[] TO) throws MessagingException, IOException {
-
-
         Properties props = new Properties();
 
         ProfileCredentialsProvider profileCredentialsProvider = new ProfileCredentialsProvider();
@@ -149,6 +217,16 @@ public class GumgaAmazonSes {
                 .withRawMessage(rawMessage);
     }
 
+    /**
+     * Envia e-mail com anexo de forma síncrona
+     * @param subject Assunto
+     * @param message Mensagem
+     * @param attachement Arquivo
+     * @param fileName Nome do arquivo
+     * @param contentType Tipo de arquivo
+     * @param from De
+     * @param to Para
+     */
     public void sendAsysncEmail(String subject, String message, byte[] attachement, String fileName, String contentType, String from, String... to) {
         try {
             // JavaMail representation of the message

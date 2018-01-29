@@ -17,6 +17,9 @@ import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.Future;
 
+/**
+ * Classe para tratamento de filas
+ */
 @Service
 public class GumgaAmazonSqs {
 
@@ -35,11 +38,20 @@ public class GumgaAmazonSqs {
         sqsAsync = AmazonSQSAsyncClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
     }
 
+    /**
+     * Lista de Filas
+     * @return Lista de Filas
+     */
     public ListQueuesResult listQueues() {
         ListQueuesResult listQueuesResult = sqs.listQueues();
         return listQueuesResult;
     }
 
+    /**
+     * Lista de Filas de forma assíncrona
+     * @param listener Evento Assíncrono
+     * @return Lista de Filas de forma assíncrona
+     */
     public Future<ListQueuesResult> listAsyncQueues(GumgaAWSAsyncListener listener) {
          return sqsAsync.listQueuesAsync(new AsyncHandler<ListQueuesRequest, ListQueuesResult>() {
             @Override
@@ -54,6 +66,11 @@ public class GumgaAmazonSqs {
         });
     }
 
+    /**
+     * Busca mensagens de determinada fila
+     * @param myQueueUrl Nome da fila
+     * @return Mensagens de determinada fila
+     */
     public List<Message> getReceiveMessagesOfQueue(String myQueueUrl) {
         ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(myQueueUrl);
         List<Message> messages = sqs.receiveMessage(receiveMessageRequest).getMessages();

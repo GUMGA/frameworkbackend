@@ -7,6 +7,9 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Classe modelo onde será transportado e manipulado dados do stimulsoft
+ */
 @GumgaMultitenancy
 @SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_GUMGAREPORT")
 @Audited
@@ -14,7 +17,13 @@ import java.io.Serializable;
 @Table(name = "gum_rep")
 public class GumgaReport extends GumgaModel<Long> implements IGumgaReport, Serializable {
 
+    /**
+     * Nome do relatório
+     */
     private String name;
+    /**
+     * JSON do relatório
+     */
     @Lob
     @Column(name = "definition")
     private String definition;
