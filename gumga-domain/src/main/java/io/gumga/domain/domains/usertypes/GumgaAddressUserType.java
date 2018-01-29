@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import org.hibernate.type.DoubleType;
 
 /**
- * UserType que permite serializar o tipo dentro do Hibernate
+ * UserType que permite serializar o tipo dentro do Hibernate, mapeia o tipo {@link GumgaAddress} para o banco de dados
  */
 public class GumgaAddressUserType implements CompositeUserType {
 

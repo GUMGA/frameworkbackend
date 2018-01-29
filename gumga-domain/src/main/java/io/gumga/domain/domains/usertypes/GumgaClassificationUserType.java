@@ -26,7 +26,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * UserType que permite serializar o tipo dentro do Hibernate
+ * UserType que permite serializar o tipo dentro do Hibernate, mapeia o tipo {@link GumgaClassification} para o banco de dados
  */
 public class GumgaClassificationUserType extends ImmutableUserType {
 

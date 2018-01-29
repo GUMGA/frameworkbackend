@@ -4,10 +4,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Classe modelo para criação de uma instância
+ */
 public class InstanceSaaS {
 
+    /**
+     * Nome da instância
+     */
     private String name;
+    /**
+     * Lista de softwares
+     */
     private List<SoftwareSaaS> softwares;
+    /**
+     * Número de dias para expiração da instância
+     */
     private Integer numberOfDayForExpiration;
 
     public InstanceSaaS() {

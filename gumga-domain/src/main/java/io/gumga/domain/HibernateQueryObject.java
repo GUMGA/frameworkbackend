@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Permite utilizar um QueryObject do framework em com o Hibernate.
+ * Permite utilizar um QueryObject do framework com o Hibernate.
  */
 public class HibernateQueryObject {
 

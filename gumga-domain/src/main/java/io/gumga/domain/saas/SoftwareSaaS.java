@@ -5,9 +5,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Classe modelo para criação de software
+ */
 public class SoftwareSaaS {
 
+    /**
+     * Nome do software
+     */
     private String name;
+    /**
+     * Lista de operações do software
+     */
     private List<OperationSoftwareSaaS> operations;
 
     public SoftwareSaaS() {

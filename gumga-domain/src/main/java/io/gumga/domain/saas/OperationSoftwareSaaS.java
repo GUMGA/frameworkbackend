@@ -1,7 +1,13 @@
 package io.gumga.domain.saas;
 
+/**
+ * Classe modelo para criação da operação de software
+ */
 public class OperationSoftwareSaaS {
 
+    /**
+     * Chave da operação
+     */
     private String key;
 
     public OperationSoftwareSaaS() {}
