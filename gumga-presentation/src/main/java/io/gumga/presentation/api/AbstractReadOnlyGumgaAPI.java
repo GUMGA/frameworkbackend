@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.Serializable;
@@ -29,6 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * @param <T>
+ * @param <ID>
+ */
 @RestController
 public abstract class AbstractReadOnlyGumgaAPI<T, ID extends Serializable> extends AbstractProtoGumgaAPI<T, ID> {
 
@@ -40,6 +44,10 @@ public abstract class AbstractReadOnlyGumgaAPI<T, ID extends Serializable> exten
     @Autowired
     protected GumgaTagService gts;
 
+    /**
+     *
+     * @param service
+     */
     public AbstractReadOnlyGumgaAPI(GumgaReadableServiceable<T, ID> service) {
         this.service = service;
     }
@@ -62,7 +70,12 @@ public abstract class AbstractReadOnlyGumgaAPI<T, ID extends Serializable> exten
         }
         return new SearchResult<>(query, pesquisa.getCount(), pesquisa.getValues());
     }
-    
+
+    /**
+     *
+     * @param query
+     * @return
+     */
         @GumgaSwagger
     @Transactional
     @ApiOperation(value = "search", notes = "Faz uma pesquisa pela query informada através do objeto QueryObjet, os atributos são aq, q, start, pageSize, sortField, sortDir e searchFields.")
@@ -72,6 +85,12 @@ public abstract class AbstractReadOnlyGumgaAPI<T, ID extends Serializable> exten
         return new SearchResult<>(query, pesquisa.getCount(), pesquisa.getValues());
     }
 
+    /**
+     *
+     * @param qts
+     * @param result
+     * @return
+     */
     @Transactional
     @ApiOperation(value = "saveQuery", notes = "Salva a consulta avançada.")
     @RequestMapping(value = "saq", method = RequestMethod.POST)
@@ -92,6 +111,11 @@ public abstract class AbstractReadOnlyGumgaAPI<T, ID extends Serializable> exten
         return "OK";
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @GumgaSwagger
     @Transactional
     @ApiOperation(value = "load", notes = "Carrega entidade pelo id informado.")
@@ -105,6 +129,11 @@ public abstract class AbstractReadOnlyGumgaAPI<T, ID extends Serializable> exten
         return view;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Transactional
     @ApiOperation(value = "listOldVersions", notes = "Mostra versões anteriores do objeto.")
     @RequestMapping(value = "listoldversions/{id}", method = RequestMethod.GET)
@@ -112,10 +141,19 @@ public abstract class AbstractReadOnlyGumgaAPI<T, ID extends Serializable> exten
         return service.listOldVersions(id);
     }
 
+    /**
+     *
+     * @param service
+     */
     public void setService(GumgaServiceable<T, ID> service) {
         this.service = service;
     }
 
+    /**
+     *
+     * @param prefix
+     * @return
+     */
     @ApiOperation(value = "queryByKeyPrefix", notes = "Retorna os associados do usuário a uma chave.")
     @RequestMapping(value = "gumgauserdata/{prefix}", method = RequestMethod.GET)
     public SearchResult<GumgaUserData> queryByKeyPrefix(@PathVariable String prefix) {
@@ -123,6 +161,11 @@ public abstract class AbstractReadOnlyGumgaAPI<T, ID extends Serializable> exten
 
     }
 
+    /**
+     *
+     * @param query
+     * @return
+     */
     @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "tags")
     public SearchResult<GumgaTagDefinition> listAllTags(QueryObject query) {
@@ -130,6 +173,11 @@ public abstract class AbstractReadOnlyGumgaAPI<T, ID extends Serializable> exten
         return new SearchResult<>(query, pesquisa.getCount(), pesquisa.getValues());
     }
 
+    /**
+     *
+     * @param objectId
+     * @return
+     */
     @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "tags/{objectId}")
     public List<GumgaTag> listTagsOfEspecificObject(@PathVariable("objectId") Long objectId) {
