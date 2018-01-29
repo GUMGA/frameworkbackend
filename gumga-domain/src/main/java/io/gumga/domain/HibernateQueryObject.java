@@ -28,6 +28,10 @@ public class HibernateQueryObject {
 
     protected final Map<Class<?>, CriterionParser> parsers;
 
+    /**
+     * Construtor para instancia um HibernateQueryObject utilizando um objeto do tipo {@link QueryObject}
+     * @param queryObject Objeto
+     */
     public HibernateQueryObject(QueryObject queryObject) {
 
         this.queryObject = queryObject;
@@ -49,6 +53,11 @@ public class HibernateQueryObject {
         //this.queryObject.setQ(queryObject.getQ().toUpperCase());
     }
 
+    /**
+     * Arrays de objetos Criterion do hibernate de acordo com a classe
+     * @param clazz Classe a ser montado a busca
+     * @return Array de critérios
+     */
     public Criterion[] getCriterions(Class<?> clazz) {
         if (!queryObject.isValid()) {
             return new Criterion[0];
@@ -79,6 +88,16 @@ public class HibernateQueryObject {
         return criterions.toArray(new Criterion[criterions.size()]);
     }
 
+    /**
+     * Cria objeto de pesquisa Criterion utilizado pelo hibernate
+     * @param field Descrição do campo
+     * @param value Valor do campo
+     * @param clazz Classe a ser buscado o campo
+     * @return Objeto de pesquisa do hibernate
+     * @throws ParseException Erro de conversão
+     * @throws NumberFormatException Erro no formato de números
+     * @throws UnsupportedDataTypeException Tipo de dados não suportado
+     */
     private Criterion createCriterion(String field, String value, Class<?> clazz) throws ParseException, NumberFormatException, UnsupportedDataTypeException {
         String[] chain = field.split("\\.");
         Class<?> type;
@@ -127,6 +146,9 @@ public class HibernateQueryObject {
 
 }
 
+/**
+ * Classe de excessão do HibernateQueryObject
+ */
 class HibernateQueryObjectException extends RuntimeException {
 
     public HibernateQueryObjectException(String message) {
