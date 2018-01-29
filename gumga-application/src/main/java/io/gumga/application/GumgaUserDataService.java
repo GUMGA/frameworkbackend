@@ -27,7 +27,7 @@ public class GumgaUserDataService extends GumgaService<GumgaUserData, Long> {
     }
 
     /**
-     * Encontra GumgaUserData baseado no atributo key da classe @{@link GumgaUserData}
+     * Encontra GumgaUserData baseado no atributo key da classe {@link GumgaUserData}
      * @param prefix Chave do atributo que foi criado para o usuário
      * @return dados da pesquisa
      */

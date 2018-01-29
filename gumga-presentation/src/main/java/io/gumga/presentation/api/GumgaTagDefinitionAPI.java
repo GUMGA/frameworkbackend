@@ -22,5 +22,4 @@ public class GumgaTagDefinitionAPI extends GumgaAPI<GumgaTagDefinition, Long> {
     public GumgaTagDefinition load(@PathVariable Long id) {
         return ((GumgaTagDefinitionService) service).loadGumgaTagDefinitionFat(id);
     }
-
 }
