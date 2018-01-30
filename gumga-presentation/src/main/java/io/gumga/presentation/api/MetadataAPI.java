@@ -9,14 +9,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
-
+/**
+ * API para acesso aos metadados de uma determinada entidade
+ */
 @RestController
 @RequestMapping("/public/metadata/")
 public class MetadataAPI {
     
     private static final Logger log = LoggerFactory.getLogger(MetadataAPI.class);
 
+    /**
+     * Busca os metadados da classe informada
+     * @param classe String contendo o nome da classe que se deseja obter os metadados
+     * @return Objeto GumgaEntityMetadata contendo os metadados {@link GumgaEntityMetadata}
+     */
     @ApiOperation(value = "describe", notes = "Retorna o metadata da classe informada.")
     @RequestMapping(value = "describe/{classe}", method = RequestMethod.GET)
     public GumgaEntityMetadata describe(@PathVariable String classe) {

@@ -14,16 +14,28 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
+/**
+ * API para implementação de rotas públicas
+ */
 @RestController
 @RequestMapping("/public/")
 public class GumgaThirdPartProxy {
 
     private final RestTemplate restTemplate;
 
+    /**
+     * Construtor que injeta um modelo Rest ao objeto
+     */
     public GumgaThirdPartProxy() {
         restTemplate = new GumgaJsonRestTemplate();
     }
 
+    /**
+     * Pesquisa informações do Cep informado.
+     * Implementa uma rota para busca de dados postais em uma API externa
+     * @param cep String contendo o Cep a ser buscado
+     * @return Uma coleção (Map) contendo a resposta do servidor externo
+     */
     @ApiOperation(value = "searchCep",notes = "Pesquisa informações do cep informado.")
     @RequestMapping(value = "cep/{cep}",method = RequestMethod.GET)
     public Map buscaCep(@PathVariable String cep) {

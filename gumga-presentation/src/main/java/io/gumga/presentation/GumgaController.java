@@ -14,11 +14,9 @@ import java.io.IOException;
 
 
 /**
- * 
  * A classe GumgaController representa uma unidade básica para ser utilizada
  * como controller web. Existem métodos auxiliares necessários para uma
  * página web via JSTL. Como por exemplo: menu e username.
- *
  */
 @Controller
 public abstract class GumgaController {
@@ -30,7 +28,12 @@ public abstract class GumgaController {
 	
 	@Autowired(required = false)
 	private GumgaSecurityService securityService;
-	
+
+	/**
+	 * Carrega o menu
+	 * @return Objeto de menu
+	 * @throws IOException
+	 */
 	@ModelAttribute("menu")
 	public Menu loadMenu() throws IOException {
 		if (menuService == null) {
@@ -40,7 +43,12 @@ public abstract class GumgaController {
 		
 		return menuService.getMenu();
 	}
-	
+
+    /**
+     * Carrega o nome do usuário no GumgaSecurityService
+     * @return String com o nome do usuário
+     * @throws IOException
+     */
 	@ModelAttribute("username")
 	public String username() throws IOException {
 		if (securityService == null) {
