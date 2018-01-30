@@ -8,7 +8,9 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
-
+/**
+ * Classe que gera UUID de acordo com endereço de MAC
+ */
 public class UUIDUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(UUIDUtil.class);
@@ -20,6 +22,10 @@ public class UUIDUtil {
 
     }
 
+    /**
+     * Gera UUID
+     * @return UUID
+     */
     public static synchronized String generate() {
         long localId = System.currentTimeMillis()*10000;
 
@@ -32,6 +38,10 @@ public class UUIDUtil {
         return "" + Long.toHexString(localId).toUpperCase() + String.format("%06X", ((long)( Math.random() * 0x1000000))) + getMacValue();
     }
 
+    /**
+     * Identifica endereço de MAC
+     * @return MAC
+     */
     private static String getMacValue() {
         if(macAddress == null) {
             String toReturn = "";

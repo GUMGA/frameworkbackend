@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * API para o tratamento da recepção de voz para reconhecimento
  * @author munif
  */
 @RestController
@@ -50,11 +50,22 @@ public class VoiceReceiverAPI {
 
     private final String[] CONTEXT = {"Gumga", "Munif"};
 
+    /**
+     * Faz a conversão de um objeto InputStream de entrada para String
+     * @param is Objeto InputStream
+     * @return String com o conteúdo do objeto de entrada
+     */
     private String convertStreamToString(java.io.InputStream is) {
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }
 
+    /**
+     * Invoca o método de geração de instâncias a partir de um texto de linguagem natural {@link GumgaNLP}
+     * Utiliza como verbos chave: "criar, lançar, fazer"
+     * @param texto Texto de linguagem natural para análise
+     * @return Coleção de objetos a serem instanciados
+     */
     @RequestMapping(value = "/nlp", method = RequestMethod.GET)
     public Map nlp(@RequestParam("texto") String texto) {
         Map<String, Object> resposta = new HashMap<>();
@@ -67,6 +78,15 @@ public class VoiceReceiverAPI {
 
     }
 
+    /**
+     * Recebe um objeto de áudio por requisição e o converte para uma String
+     * faz o tratamento dos dados do arquivo de áudio e o envia para análise sintática
+     * Invoca o método de geração de instâncias a partir de um texto de linguagem natural {@link GumgaNLP}
+     * Utiliza como verbos chave: "criar, lançar, fazer"
+     * @param httpRequest Requisição contendo os dados de áudio
+     * @return Uma coleção (Map) contendo os objetos da análise sintática
+     * @throws IOException
+     */
     @RequestMapping(value = "/voice", method = RequestMethod.POST)
     public Map recebeSom(HttpServletRequest httpRequest) throws IOException {
         String som = convertStreamToString(httpRequest.getInputStream());

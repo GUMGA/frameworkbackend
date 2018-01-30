@@ -10,19 +10,40 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- *
+ * Classe com informações da resposta de autorização do usuário
  * @author munif
  */
 public class AuthorizatonResponse {
 
     private String response;
+    /**
+     * Id da organização
+     */
     private Long organizationId;
+    /**
+     * Nome da organização
+     */
     private String organization;
+    /**
+     * Código da organização
+     */
     private String organizationCode;
+    /**
+     * E-mail do usuário
+     */
     private String login;
     private String reason;
+    /**
+     * Chave da rota
+     */
     private String key;
+    /**
+     * Código interno da organização
+     */
     private String organizationInternalCode;
+    /**
+     * Código interno do usuário
+     */
     private String userInternalCode;
 
     public AuthorizatonResponse() {

@@ -10,7 +10,7 @@ import org.hibernate.usertype.EnhancedUserType;
 import java.sql.*;
 
 /**
- * UserType que permite serializar o tipo dentro do Hibernate
+ * UserType que permite serializar o tipo dentro do Hibernate, mapeia o tipo {@link GumgaBoolean} para o banco de dados
  */
 public class GumgaBooleanUserType extends MutableUserType implements EnhancedUserType {
 

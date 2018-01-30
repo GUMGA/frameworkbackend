@@ -141,6 +141,10 @@
             <version>2.9.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+        </dependency>
 
 
     </dependencies>

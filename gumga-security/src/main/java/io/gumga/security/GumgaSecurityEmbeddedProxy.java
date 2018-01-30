@@ -19,6 +19,7 @@ import java.util.Map;
 import org.springframework.web.client.RestClientException;
 
 /**
+ * Classe que contém métodos de integração do segurança
  * Created by mateus on 07/02/17.
  */
 @RestController
@@ -33,10 +34,18 @@ public class GumgaSecurityEmbeddedProxy {
         restTemplate = new GumgaJsonRestTemplate();
     }
 
+    /**
+     * @return Url do segurança
+     */
     public String getSecurityUrl() {
         return gumgaValues.getGumgaSecurityUrl().replace("publicoperations", "");
     }
 
+    /**
+     * Lista os usuários de uma organização
+     * @param id Id da organização
+     * @return Lista de usuários
+     */
     @Transactional
     @ApiOperation(value = "UsersByOrganization", notes = "Lista os usuários de uma organização")
     @RequestMapping(value = "/organization/{organizationId}/users", method = RequestMethod.GET)
@@ -50,6 +59,12 @@ public class GumgaSecurityEmbeddedProxy {
         }
     }
 
+    /**
+     * Busca a organização pelo id informado
+     * @param oi id da organização
+     * @param token Token
+     * @return Organização
+     */
     @Transactional
     @ApiOperation(value = "getOrganization", notes = "Busca a organização pelo id informado")
     @RequestMapping(value = "/organization/{organizationId:.+}", method = RequestMethod.GET)
@@ -63,6 +78,12 @@ public class GumgaSecurityEmbeddedProxy {
         }
     }
 
+    /**
+     * Salva o usuário no segurança
+     * @param user Usuário
+     * @param token Token
+     * @return Usuário
+     */
     @Transactional
     @ApiOperation(value = "saveUser", notes = "Salva o usuário no segurança")
     @RequestMapping(value = "/save-user", method = RequestMethod.POST)
@@ -75,6 +96,12 @@ public class GumgaSecurityEmbeddedProxy {
         }
     }
 
+    /**
+     * Salva o perfil no segurança
+     * @param roleAndList Perfil
+     * @param token Token
+     * @return Perfil
+     */
     @Transactional
     @ApiOperation(value = "saveRole", notes = "Salva o perfil no segurança")
     @RequestMapping(value = "/save-role", method = RequestMethod.POST)
@@ -87,6 +114,12 @@ public class GumgaSecurityEmbeddedProxy {
         }
     }
 
+    /**
+     * Salva a organização no segurança
+     * @param organization Organização
+     * @param token Token
+     * @return Organização
+     */
     @Transactional
     @ApiOperation(value = "saveOrganization", notes = "Salva a organização no segurança")
     @RequestMapping(value = "/save-organization", method = RequestMethod.POST)
@@ -99,6 +132,10 @@ public class GumgaSecurityEmbeddedProxy {
         }
     }
 
+    /**
+     * Instância atual
+     * @return Instância
+     */
     @RequestMapping(method = RequestMethod.GET, path = "/get-instance")
     public ResponseEntity<Map> getInstance() {
         try {
@@ -112,6 +149,11 @@ public class GumgaSecurityEmbeddedProxy {
         }
     }
 
+    /**
+     * Nova integração para o usuário
+     * @param dto Objeto de Integração {@link IntegrationEspecificationDTO}
+     * @return Status da integração
+     */
     @RequestMapping(method = RequestMethod.POST, path = "/newintegrationuser")
     @Transactional
     public String newIntegrationUser(@RequestBody IntegrationEspecificationDTO dto) {

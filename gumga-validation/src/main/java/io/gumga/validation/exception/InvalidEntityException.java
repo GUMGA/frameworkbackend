@@ -2,6 +2,9 @@ package io.gumga.validation.exception;
 
 import org.springframework.validation.Errors;
 
+/**
+ * Exceção disparada quando uma entidade não passa na validação da mesma
+ */
 public class InvalidEntityException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

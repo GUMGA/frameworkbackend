@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * UserType que permite serializar o tipo dentro do Hibernate
+ * UserType que permite serializar o tipo dentro do Hibernate, mapeia o tipo {@link GumgaImage} para o banco de dados
  */
 public class GumgaImageUserType implements CompositeUserType {
 
