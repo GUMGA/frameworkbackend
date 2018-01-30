@@ -1,11 +1,13 @@
 package io.gumga.testmodel;
 
 import io.gumga.domain.GumgaModel;
+import io.gumga.domain.GumgaMultitenancy;
 
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@GumgaMultitenancy
 @Entity
 @SequenceGenerator(name = "SEQ", sequenceName = "SEQ_MarketPlace")
 public class MarketPlace extends GumgaModel<Long> {
