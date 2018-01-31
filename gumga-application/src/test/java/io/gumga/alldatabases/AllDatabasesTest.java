@@ -76,16 +76,20 @@ public abstract class AllDatabasesTest {
         Map<String, String> values = new HashMap<>();
         values.put("mp_key", "teste");
 
+        Stock stock = new Stock();
+        stock.setNome("stock");
+        this.stockRepository.save(stock);
+
         MarketPlace marketPlace = new MarketPlace();
         marketPlace.setNome("AWS");
         marketPlace.setFields(values);
+        marketPlace.setStock(stock);
         this.marketPlaceRepository.save(marketPlace);
 
         List<MarketPlace> marketPlaceList = new ArrayList<>();
         marketPlaceList.add(marketPlace);
 
-        Stock stock = new Stock();
-        stock.setNome("stock");
+
         stock.setMarketPlaces(marketPlaceList);
         this.stockRepository.save(stock);
 
