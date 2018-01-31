@@ -23,7 +23,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by gelatti on 29/06/17. Updated by Munif
+ * Classe com métodos e regras para manipulação de consultas e resultados vindos do stimulsoft
+ * Created by gelatti on 29/06/17. Updated by Munif and Willian
  */
 @Service
 public class JSDataAdapterService {
@@ -69,6 +70,12 @@ public class JSDataAdapterService {
         return new JSONObject(result).toString();
     }
 
+    /**
+     * Conexão do banco de dados de acordo com objeto JSON no padrão stimulsoft
+     * @param command JSON
+     * @return Conexão
+     * @throws SQLException
+     */
     private String connect(JSONObject command) throws SQLException { //TODO_COLOCAR ORACLE
         Connection con = null;
         try {
@@ -119,6 +126,13 @@ public class JSDataAdapterService {
                 && command.getString("database").equals("Oracle");
     }
 
+    /**
+     * String de conexão
+     * @param command Comando
+     * @param con Conexão
+     * @return String de conexão
+     * @throws JSONException Exceção no JSON
+     */
     private String onConnect(JSONObject command, Connection con) throws JSONException {
         if (command.has("queryString")) {
             return query(command, con);
@@ -129,6 +143,12 @@ public class JSDataAdapterService {
         }
     }
 
+    /**
+     * Consulta de acordo com JSON de busca em determinada conexão
+     * @param command Comando
+     * @param con Conexão
+     * @return Consulta
+     */
     private String query(JSONObject command, Connection con) {
         try {
             String filteredQuery = addFilterQuery(command);
@@ -140,6 +160,12 @@ public class JSDataAdapterService {
         }
     }
 
+    /**
+     * Adiciona filtros na consulta, tais como: login, ip, id da instância...
+     * @param command JSON
+     * @return Consulta
+     * @throws JSONException Exceção
+     */
     private String addFilterQuery(JSONObject command) throws JSONException {
         String queryString = command.getString("queryString");
         String oi = GumgaThreadScope.organizationCode.get() != null ? GumgaThreadScope.organizationCode.get() : "null";
@@ -179,6 +205,11 @@ public class JSDataAdapterService {
         return queryString;
     }
 
+    /**
+     * Filtra o oi em determinado alias, exemplo: [[filterOi:meuAlias]]
+     * @param select Consulta
+     * @return Consulta
+     */
     public static String filterOi(String select) {
         String newSelect = select;
         Matcher m = Pattern.compile("\\[\\[filterOi:\\w+\\]\\]").matcher(select);
@@ -192,6 +223,12 @@ public class JSDataAdapterService {
         return newSelect;
     }
 
+    /**
+     * Monta filtro de oi na cláusula da consulta
+     * @param alias Alias
+     * @param queryString Consulta
+     * @return Consulta
+     */
     private String oorganizationFilterQuery(String alias, String queryString) {
         if (StringUtils.containsIgnoreCase(queryString, "WHERE")) {
             String queryBegin = queryString.substring(0, queryString.toLowerCase().indexOf("WHERE".toLowerCase()) + 5);
@@ -210,6 +247,12 @@ public class JSDataAdapterService {
         }
     }
 
+    /**
+     * Método executado na finalização da consulta
+     * @param rs Resultado
+     * @return Consulta
+     * @throws SQLException Exceção no SQL
+     */
     private String onQuery(ResultSet rs) throws SQLException {
         List<String> columns = new ArrayList<String>();
         List<List<String>> rows = new ArrayList<List<String>>();
@@ -233,6 +276,14 @@ public class JSDataAdapterService {
         return new JSONObject(result).toString();
     }
 
+    /**
+     * Processa o resultado da busca
+     * @param is resultado da busca
+     * @return Consulta
+     * @throws IOException Exceção
+     * @throws SQLException Exceção
+     * @throws JSONException Exceção
+     */
     public String process(InputStream is) throws IOException, SQLException, JSONException {
         BufferedReader r = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         StringBuilder command = new StringBuilder();
@@ -244,7 +295,11 @@ public class JSDataAdapterService {
         return connect(new JSONObject(command.toString()));
     }
 
-
+    /**
+     * Substitui atributo de acordo com propriedades configuráveis
+     * @param str Propriedade
+     * @return Consulta
+     */
     private String replaceProperties(String str) {
         String newStr = str;
         Matcher m = Pattern.compile("\\[\\[[\\w\\.]+\\]\\]").matcher(str);
@@ -257,6 +312,12 @@ public class JSDataAdapterService {
         return newStr;
     }
 
+    /**
+     * Monta conexão de acordo com JSON
+     * @param command Comando
+     * @return Consulta
+     * @throws JSONException Exceção
+     */
     private StringBuilder mountConnection(StringBuilder command) throws JSONException {
         StrBuilder conn = new StrBuilder();
         JSONObject jsonObject = new JSONObject(command.toString());
@@ -274,6 +335,11 @@ public class JSDataAdapterService {
         return comm;
     }
 
+    /**
+     * Refatora parâmetros
+     * @param string parâmetro
+     * @return Mapa de parâmetros
+     */
     private Map<String, String> parseParams(String string) {
         String[] keyValues = string.split(";");
         Map<String, String> result = new HashMap<String, String>();

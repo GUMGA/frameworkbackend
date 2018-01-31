@@ -8,7 +8,7 @@ import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
 /**
- *
+ * Classe que possibilita o compartilhamento de registro entre organizações e usuários
  * @author munif, mateus, felipe
  */
 @MappedSuperclass
@@ -16,8 +16,14 @@ public class GumgaSharedModel<ID extends Serializable> extends GumgaModel<ID> {
 
     public static final int MAX_LENGTH = 4000;
     public static final String GLOBAL = "GLOBAL.";
+    /**
+     * Organizações
+     */
     @Column(name = "gumga_orgs",length = MAX_LENGTH)
     private String gumgaOrganizations;
+    /**
+     * Usuários
+     */
     @Column(name = "gumga_users",length = MAX_LENGTH)
     private String gumgaUsers;
 

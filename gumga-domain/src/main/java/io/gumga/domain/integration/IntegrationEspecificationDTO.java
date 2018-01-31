@@ -1,11 +1,29 @@
 package io.gumga.domain.integration;
 
+/**
+ * Classe DTO para integração da aplicação com o segurança
+ */
 public class IntegrationEspecificationDTO {
 
+    /**
+     * E-mail do usuário
+     */
     public String login;
+    /**
+     * Tempo limite de acesso do usuário
+     */
     public long endTime;
+    /**
+     * Nome da especificação
+     */
     public String name;
+    /**
+     * Nome do software
+     */
     public String software;
+    /**
+     * Operações
+     */
     public String operations;
 
     public String getLogin() {

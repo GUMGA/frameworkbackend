@@ -25,7 +25,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * UserType que permite serializar o tipo de URL do Youtube
+ * UserType que permite serializar o tipo de URL do Youtube, mapeia o tipo {@link GumgaYoutubeURL} para o banco de dados
  */
 public class GumgaYoutubeURLUserType extends ImmutableUserType {
 

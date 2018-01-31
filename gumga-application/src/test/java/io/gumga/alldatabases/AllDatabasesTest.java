@@ -72,20 +72,24 @@ public abstract class AllDatabasesTest {
         this.personRepository.saveAndFlush(new Supplier("Marcio' Roberto's"));
 
 
-
+        GumgaThreadScope.organizationCode.set("1");
         Map<String, String> values = new HashMap<>();
         values.put("mp_key", "teste");
+
+        Stock stock = new Stock();
+        stock.setNome("stock");
+        this.stockRepository.save(stock);
 
         MarketPlace marketPlace = new MarketPlace();
         marketPlace.setNome("AWS");
         marketPlace.setFields(values);
+        marketPlace.setStock(stock);
         this.marketPlaceRepository.save(marketPlace);
 
         List<MarketPlace> marketPlaceList = new ArrayList<>();
         marketPlaceList.add(marketPlace);
 
-        Stock stock = new Stock();
-        stock.setNome("stock");
+
         stock.setMarketPlaces(marketPlaceList);
         this.stockRepository.save(stock);
 
@@ -625,6 +629,7 @@ public abstract class AllDatabasesTest {
     @Test
     @Transactional
     public void querydslComMapPath() {
+        GumgaThreadScope.organizationCode.set("1");
         BooleanExpression contains = QStock.stock.marketPlaces.any().fields.contains("mp_key", "teste");
         Stock one = this.stockRepository.findOne(contains);
         assertNotNull(one);
@@ -634,6 +639,18 @@ public abstract class AllDatabasesTest {
     @Test
     @Transactional
     public void querydslComMapPath2() {
+        GumgaThreadScope.organizationCode.set("1");
+        BooleanExpression contains = QStock.stock.marketPlaces.any().fields.contains("mp_key", "teste");
+        contains.and(QStock.stock.marketPlaces.any().nome.eq("AWS"));
+        Stock one = this.stockRepository.findOne(contains);
+        assertNotNull(one);
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydslComMapPath3() {
+        GumgaThreadScope.organizationCode.set("1");
         Stock one = this.stockRepository.findOne(QStock.stock.marketPlaces.any().nome.eq("AWS"));
         assertNotNull(one);
     }
@@ -642,6 +659,7 @@ public abstract class AllDatabasesTest {
     @Test
     @Transactional
     public void querydsl1() {
+        GumgaThreadScope.organizationCode.set("1");
         Stock one = this.stockRepository.findOne(QStock.stock.nome.eq("stock"));
         assertNotNull(one);
     }

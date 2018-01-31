@@ -10,13 +10,18 @@ import javax.validation.Validator;
 import java.util.Set;
 
 /**
- * Classe utilitária para vaçidações
+ * Classe utilitária para validações
  */
 public class EntityValidatorSupport {
 
     private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
     private static final Logger logger = LoggerFactory.getLogger(EntityValidatorSupport.class);
 
+    /**
+     * Verifica inconsistências na classe
+     * @param resource Classe
+     * @exception AssertionError
+     */
     public static void assertEntidadeConsistente(GumgaModel<Long> resource) {
         Set<ConstraintViolation<GumgaModel<Long>>> violations = validator.validate(resource);
         logger.info(violations.toString());
@@ -26,6 +31,13 @@ public class EntityValidatorSupport {
         }
     }
 
+    /**
+     * Verifica se classe contém determinada violação
+     * @param field Campo a ser validado
+     * @param violation Violação
+     * @param resource Classe
+     * @exception AssertionError
+     */
     public static void assertContainsViolation(String field, String violation, GumgaModel<Long> resource) {
         Set<ConstraintViolation<GumgaModel<Long>>> violations = validator.validate(resource);
         logger.info(violations.toString());

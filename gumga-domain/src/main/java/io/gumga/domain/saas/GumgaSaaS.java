@@ -1,12 +1,33 @@
 package io.gumga.domain.saas;
 
+/**
+ * Classe modelo para auxiliar a criação de uma aplicação SaaS.
+ */
 public class GumgaSaaS {
 
+    /**
+     * Nome da organização
+     */
     private String organizationName;
+    /**
+     * Nome do software
+     */
     private String softwareName;
+    /**
+     * Usuário a ser criado
+     */
     private UserSaaS user;
+    /**
+     * Instância a ser criada (Venda do software)
+     */
     private InstanceSaaS instance;
+    /**
+     * Cria Perfil compartilhado
+     */
     private Boolean createRoleShared;
+    /**
+     * Cria token eterno
+     */
     private Boolean createEternalToken;
 
     public String getOrganizationName() {

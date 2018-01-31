@@ -39,10 +39,10 @@
         <org.glassfish.web.el.impl.version>2.2</org.glassfish.web.el.impl.version>
 
         <hikaricp.version>2.5.1</hikaricp.version>
-
-        <querydsl.apt.version>3.6.0</querydsl.apt.version>
-        <querydsl.jpa.version>3.6.0</querydsl.jpa.version>
-        <querydsl.core.version>3.6.0</querydsl.core.version>
+        <!-- Não pode trocar a versão do querydsl, por que quebra o build no anymarkey -->
+        <querydsl.apt.version>3.4.0</querydsl.apt.version>
+        <querydsl.jpa.version>3.4.0</querydsl.jpa.version>
+        <querydsl.core.version>3.4.0</querydsl.core.version>
 
         <commons.fileupload.version>1.3.1</commons.fileupload.version>
 
@@ -116,7 +116,8 @@
     <groupId>io.gumga</groupId>
     <artifactId>gumga-backend-all</artifactId>
 
-    <version>3.1.0</version>
+    <version>3.2.0</version>
+
 
 
     <packaging>pom</packaging>

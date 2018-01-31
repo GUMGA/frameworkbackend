@@ -20,6 +20,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
+/**
+ * Classe abstrata gerérica que contém métodos para a validação de campos obrigatórios
+ * @param <T> Classe de referência
+ * @param <ID>
+ */
 @RestController
 public abstract class AbstractProtoGumgaAPI<T, ID extends Serializable> {
 
@@ -31,6 +36,10 @@ public abstract class AbstractProtoGumgaAPI<T, ID extends Serializable> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * Cria um objeto T
+     * @return Objeto T com valores iniciais
+     */
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public T initialState() {
         T entity = initialValue();
@@ -64,6 +73,11 @@ public abstract class AbstractProtoGumgaAPI<T, ID extends Serializable> {
         return getEntityName(entity) + " deleted successfully";
     }
 
+    /**
+     * Valida a entidade recebida por parâmetro na requisição
+     * @param entity Objeto T
+     * @return Um objeto ErrorResourse com o diagnóstico
+     */
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
     public ErrorResource validate(@RequestBody T entity) {
         try {

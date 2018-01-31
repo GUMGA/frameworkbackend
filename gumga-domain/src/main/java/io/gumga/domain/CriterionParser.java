@@ -3,7 +3,7 @@ package io.gumga.domain;
 import org.hibernate.criterion.Criterion;
 
 /**
- * Apenas uma interface para faclitar permitir a escolha
+ * Apenas uma interface para facilitar permitir a escolha de critério de busca
  *
  * @author munif
  */

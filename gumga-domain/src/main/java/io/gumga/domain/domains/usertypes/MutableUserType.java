@@ -21,6 +21,9 @@ import org.hibernate.usertype.UserType;
 
 import java.io.Serializable;
 
+/**
+ * Classe abstrata que implementa UserType, visando a mutabilidade dos tipos do hibernate criados
+ */
 public abstract class MutableUserType implements UserType, Serializable {
 
     private static final long serialVersionUID = 1L;

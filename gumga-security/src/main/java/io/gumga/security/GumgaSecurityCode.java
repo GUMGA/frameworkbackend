@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Enumeração com diversos código de status das requisições
  * @author munif
  */
 public enum GumgaSecurityCode {

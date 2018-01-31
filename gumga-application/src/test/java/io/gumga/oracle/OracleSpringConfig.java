@@ -54,9 +54,9 @@ public class OracleSpringConfig {
         config.setIdleTimeout(30000L);
         config.setInitializationFailFast(true);
         config.setDataSourceClassName("oracle.jdbc.pool.OracleDataSource");
-        config.addDataSourceProperty("url", "jdbc:oracle:thin:@192.168.25.79:1521/orcl");
-        config.addDataSourceProperty("user", "GUMGA_TESTE");
-        config.addDataSourceProperty("password", "QWE123");
+        config.addDataSourceProperty("url", "jdbc:oracle:thin:@localhost:1521:xe");
+        config.addDataSourceProperty("user", "dashboard");
+        config.addDataSourceProperty("password", "senha");
         return config;
     }
 

@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.Date;
 
 /**
- * Permite armazenar um horário com hora, minuto e segundo em atributos
+ * Permite armazenar um horário com hora, minuto e segundo em atributos, mapeia o tipo {@link GumgaTime} para o banco de dados
  * separados
  *
  * @author munif

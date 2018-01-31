@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Evento de execução assíncrona
  * @author munif
  */
 public class GumgaDefaultAWSAsyncListener implements GumgaAWSAsyncListener {

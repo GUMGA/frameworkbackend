@@ -13,6 +13,9 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Serviço para manipulação de tickets no Freshdesk
+ */
 @Service
 public class FreshdeskService {
     private static final Logger log = LoggerFactory.getLogger(FreshdeskService.class);
@@ -34,6 +37,14 @@ public class FreshdeskService {
         return sendTicket(freshdesk, DOMAIN, USER, PASSWORD);
     }
 
+    /**
+     * Cria um ticket
+     * @param freshdesk Informações no freshdesk
+     * @param domain Domínio, exemplo: teste.freshdesk.com
+     * @param user Usuário
+     * @param password senha
+     * @return
+     */
     public Boolean createATicket(Freshdesk freshdesk, String domain, String user, String password) {
         Objects.nonNull(domain);
         Objects.nonNull(user);

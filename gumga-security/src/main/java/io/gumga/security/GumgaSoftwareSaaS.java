@@ -18,6 +18,9 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 import org.springframework.web.client.RestClientException;
 
+/**
+ * Classe com métodos para integração Saas
+ */
 @RestController
 @RequestMapping(path = "/api/proxy/security-saas")
 public class GumgaSoftwareSaaS {
@@ -38,6 +41,11 @@ public class GumgaSoftwareSaaS {
         return restTemplate;
     }
 
+    /**
+     * Registra instância
+     * @param gumgaSaaS {@link GumgaSaaS}
+     * @return Instância
+     */
     @RequestMapping(value = "/instance", method = RequestMethod.POST)
     public ResponseEntity registerSaaS(@RequestBody GumgaSaaS gumgaSaaS) {
         return post("/instance", gumgaSaaS);

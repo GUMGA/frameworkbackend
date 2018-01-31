@@ -4,8 +4,16 @@ import io.gumga.core.GumgaThreadScope;
 import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.GumgaMultitenancyPolicy;
 
+/**
+ * Classe com utilitários para multi-tenancy
+ */
 public class GumgaMultitenancyUtil {
 
+    /**
+     * Padrão de ternancy utilizado
+     * @param tenacy tenancy
+     * @return Oi no padrão de tenancy
+     */
     public static String getMultitenancyPattern(GumgaMultitenancy tenacy) {
         GumgaMultitenancyPolicy policy = tenacy.policy();
         String oiPattern = GumgaThreadScope.organizationCode.get();
