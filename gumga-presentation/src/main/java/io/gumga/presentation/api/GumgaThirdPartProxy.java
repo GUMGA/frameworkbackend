@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 /**
- * API para implementação de rotas públicas
+ * API para implementação de rotas públicas de serviços Gumga
  */
 @RestController
 @RequestMapping("/public/")
