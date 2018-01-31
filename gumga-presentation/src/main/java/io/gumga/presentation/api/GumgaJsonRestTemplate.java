@@ -1,7 +1,6 @@
 package io.gumga.presentation.api;
 
 import java.util.Arrays;
-
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
  */
 public class GumgaJsonRestTemplate extends RestTemplate {
 //    TODO Revisar o conteúdo deste JavaDocs
+
     /**
      * Construtor para um objeto Jackson HTTP
      */
@@ -18,3 +18,7 @@ public class GumgaJsonRestTemplate extends RestTemplate {
     }
 
 }
+
+
+
+

@@ -19,6 +19,9 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Classe para acesso e manipulação de menu e itens de menu
+ */
 public class MenuReader {
     
        private static final Logger log = LoggerFactory.getLogger(MenuReader.class);
@@ -27,10 +30,20 @@ public class MenuReader {
 	private MenuReader() {
 	}
 
+	/**
+	 *
+	 * @return
+	 * @throws IOException
+	 */
 	public static Menu loadMenu() throws IOException {
 		return digesterMenu(loadMenuFile());
 	}
 
+	/**
+	 * Carrega as definições de menu de acordo com o arquivo de configurações
+	 * @return Uma lista contendo as linhas lidas
+	 * @throws IOException
+	 */
 	private static List<String> loadMenuFile() throws IOException {
 		InputStream menuStream = Thread.currentThread().getContextClassLoader()
 				.getResourceAsStream("menu.config");
@@ -43,6 +56,12 @@ public class MenuReader {
 		return CharStreams.readLines(new InputStreamReader(menuStream, "UTF-8"));
 	}
 
+	/**
+	 * Recebe uma lista de String e gera um Menu com cada um dos ítens
+	 * {@link Menu}
+	 * @param menuOptions Lista com as opções de menu
+	 * @return Objeto Menu carregado com as opções de entrada
+	 */
 	public static Menu digesterMenu(List<String> menuOptions) {
 		Menu menu = new Menu();
 
@@ -54,6 +73,12 @@ public class MenuReader {
 		return menu;
 	}
 
+
+	/**
+	 * Gera um item de menu a partir de uma String
+	 * @param menuOption String contendo a opção de menu
+	 * @return Objeto MenuComponent contendo um ítem de menu
+	 */
 	private static MenuComponent createMenuItem(String menuOption) {
 		Map<String, String> properties = getMenuItemProperties(menuOption);
 
@@ -78,6 +103,11 @@ public class MenuReader {
 		return item;
 	}
 
+	/**
+	 * Cria uma coleção de String contendo as propriedades de um Item de Menu
+	 * @param menuOption String contendo o menu
+	 * @return Uma coleção de String
+	 */
 	private static Map<String, String> getMenuItemProperties(String menuOption) {
 		Pattern pattern = Pattern.compile("\\{(.*?)\\}");
 		Matcher matchPattern = pattern.matcher(menuOption);

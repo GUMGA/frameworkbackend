@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- *
+ * Classe para manipulação de filtros nas requisições
  * @author munif
  */
 @WebFilter(filterName = "CorsFilter", urlPatterns = {"/*"},asyncSupported = true)
@@ -24,11 +24,24 @@ public class CorsFilter implements Filter {
     
     private static final Logger log = LoggerFactory.getLogger(CorsFilter.class);
 
+    /**
+     * Inicializa o módulo
+     * @param fc
+     * @throws ServletException
+     */
     @Override
     public void init(FilterConfig fc) throws ServletException {
         log.info("Inicializando");
     }
 
+    /**
+     * Aplica filtros à requisição HTTP
+     * @param req Objeto ServletRequest contendo a requisição
+     * @param res Objeto ServletResponse contendo a resposta
+     * @param fc Objeto FilterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain fc) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
@@ -39,6 +52,9 @@ public class CorsFilter implements Filter {
         fc.doFilter(request, response);
     }
 
+    /**
+     * Não implementado
+     */
     @Override
     public void destroy() {
 

@@ -18,6 +18,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * API para acesso de métodos diversos
+ * @param <T>
+ * @param <ID>
+ */
 @RestController
 public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends AbstractNoDeleteGumgaAPI<T, ID> {
 
@@ -30,6 +35,13 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
         this.service = service;
     }
 
+    /**
+     * Deleta objeto de acordo com o id recebido
+     * {@code 200 OK}.
+     * @see <a href="http://tools.ietf.org/html/rfc7231#section-6.3.1">HTTP/1.1: Semantics and Content, section 6.3.1</a>
+     * @param id Id do objeto a ser deletado
+     * @return Objeto RestResponse contendo a mensagem de Entidade Deletada
+     */
     @GumgaSwagger
     @Transactional
     @ResponseStatus(value = HttpStatus.OK)
@@ -41,6 +53,13 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
         return new RestResponse<>(getEntityDeletedMessage(entity));
     }
 
+    /**
+     * Deleta uma série de objetos de acordo com os id's recebidos
+     * {@code 200 OK}.
+     * @see <a href="http://tools.ietf.org/html/rfc7231#section-6.3.1">HTTP/1.1: Semantics and Content, section 6.3.1</a>
+     * @param ids Lista de ids a serem deletados
+     * @return
+     */
     @GumgaSwagger
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "deletemulti", notes = "Deleta vários objeto com os ids correspondentes.")
@@ -56,11 +75,20 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
 
     }
 
+    /**
+     * Injeta um módulo Service T para acesso aos serviços do Framework
+     * @param service Objeto GumgaServiceable T {@link GumgaServiceable}
+     */
     public void setService(GumgaServiceable<T, ID> service) {
         this.service = service;
         super.setService(service);
     }
 
+    /**
+     * Executa uma ação configurada para cada objeto resultante da pesquisa
+     * @param query Objeto QueryObject a ser pesquisado
+     * @return Objeto SearchResult com o resultado da pesquisa
+     */
     @GumgaSwagger
     @Transactional
     @ApiOperation(value = "queryaction", notes = "Executa uma ação configurada para cada objeto resultante da pesquisa.")
@@ -69,6 +97,11 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
         return selectElementsForAction(query);
     }
 
+    /**
+     * Executa uma ação configurada para cada objeto da lista recebida
+     * @param selectionAndActionTO Objeto SelectionAndActionTO
+     * @return
+     */
     @GumgaSwagger
     @Transactional
     @ApiOperation(value = "multiselectionaction", notes = "Executa uma ação configurada para cada objeto da lista recebida.")
@@ -77,10 +110,21 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
         return selectElementsForAction(selectionAndActionTO.action, (ID[]) selectionAndActionTO.ids);
     }
 
+    /**
+     * Executa uma ação
+     * @param action String com a ação a ser realizada
+     * @param obj Objeto T
+     */
     public void doAction(String action, T obj) {
         log.info(action + "-----" + obj);
     }
 
+    /**
+     * Seleciona elementos para uma ação
+     * @param action String contendo a ação a ser realizada
+     * @param ids Array contendo os id's para seleção
+     * @return objeto selectElementsForAction
+     */
     protected Object selectElementsForAction(String action, ID[] ids) {
         for (ID id : ids) {
             T view = service.view(id);
@@ -89,6 +133,11 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
         return new SelectionAndActionTO(action, ids);
     }
 
+    /**
+     *Seleciona elementos para uma ação a partir de uma query
+     * @param queryObject Objeto QueryObject com a busca a ser realizada
+     * @return Objeto SearchResult contendo o resultado da busca
+     */
     protected Object selectElementsForAction(QueryObject queryObject) {
         queryObject.setPageSize(Integer.MAX_VALUE);
         queryObject.setStart(0);
@@ -130,6 +179,12 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
 
     }
 
+    /**
+     * Rota de entrada para buscas via GQuery
+     * {@link GQuery}
+     * @param query Objeto QueryObject contendo a busca a ser realizada
+     * @return Objeto SearchResult T contendo o resultado da busca
+     */
     @GumgaSwagger
     @Transactional
     @ApiOperation(value = "gquery", notes = "gquery")

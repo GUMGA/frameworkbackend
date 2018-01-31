@@ -7,7 +7,7 @@ import io.gumga.domain.service.GumgaWritableServiceable;
 import java.io.Serializable;
 
 /**
- * Interface básica para serviços do framework
+ * Interface básica para acesso aos serviços do framework
  */
 public interface GumgaServiceable<T, ID extends Serializable> extends GumgaReadableServiceable<T, ID>, GumgaWritableServiceable<T, ID>, GumgaDeletableServiceable<T, ID> {
 
