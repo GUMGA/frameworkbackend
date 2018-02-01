@@ -14,13 +14,13 @@ import javax.persistence.Version;
 @Entity
 @SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_LAMP")
 @GumgaMultitenancy
-@Indexed
+//@Indexed
 public class Lamp extends GumgaModel<Long> {
 
     @Version
     private Integer version;
 
-    @Field
+//    @Field
     @Column
     private String description;
 
