@@ -16,7 +16,7 @@ public class Stock extends GumgaModel<Long> {
 
     @Column(name = "nome")
     private String nome;
-    @OneToMany
+    @OneToMany(mappedBy = "stock")
     private List<MarketPlace> marketPlaces;
 
     public List<MarketPlace> getMarketPlaces() {
