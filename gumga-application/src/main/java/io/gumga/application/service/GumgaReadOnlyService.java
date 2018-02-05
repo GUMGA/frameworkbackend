@@ -11,6 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 
+/**
+ * Classe abstrata que contém métodos de serviços somente de leitura da entidade
+ * @param <T> Classe que contenha um identificador padrão, exemplo: ID do registro
+ * @param <ID> Tipo do identificador contido na classe
+ */
 @Service
 @Scope("prototype")
 public abstract class GumgaReadOnlyService<T extends GumgaIdable<?>, ID extends Serializable> extends AbstractGumgaService<T, ID> implements GumgaReadableServiceable<T, ID> {
