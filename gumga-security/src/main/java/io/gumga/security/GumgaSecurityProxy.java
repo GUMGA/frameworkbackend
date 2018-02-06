@@ -400,6 +400,18 @@ class GumgaSecurityProxy {
         }
     }
 
+    @ApiOperation(value = "lostSoftwarePassword2", notes = "Permite recuperar a senha, enviando um e-mail para o login informado.")
+    @RequestMapping(method = RequestMethod.GET, value = "/lostsoftwarepassword/{login:.+}")
+    public Map lostSoftwarePassword(@PathVariable String login) {
+        try {
+            String url = gumgaValues.getGumgaSecurityUrl() + "/token/lostsoftwarepassword/" + gumgaValues.getSoftwareName() + "/" + login + "/";
+            Map resposta = restTemplate.getForObject(url, Map.class);
+            return resposta;
+        } catch (RestClientException restClientException) {
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
+        }
+    }
+
     /**
      * Verifica se o ticket já foi utilizado e altera a senha do usuário
      * @param code Código
