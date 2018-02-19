@@ -173,10 +173,11 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             }
 
             pesquisa.add(multitenancyCriterion);
-            if (hasLogicalDelete()) {
-                pesquisa.add(Restrictions.eq("gumgaActive", !query.isInactiveSearch()));
-            }
 
+        }
+
+        if (hasLogicalDelete()) {
+            pesquisa.add(Restrictions.eq("gumgaActive", !query.isInactiveSearch()));
         }
 
         if (query.getSearchFields() != null) {
