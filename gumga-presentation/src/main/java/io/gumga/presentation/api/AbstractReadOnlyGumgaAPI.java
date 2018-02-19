@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Classe para manipulação de leitura e obtenção de dados
+ * API para acesso aos métodos de serviços de somente leitura que o Framework dispõe via requisições REST
  * @param <T>
  * @param <ID>
  */

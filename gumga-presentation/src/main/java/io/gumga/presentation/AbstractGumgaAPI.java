@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * API para acesso de métodos diversos
+ * API para acesso aos métodos de serviços que o Framework dispõe via requisições REST
  * @param <T>
  * @param <ID>
  */
