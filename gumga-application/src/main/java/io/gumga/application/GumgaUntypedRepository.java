@@ -11,8 +11,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,7 @@ import java.util.Map;
  * @author wlademir
  */
 @Service
+@Scope("prototype")
 public class GumgaUntypedRepository {
 
     @PersistenceContext
@@ -56,6 +59,7 @@ public class GumgaUntypedRepository {
      * @param text
      * @return dados da pesquisa
      */
+    @Transactional(readOnly = true)
     public List<Object> fullTextSearch(String text) {
         List aRetornar = new ArrayList();
 
@@ -72,7 +76,9 @@ public class GumgaUntypedRepository {
             if (!atributos.isEmpty()) {
                 atributos = atributos.substring(0, atributos.length() - 1);
                 Query query = qb.keyword().onFields(atributos.split(",")).matching(text).createQuery();
-                aRetornar.addAll(fullTextEntityManager.createFullTextQuery(query, entidade).getResultList());
+                FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, entidade);
+                List resultList = fullTextQuery.getResultList();
+                aRetornar.addAll(resultList);
             }
         }
         return aRetornar;
@@ -97,11 +103,14 @@ public class GumgaUntypedRepository {
      * Pegar as entidades que estão anotadas com {@link Indexed}
      * @return dados da pesquisa
      */
+    @Transactional(readOnly = true)
     private List<Class> getAllIndexedEntities() {
         List<Class> aRetornar = new ArrayList<>();
-        Session session = em.unwrap(Session.class);
+        EntityManager entityManager = em.getEntityManagerFactory().createEntityManager();
+
+        Session session = entityManager.unwrap(Session.class);
         SessionFactory sessionFactory = session.getSessionFactory();
-        Map<String, ClassMetadata> map = (Map<String, ClassMetadata>) sessionFactory.getAllClassMetadata();
+        Map<String, ClassMetadata> map = sessionFactory.getAllClassMetadata();
         for (String k : map.keySet()) {
             Class mappedClass = map.get(k).getMappedClass();
             if (mappedClass.isAnnotationPresent(Entity.class) && mappedClass.isAnnotationPresent(Indexed.class)) {

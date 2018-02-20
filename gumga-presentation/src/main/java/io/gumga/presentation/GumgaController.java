@@ -18,6 +18,7 @@ import java.io.IOException;
  * como controller web. Existem métodos auxiliares necessários para uma
  * página web via JSTL. Como por exemplo: menu e username.
  */
+@Deprecated
 @Controller
 public abstract class GumgaController {
 	

@@ -3,6 +3,10 @@ package io.gumga.testmodel;
 import io.gumga.domain.GumgaModel;
 import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.domains.GumgaBoolean;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Version;
@@ -10,11 +14,14 @@ import javax.persistence.Version;
 @Entity
 @SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_LAMP")
 @GumgaMultitenancy
+//@Indexed
 public class Lamp extends GumgaModel<Long> {
 
     @Version
     private Integer version;
 
+//    @Field
+    @Column
     private String description;
 
     private GumgaBoolean ison;

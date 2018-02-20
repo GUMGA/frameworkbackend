@@ -8,6 +8,9 @@
 =======================================
 Framework Backend
 
+3.2.1
+    - Na GumgaSecurityProxy foi adiciona uma nova rota "/lostsoftwarepassword/{login:.+}" para que você não precise informa o software na URL.
+
 3.2.0
     - As depedências do querydsl foram alteradas para 3.4.0
 

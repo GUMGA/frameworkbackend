@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *
+ * API para acesso aos métodos de serviços que o Framework dispõe via requisições REST sem contemplar operações de exclusões
  * @param <T>
  * @param <ID>
  */
