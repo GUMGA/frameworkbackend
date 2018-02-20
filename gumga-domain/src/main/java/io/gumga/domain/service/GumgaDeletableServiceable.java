@@ -9,9 +9,12 @@ import java.util.List;
 //@FunctionalInterface
 public interface GumgaDeletableServiceable<T, ID extends Serializable> {
 
-    public void delete(T resource);
+    void delete(T resource);
     
-    public void delete(List<T> resource);
+    void delete(List<T> resource);
+
+    void deletePermanentGumgaLDModel(T entity);
+    void deletePermanentGumgaLDModel(ID id);
     
 
 }

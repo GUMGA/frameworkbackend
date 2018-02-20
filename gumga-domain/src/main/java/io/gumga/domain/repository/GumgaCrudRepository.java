@@ -87,4 +87,16 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
 
     T fetchOne(GQuery gQuery);
     List<T> findAll(GQuery gQuery);
+
+    /**
+     * Remove permanentemente uma entidade marcada com Remoção Lógica
+     * @param entity
+     */
+    void deletePermanentGumgaLDModel(T entity);
+
+    /**
+     * Remove permanentemente uma entidade marcada com Remoção Lógica
+     * @param id
+     */
+    void deletePermanentGumgaLDModel(ID id);
 }
