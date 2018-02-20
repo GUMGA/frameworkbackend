@@ -7,6 +7,7 @@ import io.gumga.core.SearchResult;
 import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.GumgaObjectAndRevision;
 import io.gumga.domain.GumgaServiceable;
+import io.gumga.domain.logicaldelete.GumgaLDModel;
 import io.gumga.domain.repository.GumgaCrudRepository;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,8 @@ import java.util.List;
 
 /**
  * Classe abstrata que contém métodos para criação de serviços para manipulação de entidade (criação, alteração, deleção e busca)
- * @param <T> Classe que contenha um identificador padrão, exemplo: ID do registro
+ *
+ * @param <T>  Classe que contenha um identificador padrão, exemplo: ID do registro
  * @param <ID> Tipo do identificador contido na classe
  */
 @Service
@@ -31,9 +33,8 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
     /**
      * Processo executado antes do Método pesquisa da classe
      *
-     * @{@link GumgaService}
-     *
      * @param query Objeto de pesquisa
+     * @{@link GumgaService}
      */
     public void beforePesquisa(QueryObject query) {
     }
@@ -41,9 +42,8 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
     /**
      * Processo executado apos do Método pesquisa da classe
      *
-     * @{@link GumgaService}
-     *
      * @param result Resultado da pesquisa
+     * @{@link GumgaService}
      */
     public void afterPesquisa(SearchResult<T> result) {
     }
@@ -92,7 +92,7 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
      * Procura a entidade pela primary key
      *
      * @param clazz entidade a ser procurada
-     * @param id primary key da entidade
+     * @param id    primary key da entidade
      * @return dados da pesquisa
      */
     @Transactional(readOnly = true)
@@ -150,8 +150,9 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
 
     /**
      * Processo executado antes do Método Save
+     *
      * @param entity Entidade a ser salva ou atualizada
-     * @param isNew Indica se é uma entidade nova
+     * @param isNew  Indica se é uma entidade nova
      */
     private void beforeSaveOrUpdate(T entity, boolean isNew) {
         if (isNew) {
@@ -163,8 +164,9 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
 
     /**
      * Processo executado depois do Método Save
+     *
      * @param entity Entidade a ser salva ou atualizada
-     * @param isNew Indica se é uma entidade nova
+     * @param isNew  Indica se é uma entidade nova
      */
     private void afterSaveOrUpdate(T entity, boolean isNew) {
         if (isNew) {
@@ -249,4 +251,23 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
         return oldVersions;
     }
 
+    /**
+     * Implementação do método para remoção permanentemente de uma entidade marcada com Remoção Lógica
+     * @param entity
+     */
+    @Override
+    @Transactional
+    public void deletePermanentGumgaLDModel(T entity) {
+        repository.deletePermanentGumgaLDModel(entity);
+    }
+
+    /**
+     * Implementação do método para remoção permanentemente de uma entidade marcada com Remoção Lógica
+     * @param id
+     */
+    @Override
+    @Transactional
+    public void deletePermanentGumgaLDModel(ID id) {
+        repository.deletePermanentGumgaLDModel(id);
+    }
 }

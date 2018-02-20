@@ -76,6 +76,16 @@ public class GumgaGatewayV2<A extends GumgaIdable<ID>, ID extends Serializable, 
         this.delegate.delete(this.translator.to(resource));
     }
 
+    @Override
+    public void deletePermanentGumgaLDModel(DTO entity) {
+        this.delegate.deletePermanentGumgaLDModel(this.translator.to(entity));
+    }
+
+    @Override
+    public void deletePermanentGumgaLDModel(ID id) {
+        this.delegate.deletePermanentGumgaLDModel(id);
+    }
+
     /**
      * Salva um Objeto A de acordo com um recurso DTO recebido
      * @param resource Objeto DTO a ser salvo
@@ -104,4 +114,5 @@ public class GumgaGatewayV2<A extends GumgaIdable<ID>, ID extends Serializable, 
     public List<GumgaObjectAndRevision> listOldVersions(ID id) {
         return Collections.emptyList();
     }
+
 }
