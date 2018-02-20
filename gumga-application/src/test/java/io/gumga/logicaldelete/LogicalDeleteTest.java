@@ -102,7 +102,6 @@ public class LogicalDeleteTest {
         bookService.deletePermanentGumgaLDModel(result.get(0));
         result = bookRepository.findAll();
         assertEquals(3, result.size());
-
     }
 
 
