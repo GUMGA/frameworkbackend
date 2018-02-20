@@ -6,7 +6,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * Representa dados do do usuário. Útil para armazenar configurações específicas
+ * Representa dados do usuário. Útil para armazenar configurações específicas
  * do usuário, como consultas, parâmetros, etc..
  *
  * @author munif

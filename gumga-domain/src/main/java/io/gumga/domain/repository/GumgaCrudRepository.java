@@ -36,7 +36,7 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
     /**
      * Faz pesquisa baseado no hql que foi passado como parametro, nos parametros passados para filtrar e no numero maximo de retorno de dados e a posição inicial dos dados.
      *
-     * @param hql
+     * @param hql HQL
      * @param params a chave do Map é o parametro passado no hql e o valor do Map é o valor a ser pesquisado
      * @return os dados do hql
      */
@@ -55,26 +55,25 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
 
     /**
      * Retornar as versões anteriores das entidades marcadas pelas auditoria
-     * @param id
+     * @param id Id
      * @return versões anteriores das entidades marcadas pelas auditoria
      */
     List<GumgaObjectAndRevision> listOldVersions(ID id);
 
     /**
      * Faz uma pesquisa no banco baseado na entidade que está tipada na interface @{@link GumgaCrudRepository}
-     * @param selectQueryWithoutWhere
-     * @param countObjt
-     * @param ordenationId
-     * @param whereQuery
-     * @param <A>
+     * @param selectQueryWithoutWhere selectQueryWithoutWhere
+     * @param countObjt countObjt
+     * @param ordenationId ordenationId
+     * @param whereQuery whereQuery
+     * @param <A> <A>
      * @return resultados da busca
      */
     <A> SearchResult<A> advancedSearch(String selectQueryWithoutWhere, String countObjt, String ordenationId, QueryObject whereQuery);
 
     /**
-     *
-     * @param clazz
-     * @param id
+     * @param clazz Classe
+     * @param id Id
      * @return resultado da pesquisa
      */
     Object genericFindOne(Class clazz, Object id);

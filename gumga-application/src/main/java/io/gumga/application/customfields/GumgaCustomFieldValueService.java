@@ -7,6 +7,9 @@ import io.gumga.domain.customfields.GumgaCustomFieldValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Classe para manipulação de valores do {@link GumgaCustomField}
+ */
 @Service
 public class GumgaCustomFieldValueService extends GumgaService<GumgaCustomFieldValue, Long> {
 
@@ -18,10 +21,21 @@ public class GumgaCustomFieldValueService extends GumgaService<GumgaCustomFieldV
         this.repository = repository;
     }
 
+    /**
+     * Busca valor do campo customizado no objeto
+     * @param cf Campo customizado
+     * @param obj Objeto que contenha o campo customizado
+     * @return
+     */
     Object getValue(GumgaCustomField cf, GumgaModel obj) {
         return repository.findByFieldAndGumgaModelId(cf, (Long) obj.getId());
     }
 
+    /**
+     * Salva valor no campo customizado do objeto
+     * @param newValue Novo valor para o campo customizado
+     * @return
+     */
     @Override
     public GumgaCustomFieldValue save(GumgaCustomFieldValue newValue) {
         GumgaCustomFieldValue oldValue = repository.findByFieldAndGumgaModelId(newValue.getField(), newValue.getGumgaModelId());

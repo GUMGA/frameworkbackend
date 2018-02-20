@@ -48,22 +48,43 @@ public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateE
         //É necessario deixar um construtor default
     }
 
+    /**
+     * Construtor
+     * @param templateFolder Diretório dos templates
+     * @param defaultEncoding Codificação padrão dos templates
+     */
     public GumgaFreemarkerTemplateEngineService(String templateFolder,
             String defaultEncoding) {
         this.templateFolder = templateFolder;
         this.defaultEncoding = defaultEncoding;
     }
 
+    /**
+     * Configura diretório dos templates
+     * @param folder The folder where the templates are located
+     */
     @Override
     public void setTemplateFolder(String folder) {
         templateFolder = folder;
     }
 
+    /**
+     * Configura codificação padrão
+     * @param encoding The encoding of the templates like UTF-8 and etc.
+     */
     @Override
     public void setDefaultEncoding(String encoding) {
         defaultEncoding = encoding;
     }
 
+    /**
+     * Substitui variáveis de template pelos valores granvando em um arquivo
+     * @param values The values to be merged with the template
+     * @param template The template to be parsed
+     * @param out The object responsible to save the output file. It may be an
+     * OutputStream for example.
+     * @throws TemplateEngineException
+     */
     @Override
     public void parse(Map<String, Object> values, String template, Writer out) throws TemplateEngineException {
         try {
@@ -77,6 +98,13 @@ public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateE
         }
     }
 
+    /**
+     * Substitui variáveis de template pelos valores
+     * @param values The values to be merged with the template
+     * @param template The template to be parsed
+     * @return
+     * @throws TemplateEngineException
+     */
     @Override
     public String parse(Map<String, Object> values, String template) throws TemplateEngineException {
         StringWriter out = new StringWriter();
@@ -84,6 +112,10 @@ public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateE
         return out.toString();
     }
 
+    /**
+     * Inicializa as configurações iniciais do Freemaker
+     * @throws TemplateEngineException
+     */
     @Override
     public void init() throws TemplateEngineException {
         if (cfg == null) {
@@ -114,6 +146,9 @@ public class GumgaFreemarkerTemplateEngineService extends GumgaAbstractTemplateE
         }
     }
 
+    /**
+     * Inicializa as configurações iniciais do Freemaker estaticamente
+     */
     private static synchronized void initStatic() {
         cfg = new Configuration(Configuration.VERSION_2_3_22);
     }

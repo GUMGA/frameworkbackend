@@ -18,6 +18,9 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 import org.springframework.web.client.RestClientException;
 
+/**
+ * Classe com métodos para integração Saas
+ */
 @RestController
 @RequestMapping(path = "/api/proxy/security-saas")
 public class GumgaSoftwareSaaS {
@@ -38,6 +41,11 @@ public class GumgaSoftwareSaaS {
         return restTemplate;
     }
 
+    /**
+     * Registra instância
+     * @param gumgaSaaS {@link GumgaSaaS}
+     * @return Instância
+     */
     @RequestMapping(value = "/instance", method = RequestMethod.POST)
     public ResponseEntity registerSaaS(@RequestBody GumgaSaaS gumgaSaaS) {
         return post("/instance", gumgaSaaS);
@@ -50,7 +58,7 @@ public class GumgaSoftwareSaaS {
             String url = getBaseUrl().concat(uri);
             return this.restTemplate.exchange(url, HttpMethod.POST, requestEntity, Map.class);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -63,7 +71,7 @@ public class GumgaSoftwareSaaS {
             headers.set("gumgaToken", GumgaThreadScope.gumgaToken.get());
             return new HttpEntity(gumgaSaaS, headers);
         } catch (Exception e) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", e.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", e.getMessage()).exception();
         }
     }
 }

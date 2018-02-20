@@ -1,12 +1,15 @@
 package io.gumga.alldatabases;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.expr.BooleanExpression;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
+import io.gumga.core.SearchResult;
 import io.gumga.core.gquery.ComparisonOperator;
 import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.CriteriaField;
 import io.gumga.core.gquery.GQuery;
+import io.gumga.domain.domains.GumgaOi;
 import io.gumga.testmodel.*;
 
 import java.math.BigDecimal;
@@ -14,11 +17,16 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import io.gumga.testmodel.Employee;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 public abstract class AllDatabasesTest {
@@ -28,9 +36,16 @@ public abstract class AllDatabasesTest {
     @Autowired
     protected CompanyRepository repository;
 
-
     @Autowired
     protected PersonRepository personRepository;
+
+    @Autowired
+    private StockRepository stockRepository;
+    @Autowired
+    private MarketPlaceRepository marketPlaceRepository;
+
+    @Autowired
+    private CarRepository carRepository;
 
     @Before
     @Transactional
@@ -51,10 +66,48 @@ public abstract class AllDatabasesTest {
         service.save(new Company("CaRlOs", dia.getTime(), (false)));
 
         dia.set(1900, 8, 18, 11, 0, 0);
-        service.save(new Company("AMÁRILDO SANTOS", dia.getTime(), (false)));
+        service.save(new Company("AMÁRILDO SANTOS'", dia.getTime(), (false)));
 
         this.personRepository.saveAndFlush(new Employee("João"));
-        this.personRepository.saveAndFlush(new Supplier("Marcio"));
+        this.personRepository.saveAndFlush(new Supplier("Marcio' Roberto's"));
+
+
+        GumgaThreadScope.organizationCode.set("1");
+        Map<String, String> values = new HashMap<>();
+        values.put("mp_key", "teste");
+
+        Stock stock = new Stock();
+        stock.setNome("stock");
+        this.stockRepository.save(stock);
+
+        MarketPlace marketPlace = new MarketPlace();
+        marketPlace.setNome("AWS");
+        marketPlace.setFields(values);
+        marketPlace.setStock(stock);
+        this.marketPlaceRepository.save(marketPlace);
+
+        List<MarketPlace> marketPlaceList = new ArrayList<>();
+        marketPlaceList.add(marketPlace);
+
+
+        stock.setMarketPlaces(marketPlaceList);
+        this.stockRepository.save(stock);
+
+
+        GumgaThreadScope.organizationCode.set("1");
+        carRepository.save(new Car("vermelho"));
+        carRepository.save(new Car("azul"));
+        carRepository.save(new Car("branco"));
+        carRepository.save(new Car("verde"));
+        carRepository.save(new Car("marrom"));
+        carRepository.save(new Car("ciano"));
+        carRepository.save(new Car("amarelo"));
+        carRepository.save(new Car("bege"));
+
+        GumgaThreadScope.organizationCode.set("2");
+        carRepository.save(new Car("vermelho"));
+        carRepository.save(new Car("azul"));
+        carRepository.save(new Car("branco"));
     }
 
     @Test
@@ -521,5 +574,134 @@ public abstract class AllDatabasesTest {
         List<Person> all = this.personRepository.findAll(gQuery);
 
         assertEquals(0l, all.size());
+    }
+
+    @Test
+    @Transactional
+    public void testeStringComAspasSimples() {
+        GQuery gQuery = new GQuery(new Criteria("obj.name", ComparisonOperator.CONTAINS, "Marcio' Roberto's"));
+        List<Person> all = this.personRepository.findAll(gQuery);
+
+        assertEquals(1l, all.size());
+    }
+
+    @Test
+    @Transactional
+    public void testeStringComAspasSimples2() {
+        GumgaThreadScope.organizationCode.set("1.");
+        QueryObject query = new QueryObject();
+        query.setSearchFields("name");
+        query.setQ("AMÁRILDO SANTOS'");
+        List<Company> result = service.pesquisa(query).getValues();
+        assertEquals(1, result.size());
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void deleteAllWithTenancy() {
+        Company company1 = new Company();
+        company1.setOi(new GumgaOi("10."));
+        Company company2 = new Company();
+        company2.setOi(new GumgaOi("10.2."));
+        Company company3 = new Company();
+        company3.setOi(new GumgaOi("10.3."));
+        Company company4 = new Company();
+        company4.setOi(new GumgaOi("10.2."));
+        Company company5 = new Company();
+        company5.setOi(new GumgaOi("11."));
+
+        this.repository.save(company1);
+        this.repository.save(company2);
+        this.repository.save(company3);
+        this.repository.save(company4);
+        this.repository.save(company5);
+
+
+        GumgaThreadScope.organizationCode.set("10.2.");
+        this.repository.deleteAll();
+        GumgaThreadScope.organizationCode.set("10.");
+        assertEquals(2, this.repository.findAll().size());
+    }
+
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydslComMapPath() {
+        GumgaThreadScope.organizationCode.set("1");
+        BooleanExpression contains = QStock.stock.marketPlaces.any().fields.contains("mp_key", "teste");
+        Stock one = this.stockRepository.findOne(contains);
+        assertNotNull(one);
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydslComMapPath2() {
+        GumgaThreadScope.organizationCode.set("1");
+        BooleanExpression contains = QStock.stock.marketPlaces.any().fields.contains("mp_key", "teste");
+        contains.and(QStock.stock.marketPlaces.any().nome.eq("AWS"));
+        Stock one = this.stockRepository.findOne(contains);
+        assertNotNull(one);
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydslComMapPath3() {
+        GumgaThreadScope.organizationCode.set("1");
+        Stock one = this.stockRepository.findOne(QStock.stock.marketPlaces.any().nome.eq("AWS"));
+        assertNotNull(one);
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydsl1() {
+        GumgaThreadScope.organizationCode.set("1");
+        Stock one = this.stockRepository.findOne(QStock.stock.nome.eq("stock"));
+        assertNotNull(one);
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydsl2() {
+        GumgaThreadScope.organizationCode.set("2");
+        assertNull(carRepository.findOne(QCar.car.color.eq("bege")));
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydsl3() {
+        BooleanExpression expression = QCar.car.color.startsWith("ver");
+
+        GumgaThreadScope.organizationCode.set("1");
+        assertEquals(2, carRepository.findAll(query -> query.where(expression), QCar.car.color).size());
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydsl4() {
+        GumgaThreadScope.organizationCode.set("1");
+        assertEquals(2, carRepository.findAll(QCar.car.color.startsWith("ver")).size());
+    }
+
+    @Rollback
+    @Test
+    @Transactional
+    public void querydsl5() {
+        BooleanExpression predicate = QCar.car.color.length().goe(5);
+
+        GumgaThreadScope.organizationCode.set("1");
+        Pageable page = new PageRequest(0, 4);
+        SearchResult<String> result = carRepository.search(predicate, page, QCar.car.color);
+        assertEquals(4, result.getPageSize());
+        assertEquals(0, result.getStart());
+        assertEquals(Long.valueOf(6), result.getCount());
+
     }
 }

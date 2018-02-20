@@ -5,10 +5,22 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Junção utilizada no {@link GQuery}
+ */
 public class Join implements Serializable {
 
+    /**
+     * Tipo de Junção
+     */
     private JoinType type;
+    /**
+     * Tabela
+     */
     private String table;
+    /**
+     * Critérios de Junção
+     */
     private List<CriteriaJoin> subQuerys = new LinkedList<>();
 
     protected Join(){}

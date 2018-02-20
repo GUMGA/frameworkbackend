@@ -26,6 +26,11 @@ public class GumgaWebsiteYoutubeURL implements GumgaYoutubeURL {
         this.url = url;
     }
 
+    /**
+     * Identificador do vídeo pela URL
+     * @param url url do vídeo
+     * @return Identificador do vídeo
+     */
     public static Optional<String> getVideoIdFromUrl(URL url) {
         try {
             String[] queryParts = url.getQuery().split("&");

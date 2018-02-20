@@ -72,6 +72,10 @@ public class QueryObject {
      * Se true, busca apenas os inativos
      */
     private boolean inactiveSearch = false;
+    /**
+     * Se true, faz a consulta de count na tabela
+     */
+    private boolean searchCount = true;
 
     public boolean isGQuery() {
         return gQuery != null;
@@ -215,4 +219,11 @@ public class QueryObject {
         return "QueryObject{ phonetic=" + phonetic + ", aq=" + aq + ", q=" + q + ", start=" + start + ", pageSize=" + pageSize + ", sortField=" + sortField + ", sortDir=" + sortDir + ", action=" + action + ", searchFields=" + Arrays.asList(searchFields == null ? Collections.EMPTY_LIST : searchFields) + '}';
     }
 
+    public boolean isSearchCount() {
+        return searchCount;
+    }
+
+    public void setSearchCount(boolean searchCount) {
+        this.searchCount = searchCount;
+    }
 }

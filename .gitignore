@@ -38,17 +38,8 @@ nbdist/
 rebel.xml
 nano.save
 nb_jr_remoting.cfg
-/gumga-presentation/target/
-/gumga-application/target/
-/gumga-core/target/
-/gumga-domain/target/
-/gumga-validation/target/
-/gumga-application/nbproject/
+**/target
+**/target/**
 /target
-
-/gumga-security/nbproject/
-/gumga-core/nbproject/
-/gumga-domain/nbproject/
-/gumga-reports/target/
-/gumga-reports (copy)/target/
-/gumga-amazon-ses/target/
+**/nbproject
+**/nbproject/**

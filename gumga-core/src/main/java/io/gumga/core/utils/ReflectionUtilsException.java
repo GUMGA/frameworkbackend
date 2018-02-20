@@ -6,7 +6,7 @@
 package io.gumga.core.utils;
 
 /**
- *
+ * Exception thrown when the occurs problems in ReflectionUtils
  * @author munif
  */
 public class ReflectionUtilsException extends RuntimeException {

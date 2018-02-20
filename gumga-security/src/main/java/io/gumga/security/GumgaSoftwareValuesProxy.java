@@ -69,7 +69,7 @@ public class GumgaSoftwareValuesProxy {
             Map response = getRestTemplate().postForObject(url, model, Map.class);
             return new RestResponse(response);
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 
@@ -86,7 +86,7 @@ public class GumgaSoftwareValuesProxy {
             }
             return response;
         } catch (RestClientException restClientException) {
-            throw new ProxyProblemResponse("Problema na comunicação com o sergurança.", restClientException.getMessage()).exception();
+            throw new ProxyProblemResponse("Problema na comunicação com o segurança.", restClientException.getMessage()).exception();
         }
     }
 

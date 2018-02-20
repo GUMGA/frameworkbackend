@@ -1,6 +1,7 @@
 package io.gumga.core;
 
 /**
+ * Classe utilizada no registro de usuário no facebook
  * Created by mateus on 25/08/16.
  */
 public class FacebookRegister {

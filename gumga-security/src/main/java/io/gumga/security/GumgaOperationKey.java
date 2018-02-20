@@ -9,7 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- *
+ * Interface com Chaves de operações
  * @author munif
  */
 @Retention(RetentionPolicy.RUNTIME)

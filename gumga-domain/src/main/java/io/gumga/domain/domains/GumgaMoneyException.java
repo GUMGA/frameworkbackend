@@ -6,7 +6,7 @@
 package io.gumga.domain.domains;
 
 /**
- *
+ * Exceção utilizada quando houver problemas com unidades monetárias
  * @author munif
  */
 class GumgaMoneyException extends RuntimeException {

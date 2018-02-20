@@ -13,6 +13,7 @@ import java.lang.annotation.*;
 @Primary
 @Scope("prototype")
 @Component
+@Deprecated
 public @interface GumgaFinder {
 
 }

@@ -13,9 +13,9 @@ class GumgaStringList {
         }
         if (!contains(base, value)) {
             String toReturn = base + value + ",";
-            if (toReturn.length() > max) {
-                throw new MaximumSharesExceededException("Capacidade de compartilhamentos excedida.");
-            }
+//            if (toReturn.length() > max) {
+//                throw new MaximumSharesExceededException("Capacidade de compartilhamentos excedida.");
+//            }
             return toReturn;
         }
         return base;

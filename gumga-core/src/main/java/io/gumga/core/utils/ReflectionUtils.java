@@ -121,8 +121,8 @@ public class ReflectionUtils {
     /**
      * Atribui um valor a o atributo ID por reflexão
      *
-     * @param object
-     * @param id
+     * @param object Objeto
+     * @param id Identificador
      */
     public static void setId(Object object, Object id) {
         try {
@@ -137,8 +137,8 @@ public class ReflectionUtils {
     /**
      * Retorna um mapa com os valores dos atributos que estão em um objetos
      *
-     * @param fields 
-     * @param obj
+     * @param fields campos
+     * @param obj Objeto
      */
       public static Map<String, Object> objectFieldsToMap(String[] fields, Object obj) {
         Map<String, Object> row = new HashMap<>();

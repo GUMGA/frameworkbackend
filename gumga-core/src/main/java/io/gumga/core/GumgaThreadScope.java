@@ -68,7 +68,7 @@ public class GumgaThreadScope {
      * perfis do usuario que está logado
      */
     public static final ThreadLocal<Map> authorizationResponse = new ThreadLocal<>();
-    /*
+    /**
         id do usuario que foi reconhecido
      */
     public static final ThreadLocal<String> userRecognition = new ThreadLocal<>();

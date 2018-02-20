@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * API para acesso e busca de atributos diversos
  * @author munif
  */
 @RestController
@@ -28,10 +28,19 @@ public class MultiSearchApi {
     @Autowired
     private GumgaUntypedRepository gur;
 
+    /**
+     * Injeta o módulo de busca para objetos não tipados
+     * @param gur Objeto GumgaUntypedRepository {@link GumgaUntypedRepository}
+     */
     public void setGur(GumgaUntypedRepository gur) {
         this.gur = gur;
     }
 
+    /**
+     * Faz uma busca nos atributos anotados
+     * @param text String com o conteúdo a ser pesquisado
+     * @return Lista com os resultados de atributos compatíveis ao texto de entrada
+     */
     @Transactional
     @ApiOperation(value = "search", notes = "Faz uma pesquisa múltipla com o texto informado.")
     @RequestMapping(value="search/{text}",method = RequestMethod.GET)

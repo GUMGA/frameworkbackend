@@ -8,17 +8,20 @@ package io.gumga.application;
 import io.gumga.core.QueryObject;
 
 /**
- *
+ * Classe para criação de QueryObject com busca avançada através de um Query Object com busca simples
  * @author Gyowanny
  */
 public class QueryObjectLikeDecorator {
-
     private QueryObject query;
 
     public QueryObjectLikeDecorator(QueryObject _query) {
         query = _query;
     }
 
+    /**
+     * Constrói o QueryObject
+     * @return QueryObject com busca avançada (Aq)
+     */
     public QueryObject build() {
         if (query.isAdvanced()){
             return query;

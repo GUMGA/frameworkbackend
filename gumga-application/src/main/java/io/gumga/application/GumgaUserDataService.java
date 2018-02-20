@@ -7,6 +7,9 @@ import io.gumga.domain.GumgaUserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Classe para manipulação de informações adicionais de usuários do sistema
+ */
 @Service
 public class GumgaUserDataService extends GumgaService<GumgaUserData, Long> {
 
@@ -24,8 +27,8 @@ public class GumgaUserDataService extends GumgaService<GumgaUserData, Long> {
     }
 
     /**
-     * Encontrar GumgaUserData baseado no atributo key da classe @{@link GumgaUserData}
-     * @param prefix
+     * Encontra GumgaUserData baseado no atributo key da classe {@link GumgaUserData}
+     * @param prefix Chave do atributo que foi criado para o usuário
      * @return dados da pesquisa
      */
     public SearchResult<GumgaUserData> searchByKeyPrefix(String prefix) {
@@ -36,8 +39,8 @@ public class GumgaUserDataService extends GumgaService<GumgaUserData, Long> {
 
     /**
      * Encontrar GumgaUserData baseado no atributo userLogin e key da classe @{@link GumgaUserData}
-     * @param userLogin
-     * @param key
+     * @param userLogin E-mail do usuário
+     * @param key do atributo que foi criado para o usuário
      * @return dados da pesquisa
      */
     public GumgaUserData findByUserLoginAndKey(String userLogin, String key) {

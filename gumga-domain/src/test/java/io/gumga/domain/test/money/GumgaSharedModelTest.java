@@ -26,21 +26,21 @@ public class GumgaSharedModelTest {
         assertEquals(",gumga@gumga.com.br,", shared.getGumgaUsers());
     }
 
-    @Test(expected = MaximumSharesExceededException.class)
-    public void testMaximumUsersSharesExceeded() {
-        TestEntitySharedModel shared = new TestEntitySharedModel();
-        for (int i = 0; i < 1000; i++) {
-            shared.addUser("users" + i + "@gumga.com.br");
-        }
-    }
-
-    @Test(expected = MaximumSharesExceededException.class)
-    public void testMaximumOrganizationsSharesExceeded() {
-        TestEntitySharedModel shared = new TestEntitySharedModel();
-        for (int i = 0; i < 1000; i++) {
-            shared.addOrganization(i+".");
-        }
-    }
+//    @Test(expected = MaximumSharesExceededException.class)
+//    public void testMaximumUsersSharesExceeded() {
+//        TestEntitySharedModel shared = new TestEntitySharedModel();
+//        for (int i = 0; i < 1000; i++) {
+//            shared.addUser("users" + i + "@gumga.com.br");
+//        }
+//    }
+//
+//    @Test(expected = MaximumSharesExceededException.class)
+//    public void testMaximumOrganizationsSharesExceeded() {
+//        TestEntitySharedModel shared = new TestEntitySharedModel();
+//        for (int i = 0; i < 1000; i++) {
+//            shared.addOrganization(i+".");
+//        }
+//    }
 
     @Test
     public void testAddUserWithTwoValues() {

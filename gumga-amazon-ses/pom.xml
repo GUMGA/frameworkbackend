@@ -5,7 +5,8 @@
     <parent>
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
-        <version>2.0.2</version>
+        <version>3.2.0</version>
+
     </parent>
 
     <artifactId>gumga-amazon-ses</artifactId>
@@ -140,6 +141,10 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.9.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
         </dependency>
 
 

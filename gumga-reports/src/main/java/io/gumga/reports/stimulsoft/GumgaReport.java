@@ -2,36 +2,48 @@ package io.gumga.reports.stimulsoft;
 
 import io.gumga.domain.GumgaModel;
 import io.gumga.domain.GumgaMultitenancy;
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 import org.hibernate.envers.Audited;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
+/**
+ * Classe modelo onde será transportado e manipulado dados do stimulsoft
+ */
 @GumgaMultitenancy
 @SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_GUMGAREPORT")
 @Audited
 @Entity
 @Table(name = "gum_rep")
-public class GumgaReport extends GumgaModel<Long> implements Serializable {
+public class GumgaReport extends GumgaModel<Long> implements IGumgaReport, Serializable {
 
+    /**
+     * Nome do relatório
+     */
     private String name;
-    @Column(length = 16 * 1024)
+    /**
+     * JSON do relatório
+     */
+    @Lob
+    @Column(name = "definition")
     private String definition;
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public String getDefinition() {
         return definition;
     }
 
+    @Override
     public void setDefinition(String definition) {
         this.definition = definition;
     }

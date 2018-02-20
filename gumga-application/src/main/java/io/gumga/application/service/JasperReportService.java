@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Classe para gerenciamento de relatórios do JasperReport
  * @author gyowanny
  */
 @Service(value = "reportService")

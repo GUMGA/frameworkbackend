@@ -7,9 +7,94 @@
 
 =======================================
 Framework Backend
+
+3.2.0
+    - As depedências do querydsl foram alteradas para 3.4.0
+
+3.1.0
+   - As depedências do querydsl foram alteradas para 3.6.0
+
+3.0.8
+    - Endpoint proxy para validar se o email já existe no security
+
+3.0.7
+    - findAll e DeleteAll com tenancy.
+    - QueryDsl do GumgaReport e IGumgaReport
+    - Novo endpoint para buscar organizações por token com paginação -> /public/token/v2/organizations/{TOKEN}/?page=&pageSize=
+
+3.0.6
+    - Correção no GQuery com between com datas.
+
+3.0.5
+    - Retirado a verificação de limite de compartilhamento das entidades que utilizam como base as classes GumgaSharedModel e GumgaSharedModelUUID
+    - Novo modulo chamado gumga-freshdesk que facilita a criação de ticket no freshdesk pela aplicação.
+
+3.0.4
+    - Adicionado a rota("/changeorganizationandtoken/{token}/{orgId}") para troca de organização
+
+3.0.3
+    - GumgaCacheRequestFilterV2
+
+3.0.2
+    - Correção no GQuery com distinct
+
+3.0.1
+    - Correção no endpoint(/operationskeys/{software}/{token:.+}) da classe GumgaSecurityProxy. Validar se o valor é diferente de null
+
+3.0.0
+    - O tamanho das colunas gumga_orgs e gumga_users da classe GumgaSharedModel foi aumentado para 4000 caracteres.
+
+2.0.3
+    - QueryObject com a opção de fazer o count na tabela, por padrão ele vem true
+    - GQuery com a opção de utilizar distinct no select, por padrão ele vem false
+
 2.0.2
     - GumgaGateway, GumgaDTOAPI: Deprecated, Utilizar GumgaGatewayV2 e GumgaDTOAPIV2
     - Correção no Criteria ao utilizar between com valores do tipo date
+
+    ------------------------------------- ATENÇÃO ------------------------------------------
+    - Devido a diversas solicitações, foi alterado o tipo da entidade GumgaReport para Lob;
+         * Se você utiliza liquibase, deve-se alterar o tipo da coluna:
+
+           ** MySQL **
+           <changeSet author="liquibase-docs" id="modifyDataType-example">
+               <preConditions onFail="MARK_RAN">
+                   <not>
+                       <columnExists tableName="gum_rep" columnName="definition"></columnExists>
+                   </not>
+               </preConditions>
+               <modifyDataType
+                       columnName="definition"
+                       newDataType="LONGTEXT"
+                       tableName="gum_rep"/>
+           </changeSet>
+
+           ** Oracle **
+            <changeSet author="liquibase-docs" id="modifyDataType-example">
+               <preConditions onFail="MARK_RAN">
+                  <not>
+                      <columnExists tableName="gum_rep" columnName="definition"></columnExists>
+                  </not>
+               </preConditions>
+               <modifyDataType
+                       columnName="definition"
+                       newDataType="CLOB"
+                       tableName="gum_rep"/>
+           </changeSet>
+
+           ** PostgreSql **
+           <changeSet author="liquibase-docs" id="modifyDataType-example">
+              <preConditions onFail="MARK_RAN">
+                  <not>
+                      <columnExists tableName="gum_rep" columnName="definition"></columnExists>
+                  </not>
+              </preConditions>
+              <modifyDataType
+                      columnName="definition"
+                      newDataType="TEXT"
+                      tableName="gum_rep"/>
+           </changeSet>
+    -----------------------------------------------------------------------------------------
 
 2.0.1
     - Correção fetchOne

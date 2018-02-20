@@ -6,7 +6,7 @@
 package io.gumga.core.exception;
 
 /**
- *
+ * Exception thrown when not has multitenancy
  * @author willian
  */
 public class NoMultiTenancyException extends RuntimeException{

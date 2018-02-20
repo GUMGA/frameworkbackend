@@ -34,7 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- *
+ * Classe para a manipulação de documentos CSV e manipulação de campos de objetos
  * @author munif
  */
 public interface CSVGeneratorAPI {
@@ -46,6 +46,11 @@ public interface CSVGeneratorAPI {
 
     GumgaService getGumgaService();
 
+    /**
+     * Gera o resultado da pesquisa em um arquivo CSV a partir de um objeto HttpServletResponse
+     * @param response Objeto HttpServletResponse contendo uma resposta de requisição {@link HttpServletResponse}
+     * @throws IOException
+     */
     @org.springframework.transaction.annotation.Transactional
     @ApiOperation(value = "csv", notes = "Gera resultado da pesquisa em um arquivo CSV.")
     @RequestMapping(value = "/csv", method = RequestMethod.GET)
@@ -65,6 +70,12 @@ public interface CSVGeneratorAPI {
         response.getWriter().write(sb.toString());
     }
 
+    /**
+     * Faz importação de dados a partir de um arquivo CSV
+     * @param csv Objeto MultipartFile contendo um arquivo CSV
+     * @return um objeto SearchResult contendo os dados obtidos {@link SearchResult}
+     * @throws IOException
+     */
     @Transactional
     @ApiOperation(value = "csvupload", notes = "Faz importação via csv.")
     @RequestMapping(method = RequestMethod.POST, value = "/csvupload")
@@ -148,6 +159,12 @@ public interface CSVGeneratorAPI {
         return new SearchResult<>(0, problemas.size(), problemas.size(), problemas);
     }
 
+    /**
+     * Faz a validação de uma importação de dados a partir de um arquivo CSV
+     * @param csv Objeto MultipartFile contendo um arquivo CSV
+     * @return um objeto SearchResult contendo os dados obtidos {@link SearchResult}
+     * @throws IOException
+     */
     @ApiOperation(value = "csvuploadvalidate", notes = "Faz validação da importação via csv.")
     @RequestMapping(method = RequestMethod.POST, value = "/csvuploadvalidate")
     default SearchResult<String> csvUploadValidate(@RequestParam MultipartFile csv) throws IOException {
@@ -229,6 +246,11 @@ public interface CSVGeneratorAPI {
         return new SearchResult<>(0, problemas.size(), problemas.size(), problemas);
     }
 
+    /**
+     * Gera uma string com o nome de todos atributos de uma classe
+     * @param clazz Objeto a ser extraídos os atributos
+     * @return String contendo todos os atributos do Objeto
+     */
     public static String classToCsvTitle(Class clazz) {
         StringBuilder sb = new StringBuilder();
         for (Field f : getAllAtributes(clazz)) {
@@ -240,6 +262,11 @@ public interface CSVGeneratorAPI {
         return sb.toString();
     }
 
+    /**
+     * Gera uma linha no arquivo CSV com os dados de um objeto
+     * @param gm Objeto a ser extraído os parâmetros
+     * @return Objeto StringBuilder contendo os dados do objeto recebido
+     */
     public static StringBuilder objectToCsvLine(Object gm) {
         StringBuilder sb = new StringBuilder();
         for (Field f : getAllAtributes(gm.getClass())) {
@@ -267,6 +294,11 @@ public interface CSVGeneratorAPI {
         return sb;
     }
 
+    /**
+     * Busca o campo id do objeto recebido
+     * @param clazz Objeto a ser buscado o campo id
+     * @return Objeto Field contendo o id
+     */
     public static Field getIdField(Class clazz) {
         for (Field f : getAllAtributes(clazz)) {
             if (f.isAnnotationPresent(Id.class)) {
@@ -276,6 +308,11 @@ public interface CSVGeneratorAPI {
         return null;
     }
 
+    /**
+     * Busca todos os atributos de um objeto
+     * @param clazz Entidade a serem buscados todos os atributos
+     * @return Lista de campos contendo todos os atributos do objeto recebido
+     */
     public static List<Field> getAllAtributes(Class clazz) {
         List<Field> fields = new ArrayList<>();
         Class superClass = clazz.getSuperclass();

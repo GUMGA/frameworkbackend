@@ -1,7 +1,7 @@
 package io.gumga.core;
 
 /**
- *
+ * Marcação do tenancy
  * @author munif
  */
 public enum TenancyPublicMarking {

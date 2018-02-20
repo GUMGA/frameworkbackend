@@ -16,6 +16,9 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Classe para processamento de linguagem natural
+ */
 @Component
 public class GumgaNLP {
     
@@ -27,6 +30,10 @@ public class GumgaNLP {
     private Set<Class<?>> classOfInterest;
     private static final Logger log = LoggerFactory.getLogger(GumgaNLP.class);
 
+    /**
+     * Inicia o uso do processamento de linguagem natural
+     * @param gumgaValues Objeto de configurações
+     */
     @Autowired
     public GumgaNLP(GumgaValues gumgaValues) {
         String basePackage = gumgaValues.getGumgaNLPBasePackage();
@@ -50,6 +57,13 @@ public class GumgaNLP {
         VERBO, SUBSTANTIVO, FIM, ATRIBUTOS, VALOR_ATRIBUTO
     };
 
+    /**
+     * Cria Lista de ocorrências de objetos a serem instânciados
+     * @param text Documento de linguagem natural, exemplo: crie uma casa de cor amarela...
+     * @param instanceVerbs Verbos que serão utilizados para criação das instâncias, exemplo: Criar, Fazer...
+     * @return Lista de objetos instanciados
+     * @throws Exception
+     */
     public List<Object> createObjectsFromDocument(String text, String instanceVerbs) throws Exception {
         List<String> verbs = Arrays.asList(instanceVerbs.split(","));
         Document document = new DocumentImpl();
@@ -107,6 +121,11 @@ public class GumgaNLP {
 
     }
 
+    /**
+     * Mapa de atributos da classe
+     * @param clazz Classe
+     * @return Mapa de atributos
+     */
     private Map<String, Field> mapAllFields(Class clazz) {
         Map<String, Field> toReturn;
         if (clazz.getSuperclass().equals(Object.class)) {
@@ -127,6 +146,10 @@ public class GumgaNLP {
 
     }
 
+    /**
+     * Imprime log da criação de ocorrências NLP
+     * @param document Documento NLP
+     */
     private void print(Document document) {
         StringBuilder output = new StringBuilder();
         for (Sentence sentence : document.getSentences()) {

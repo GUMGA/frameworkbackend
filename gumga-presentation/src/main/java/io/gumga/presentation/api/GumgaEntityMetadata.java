@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Classe para obtenção de metadados de uma determinada entidade
  * @author munif
  */
 public class GumgaEntityMetadata {
@@ -21,6 +21,10 @@ public class GumgaEntityMetadata {
     private String pack;
     private List<GumgaAtributeMetadata> atributes;
 
+    /**
+     * Construtor que obtém os dados pertinentes da entidade recebida como parâmetro
+     * @param clazz Objeto a serem extraídos os metadados
+     */
     public GumgaEntityMetadata(Class clazz) {
         name = clazz.getSimpleName();
         pack = clazz.getCanonicalName().substring(0, clazz.getCanonicalName().lastIndexOf('.'));
@@ -38,14 +42,23 @@ public class GumgaEntityMetadata {
         }
     }
 
+    /**
+     * @return Lista de atributos em metadados da entidade construída
+     */
     public List<GumgaAtributeMetadata> getAtributes() {
         return atributes;
     }
 
+    /**
+     * @return String com o nome da entidade construída
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return String com o pacote da entidade construída
+     */
     public String getPack() {
         return pack;
     }
