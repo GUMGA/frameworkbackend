@@ -12,4 +12,6 @@ public class BookService extends GumgaService<Book, Long> {
         super(repository);
     }
 
+
+
 }

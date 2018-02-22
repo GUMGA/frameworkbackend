@@ -1,5 +1,6 @@
 package io.gumga.logicaldelete;
 
+import io.gumga.alldatabases.AllDatabasesTest;
 import io.gumga.application.SpringConfig;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
@@ -91,5 +92,18 @@ public class LogicalDeleteTest {
         assertEquals(3, result.size());
 
     }
+
+    @Test
+    @Transactional
+    public void removePermanente(){
+        GumgaThreadScope.organizationCode.set("1.");
+        List<Book> result = bookRepository.findAll();
+        assertEquals(4, result.size());
+        bookService.deletePermanentGumgaLDModel(result.get(0));
+        result = bookRepository.findAll();
+        assertEquals(3, result.size());
+    }
+
+
 
 }

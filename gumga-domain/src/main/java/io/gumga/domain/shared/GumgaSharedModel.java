@@ -1,8 +1,6 @@
 package io.gumga.domain.shared;
-
 import io.gumga.domain.GumgaModel;
 import io.gumga.domain.domains.GumgaOi;
-
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;

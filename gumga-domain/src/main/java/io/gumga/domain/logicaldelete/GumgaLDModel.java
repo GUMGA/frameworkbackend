@@ -1,6 +1,7 @@
 package io.gumga.domain.logicaldelete;
 
 import io.gumga.domain.GumgaModel;
+import io.gumga.domain.domains.GumgaOi;
 
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
@@ -20,6 +21,11 @@ public class GumgaLDModel<ID extends Serializable> extends GumgaModel<ID> {
     public GumgaLDModel() {
         super();
         gumgaActive = true;
+    }
+
+    public GumgaLDModel(GumgaOi oi) {
+        super(oi);
+        this.gumgaActive = gumgaActive;
     }
 
     public Boolean getGumgaActive() {

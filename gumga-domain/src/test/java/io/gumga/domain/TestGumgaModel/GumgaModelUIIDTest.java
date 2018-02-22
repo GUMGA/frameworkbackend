@@ -1,6 +1,7 @@
-package io.gumga.domain.test.money;
+package io.gumga.domain.TestGumgaModel;
 
 import io.gumga.core.GumgaThreadScope;
+import io.gumga.domain.TestGumgaModel.TestModel.EntityGumgaModelUUID;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

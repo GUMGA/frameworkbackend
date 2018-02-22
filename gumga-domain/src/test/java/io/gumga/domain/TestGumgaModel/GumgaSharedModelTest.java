@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.gumga.domain.test.money;
+package io.gumga.domain.TestGumgaModel;
 
-import io.gumga.domain.shared.MaximumSharesExceededException;
+import io.gumga.domain.TestGumgaModel.TestModel.TestEntitySharedModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,6 +19,7 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(JUnit4.class)
 public class GumgaSharedModelTest {
+
 
     @Test
     public void testAddUser() {

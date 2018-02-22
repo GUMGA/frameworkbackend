@@ -54,6 +54,25 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
     }
 
     /**
+     * Deleta objeto marcado com remoção lógica permanentemente de acordo com o id recebido
+     * {@code 200 OK}.
+     * @see <a href="http://tools.ietf.org/html/rfc7231#section-6.3.1">HTTP/1.1: Semantics and Content, section 6.3.1</a>
+     * @param id Id do objeto a ser deletado
+     * @return Objeto RestResponse contendo a mensagem de Entidade Deletada
+     */
+    @GumgaSwagger
+    @Transactional
+    @ResponseStatus(value = HttpStatus.OK)
+    @ApiOperation(value = "deletePermanentGumgaLDModel", notes = "Deleta objeto de exclusão lógica permanentemente com o id correspondente.")
+    @RequestMapping(value = "/{id}/permanent", method = RequestMethod.DELETE)
+    public RestResponse<T> deletePermanentGumgaLDModel(@PathVariable ID id) {
+        T entity = service.view(id);
+        service.deletePermanentGumgaLDModel(id);
+        return new RestResponse<>(getEntityDeletedMessage(entity));
+    }
+
+
+    /**
      * Deleta uma série de objetos de acordo com os id's recebidos
      * {@code 200 OK}.
      * @see <a href="http://tools.ietf.org/html/rfc7231#section-6.3.1">HTTP/1.1: Semantics and Content, section 6.3.1</a>
