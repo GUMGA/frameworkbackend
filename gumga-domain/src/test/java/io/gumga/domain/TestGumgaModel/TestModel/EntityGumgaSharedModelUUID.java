@@ -1,4 +1,4 @@
-package io.gumga.domain.test.money;
+package io.gumga.domain.TestGumgaModel.TestModel;
 
 import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.GumgaSharedModelUUID;

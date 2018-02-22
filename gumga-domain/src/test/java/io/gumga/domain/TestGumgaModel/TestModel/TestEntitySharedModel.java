@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.gumga.domain.test.money;
+package io.gumga.domain.TestGumgaModel.TestModel;
 
 import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.shared.GumgaSharedModel;

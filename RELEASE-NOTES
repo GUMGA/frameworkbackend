@@ -8,6 +8,13 @@
 =======================================
 Framework Backend
 
+3.2.3
+    - Adicionada a classe de modelagem GumgaSharedLDModel
+    - Foram criados testes de compartilhamento para todas as classes de modelagem "Shared"
+
+3.2.2
+    - Corrigido a busca de entidades que utilizam remoção lógica (GumgaLDModel)
+
 3.2.1
     - Na GumgaSecurityProxy foi adiciona uma nova rota "/lostsoftwarepassword/{login:.+}" para que você não precise informa o software na URL.
 

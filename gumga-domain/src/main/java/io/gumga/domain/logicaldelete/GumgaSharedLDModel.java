@@ -1,6 +1,7 @@
 package io.gumga.domain.logicaldelete;
-
+import io.gumga.domain.GumgaModel;
 import io.gumga.domain.domains.GumgaOi;
+import io.gumga.domain.shared.GumgaSharedModel;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -9,69 +10,38 @@ import java.io.Serializable;
 /**
  * Classe que possibilita o compartilhamento de registro entre organizações e usuários
  * e que implementa a exclusão lógica
- * @author munif, mateus, felipe, wdouglascosta
  * @param <ID>
  */
 @MappedSuperclass
-public class GumgaSharedLDModel<ID extends Serializable> extends GumgaLDModel<ID> {
+public class GumgaSharedLDModel<ID extends Serializable> extends GumgaSharedModel<ID> {
     public static final int MAX_LENGTH = 4000;
     public static final String GLOBAL = "GLOBAL.";
+
     /**
-     * Organizações
+     * Logical State
      */
-    @Column(name = "gumga_orgs",length = MAX_LENGTH)
-    private String gumgaOrganizations;
-    /**
-     * Usuários
-     */
-    @Column(name = "gumga_users",length = MAX_LENGTH)
-    private String gumgaUsers;
+    @Column(name = "gumga_active")
+    protected Boolean gumgaActive;
 
     public GumgaSharedLDModel() {
-        init();
+        this.gumgaActive = true;
     }
 
     public GumgaSharedLDModel(GumgaOi oi) {
         super(oi);
-        init();
+        this.gumgaActive = true;
+
     }
 
-    public String getGumgaOrganizations() {
-        return gumgaOrganizations;
+    public Boolean getGumgaActive() {
+        return gumgaActive;
     }
 
-    public String getGumgaUsers() {
-        return gumgaUsers;
+    public void setGumgaActive(Boolean gumgaActive) {
+        this.gumgaActive = gumgaActive;
     }
 
-    private final void init() {
-        gumgaOrganizations = ",";
-        gumgaUsers = ",";
-    }
 
-    public void addOrganization(String oi) {
-        gumgaOrganizations = io.gumga.domain.logicaldelete.StringList.add(gumgaOrganizations, oi, MAX_LENGTH);
-    }
-
-    public void addUser(String login) {
-        gumgaUsers = io.gumga.domain.logicaldelete.StringList.add(gumgaUsers, login, MAX_LENGTH);
-    }
-
-    public void removeOrganization(String oi) {
-        gumgaOrganizations = io.gumga.domain.logicaldelete.StringList.remove(gumgaOrganizations, oi);
-    }
-
-    public void removeUser(String login) {
-        gumgaUsers = io.gumga.domain.logicaldelete.StringList.remove(gumgaUsers, login);
-    }
-
-    public void removeAllOrganization() {
-        gumgaOrganizations = io.gumga.domain.logicaldelete.StringList.removeAll();
-    }
-
-    public void removeAllUser() {
-        gumgaUsers = io.gumga.domain.logicaldelete.StringList.removeAll();
-    }
 
 }
 
