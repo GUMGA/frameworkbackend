@@ -6,16 +6,17 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Classe com métodos para manipular filtro das requisições com cache
  */
 @Component
 public class GumgaCacheRequestFilterV2Repository {
-    private final Map<String, Map<String, Object>> cache;
+    private final ConcurrentHashMap<String, ConcurrentHashMap<String, Object>> cache;
 
     public GumgaCacheRequestFilterV2Repository() {
-        this.cache = new HashMap<>();
+        this.cache = new ConcurrentHashMap<>();
     }
 
     /**
@@ -23,7 +24,7 @@ public class GumgaCacheRequestFilterV2Repository {
      * @param token Token
      * @param data Dados
      */
-    public void add(String token, Map<String, Object> data) {
+    public void add(String token, ConcurrentHashMap<String, Object> data) {
         if(!StringUtils.isEmpty(token)) {
             cache.put(token, data);
         }
@@ -47,7 +48,7 @@ public class GumgaCacheRequestFilterV2Repository {
      */
     public Boolean isValid(String token, Long seconds) {
         if(!StringUtils.isEmpty(token)) {
-            Map<String, Object> result = cache.get(token);
+            ConcurrentHashMap<String, Object> result = cache.get(token);
             return result != null && result.containsKey("created") && ((LocalDateTime)result.get("created")).isAfter(LocalDateTime.now().minusSeconds(seconds));
         }
         return Boolean.FALSE;
@@ -58,7 +59,7 @@ public class GumgaCacheRequestFilterV2Repository {
      * @param token Token
      * @return Dados do token
      */
-    public Map<String, Object> getData(String token) {
+    public ConcurrentHashMap<String, Object> getData(String token) {
         return cache.get(token);
     }
 }
