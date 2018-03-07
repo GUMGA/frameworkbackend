@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Filtro das requisições
@@ -45,7 +46,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
     @Autowired(required = false)
     private ApiOperationTranslator aot;
-    private  Map<String, Object> data;
+    private ConcurrentHashMap<String, Object> data;
 
     private GumgaCacheRequestFilterV2Repository requestFilterV2Repository;
 
@@ -77,7 +78,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
         String errorResponse = GumgaSecurityCode.SECURITY_INTERNAL_ERROR.toString();
         AuthorizationResponseV2 ar=new AuthorizationResponseV2();
         String operationKey = "NOOP";
-        data = new HashMap<>();
+        data = new ConcurrentHashMap<>();
         data.put("created", LocalDateTime.now());
         try {
             GumgaThreadScope.userRecognition.set(request.getHeader("userRecognition"));
@@ -218,7 +219,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
     }
 
 
-    protected Map<String, Object> getData() {
+    protected ConcurrentHashMap<String, Object> getData() {
         return data;
     }
 

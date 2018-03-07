@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Filtro das requisições com cache
@@ -66,12 +67,14 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
         }
 
         if(repository.isValid(token, tokenDuration)) {
-            Map<String, Object> data = repository.getData(token);
+            ConcurrentHashMap<String, Object> data = repository.getData(token);
             data.put("userRecognition", request.getHeader("userRecognition"));
             setGumgaThreadScope(data);
 //            log.info("Pegou do cache a autorização!");
             return true;
         }
+
+        repository.remove(token);
 
         return callSecurity(request, response, o, token, Boolean.TRUE);
     }
@@ -80,7 +83,7 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
 //        log.info("Não pegou do cache a autorização!");
         boolean result = super.preHandle(request, response, o);
         if(saveToken && result && !StringUtils.isEmpty(token)) {
-            Map<String, Object> data = getData();
+            ConcurrentHashMap<String, Object> data = getData();
             repository.add(token, data);
             setGumgaThreadScope(data);
         }
