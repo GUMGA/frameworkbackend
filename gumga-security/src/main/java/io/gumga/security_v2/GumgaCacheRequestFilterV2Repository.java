@@ -62,4 +62,12 @@ public class GumgaCacheRequestFilterV2Repository {
     public ConcurrentHashMap<String, Object> getData(String token) {
         return cache.get(token);
     }
+
+    /**
+     * Dados do cache
+     * @return Dados do cache
+     */
+    public ConcurrentHashMap<String, ConcurrentHashMap<String, Object>> getCache() {
+        return this.cache;
+    }
 }
