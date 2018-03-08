@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+3.2.8
+    - NPE GumgaRequestFilterV2
+
 3.2.7
     - Implementados os metodos deletePermanentGumgaLDModel,deletePermanentGumgaLDModel na classe GumgaGateway
 
