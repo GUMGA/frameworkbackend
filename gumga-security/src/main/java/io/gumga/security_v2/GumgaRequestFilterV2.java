@@ -154,16 +154,37 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
 
 
-            data.put("gumgaToken", token);
-            data.put("login", ar.getLogin());
-            data.put("organization", ar.getOrganization());
-            data.put("organizationCode", ar.getOrganizationCode());
-            data.put("organizationId", ar.getOrganizationId());
-            data.put("authorizationResponse", authorizatonResponse);
-            data.put("softwareName", softwareId);
-            data.put("instanceOi", ar.getInstanceOi());
+            if(!StringUtils.isEmpty(token)) {
+                data.put("gumgaToken", token);
+            }
 
+            if(!StringUtils.isEmpty(ar.getLogin())) {
+                data.put("login", ar.getLogin());
+            }
 
+            if(!StringUtils.isEmpty(ar.getOrganization())) {
+                data.put("organization", ar.getOrganization());
+            }
+
+            if(!StringUtils.isEmpty(ar.getOrganizationCode())) {
+                data.put("organizationCode", ar.getOrganizationCode());
+            }
+
+            if(ar.getOrganizationId() != null) {
+                data.put("organizationId", ar.getOrganizationId());
+            }
+
+            if(authorizatonResponse != null) {
+                data.put("authorizationResponse", authorizatonResponse);
+            }
+
+            if(!StringUtils.isEmpty(softwareId)) {
+                data.put("softwareName", softwareId);
+            }
+
+            if(!StringUtils.isEmpty(ar.getInstanceOi())) {
+                data.put("instanceOi", ar.getInstanceOi());
+            }
 
             saveLog(ar, request, operationKey, endPoint, method, ar.isAllowed());
             if (ar.isAllowed()) {
