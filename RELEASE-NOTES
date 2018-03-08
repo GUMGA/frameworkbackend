@@ -9,6 +9,7 @@
 Framework Backend
 3.2.6
     - NPE GumgaRequestFilterV2
+
 3.2.5
     - Obter os dados do cache da classe GumgaCacheRequestFilterV2Repository
 
