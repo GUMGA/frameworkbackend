@@ -60,4 +60,14 @@ public abstract class GumgaGateway<A extends GumgaIdable<ID>, ID extends Seriali
         return Collections.EMPTY_LIST;
     }
 
+    @Override
+    public void deletePermanentGumgaLDModel(DTO entity) {
+        delegate.deletePermanentGumgaLDModel(translator.to(entity));
+    }
+
+    @Override
+    public void deletePermanentGumgaLDModel(ID id) {
+        delegate.deletePermanentGumgaLDModel(id);
+    }
+
 }
