@@ -82,7 +82,12 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
         data.put("created", LocalDateTime.now());
         try {
             GumgaThreadScope.userRecognition.set(request.getHeader("userRecognition"));
-            data.put("userRecognition", request.getHeader("userRecognition"));
+
+            String userRecognition = request.getHeader("userRecognition");
+            if(!StringUtils.isEmpty(userRecognition)) {
+                data.put("userRecognition", userRecognition);
+            }
+
             token = request.getHeader("gumgaToken");
             if (token == null) {
                 token = request.getParameter("gumgaToken");
