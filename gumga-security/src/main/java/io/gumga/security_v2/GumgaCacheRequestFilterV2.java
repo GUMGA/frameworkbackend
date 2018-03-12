@@ -26,16 +26,19 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
     private GumgaCacheRequestFilterV2Repository repository;
     private Long tokenDuration;
     private List<String> endpoints = new ArrayList<>();
+    public static Boolean CACHE_IN_USE = Boolean.FALSE;
 
     public GumgaCacheRequestFilterV2(String software, Long tokenDuration) {
         super(software);
         this.tokenDuration = tokenDuration;
+        CACHE_IN_USE = Boolean.TRUE;
     }
 
     public GumgaCacheRequestFilterV2(String software, Long tokenDuration, List<String> endpoints) {
         super(software);
         this.tokenDuration = tokenDuration;
         this.endpoints = endpoints;
+        CACHE_IN_USE = Boolean.TRUE;
     }
 
     private Boolean ignoreCache(String path) {
@@ -68,7 +71,10 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
 
         if(repository.isValid(token, tokenDuration)) {
             ConcurrentHashMap<String, Object> data = repository.getData(token);
-            data.put("userRecognition", request.getHeader("userRecognition"));
+            String userRecognition = request.getHeader("userRecognition");
+            if(!StringUtils.isEmpty(userRecognition)) {
+                data.put("userRecognition", userRecognition);
+            }
             setGumgaThreadScope(data);
 //            log.info("Pegou do cache a autorização!");
             return true;
@@ -83,8 +89,7 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
 //        log.info("Não pegou do cache a autorização!");
         boolean result = super.preHandle(request, response, o);
         if(saveToken && result && !StringUtils.isEmpty(token)) {
-            ConcurrentHashMap<String, Object> data = getData();
-            repository.add(token, data);
+            ConcurrentHashMap<String, Object> data = repository.getData(token);
             setGumgaThreadScope(data);
         }
         return result;

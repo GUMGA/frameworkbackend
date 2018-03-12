@@ -46,8 +46,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
     @Autowired(required = false)
     private ApiOperationTranslator aot;
-    private ConcurrentHashMap<String, Object> data;
-
+    @Autowired
     private GumgaCacheRequestFilterV2Repository requestFilterV2Repository;
 
     public void setAot(ApiOperationTranslator aot) {
@@ -78,7 +77,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
         String errorResponse = GumgaSecurityCode.SECURITY_INTERNAL_ERROR.toString();
         AuthorizationResponseV2 ar=new AuthorizationResponseV2();
         String operationKey = "NOOP";
-        data = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String, Object> data = new ConcurrentHashMap<>();
         data.put("created", LocalDateTime.now());
         try {
             GumgaThreadScope.userRecognition.set(request.getHeader("userRecognition"));
@@ -188,6 +187,9 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
             saveLog(ar, request, operationKey, endPoint, method, ar.isAllowed());
             if (ar.isAllowed()) {
+                if(GumgaCacheRequestFilterV2.CACHE_IN_USE) {
+                    requestFilterV2Repository.add(token, data);
+                }
                 return true;
             } else {
                 errorMessage = ar.toString();
@@ -245,9 +247,10 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
     }
 
 
-    protected ConcurrentHashMap<String, Object> getData() {
-        return data;
-    }
+
+//    protected ConcurrentHashMap<String, Object> getData() {
+//        return dataTL.get();
+//    }
 
 
 }
