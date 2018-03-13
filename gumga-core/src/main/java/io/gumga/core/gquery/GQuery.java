@@ -30,6 +30,9 @@ public class GQuery implements Serializable {
      */
     private Boolean useDistinct = Boolean.FALSE;
 
+    public final Map<String, Object> fieldValue = new HashMap<>();
+
+
     /**
      * Construtor da classe que iniciará uma modelo de consulta simples
      */
@@ -186,6 +189,7 @@ public class GQuery implements Serializable {
     }
 
     private Map<String, Object> getParams(GQuery gQuery, Map<String, Object> map) {
+        map.putAll(fieldValue);
         if(gQuery.getCriteria() != null) {
             map.putAll(gQuery.getCriteria().fieldValue);
         }

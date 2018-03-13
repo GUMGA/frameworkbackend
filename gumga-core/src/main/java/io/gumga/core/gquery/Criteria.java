@@ -207,7 +207,7 @@ public class Criteria implements Serializable {
                             fieldValue.put(paramDate1, format1);
                             fieldValue.put(paramDate2, format2);
 
-                            return field + comparisonOperator.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", paramDate1) + " AND " + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", paramDate2);
+                            return field + comparisonOperator.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", paramDate1) + " AND " + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", paramDate2);
                         }
                     }
 
@@ -231,7 +231,7 @@ public class Criteria implements Serializable {
                         String param2 = generateHash(field) + generateHash(format2);
                         fieldValue.put(param1, format1);
                         fieldValue.put(param2, format2);
-                        return field + comparisonOperator.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1) + " AND " + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
+                        return field + comparisonOperator.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1) + " AND " + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
                     }
                 }
 
@@ -252,7 +252,7 @@ public class Criteria implements Serializable {
                     fieldValue.put(param1, format1);
                     fieldValue.put(param2, format2);
 
-                    return field + comparisonOperator.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1) + " AND " + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
+                    return field + comparisonOperator.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1) + " AND " + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
                 }
             }
 
@@ -277,13 +277,13 @@ public class Criteria implements Serializable {
                         return field + ComparisonOperator.GREATER_EQUAL.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1) + " AND " +
                                 field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
                     case GREATER_EQUAL:
-                        return field + ComparisonOperator.GREATER_EQUAL.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1);
+                        return field + ComparisonOperator.GREATER_EQUAL.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1);
                     case GREATER:
-                        return field + ComparisonOperator.GREATER.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1);
+                        return field + ComparisonOperator.GREATER.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1);
                     case LOWER_EQUAL:
-                        return field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
+                        return field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
                     case LOWER:
-                        return field + ComparisonOperator.LOWER.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1);
+                        return field + ComparisonOperator.LOWER.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1);
 
                 }
             } else if(value instanceof CriteriaField) {
@@ -479,76 +479,12 @@ public class Criteria implements Serializable {
     }
 
     public static void main(String[] args) {
-//        GQuery unconcilied = new GQuery(new Criteria("obj.conciliation.id", ComparisonOperator.EQUAL, 1))
-//                .and(new Criteria("obj.situation", ComparisonOperator.EQUAL, "UNCONCILIED"))
-//                .and(new Criteria("obj.justified", ComparisonOperator.EQUAL, false));
-//        GQuery join = new GQuery(new Criteria("acc.type", ComparisonOperator.NOT_EQUAL, "NOT_FOUND"))
-//                .join(new Join("obj.accusations as acc", JoinType.LEFT));
-//        GQuery and = unconcilied.and(join);
-//        System.out.println(and.toString());
-//        System.out.println(and.getJoins());
-
         Number value = 10l;
 
         System.out.println(String.format("prod.nome = '%s'", value.toString().replaceAll("\'", "''")));
 
     }
 }
-
-/*
-interface FormatGQuery extends FormatWhereGQuery {
-
-    @Override
-    default String execute(Object field, ComparisonOperator operator, Object value, String fieldFunction, String valueFunction) {
-        return get().get(0).execute(field, operator, value, fieldFunction, valueFunction);
-    }
-
-    default List<FormatNumberWhereGQuery> get() {
-        return Arrays.asList(new FormatNumberWhereGQuery(new FormatStringWhereGQuery()));
-    }
-}
-
-class FormatterGQuery implements FormatGQuery {
-
-}
-
-interface FormatWhereGQuery {
-    String execute(Object field, ComparisonOperator operator, Object value, String fieldFunction, String valueFunction);
-
-    default String generateHash(Object field) {
-        return "h".concat(Integer.toString(Math.abs(field.hashCode())));
-    }
-}
-
-class FormatNumberWhereGQuery implements FormatWhereGQuery {
-    private FormatWhereGQuery delegate;
-
-    public FormatNumberWhereGQuery(FormatWhereGQuery delegate) {
-        this.delegate = delegate;
-    }
-
-    @Override
-    public String execute(Object field, ComparisonOperator operator, Object value, String fieldFunction, String valueFunction) {
-        if(value instanceof Number) {
-            return String.format(fieldFunction, field) + operator.hql + String.format(valueFunction, "\'" + value.toString().replaceAll("\'", "''") + "\'");
-        }
-
-        return delegate.execute(field, operator, value, fieldFunction, valueFunction);
-    }
-}
-
-class FormatStringWhereGQuery implements FormatWhereGQuery {
-
-    @Override
-    public String execute(Object field, ComparisonOperator operator, Object value, String fieldFunction, String valueFunction) {
-        return String.format(fieldFunction, field) + operator.hql + String.format(valueFunction, "\'" + value.toString().replaceAll("\'", "''") + "\'");
-    }
-}
-
-
-*/
-
-
 
 
 
