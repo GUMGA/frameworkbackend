@@ -157,12 +157,13 @@ public class Criteria implements Serializable {
             if(value instanceof Collection) {
                 Collection values = (Collection) value;
                 String v = "";
+                int i = 0;
                 for (Object object :values) {
-
+                    i++;
                     if(object instanceof CriteriaField) {
                         v += object + ",";
                     } else {
-                        String s = generateHash(field) + generateHash(object);
+                        String s = generateHash(field) + i;
                         fieldValue.put(s, object);
 
                         if(object instanceof Number) {
@@ -190,20 +191,20 @@ public class Criteria implements Serializable {
                 if(values.size() >= 2) {
 
                     if(objects[0] instanceof Number) {
-                        String paramNumber1 = generateHash(field) + generateHash(objects[0]);
-                        String paramNumber2 = generateHash(field) + generateHash(objects[1]);
+                        String paramNumber1 = generateHash(field) + "A";
+                        String paramNumber2 = generateHash(field) + "B";
                         fieldValue.put(paramNumber1, objects[0]);
                         fieldValue.put(paramNumber2, objects[1]);
 
-                        return field + comparisonOperator.hql +  String.format(":%s and :%s", objects[0], objects[1]);
+                        return field + comparisonOperator.hql +  String.format(":%s and :%s", paramNumber1, paramNumber2);
                     } else {
                         Date parse = parse(String.valueOf(objects[0]));
                         if(isDate(objects[0], parse)) {
                             Date parse2 = parse(String.valueOf(objects[1]));
                             String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]).concat(" 00:00:00");
                             String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse2 != null ? parse2 : objects[1]).concat(" 23:59:59");
-                            String paramDate1 = generateHash(field) + generateHash(format1);
-                            String paramDate2 = generateHash(field) + generateHash(format2);
+                            String paramDate1 = generateHash(field) + "A";
+                            String paramDate2 = generateHash(field) + "B";
                             fieldValue.put(paramDate1, format1);
                             fieldValue.put(paramDate2, format2);
 
@@ -211,15 +212,15 @@ public class Criteria implements Serializable {
                         }
                     }
 
-                    String param1 = generateHash(field) + generateHash(objects[0]);
-                    String param2 = generateHash(field) + generateHash(objects[1]);
+                    String param1 = generateHash(field) + "A";
+                    String param2 = generateHash(field) + "B";
                     fieldValue.put(param1, objects[0]);
                     fieldValue.put(param2, objects[1]);
                     return field + comparisonOperator.hql + String.format(":%s and :%s", param1, param2);
                 }
 
                 if(objects[0] instanceof Number) {
-                    String param1 = generateHash(field) + generateHash(objects[0]);
+                    String param1 = generateHash(field) + "A";
                     fieldValue.put(param1, objects[0]);
                     return field + comparisonOperator.hql + String.format(":%s and :%s", param1, param1);
                 } else {
@@ -227,15 +228,15 @@ public class Criteria implements Serializable {
                     if(isDate(objects[0], parse)) {
                         String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]).concat(" 00:00:00");
                         String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]).concat(" 23:59:59");
-                        String param1 = generateHash(field) + generateHash(format1);
-                        String param2 = generateHash(field) + generateHash(format2);
+                        String param1 = generateHash(field) + "A";
+                        String param2 = generateHash(field) + "B";
                         fieldValue.put(param1, format1);
                         fieldValue.put(param2, format2);
                         return field + comparisonOperator.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1) + " AND " + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
                     }
                 }
 
-                String param1 = generateHash(field) + generateHash(objects[0]);
+                String param1 = generateHash(field) + "A";
                 fieldValue.put(param1, objects[0]);
                 return field + comparisonOperator.hql + String.format(":%s and :%s", param1, param1);
             }
@@ -247,8 +248,8 @@ public class Criteria implements Serializable {
                 if(isDate(value, parse)) {
                     String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : value).concat(" 00:00:00");
                     String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : value).concat(" 23:59:59");
-                    String param1 = generateHash(field) + generateHash(format1);
-                    String param2 = generateHash(field) + generateHash(format2);
+                    String param1 = generateHash(field) + "A";
+                    String param2 = generateHash(field) + "B";
                     fieldValue.put(param1, format1);
                     fieldValue.put(param2, format2);
 
@@ -268,8 +269,8 @@ public class Criteria implements Serializable {
             if(isDate(value, parse)) {
                 String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : value).concat(" 00:00:00");
                 String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : value).concat(" 23:59:59");
-                String param1 = generateHash(field) + generateHash(format1);
-                String param2 = generateHash(field) + generateHash(format2);
+                String param1 = generateHash(field) + "A";
+                String param2 = generateHash(field) + "B";
                 fieldValue.put(param1, format1);
                 fieldValue.put(param2, format2);
                 switch (this.comparisonOperator) {

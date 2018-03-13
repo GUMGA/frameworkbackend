@@ -14,7 +14,7 @@ import io.gumga.domain.logicaldelete.GumgaLDModel;
 import io.gumga.domain.repository.GumgaCrudRepository;
 import io.gumga.domain.repository.GumgaMultitenancyUtil;
 import io.gumga.domain.shared.GumgaSharedModel;
-import org.hibernate.Session;
+import org.hibernate.*;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -38,6 +38,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
@@ -911,7 +912,6 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     public Object fetchOneObject(GQuery gQuery) {
         Query search = createQueryWithGQuery(gQuery);
         try {
-
             List resultList = search.getResultList();
             return resultList.isEmpty() ? null : resultList.get(0);
         } catch (Exception e) {
@@ -1028,7 +1028,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         String query = (useDistinct ? "select distinct" : "select") + " obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
-
+//        org.hibernate.Query query1 = session().createQuery(query.concat(gQuery.getJoins()).concat(where));
         return translateParameterGQuer(entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where)), gQuery);
     }
 
@@ -1070,6 +1070,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     }
 
     private Query translateParameterGQuer(Query query, GQuery gQuery) {
+
         gQuery
             .getParams()
             .forEach((key, value) -> {
