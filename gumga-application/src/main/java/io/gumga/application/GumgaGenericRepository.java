@@ -36,10 +36,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
@@ -911,7 +908,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
         String where = createWhere(gQuery);
 
-        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where).concat(" order by ").concat(sort));
+        return manageParamGQuery(entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where).concat(" order by ").concat(sort)), gQuery);
     }
 
     private void getOrderField(Pesquisa<T> pesquisa, String sortField, String sorDir) {
@@ -989,7 +986,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
         String where = createWhere(gQuery);
 
-        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
+        return manageParamGQuery(entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where)), gQuery);
     }
 
     private Query createQueryCountWithGQuery(GQuery gQuery) {
@@ -1000,7 +997,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 //        criteriaBuilder.
 
-        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
+        return manageParamGQuery(entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where)), gQuery);
     }
 
     private String createWhere(GQuery gQuery) {
@@ -1025,4 +1022,18 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         return gQueryWhere;
     }
 
+    private Query manageParamGQuery(Query query, GQuery gQuery) {
+        gQuery
+            .getParams()
+            .forEach((key, value) -> {
+                Parameter<?> parameter = query.getParameter(key);
+                if(parameter.getParameterType() != null && Long.class.getSimpleName().equals(parameter.getParameterType().getSimpleName())) {
+                    query.setParameter(key, Long.valueOf(value.toString()));
+                } else {
+                    query.setParameter(key, value);
+                }
+            });
+
+        return query;
+    }
 }

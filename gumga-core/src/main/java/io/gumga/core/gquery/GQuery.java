@@ -180,6 +180,22 @@ public class GQuery implements Serializable {
         return this;
     }
 
+    public Map<String, Object> getParams() {
+        Map<String, Object> result = new HashMap<>();
+        return getParams(this, result);
+    }
+
+    private Map<String, Object> getParams(GQuery gQuery, Map<String, Object> map) {
+        if(gQuery.getCriteria() != null) {
+            map.putAll(gQuery.getCriteria().fieldValue);
+        }
+
+        if(gQuery.getSubQuerys() != null) {
+            gQuery.getSubQuerys().stream().filter(g -> g.getCriteria() != null).forEach(s -> getParams(s, map));
+        }
+        return map;
+    }
+
     /**
      * @return Parte da hql onde se encontram as junções
      */

@@ -14,6 +14,8 @@ public class Criteria implements Serializable {
 
     public static final String SOURCE_CHARS = "'âàãáÁÂÀÃéêÉÊíÍóôõÓÔÕüúÜÚÇç'";
     public static final String TARGET_CHARS = "'AAAAAAAAEEEEIIOOOOOOUUUUCC'";
+    public final Map<String, Object> fieldValue = new HashMap<>();
+
 
     public static boolean doTranslate = true;
     /**
@@ -123,6 +125,10 @@ public class Criteria implements Serializable {
         return value;
     }
 
+    public static String generateHash(Object field) {
+        return "h".concat(Integer.toString(Math.abs(field.hashCode())));
+    }
+
     @Override
     public String toString() {
         Object value = this.value;
@@ -147,13 +153,149 @@ public class Criteria implements Serializable {
             value = "%" + value + "%";
         }
 
-        return String.format(fieldFunction, field) + comparisonOperator.hql + String.format(valueFunction, "\'" + value.toString().replaceAll("\'", "''") + "\'");
+        if(ComparisonOperator.IN.equals(this.comparisonOperator)) {
+            if(value instanceof Collection) {
+                Collection values = (Collection) value;
+                String v = "";
+                for (Object object :values) {
 
-//        FormatGQuery format = new FormatterGQuery();
-//
-//        return format.execute(field, comparisonOperator, value, fieldFunction, valueFunction);
+                    if(object instanceof CriteriaField) {
+                        v += object + ",";
+                    } else {
+                        String s = generateHash(field) + generateHash(object);
+                        fieldValue.put(s, object);
+
+                        if(object instanceof Number) {
+                            v += ":" + s + ",";
+                        } else {
+                            v += ":"+ s + ",";
+                        }
+                    }
+                }
+                v = v.substring(0, v.length()-1);
+                return field + comparisonOperator.hql + "(" + v + ")";
+            } else {
+                if(value instanceof Number || value instanceof CriteriaField) {
+                    return  field + comparisonOperator.hql + "(" + value.toString() +")";
+                }
+            }
+
+            return  field + comparisonOperator.hql + "('" + value.toString() +"')";
+        }
+
+        if(ComparisonOperator.BETWEEN.equals(this.comparisonOperator)) {
+            if(value instanceof Collection) {
+                Collection values = (Collection) value;
+                Object[] objects = values.toArray();
+                if(values.size() >= 2) {
+
+                    if(objects[0] instanceof Number) {
+                        String paramNumber1 = generateHash(field) + generateHash(objects[0]);
+                        String paramNumber2 = generateHash(field) + generateHash(objects[1]);
+                        fieldValue.put(paramNumber1, objects[0]);
+                        fieldValue.put(paramNumber2, objects[1]);
+
+                        return field + comparisonOperator.hql +  String.format(":%s and :%s", objects[0], objects[1]);
+                    } else {
+                        Date parse = parse(String.valueOf(objects[0]));
+                        if(isDate(objects[0], parse)) {
+                            Date parse2 = parse(String.valueOf(objects[1]));
+                            String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]).concat(" 00:00:00");
+                            String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse2 != null ? parse2 : objects[1]).concat(" 23:59:59");
+                            String paramDate1 = generateHash(field) + generateHash(format1);
+                            String paramDate2 = generateHash(field) + generateHash(format2);
+                            fieldValue.put(paramDate1, format1);
+                            fieldValue.put(paramDate2, format2);
+
+                            return field + comparisonOperator.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", paramDate1) + " AND " + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", paramDate2);
+                        }
+                    }
+
+                    String param1 = generateHash(field) + generateHash(objects[0]);
+                    String param2 = generateHash(field) + generateHash(objects[1]);
+                    fieldValue.put(param1, objects[0]);
+                    fieldValue.put(param2, objects[1]);
+                    return field + comparisonOperator.hql + String.format(":%s and :%s", param1, param2);
+                }
+
+                if(objects[0] instanceof Number) {
+                    String param1 = generateHash(field) + generateHash(objects[0]);
+                    fieldValue.put(param1, objects[0]);
+                    return field + comparisonOperator.hql + String.format(":%s and :%s", param1, param1);
+                } else {
+                    Date parse = parse(String.valueOf(objects[0]));
+                    if(isDate(objects[0], parse)) {
+                        String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]).concat(" 00:00:00");
+                        String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : objects[0]).concat(" 23:59:59");
+                        String param1 = generateHash(field) + generateHash(format1);
+                        String param2 = generateHash(field) + generateHash(format2);
+                        fieldValue.put(param1, format1);
+                        fieldValue.put(param2, format2);
+                        return field + comparisonOperator.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1) + " AND " + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
+                    }
+                }
+
+                String param1 = generateHash(field) + generateHash(objects[0]);
+                fieldValue.put(param1, objects[0]);
+                return field + comparisonOperator.hql + String.format(":%s and :%s", param1, param1);
+            }
+
+            if(value instanceof Number) {
+                return field + comparisonOperator.hql +  value + " AND " + value;
+            }  else {
+                Date parse = parse(String.valueOf(value));
+                if(isDate(value, parse)) {
+                    String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : value).concat(" 00:00:00");
+                    String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : value).concat(" 23:59:59");
+                    String param1 = generateHash(field) + generateHash(format1);
+                    String param2 = generateHash(field) + generateHash(format2);
+                    fieldValue.put(param1, format1);
+                    fieldValue.put(param2, format2);
+
+                    return field + comparisonOperator.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1) + " AND " + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
+                }
+            }
+
+            return field + comparisonOperator.hql + "'" + value + "' AND '" + value + "'";
+        }
 
 
+        if(value instanceof Boolean) {
+            fieldValue.put(generateHash(field), value);
+        } else {
+
+            Date parse = parse(String.valueOf(value));
+            if(isDate(value, parse)) {
+                String format1 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : value).concat(" 00:00:00");
+                String format2 = new SimpleDateFormat("yyyy-MM-dd").format(parse != null ? parse : value).concat(" 23:59:59");
+                String param1 = generateHash(field) + generateHash(format1);
+                String param2 = generateHash(field) + generateHash(format2);
+                fieldValue.put(param1, format1);
+                fieldValue.put(param2, format2);
+                switch (this.comparisonOperator) {
+                    case EQUAL:
+                        return field + ComparisonOperator.GREATER_EQUAL.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1) + " AND " +
+                                field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_timestamp(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
+                    case GREATER_EQUAL:
+                        return field + ComparisonOperator.GREATER_EQUAL.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1);
+                    case GREATER:
+                        return field + ComparisonOperator.GREATER.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1);
+                    case LOWER_EQUAL:
+                        return field + ComparisonOperator.LOWER_EQUAL.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param2);
+                    case LOWER:
+                        return field + ComparisonOperator.LOWER.hql + String.format("to_char(:%s, 'yyyy/MM/dd HH24:mi:ss')", param1);
+
+                }
+            } else if(value instanceof CriteriaField) {
+                return field + comparisonOperator.hql + value;
+            } else {
+                fieldValue.put(generateHash(field), value);
+            }
+        }
+
+        String parameter = String.format(":%s", generateHash(field));
+
+        return String.format(fieldFunction, field) + comparisonOperator.hql + String.format(valueFunction, parameter);
 
         /*
 //        ComparisonOperatorProcess comparisonOperatorProcess = new ComparisionOperatorProcessEqual();
