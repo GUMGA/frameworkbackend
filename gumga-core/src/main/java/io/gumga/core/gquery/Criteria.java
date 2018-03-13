@@ -138,9 +138,22 @@ public class Criteria implements Serializable {
             }
             value = result;
         }
-        FormatGQuery format = new FormatterGQuery();
 
-        return format.execute(field, comparisonOperator, value, fieldFunction, valueFunction);
+        if (ComparisonOperator.STARTS_WITH.equals(this.comparisonOperator)) {
+            value = value + "%";
+        } else if (ComparisonOperator.ENDS_WITH.equals(this.comparisonOperator)) {
+            value = "%" + value;
+        } else if (ComparisonOperator.CONTAINS.equals(this.comparisonOperator) || ComparisonOperator.NOT_CONTAINS.equals(this.comparisonOperator)) {
+            value = "%" + value + "%";
+        }
+
+        return String.format(fieldFunction, field) + comparisonOperator.hql + String.format(valueFunction, "\'" + value.toString().replaceAll("\'", "''") + "\'");
+
+//        FormatGQuery format = new FormatterGQuery();
+//
+//        return format.execute(field, comparisonOperator, value, fieldFunction, valueFunction);
+
+
 
         /*
 //        ComparisonOperatorProcess comparisonOperatorProcess = new ComparisionOperatorProcessEqual();
@@ -340,7 +353,7 @@ public class Criteria implements Serializable {
     }
 }
 
-
+/*
 interface FormatGQuery extends FormatWhereGQuery {
 
     @Override
@@ -359,6 +372,10 @@ class FormatterGQuery implements FormatGQuery {
 
 interface FormatWhereGQuery {
     String execute(Object field, ComparisonOperator operator, Object value, String fieldFunction, String valueFunction);
+
+    default String generateHash(Object field) {
+        return "h".concat(Integer.toString(Math.abs(field.hashCode())));
+    }
 }
 
 class FormatNumberWhereGQuery implements FormatWhereGQuery {
@@ -371,7 +388,7 @@ class FormatNumberWhereGQuery implements FormatWhereGQuery {
     @Override
     public String execute(Object field, ComparisonOperator operator, Object value, String fieldFunction, String valueFunction) {
         if(value instanceof Number) {
-
+            return String.format(fieldFunction, field) + operator.hql + String.format(valueFunction, "\'" + value.toString().replaceAll("\'", "''") + "\'");
         }
 
         return delegate.execute(field, operator, value, fieldFunction, valueFunction);
@@ -387,7 +404,7 @@ class FormatStringWhereGQuery implements FormatWhereGQuery {
 }
 
 
-
+*/
 
 
 
