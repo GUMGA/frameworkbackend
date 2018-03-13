@@ -122,6 +122,7 @@ public class Criteria implements Serializable {
         }
         return value;
     }
+
     @Override
     public String toString() {
         Object value = this.value;
@@ -137,6 +138,11 @@ public class Criteria implements Serializable {
             }
             value = result;
         }
+        FormatGQuery format = new FormatterGQuery();
+
+        return format.execute(field, comparisonOperator, value, fieldFunction, valueFunction);
+
+        /*
 //        ComparisonOperatorProcess comparisonOperatorProcess = new ComparisionOperatorProcessEqual();
 //        return comparisonOperatorProcess.process(field, comparisonOperator, value, fieldFunction, valueFunction);
 
@@ -258,6 +264,7 @@ public class Criteria implements Serializable {
 
 
         return String.format(fieldFunction, field) + comparisonOperator.hql + String.format(valueFunction, "\'" + value.toString().replaceAll("\'", "''") + "\'");
+        */
     }
 
     public Criteria addIgnoreCase() {
@@ -332,6 +339,53 @@ public class Criteria implements Serializable {
 
     }
 }
+
+
+interface FormatGQuery extends FormatWhereGQuery {
+
+    @Override
+    default String execute(Object field, ComparisonOperator operator, Object value, String fieldFunction, String valueFunction) {
+        return get().get(0).execute(field, operator, value, fieldFunction, valueFunction);
+    }
+
+    default List<FormatNumberWhereGQuery> get() {
+        return Arrays.asList(new FormatNumberWhereGQuery(new FormatStringWhereGQuery()));
+    }
+}
+
+class FormatterGQuery implements FormatGQuery {
+
+}
+
+interface FormatWhereGQuery {
+    String execute(Object field, ComparisonOperator operator, Object value, String fieldFunction, String valueFunction);
+}
+
+class FormatNumberWhereGQuery implements FormatWhereGQuery {
+    private FormatWhereGQuery delegate;
+
+    public FormatNumberWhereGQuery(FormatWhereGQuery delegate) {
+        this.delegate = delegate;
+    }
+
+    @Override
+    public String execute(Object field, ComparisonOperator operator, Object value, String fieldFunction, String valueFunction) {
+        if(value instanceof Number) {
+
+        }
+
+        return delegate.execute(field, operator, value, fieldFunction, valueFunction);
+    }
+}
+
+class FormatStringWhereGQuery implements FormatWhereGQuery {
+
+    @Override
+    public String execute(Object field, ComparisonOperator operator, Object value, String fieldFunction, String valueFunction) {
+        return String.format(fieldFunction, field) + operator.hql + String.format(valueFunction, "\'" + value.toString().replaceAll("\'", "''") + "\'");
+    }
+}
+
 
 
 
