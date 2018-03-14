@@ -116,6 +116,10 @@ public class GumgaGatewayV2<A extends GumgaIdable<ID>, ID extends Serializable, 
     }
 
 
+    @Override
+    public SearchResult<Object> searchWithGQuery(QueryObject queryObject) {
+        return this.delegate.searchWithGQuery(queryObject);
+    }
 
 
 }

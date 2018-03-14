@@ -39,8 +39,8 @@ public class PostgresSpringConfig {
         config.setInitializationFailFast(true);
         config.setDataSourceClassName("org.postgresql.jdbc2.optional.SimpleDataSource");
         config.addDataSourceProperty("url", "jdbc:postgresql://localhost:5432/gumga_test");
-        config.addDataSourceProperty("user", "gumga_test");
-        config.addDataSourceProperty("password", "qwe123");
+        config.addDataSourceProperty("user", "postgres");
+        config.addDataSourceProperty("password", "senha");
         return config;
     }
 

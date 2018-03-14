@@ -4,6 +4,7 @@ import io.gumga.application.service.AbstractGumgaService;
 import io.gumga.core.GumgaIdable;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
+import io.gumga.core.exception.BadRequestException;
 import io.gumga.domain.GumgaMultitenancy;
 import io.gumga.domain.GumgaObjectAndRevision;
 import io.gumga.domain.GumgaServiceable;
@@ -270,4 +271,14 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
     public void deletePermanentGumgaLDModel(ID id) {
         repository.deletePermanentGumgaLDModel(id);
     }
+
+    @Override
+    @Transactional
+    public SearchResult<Object> searchWithGQuery(QueryObject queryObject) {
+        if(!queryObject.isGQuery()) {
+            throw new BadRequestException("Você precisar enviar o objecto GQuery!");
+        }
+        return repository.searchWithGQuery(queryObject);
+    }
+
 }

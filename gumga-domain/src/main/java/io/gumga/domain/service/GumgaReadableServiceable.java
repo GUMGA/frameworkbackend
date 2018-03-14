@@ -19,6 +19,7 @@ public interface GumgaReadableServiceable<T, ID extends Serializable> {
      * @return
      */
     public SearchResult<T> pesquisa(QueryObject queryObject);
+    SearchResult<Object> searchWithGQuery(QueryObject queryObject);
 
     /**
      * Pesquisa a entidade tipada na interface @{@link GumgaReadableServiceable} pela primary key
