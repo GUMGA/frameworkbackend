@@ -8,7 +8,9 @@
 =======================================
 Framework Backend
 3.3.0
-    - GQuery com parametro.
+    - Correção no where do GQuery para não concatenar mais as string nas condições.
+    - Foi criado um novo endpoint v2/gquery para que você consiga buscar apenas os campos necessários no select do GQuery.
+
 3.2.9
     - Correções de concorrência GumgaRequestFilterV2
 

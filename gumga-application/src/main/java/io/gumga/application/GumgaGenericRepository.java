@@ -22,6 +22,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.internal.SQLQueryImpl;
+import org.hibernate.jpa.QueryHints;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.hibernate.transform.Transformers;
@@ -35,6 +36,7 @@ import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -883,18 +885,19 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
         GQuery gQuery = queryObject.getgQuery();
 
-        Long total = 0l;
-        if (queryObject.isSearchCount()) {
-            Query queryCountWithGQuery = createQueryCountWithGQuery(gQuery);
-            total = (Long) queryCountWithGQuery.getSingleResult();
-        }
+        Long total = getCountResultPageGQuery(queryObject, gQuery);
 
+        Query queryWithGQuery = createQueryGQuery(queryObject);
+
+        return new SearchResult(queryObject, total, queryWithGQuery.getResultList());
+    }
+
+    private Query createQueryGQuery(QueryObject queryObject) {
         Query queryWithGQuery = createQueryGQueryWithQueryObject(queryObject);
 
         queryWithGQuery.setMaxResults(queryObject.getPageSize());
         queryWithGQuery.setFirstResult(queryObject.getStart());
-
-        return new SearchResult(queryObject, total, queryWithGQuery.getResultList());
+        return queryWithGQuery;
     }
 
     @Override
@@ -912,7 +915,9 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     public Object fetchOneObject(GQuery gQuery) {
         Query search = createQueryWithGQuery(gQuery);
         try {
-            List resultList = search.getResultList();
+            org.hibernate.Query unwrap = search.unwrap(org.hibernate.Query.class);
+            unwrap.setResultTransformer(org.hibernate.Criteria.ALIAS_TO_ENTITY_MAP);
+            List resultList = unwrap.list();
             return resultList.isEmpty() ? null : resultList.get(0);
         } catch (Exception e) {
             return null;
@@ -944,10 +949,10 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             queryObject.setgQuery(new GQuery());
         }
         GQuery gQuery = queryObject.getgQuery();
-
+        String selects = gQuery.getSelects();
         String sort = getOrderField(queryObject.getSortField(), queryObject.getSortDir());
         Boolean useDistinct = gQuery.useDistinct();
-        String query = (useDistinct ? "select distinct" : "select") + " obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+        String query = (useDistinct ? "select distinct" : "select ") + (selects.length() > 0 ? selects : " obj ") + " FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
 
@@ -1025,10 +1030,12 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     private Query createQueryWithGQuery(GQuery gQuery) {
         Boolean useDistinct = gQuery.useDistinct();
-        String query = (useDistinct ? "select distinct" : "select") + " obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+        String selects = gQuery.getSelects();
+
+        String query = (useDistinct ? "select distinct" : "select ") + (selects.length() > 0 ? selects : " obj ") + " FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
-//        org.hibernate.Query query1 = session().createQuery(query.concat(gQuery.getJoins()).concat(where));
+
         return translateParameterGQuer(entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where)), gQuery);
     }
 
@@ -1083,5 +1090,36 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             });
 
         return query;
+    }
+
+
+    @Override
+    public SearchResult<Object> searchWithGQuery(QueryObject queryObject) {
+        if (queryObject.getgQuery() == null) {
+            queryObject.setgQuery(new GQuery());
+        }
+        GQuery gQuery = queryObject.getgQuery();
+
+        Long total = getCountResultPageGQuery(queryObject, gQuery);
+
+        Query query = createQueryGQuery(queryObject);
+        org.hibernate.Query unwrap = query.unwrap(org.hibernate.Query.class);
+        String selects = gQuery.getSelects();
+        if(selects.length() > 0) {
+            unwrap.setResultTransformer(org.hibernate.Criteria.ALIAS_TO_ENTITY_MAP);
+        } else {
+            unwrap.setResultTransformer(org.hibernate.Criteria.ROOT_ENTITY);
+        }
+
+        return new SearchResult(queryObject, total, unwrap.list());
+    }
+
+    private Long getCountResultPageGQuery(QueryObject queryObject, GQuery gQuery) {
+        Long total = 0l;
+        if (queryObject.isSearchCount()) {
+            Query queryCountWithGQuery = createQueryCountWithGQuery(gQuery);
+            total = (Long) queryCountWithGQuery.getSingleResult();
+        }
+        return total;
     }
 }

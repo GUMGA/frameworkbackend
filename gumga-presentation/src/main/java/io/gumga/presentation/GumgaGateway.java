@@ -70,4 +70,8 @@ public abstract class GumgaGateway<A extends GumgaIdable<ID>, ID extends Seriali
         delegate.deletePermanentGumgaLDModel(id);
     }
 
+    @Override
+    public SearchResult<Object> searchWithGQuery(QueryObject queryObject) {
+        return this.delegate.searchWithGQuery(queryObject);
+    }
 }

@@ -212,4 +212,12 @@ public abstract class AbstractGumgaAPI<T, ID extends Serializable> extends Abstr
         return service.pesquisa(query);
     }
 
+    @GumgaSwagger
+    @Transactional
+    @ApiOperation(value = "gqueryV2", notes = "gqueryV2")
+    @RequestMapping(path = "/v2/gquery", method = RequestMethod.POST)
+    public SearchResult<Object>  searchWithGQuery(@RequestBody QueryObject query) {
+        return service.searchWithGQuery(query);
+    }
+
 }

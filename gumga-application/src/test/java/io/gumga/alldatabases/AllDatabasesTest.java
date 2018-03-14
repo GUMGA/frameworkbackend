@@ -581,6 +581,7 @@ public abstract class AllDatabasesTest {
     public void testeStringComAspasSimples() {
         GQuery gQuery = new GQuery(new Criteria("obj.name", ComparisonOperator.CONTAINS, "Marcio' Roberto's"));
         List<Person> all = this.personRepository.findAll(gQuery);
+//        Object object = this.personRepository.fetchOneObject(gQuery);
 
         assertEquals(1l, all.size());
     }

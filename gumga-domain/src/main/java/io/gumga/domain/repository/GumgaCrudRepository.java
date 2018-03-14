@@ -100,4 +100,6 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
      * @param id
      */
     void deletePermanentGumgaLDModel(ID id);
+
+    SearchResult<Object> searchWithGQuery(QueryObject queryObject);
 }
