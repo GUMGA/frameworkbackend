@@ -1124,12 +1124,13 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
                         case "GumgaURL":
                             query.setParameter(key, new GumgaURL(value.toString()));
                             break;
-                        default:
+                        default: {
                             if(parameter.getParameterType().isEnum()) {
                                 query.setParameter(key, Enum.valueOf((Class<Enum>) parameter.getParameterType(), value.toString()));
                             } else {
                                 query.setParameter(key, value);
                             }
+                        }
 
                     }
                 } else {
