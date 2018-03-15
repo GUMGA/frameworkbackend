@@ -1084,54 +1084,52 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             .forEach((key, value) -> {
                 Parameter<?> parameter = query.getParameter(key);
                 if(parameter.getParameterType() != null) {
-                    switch (parameter.getParameterType().getSimpleName()) {
-                        case "Long":
-                            query.setParameter(key, Long.valueOf(value.toString()));
-                            break;
-                        case "BigDecimal":
-                            query.setParameter(key, new BigDecimal(value.toString()));
-                            break;
-                        case "GumgaBarCode":
-                            query.setParameter(key, new GumgaBarCode(value.toString()));
-                            break;
-                        case "GumgaBoolean":
-                            query.setParameter(key, new GumgaBoolean(Boolean.valueOf(value.toString())));
-                            break;
-                        case "GumgaCEP":
-                            query.setParameter(key, new GumgaCEP(value.toString()));
-                            break;
-                        case "GumgaCNPJ":
-                            query.setParameter(key, new GumgaCNPJ(value.toString()));
-                            break;
-                        case "GumgaCPF":
-                            query.setParameter(key, new GumgaCPF(value.toString()));
-                            break;
-                        case "GumgaEMail":
-                            query.setParameter(key, new GumgaEMail(value.toString()));
-                            break;
-                        case "GumgaMoney":
-                            query.setParameter(key, new GumgaMoney(new BigDecimal(value.toString())));
-                            break;
-                        case "GumgaMultiLineString":
-                            query.setParameter(key, new GumgaMultiLineString(value.toString()));
-                            break;
-                        case "GumgaOi":
-                            query.setParameter(key, new GumgaOi(value.toString()));
-                            break;
-                        case "GumgaPhoneNumber":
-                            query.setParameter(key, new GumgaPhoneNumber(value.toString()));
-                            break;
-                        case "GumgaURL":
-                            query.setParameter(key, new GumgaURL(value.toString()));
-                            break;
-                        default: {
-                            if(parameter.getParameterType().isEnum()) {
-                                query.setParameter(key, Enum.valueOf((Class<Enum>) parameter.getParameterType(), value.toString()));
-                            } else {
+                    if(parameter.getParameterType().isEnum()) {
+                        query.setParameter(key, Enum.valueOf((Class<Enum>) parameter.getParameterType(), value.toString()));
+                    } else {
+                        switch (parameter.getParameterType().getSimpleName()) {
+                            case "Long":
+                                query.setParameter(key, Long.valueOf(value.toString()));
+                                break;
+                            case "BigDecimal":
+                                query.setParameter(key, new BigDecimal(value.toString()));
+                                break;
+                            case "GumgaBarCode":
+                                query.setParameter(key, new GumgaBarCode(value.toString()));
+                                break;
+                            case "GumgaBoolean":
+                                query.setParameter(key, new GumgaBoolean(Boolean.valueOf(value.toString())));
+                                break;
+                            case "GumgaCEP":
+                                query.setParameter(key, new GumgaCEP(value.toString()));
+                                break;
+                            case "GumgaCNPJ":
+                                query.setParameter(key, new GumgaCNPJ(value.toString()));
+                                break;
+                            case "GumgaCPF":
+                                query.setParameter(key, new GumgaCPF(value.toString()));
+                                break;
+                            case "GumgaEMail":
+                                query.setParameter(key, new GumgaEMail(value.toString()));
+                                break;
+                            case "GumgaMoney":
+                                query.setParameter(key, new GumgaMoney(new BigDecimal(value.toString())));
+                                break;
+                            case "GumgaMultiLineString":
+                                query.setParameter(key, new GumgaMultiLineString(value.toString()));
+                                break;
+                            case "GumgaOi":
+                                query.setParameter(key, new GumgaOi(value.toString()));
+                                break;
+                            case "GumgaPhoneNumber":
+                                query.setParameter(key, new GumgaPhoneNumber(value.toString()));
+                                break;
+                            case "GumgaURL":
+                                query.setParameter(key, new GumgaURL(value.toString()));
+                                break;
+                            default:
                                 query.setParameter(key, value);
-                            }
                         }
-
                     }
                 } else {
                     query.setParameter(key, value);
