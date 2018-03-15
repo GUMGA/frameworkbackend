@@ -32,7 +32,7 @@ public class GQuery implements Serializable {
 
     public final Map<String, Object> fieldValue = new HashMap<>();
 
-    private List<String> selects = new LinkedList<>();
+    private Set<String> selects = new LinkedHashSet<>();
 
 
     /**
@@ -256,7 +256,7 @@ public class GQuery implements Serializable {
 
     private void startSelects(GQuery gQuery) {
         this.selects.addAll(gQuery.selects);
-        gQuery.selects = new LinkedList<>();
+        gQuery.selects = new LinkedHashSet<>();
         if(gQuery.getSubQuerys() != null) {
             gQuery.getSubQuerys().forEach(s -> startSelects(s));
         }
@@ -346,7 +346,7 @@ public class GQuery implements Serializable {
 
         GQuery gQuery = new GQuery(new Criteria("obj.name", ComparisonOperator.EQUAL, "Felipe"));
 
-        GQuery and = gQuery.and(new Criteria("obj.idade", ComparisonOperator.GREATER, 18)).select("obj.name");
+        GQuery and = gQuery.and(new Criteria("obj.idade", ComparisonOperator.GREATER, 18)).select("obj.name").select("obj.name");
 
 //        GQuery select = gQuery.select("obj.idade");
 //        System.out.println(select.getSelects());
