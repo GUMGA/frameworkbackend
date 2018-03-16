@@ -30,6 +30,11 @@ public class GQuery implements Serializable {
      */
     private Boolean useDistinct = Boolean.FALSE;
 
+    public final Map<String, Object> fieldValue = new HashMap<>();
+
+    private Set<String> selects = new LinkedHashSet<>();
+
+
     /**
      * Construtor da classe que iniciará uma modelo de consulta simples
      */
@@ -74,6 +79,7 @@ public class GQuery implements Serializable {
         this.logicalOperator = logicalOperator;
         this.subQuerys = subQuerys;
         y(this);
+        startSelects(this);
     }
 
     /**
@@ -180,6 +186,41 @@ public class GQuery implements Serializable {
         return this;
     }
 
+    public GQuery select(String field) {
+        selects.add(field);
+        return this;
+    }
+
+    public Map<String, Object> getParams() {
+        Map<String, Object> result = new HashMap<>();
+        return getParams(this, result);
+    }
+
+    private Map<String, Object> getParams(GQuery gQuery, Map<String, Object> map) {
+        map.putAll(fieldValue);
+        if(gQuery.getCriteria() != null) {
+            map.putAll(gQuery.getCriteria().fieldValue);
+        }
+
+        if(gQuery.getSubQuerys() != null) {
+            gQuery.getSubQuerys().stream().filter(g -> g.getCriteria() != null).forEach(s -> getParams(s, map));
+        }
+        return map;
+    }
+
+    public String getSelects() {
+        StringBuilder builder = new StringBuilder();
+        searchSelect(this, builder);
+        return builder.toString().length() > 0 ? builder.substring(0, builder.toString().lastIndexOf(",")) : "";
+    }
+
+    private void searchSelect(GQuery gQuery, StringBuilder builder) {
+        gQuery.selects.forEach(field -> builder.append(field.contains(",") ? field : field.concat(",")));
+        if(gQuery.getSubQuerys() != null) {
+            gQuery.getSubQuerys().forEach(s -> searchSelect(s, builder));
+        }
+    }
+
     /**
      * @return Parte da hql onde se encontram as junções
      */
@@ -210,6 +251,14 @@ public class GQuery implements Serializable {
         gQuery.joins = new LinkedList<>();
         if(gQuery.getSubQuerys() != null) {
             gQuery.getSubQuerys().forEach(s -> y(s));
+        }
+    }
+
+    private void startSelects(GQuery gQuery) {
+        this.selects.addAll(gQuery.selects);
+        gQuery.selects = new LinkedHashSet<>();
+        if(gQuery.getSubQuerys() != null) {
+            gQuery.getSubQuerys().forEach(s -> startSelects(s));
         }
     }
 
@@ -286,20 +335,28 @@ public class GQuery implements Serializable {
         this.useDistinct = useDistinct;
     }
 
-//    public static void main(String[] args) {
+    public static void main(String[] args) {
 //        GQuery disticnt = new GQuery(new Criteria("cpf", ComparisonOperator.NOT_EQUAL, "129312312"));
 ////        disticnt.setUseDistinct(true);
 //        GQuery gQuery = new GQuery(new Criteria("name", ComparisonOperator.CONTAINS, "Mat"))
 //                .or(new Criteria("idade", ComparisonOperator.GREATER, 3))
 //                .and(new Criteria("valor", ComparisonOperator.GREATER, 5))
 //                .or(disticnt);
-////        gQuery.setUseDistinct(true);
-//
-//
-//
-//        System.out.println(gQuery.useDistinct());
-//
-//
-//
-//    }
+//        gQuery.setUseDistinct(true);
+
+        GQuery gQuery = new GQuery(new Criteria("obj.name", ComparisonOperator.EQUAL, "Felipe"));
+
+        GQuery and = gQuery.and(new Criteria("obj.idade", ComparisonOperator.GREATER, 18)).select("obj.name").select("obj.name");
+
+//        GQuery select = gQuery.select("obj.idade");
+//        System.out.println(select.getSelects());
+//        GQuery and = select.and(new Criteria("obj.idade", ComparisonOperator.GREATER, 18));
+//        GQuery select1 = and.select("obj.name");
+
+
+        System.out.println(and.getSelects());
+
+
+
+    }
 }

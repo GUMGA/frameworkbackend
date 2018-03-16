@@ -282,7 +282,7 @@ public abstract class AllDatabasesTest {
     public void gQueryActive() {
         GumgaThreadScope.organizationCode.set("1.");
         QueryObject query = new QueryObject();
-        GQuery gQuery = new GQuery(new Criteria("ativo", ComparisonOperator.EQUAL, "1"));
+        GQuery gQuery = new GQuery(new Criteria("ativo", ComparisonOperator.EQUAL, true));
         query.setgQuery(gQuery);
         List<Company> result = service.pesquisa(query).getValues();
         assertEquals(2, result.size());
@@ -293,7 +293,7 @@ public abstract class AllDatabasesTest {
     public void gQueryActiveNameWithJ() {
         GumgaThreadScope.organizationCode.set("1.");
         QueryObject query = new QueryObject();
-        GQuery gQuery = new GQuery(new Criteria("ativo", ComparisonOperator.EQUAL, "1"));
+        GQuery gQuery = new GQuery(new Criteria("ativo", ComparisonOperator.EQUAL, true));
         gQuery = gQuery.and(new Criteria("name", ComparisonOperator.STARTS_WITH, "j").addIgnoreCase());
         query.setgQuery(gQuery);
         List<Company> result = service.pesquisa(query).getValues();
@@ -581,6 +581,7 @@ public abstract class AllDatabasesTest {
     public void testeStringComAspasSimples() {
         GQuery gQuery = new GQuery(new Criteria("obj.name", ComparisonOperator.CONTAINS, "Marcio' Roberto's"));
         List<Person> all = this.personRepository.findAll(gQuery);
+//        Object object = this.personRepository.fetchOneObject(gQuery);
 
         assertEquals(1l, all.size());
     }

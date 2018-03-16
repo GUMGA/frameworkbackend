@@ -9,11 +9,12 @@ import io.gumga.core.gquery.ComparisonOperator;
 import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.*;
+import io.gumga.domain.domains.*;
 import io.gumga.domain.logicaldelete.GumgaLDModel;
 import io.gumga.domain.repository.GumgaCrudRepository;
 import io.gumga.domain.repository.GumgaMultitenancyUtil;
 import io.gumga.domain.shared.GumgaSharedModel;
-import org.hibernate.Session;
+import org.hibernate.*;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -21,6 +22,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.internal.SQLQueryImpl;
+import org.hibernate.jpa.QueryHints;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.hibernate.transform.Transformers;
@@ -34,15 +36,15 @@ import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
+import javax.persistence.*;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -841,24 +843,62 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         return tenant;
     }
 
+    private String getWhereMultiTenancyGQuery(GQuery gQuery) {
+        String tenant = " where ";
+
+
+        if (hasMultitenancy() && GumgaThreadScope.organizationCode.get() != null && (GumgaThreadScope.ignoreCheckOwnership.get() == null || !GumgaThreadScope.ignoreCheckOwnership.get())) {
+            String oiPattern = GumgaMultitenancyUtil.getMultitenancyPattern(entityInformation.getJavaType().getAnnotation(GumgaMultitenancy.class));
+            String objOi = Criteria.generateHash("obj.oi");
+            gQuery.fieldValue.put(objOi, new GumgaOi(oiPattern + "%"));
+            String oi = String.format("obj.oi is null or obj.oi like :%s", objOi);
+            if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
+                String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
+
+                String objGumgaOrganizations = Criteria.generateHash("obj.gumgaOrganizations");
+                gQuery.fieldValue.put(objGumgaOrganizations, "%," + oiPattern + ",%");
+
+                String objGumgaOrganizationsInstance = Criteria.generateHash("obj.gumgaOrganizationsInstance");
+                gQuery.fieldValue.put(objGumgaOrganizationsInstance, "%," + instanceOi + ",%");
+
+                String objGumgaUsers = Criteria.generateHash("obj.gumgaUsers");
+                gQuery.fieldValue.put(objGumgaUsers, "%," + GumgaThreadScope.login.get() + ",%");
+
+                tenant = tenant.concat("("
+                        .concat(oi))
+                        .concat(String.format(" or obj.gumgaOrganizations like :%s or obj.gumgaOrganizations like :%s or obj.gumgaUsers like :%s)", objGumgaOrganizations, objGumgaOrganizationsInstance, objGumgaUsers));
+
+//                tenant = tenant.concat("(".concat(oi)).concat(" or obj.gumgaOrganizations like '%," + oiPattern + ",%' or "
+//                        + "obj.gumgaOrganizations like '%," + instanceOi + ",%' or "
+//                        + "obj.gumgaUsers like '%," + GumgaThreadScope.login.get() + ",%') ");
+            } else {
+                tenant = tenant.concat("(").concat(oi).concat(")");
+            }
+        } else {
+            tenant = tenant.concat(" 1=1");
+        }
+        return tenant;
+    }
+
     public SearchResult<T> findByGQuery(QueryObject queryObject) {
         if (queryObject.getgQuery() == null) {
             queryObject.setgQuery(new GQuery());
         }
         GQuery gQuery = queryObject.getgQuery();
 
-        Long total = 0l;
-        if (queryObject.isSearchCount()) {
-            Query queryCountWithGQuery = createQueryCountWithGQuery(gQuery);
-            total = (Long) queryCountWithGQuery.getSingleResult();
-        }
+        Long total = getCountResultPageGQuery(queryObject, gQuery);
 
+        Query queryWithGQuery = createQueryGQuery(queryObject);
+
+        return new SearchResult(queryObject, total, queryWithGQuery.getResultList());
+    }
+
+    private Query createQueryGQuery(QueryObject queryObject) {
         Query queryWithGQuery = createQueryGQueryWithQueryObject(queryObject);
 
         queryWithGQuery.setMaxResults(queryObject.getPageSize());
         queryWithGQuery.setFirstResult(queryObject.getStart());
-
-        return new SearchResult(queryObject, total, queryWithGQuery.getResultList());
+        return queryWithGQuery;
     }
 
     @Override
@@ -867,7 +907,19 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         try {
             List<T> resultList = search.getResultList();
             return resultList.isEmpty() ? null : resultList.get(0);
-//            return singleResult != null ? (T) singleResult : null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Object fetchOneObject(GQuery gQuery) {
+        Query search = createQueryWithGQuery(gQuery);
+        try {
+            org.hibernate.Query unwrap = search.unwrap(org.hibernate.Query.class);
+            unwrap.setResultTransformer(org.hibernate.Criteria.ALIAS_TO_ENTITY_MAP);
+            List resultList = unwrap.list();
+            return resultList.isEmpty() ? null : resultList.get(0);
         } catch (Exception e) {
             return null;
         }
@@ -898,20 +950,14 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             queryObject.setgQuery(new GQuery());
         }
         GQuery gQuery = queryObject.getgQuery();
-
-//        String sortDir = queryObject.getSortDir();
-//        String sortField = queryObject.getSortField();
-//        String sort = "obj.id asc";
-//        if(!sortField.isEmpty()) {
-//            sort = sortField + ("asc".equals(sortDir) ? " asc" : " desc");
-//        }
+        String selects = gQuery.getSelects();
         String sort = getOrderField(queryObject.getSortField(), queryObject.getSortDir());
         Boolean useDistinct = gQuery.useDistinct();
-        String query = (useDistinct ? "select distinct" : "select") + " obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+        String query = (useDistinct ? "select distinct " : "select ") + (selects.length() > 0 ? selects : " obj ") + " FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
 
-        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where).concat(" order by ").concat(sort));
+        return translateParameterGQuer(entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where).concat(" order by ").concat(sort)), gQuery);
     }
 
     private void getOrderField(Pesquisa<T> pesquisa, String sortField, String sorDir) {
@@ -985,44 +1031,142 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     private Query createQueryWithGQuery(GQuery gQuery) {
         Boolean useDistinct = gQuery.useDistinct();
-        String query = (useDistinct ? "select distinct" : "select") + " obj FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+        String selects = gQuery.getSelects();
+
+        String query = (useDistinct ? "select distinct " : "select ") + (selects.length() > 0 ? selects : " obj ") + " FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
 
-        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
+        return translateParameterGQuer(entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where)), gQuery);
     }
 
     private Query createQueryCountWithGQuery(GQuery gQuery) {
         Boolean useDistinct = gQuery.useDistinct();
-        String query = (useDistinct ? "select distinct" : "select") + " count(obj) FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+        String query = (useDistinct ? "select distinct " : "select ") + " count(obj) FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-//        criteriaBuilder.
 
-        return entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where));
+        return translateParameterGQuer(entityManager.createQuery(query.concat(gQuery.getJoins()).concat(where)), gQuery);
     }
 
     private String createWhere(GQuery gQuery) {
         String gQueryWhere = gQuery.toString();
 
         if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getMySqlLikeMap())) {
-            gQueryWhere = removeFunctionToTimestamp(gQueryWhere)
+            gQueryWhere = convertTimestampToStrToDate(gQueryWhere)
                     .replaceAll("translate\\(", "")
                     .replaceAll(", 'âàãáÁÂÀÃéêÉÊíÍóôõÓÔÕüúÜÚÇç','AAAAAAAAEEEEIIOOOOOOUUUUCC'\\)", "");
         } else {
             if (GumgaQueryParserProvider.defaultMap.equals(GumgaQueryParserProvider.getH2LikeMap())) {
-                gQueryWhere = removeFunctionToTimestamp(gQueryWhere);
+//                gQueryWhere = removeFunctionToTimestamp(gQueryWhere);
             }
         }
 
-        return getWhereMultiTenancy().concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
+        return getWhereMultiTenancyGQuery(gQuery).concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
     }
 
     private String removeFunctionToTimestamp(String gQueryWhere) {
-        gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(", "")
-                .replaceAll(",'yyyy/MM/dd HH24:mi:ss'\\)", "");
+        gQueryWhere = gQueryWhere.replaceAll("to_timestamp\\(","")
+                .replaceAll(",\\s*'yyyy/MM/dd HH24:mi:ss'\\)", "");
         return gQueryWhere;
     }
 
+    private String convertTimestampToStrToDate(String gQueryWhere) {
+        gQueryWhere = gQueryWhere.replaceAll("to_timestamp","date_format")
+                .replaceAll("yyyy/MM/dd HH24:mi:ss", "%Y/%m/%d %T");
+        return gQueryWhere;
+    }
+
+    private Query translateParameterGQuer(Query query, GQuery gQuery) {
+
+        gQuery
+            .getParams()
+            .forEach((key, value) -> {
+                Parameter<?> parameter = query.getParameter(key);
+                if(parameter.getParameterType() != null) {
+                    if(parameter.getParameterType().isEnum()) {
+                        query.setParameter(key, Enum.valueOf((Class<Enum>) parameter.getParameterType(), value.toString()));
+                    } else {
+                        switch (parameter.getParameterType().getSimpleName()) {
+                            case "Long":
+                                query.setParameter(key, Long.valueOf(value.toString()));
+                                break;
+                            case "BigDecimal":
+                                query.setParameter(key, new BigDecimal(value.toString()));
+                                break;
+                            case "GumgaBarCode":
+                                query.setParameter(key, new GumgaBarCode(value.toString()));
+                                break;
+                            case "GumgaBoolean":
+                                query.setParameter(key, new GumgaBoolean(Boolean.valueOf(value.toString())));
+                                break;
+                            case "GumgaCEP":
+                                query.setParameter(key, new GumgaCEP(value.toString()));
+                                break;
+                            case "GumgaCNPJ":
+                                query.setParameter(key, new GumgaCNPJ(value.toString()));
+                                break;
+                            case "GumgaCPF":
+                                query.setParameter(key, new GumgaCPF(value.toString()));
+                                break;
+                            case "GumgaEMail":
+                                query.setParameter(key, new GumgaEMail(value.toString()));
+                                break;
+                            case "GumgaMoney":
+                                query.setParameter(key, new GumgaMoney(new BigDecimal(value.toString())));
+                                break;
+                            case "GumgaMultiLineString":
+                                query.setParameter(key, new GumgaMultiLineString(value.toString()));
+                                break;
+                            case "GumgaOi":
+                                query.setParameter(key, new GumgaOi(value.toString()));
+                                break;
+                            case "GumgaPhoneNumber":
+                                query.setParameter(key, new GumgaPhoneNumber(value.toString()));
+                                break;
+                            case "GumgaURL":
+                                query.setParameter(key, new GumgaURL(value.toString()));
+                                break;
+                            default:
+                                query.setParameter(key, value);
+                        }
+                    }
+                } else {
+                    query.setParameter(key, value);
+                }
+            });
+
+        return query;
+    }
+
+
+    @Override
+    public SearchResult<Object> searchWithGQuery(QueryObject queryObject) {
+        if (queryObject.getgQuery() == null) {
+            queryObject.setgQuery(new GQuery());
+        }
+        GQuery gQuery = queryObject.getgQuery();
+
+        Long total = getCountResultPageGQuery(queryObject, gQuery);
+
+        Query query = createQueryGQuery(queryObject);
+        org.hibernate.Query unwrap = query.unwrap(org.hibernate.Query.class);
+        String selects = gQuery.getSelects();
+        if(selects.length() > 0) {
+            unwrap.setResultTransformer(org.hibernate.Criteria.ALIAS_TO_ENTITY_MAP);
+        } else {
+            unwrap.setResultTransformer(org.hibernate.Criteria.ROOT_ENTITY);
+        }
+
+        return new SearchResult(queryObject, total, unwrap.list());
+    }
+
+    private Long getCountResultPageGQuery(QueryObject queryObject, GQuery gQuery) {
+        Long total = 0l;
+        if (queryObject.isSearchCount()) {
+            Query queryCountWithGQuery = createQueryCountWithGQuery(gQuery);
+            total = (Long) queryCountWithGQuery.getSingleResult();
+        }
+        return total;
+    }
 }

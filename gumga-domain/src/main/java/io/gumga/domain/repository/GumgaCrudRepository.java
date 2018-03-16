@@ -86,6 +86,7 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
 
 
     T fetchOne(GQuery gQuery);
+    Object fetchOneObject(GQuery gQuery);
     List<T> findAll(GQuery gQuery);
 
     /**
@@ -99,4 +100,6 @@ public interface GumgaCrudRepository<T, ID extends Serializable> extends JpaRepo
      * @param id
      */
     void deletePermanentGumgaLDModel(ID id);
+
+    SearchResult<Object> searchWithGQuery(QueryObject queryObject);
 }
