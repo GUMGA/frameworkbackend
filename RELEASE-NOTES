@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+3.3.1
+    - Correção no GQuery para adicionar o filtro gumgaActive = true nas entidades que utilizam o model GumgaLDModel.
+
 3.3.0
     - Correção no where do GQuery para não concatenar mais as string nas condições.
     - Foi criado um novo endpoint v2/gquery para que você consiga buscar apenas os campos necessários no select do GQuery.

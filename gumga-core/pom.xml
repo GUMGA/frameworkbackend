@@ -6,7 +6,7 @@
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
 
-        <version>3.3.0</version>
+        <version>3.3.1</version>
     </parent>
 
     <artifactId>gumga-core</artifactId>

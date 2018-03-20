@@ -1061,8 +1061,15 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 //                gQueryWhere = removeFunctionToTimestamp(gQueryWhere);
             }
         }
+        String whereLogicalDelete = "";
 
-        return getWhereMultiTenancyGQuery(gQuery).concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
+        if(hasLogicalDelete()) {
+            String hash = Criteria.generateHash("obj.gumgaActive");
+            gQuery.fieldValue.put(hash, Boolean.TRUE);
+            whereLogicalDelete = String.format(" and obj.gumgaActive = :%s ", hash);
+        }
+
+        return getWhereMultiTenancyGQuery(gQuery).concat(whereLogicalDelete).concat(StringUtils.isEmpty(gQueryWhere) ? "" : " and ".concat(gQueryWhere));
     }
 
     private String removeFunctionToTimestamp(String gQueryWhere) {
