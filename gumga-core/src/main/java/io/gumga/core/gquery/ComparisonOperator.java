@@ -19,6 +19,7 @@ public enum ComparisonOperator{
     ENDS_WITH(" like "),
     CONTAINS(" like "),
     IN(" in "),
+    NOT_IN(" not in "),
     IN_ELEMENTS(" in elements "),
     IS(" is "),
     BETWEEN(" between "),
