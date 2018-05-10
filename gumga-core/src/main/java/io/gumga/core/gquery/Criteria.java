@@ -157,7 +157,7 @@ public class Criteria implements Serializable {
             value = "%" + value + "%";
         }
 
-        if(ComparisonOperator.IN.equals(this.comparisonOperator)) {
+        if(ComparisonOperator.IN.equals(this.comparisonOperator) || ComparisonOperator.NOT_IN.equals(this.comparisonOperator)) {
             return resolveIn(value);
         }
 

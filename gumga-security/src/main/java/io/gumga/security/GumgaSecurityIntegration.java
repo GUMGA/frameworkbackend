@@ -10,14 +10,15 @@ import java.util.stream.Stream;
 
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
+import io.gumga.presentation.CustomGumgaRestTemplate;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class GumgaSecurityIntegration {
@@ -26,6 +27,8 @@ public class GumgaSecurityIntegration {
 
     @Autowired
     private GumgaValues gumgaValues;
+    @Autowired(required = false)
+    private CustomGumgaRestTemplate gumgaRestTemplate;
 
     public ResponseEntity verifyAndCreateOperations(GumgaOperationTO[] gotos) {
         Set<GumgaOperationTO> gumgaOperations = Stream.concat(SecurityHelper.listMyOperations("")
@@ -34,8 +37,9 @@ public class GumgaSecurityIntegration {
         return createKeysOnSecurity(gumgaOperations);
     }
 
-    public GumgaJsonRestTemplate restTemplate() {
-        return new GumgaJsonRestTemplate();
+    public RestTemplate restTemplate() {
+        RestTemplate restTemplate = new GumgaJsonRestTemplate();
+        return gumgaRestTemplate != null ? gumgaRestTemplate.getRestTemplate(restTemplate) : restTemplate;
     }
 
     public ResponseEntity createKeysOnSecurity(Set<GumgaOperationTO> gumgaOperations) {

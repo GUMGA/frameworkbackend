@@ -8,6 +8,7 @@ package io.gumga.security;
 import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
+import io.gumga.presentation.CustomGumgaRestTemplate;
 import io.gumga.presentation.RestResponse;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class GumgaSoftwareValuesProxy {
 
     @Autowired
     private GumgaValues gumgaValues;
+    @Autowired(required = false)
+    private CustomGumgaRestTemplate gumgaRestTemplate;
 
     private String getBaseUrl() {
         return gumgaValues.getGumgaSecurityUrl().replace("/publicoperations", "") + "/api/softwarevalue/";
@@ -40,6 +43,7 @@ public class GumgaSoftwareValuesProxy {
     private RestTemplate getRestTemplate() {
         if (restTemplate == null) {
             restTemplate = new GumgaJsonRestTemplate();
+            restTemplate = gumgaRestTemplate != null ? gumgaRestTemplate.getRestTemplate(restTemplate) : restTemplate;
         }
         return restTemplate;
     }

@@ -5,34 +5,25 @@
  */
 package io.gumga.security;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.core.FacebookRegister;
 import io.gumga.core.GumgaValues;
 import io.gumga.core.UserAndPassword;
 import io.gumga.domain.domains.GumgaImage;
-import io.gumga.domain.saas.GumgaSaaS;
+import io.gumga.presentation.CustomGumgaRestTemplate;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
-import io.gumga.presentation.exceptionhandler.GumgaRunTimeException;
 import io.gumga.security_v2.GumgaCacheRequestFilterV2Repository;
-import io.gumga.security_v2.GumgaRequestFilterV2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestClientException;
 
 /**
@@ -43,14 +34,18 @@ import org.springframework.web.client.RestClientException;
 @RequestMapping("/public/token")
 class GumgaSecurityProxy {
 
-    private final RestTemplate restTemplate;
+    private RestTemplate restTemplate;
+    @Autowired(required = false)
+    private CustomGumgaRestTemplate gumgaRestTemplate;
     @Autowired
     private GumgaValues gumgaValues;
     @Autowired
     private GumgaCacheRequestFilterV2Repository requestFilterV2Repository;
 
-    public GumgaSecurityProxy() {
+    @PostConstruct
+    public void initRestTemplate() {
         restTemplate = new GumgaJsonRestTemplate();
+        restTemplate = gumgaRestTemplate != null ? gumgaRestTemplate.getRestTemplate(restTemplate) : restTemplate;
     }
 
     /**

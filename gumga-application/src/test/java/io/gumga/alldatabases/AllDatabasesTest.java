@@ -425,6 +425,21 @@ public abstract class AllDatabasesTest {
 
     @Test
     @Transactional
+    public void findCompanyNotInEnumsGQuery1() {
+        GumgaThreadScope.organizationCode.set("1.");
+
+        GQuery gQuery = new GQuery(new Criteria("tipo", ComparisonOperator.NOT_IN, Arrays.asList(Tipo.AVANCADO, Tipo.SIMPLES)));
+        QueryObject query = new QueryObject();
+        query.setgQuery(gQuery);
+
+        System.out.println("aqui--->"+gQuery.toString());
+
+        int count = service.pesquisa(query).getValues().size();
+        assertEquals(0, count);
+    }
+
+    @Test
+    @Transactional
     public void findCompanyBetweenNumberGQuery1() {
         GumgaThreadScope.organizationCode.set("1.");
 

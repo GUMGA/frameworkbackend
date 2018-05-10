@@ -6,10 +6,12 @@
 package io.gumga.presentation.api.voice;
 
 import io.gumga.application.nlp.GumgaNLP;
+import io.gumga.presentation.CustomGumgaRestTemplate;
+import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static gumga.framework.core.utils.NumericUtils.unsignedToBytes;
-import io.gumga.presentation.api.GumgaJsonRestTemplate;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -19,19 +21,13 @@ import java.util.Map;
 
 
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +43,8 @@ public class VoiceReceiverAPI {
 
     @Autowired(required = false)
     private GumgaNLP gumgaNLP;
-
+    @Autowired(required = false)
+    private CustomGumgaRestTemplate gumgaRestTemplate;
     private final String[] CONTEXT = {"Gumga", "Munif"};
 
     /**
@@ -98,6 +95,7 @@ public class VoiceReceiverAPI {
             int sampleRate = unsignedToBytes(decode[27]) * 256 * 256 * 256 + unsignedToBytes(decode[26]) * 256 * 256 + unsignedToBytes(decode[25]) * 256 + unsignedToBytes(decode[24]) * 1;
 
             RestTemplate restTemplate = new GumgaJsonRestTemplate();
+            restTemplate = gumgaRestTemplate != null ? gumgaRestTemplate.getRestTemplate(restTemplate) : restTemplate;
             Map<String, Object> config = new HashMap<>();
 
             config.put("encoding", "LINEAR16");

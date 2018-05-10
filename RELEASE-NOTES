@@ -7,6 +7,10 @@
 
 =======================================
 Framework Backend
+3.3.2
+    - Suporte a NOT_IN no ComparisonOperator do Criteria GQuery
+    - Opção para customizar(CustomGumgaRestTemplate) o resttemplate utilizado pelo framework nos proxy.
+
 3.3.1
     - Correção no GQuery para adicionar o filtro gumgaActive = true nas entidades que utilizam o model GumgaLDModel.
 

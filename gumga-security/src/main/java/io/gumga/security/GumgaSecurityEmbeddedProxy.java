@@ -4,6 +4,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
 import io.gumga.domain.integration.IntegrationEspecificationDTO;
+import io.gumga.presentation.CustomGumgaRestTemplate;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -13,9 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.web.client.RestClientException;
 
 /**
@@ -26,12 +29,17 @@ import org.springframework.web.client.RestClientException;
 @RequestMapping("/api/security-embedded")
 public class GumgaSecurityEmbeddedProxy {
 
-    private final RestTemplate restTemplate;
+    private RestTemplate restTemplate;
+
     @Autowired
     private GumgaValues gumgaValues;
+    @Autowired(required = false)
+    private CustomGumgaRestTemplate gumgaRestTemplate;
 
-    public GumgaSecurityEmbeddedProxy() {
+    @PostConstruct
+    public void initRestTemplate(){
         restTemplate = new GumgaJsonRestTemplate();
+        restTemplate = gumgaRestTemplate != null ? gumgaRestTemplate.getRestTemplate(restTemplate) : restTemplate;
     }
 
     /**

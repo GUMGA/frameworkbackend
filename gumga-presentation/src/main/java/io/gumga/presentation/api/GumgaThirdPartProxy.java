@@ -6,12 +6,15 @@
 package io.gumga.presentation.api;
 
 import com.wordnik.swagger.annotations.ApiOperation;
+import io.gumga.presentation.CustomGumgaRestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.util.Map;
 
 /**
@@ -21,13 +24,14 @@ import java.util.Map;
 @RequestMapping("/public/")
 public class GumgaThirdPartProxy {
 
-    private final RestTemplate restTemplate;
+    private RestTemplate restTemplate;
+    @Autowired(required = false)
+    private CustomGumgaRestTemplate gumgaRestTemplate;
 
-    /**
-     * Construtor que injeta um modelo Rest ao objeto
-     */
-    public GumgaThirdPartProxy() {
+    @PostConstruct
+    public void initRestTemplate() {
         restTemplate = new GumgaJsonRestTemplate();
+        restTemplate = gumgaRestTemplate != null ? gumgaRestTemplate.getRestTemplate(restTemplate) : restTemplate;
     }
 
     /**
