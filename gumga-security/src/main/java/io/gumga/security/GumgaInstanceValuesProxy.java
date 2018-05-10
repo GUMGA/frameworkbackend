@@ -8,6 +8,7 @@ package io.gumga.security;
 import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
+import io.gumga.presentation.CustomGumgaRestTemplate;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +37,13 @@ public class GumgaInstanceValuesProxy {
     }
 
     private RestTemplate restTemplate;
+    @Autowired(required = false)
+    private CustomGumgaRestTemplate gumgaRestTemplate;
 
     private RestTemplate getRestTemplate() {
         if (restTemplate == null) {
             restTemplate = new GumgaJsonRestTemplate();
+            restTemplate = gumgaRestTemplate != null ? gumgaRestTemplate.getRestTemplate(restTemplate) : restTemplate;
         }
         return restTemplate;
     }

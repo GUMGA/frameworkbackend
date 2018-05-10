@@ -3,6 +3,7 @@ package io.gumga.security;
 import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
+import io.gumga.presentation.CustomGumgaRestTemplate;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.web.client.RestClientException;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Métodos de busca de informações do segurança
  */
@@ -29,12 +32,16 @@ public class GumgaSecurityEntitiesProxy {
     
     private static final Logger log = LoggerFactory.getLogger(GumgaSecurityEntitiesProxy.class);
 
-    private final RestTemplate restTemplate;
+    private  RestTemplate restTemplate;
     @Autowired
     private GumgaValues gumgaValues;
+    @Autowired(required = false)
+    private CustomGumgaRestTemplate gumgaRestTemplate;
 
-    public GumgaSecurityEntitiesProxy() {
-        this.restTemplate = new GumgaJsonRestTemplate();
+    @PostConstruct
+    public void initRestTemplate() {
+        restTemplate = new GumgaJsonRestTemplate();
+        restTemplate = gumgaRestTemplate != null ? gumgaRestTemplate.getRestTemplate(restTemplate) : restTemplate;
     }
 
     /**

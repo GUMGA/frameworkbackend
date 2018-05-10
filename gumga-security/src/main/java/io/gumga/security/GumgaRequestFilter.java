@@ -11,6 +11,7 @@ import io.gumga.application.GumgaLoggerService;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
 import io.gumga.domain.GumgaLog;
+import io.gumga.presentation.CustomGumgaRestTemplate;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -34,7 +36,7 @@ public class GumgaRequestFilter extends HandlerInterceptorAdapter {
 
     private final String softwareId;
 
-    private final RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     private ObjectMapper mapper;
 
@@ -51,6 +53,9 @@ public class GumgaRequestFilter extends HandlerInterceptorAdapter {
 
     @Autowired(required = false)
     private ApiOperationTranslator aot;
+    @Autowired(required = false)
+    private CustomGumgaRestTemplate gumgaRestTemplate;
+
 
     public void setAot(ApiOperationTranslator aot) {
         this.aot = aot;
@@ -58,14 +63,18 @@ public class GumgaRequestFilter extends HandlerInterceptorAdapter {
 
     public GumgaRequestFilter() {
         softwareId = "SomeSoftware";
-        restTemplate = new GumgaJsonRestTemplate();
         mapper = new ObjectMapper();
     }
 
     public GumgaRequestFilter(String si) {
         softwareId = si;
-        restTemplate = new GumgaJsonRestTemplate();
         mapper = new ObjectMapper();
+    }
+
+    @PostConstruct
+    public void initRestTemplate() {
+        restTemplate = new GumgaJsonRestTemplate();
+        restTemplate = gumgaRestTemplate != null ? gumgaRestTemplate.getRestTemplate(restTemplate) : restTemplate;
     }
 
     public void dummy() {
