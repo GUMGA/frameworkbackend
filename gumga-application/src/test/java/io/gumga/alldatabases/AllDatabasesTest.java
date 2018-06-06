@@ -9,6 +9,7 @@ import io.gumga.core.gquery.ComparisonOperator;
 import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.CriteriaField;
 import io.gumga.core.gquery.GQuery;
+import io.gumga.domain.GumgaModelUUIDCompositePK;
 import io.gumga.domain.domains.GumgaOi;
 import io.gumga.testmodel.*;
 
@@ -46,6 +47,9 @@ public abstract class AllDatabasesTest {
 
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private AnimalRepository animalRepository;
 
     @Before
     @Transactional
@@ -718,5 +722,29 @@ public abstract class AllDatabasesTest {
         assertEquals(0, result.getStart());
         assertEquals(Long.valueOf(6), result.getCount());
 
+    }
+
+    @Test
+    @Transactional @Rollback
+    public void saveAnimalGumgaModelUUIDComposite() {
+        GumgaThreadScope.organizationCode.set("88.");
+        Animal dog = new Animal("Dog");
+        Animal saved = this.animalRepository.saveAndFlush(dog);
+
+        GumgaModelUUIDCompositePK pk = new GumgaModelUUIDCompositePK(saved.getId(), saved.getOi());
+        Animal result = this.animalRepository.findOne(pk);
+        assertNotNull(result);
+        List<Animal> all = this.animalRepository.findAll();
+        SearchResult<Animal> search = this.animalRepository.search(new QueryObject());
+        assertEquals(1, all.size());
+        assertEquals(1, search.getValues().size());
+        Animal animal = this.animalRepository.fetchOne(new GQuery());
+        assertNotNull(animal);
+        assertEquals(1, this.animalRepository.count());
+        Object o = this.animalRepository.fetchOneObject(new GQuery());
+        assertNotNull(o);
+//        this.animalRepository.delete(pk);
+//
+//        assertNotNull(this.animalRepository.findOne(pk));
     }
 }
