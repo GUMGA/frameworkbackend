@@ -85,7 +85,6 @@ public abstract class AllDatabasesTest {
         marketPlace.setFields(values);
         marketPlace.setStock(stock);
         this.marketPlaceRepository.save(marketPlace);
-
         List<MarketPlace> marketPlaceList = new ArrayList<>();
         marketPlaceList.add(marketPlace);
 
