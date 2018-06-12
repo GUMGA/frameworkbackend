@@ -10,6 +10,15 @@ public class GumgaSaaS {
      */
     private String organizationName;
     /**
+     * Codigo interno da organização
+     */
+    private String internalCode;
+    /**
+     * IDCliente da organização
+     */
+    private Long idCliente;
+
+    /**
      * Nome do software
      */
     private String softwareName;
@@ -24,11 +33,11 @@ public class GumgaSaaS {
     /**
      * Cria Perfil compartilhado
      */
-    private Boolean createRoleShared;
+    private Boolean createRoleShared = Boolean.FALSE;
     /**
      * Cria token eterno
      */
-    private Boolean createEternalToken;
+    private Boolean createEternalToken = Boolean.FALSE;
 
     public String getOrganizationName() {
         return organizationName;
@@ -76,5 +85,21 @@ public class GumgaSaaS {
 
     public void setSoftwareName(String softwareName) {
         this.softwareName = softwareName;
+    }
+
+    public String getInternalCode() {
+        return internalCode;
+    }
+
+    public void setInternalCode(String internalCode) {
+        this.internalCode = internalCode;
+    }
+
+    public Long getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Long idCliente) {
+        this.idCliente = idCliente;
     }
 }

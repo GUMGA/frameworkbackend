@@ -17,6 +17,10 @@ public class UserSaaS {
      * Senha do usuário
      */
     private String password;
+    /**
+     * Codigo interno do usuário
+     */
+    private String internalCode;
 
     public String getPassword() {
         return password;
@@ -40,5 +44,13 @@ public class UserSaaS {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getInternalCode() {
+        return internalCode;
+    }
+
+    public void setInternalCode(String internalCode) {
+        this.internalCode = internalCode;
     }
 }

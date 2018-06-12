@@ -7,6 +7,10 @@
 
 =======================================
 Framework Backend
+3.3.3
+    - Adicionado os atributos internalCode e idCliente na classe GumgaSaaS.
+    - Adicionado o atributo internalCode  na classe UserSaaS.
+
 3.3.2
     - Suporte a NOT_IN no ComparisonOperator do Criteria GQuery
     - Opção para customizar(CustomGumgaRestTemplate) o resttemplate utilizado pelo framework nos proxy.
