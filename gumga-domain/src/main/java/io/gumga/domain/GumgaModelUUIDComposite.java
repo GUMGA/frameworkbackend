@@ -36,8 +36,8 @@ public abstract class GumgaModelUUIDComposite implements GumgaIdable<GumgaModelU
     }
 
     @Override
-    public String getId() {
-        return pk.id;
+    public GumgaModelUUIDCompositePK getId() {
+        return pk;
     }
 
     public void setId(String id) {
@@ -65,20 +65,12 @@ public abstract class GumgaModelUUIDComposite implements GumgaIdable<GumgaModelU
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
         final GumgaModelUUIDComposite other = (GumgaModelUUIDComposite) obj;
 
-        if (!Objects.equals(pk.id, pk.id)) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(pk, other.pk);
     }
 }
