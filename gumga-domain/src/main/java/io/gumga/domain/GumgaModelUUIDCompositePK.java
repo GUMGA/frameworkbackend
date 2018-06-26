@@ -22,6 +22,11 @@ public class GumgaModelUUIDCompositePK implements Serializable {
         this.oi = oi;
     }
 
+    public GumgaModelUUIDCompositePK(String id) {
+        this.id = id;
+        this.oi = GumgaOi.getCurrentOi();
+    }
+
     public String getId() {
         return id;
     }

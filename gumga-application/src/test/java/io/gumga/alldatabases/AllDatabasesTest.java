@@ -50,6 +50,8 @@ public abstract class AllDatabasesTest {
 
     @Autowired
     private AnimalRepository animalRepository;
+    @Autowired
+    private AnimalService animalService;
 
     @Before
     @Transactional
@@ -729,20 +731,40 @@ public abstract class AllDatabasesTest {
     public void saveAnimalGumgaModelUUIDComposite() {
         GumgaThreadScope.organizationCode.set("88.");
         Animal dog = new Animal("Dog");
-        Animal saved = this.animalRepository.saveAndFlush(dog);
+        dog.setId("dog");
+        this.animalRepository.saveAndFlush(dog);
 
-        GumgaModelUUIDCompositePK pk = new GumgaModelUUIDCompositePK(saved.getId(), saved.getOi());
-        Animal result = this.animalRepository.findOne(pk);
-        assertNotNull(result);
+
+        GumgaThreadScope.organizationCode.set("18.");
+        Animal cat = new Animal("Cat");
+        cat.setId("dog");
+        this.animalRepository.saveAndFlush(cat);
+
+//        GumgaModelUUIDCompositePK pk = new GumgaModelUUIDCompositePK(saved.getId().getId(), saved.getOi());
+//        Animal result = this.animalRepository.findOne(pk);
+//        assertNotNull(result);
+//        List<Animal> all = this.animalRepository.findAll();
+//        SearchResult<Animal> search = this.animalRepository.search(new QueryObject());
+//        assertEquals(1, all.size());
+//        assertEquals(1, search.getValues().size());
+//        Animal animal = this.animalRepository.fetchOne(new GQuery());
+//        assertNotNull(animal);
+//        assertEquals(1, this.animalRepository.count());
+//        Object o = this.animalRepository.fetchOneObject(new GQuery());
+//        assertNotNull(o);
+        this.animalService.delete(cat);
+
+        GumgaThreadScope.organizationCode.set("88.");
         List<Animal> all = this.animalRepository.findAll();
-        SearchResult<Animal> search = this.animalRepository.search(new QueryObject());
         assertEquals(1, all.size());
-        assertEquals(1, search.getValues().size());
-        Animal animal = this.animalRepository.fetchOne(new GQuery());
-        assertNotNull(animal);
-        assertEquals(1, this.animalRepository.count());
-        Object o = this.animalRepository.fetchOneObject(new GQuery());
-        assertNotNull(o);
+
+        SearchResult<Object> osr = this.animalService.searchWithGQuery(new QueryObject());
+        assertEquals(1l, osr.getCount(), 1l);
+
+
+//        Animal view = this.animalService.view("dog");
+//        assertNotNull(view);
+//        this.animalService.delete(saved);
 //        this.animalRepository.delete(pk);
 //
 //        assertNotNull(this.animalRepository.findOne(pk));
