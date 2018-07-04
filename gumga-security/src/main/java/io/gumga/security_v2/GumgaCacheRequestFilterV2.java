@@ -76,7 +76,8 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
                 data.put("userRecognition", userRecognition);
             }
             setGumgaThreadScope(data);
-//            log.info("Pegou do cache a autorização!");
+            log.info(String.format("CACHE path[%s] qtdeEmCache[%s] software[%s] token[%s] oi[%s] user[%s]", request.getServletPath(), repository.getCache().size(), getSoftwareId(), GumgaThreadScope.gumgaToken.get(), GumgaThreadScope.organizationCode.get(), GumgaThreadScope.login.get()));
+
             return true;
         }
 
@@ -86,8 +87,8 @@ public class GumgaCacheRequestFilterV2 extends GumgaRequestFilterV2 {
     }
 
     private boolean callSecurity(HttpServletRequest request, HttpServletResponse response, Object o, String token, Boolean saveToken) throws Exception {
-//        log.info("Não pegou do cache a autorização!");
         boolean result = super.preHandle(request, response, o);
+        log.info(String.format("NO_CACHE path[%s] software[%s] token[%s] oi[%s] user[%s]", request.getServletPath(), getSoftwareId(), GumgaThreadScope.gumgaToken.get(), GumgaThreadScope.organizationCode.get(), GumgaThreadScope.login.get()));
         if(saveToken && result && !StringUtils.isEmpty(token)) {
             ConcurrentHashMap<String, Object> data = repository.getData(token);
             setGumgaThreadScope(data);

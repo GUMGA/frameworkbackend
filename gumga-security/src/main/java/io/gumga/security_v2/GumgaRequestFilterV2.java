@@ -19,6 +19,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -132,16 +134,16 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
             if (endPoint.contains("public") || endPoint.contains("api-docs")) {
                 saveLog(new AuthorizationResponseV2("allow", "public", "public", "public", "public", "public", null,"no instance"), request, operationKey, endPoint, method, true);
+                logGumga.info("Não estou fazendo busca das operações.");
                 return true;
             }
 
 
-
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/authorize/" + softwareId + "/" + token + "/" + request.getRemoteAddr() + "/" + operationKey + "?version=v2";
 
-//            ar = restTemplate.getForObject(url, AuthorizatonResponse.class);
+            Instant start = Instant.now();
             Map authorizatonResponse = restTemplate.getForObject(url, Map.class);
-
+            logGumga.info(String.format("Autorização tempoSegundos[%s] token[%s] login[%s] operation[%s]", Duration.between(start, Instant.now()).getSeconds(), token, ar.getLogin(), operationKey));
             ar = new AuthorizationResponseV2(authorizatonResponse);
             
 
@@ -259,5 +261,8 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 //        return dataTL.get();
 //    }
 
+    public String getSoftwareId() {
+        return softwareId;
+    }
 
 }
