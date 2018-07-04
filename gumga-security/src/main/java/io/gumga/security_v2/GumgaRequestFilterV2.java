@@ -143,7 +143,7 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
             Instant start = Instant.now();
             Map authorizatonResponse = restTemplate.getForObject(url, Map.class);
-            logGumga.info(String.format("Autorização tempoSegundos[%s] token[%s] login[%s] operation[%s]", Duration.between(start, Instant.now()).getSeconds(), token, ar.getLogin(), operationKey));
+            logGumga.info(String.format("Autorização tempoSegundos[%s] token[%s] login[%s] ip[%s]", Duration.between(start, Instant.now()).getSeconds(), token, ar.getLogin(), request.getRemoteAddr()));
             ar = new AuthorizationResponseV2(authorizatonResponse);
             
 
