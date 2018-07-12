@@ -205,7 +205,9 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
                 errorResponse = ar.getResponse();
             }
         } catch (Exception ex) {
-            requestFilterV2Repository.remove(token);
+            if(GumgaCacheRequestFilterV2.CACHE_IN_USE) {
+                requestFilterV2Repository.remove(token);
+            }
             log.error("erro no filtro segurança", ex);
         }
 
