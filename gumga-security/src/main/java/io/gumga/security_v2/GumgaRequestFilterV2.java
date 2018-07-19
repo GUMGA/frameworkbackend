@@ -134,16 +134,16 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
 
             if (endPoint.contains("public") || endPoint.contains("api-docs")) {
                 saveLog(new AuthorizationResponseV2("allow", "public", "public", "public", "public", "public", null,"no instance"), request, operationKey, endPoint, method, true);
-                logGumga.info("Não estou fazendo busca das operações.");
+//                logGumga.info(String.format("Não estou fazendo busca das operações. path[%s]", request.getServletPath()));
                 return true;
             }
 
 
             String url = gumgaValues.getGumgaSecurityUrl() + "/token/authorize/" + softwareId + "/" + token + "/" + request.getRemoteAddr() + "/" + operationKey + "?version=v2";
 
-            Instant start = Instant.now();
+//            Instant start = Instant.now();
             Map authorizatonResponse = restTemplate.getForObject(url, Map.class);
-            logGumga.info(String.format("Autorização tempoSegundos[%s] token[%s] login[%s] ip[%s]", Duration.between(start, Instant.now()).getSeconds(), token, ar.getLogin(), request.getRemoteAddr()));
+//            logGumga.info(String.format("Autorização tempoSegundos[%s] token[%s] login[%s] ip[%s]", Duration.between(start, Instant.now()).getSeconds(), token, ar.getLogin(), request.getRemoteAddr()));
             ar = new AuthorizationResponseV2(authorizatonResponse);
             
 
