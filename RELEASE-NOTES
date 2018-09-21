@@ -7,6 +7,10 @@
 
 =======================================
 Framework Backend
+3.3.4
+    - BAD_CREDENTIALS em GumgaSecurityCode
+    - GumgaValues getCustomFileProperties - UTF8
+
 3.3.3
     - Adicionado os atributos internalCode e idCliente na classe GumgaSaaS.
     - Adicionado o atributo internalCode  na classe UserSaaS.
