@@ -323,7 +323,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         }
 //        System.out.println("---CONVERTIDA----->"+query.getAq());
         String modelo = "from %s obj WHERE %s";
-        if (hasMultitenancy()) {
+        if (hasMultitenancy() && (GumgaThreadScope.ignoreCheckOwnership.get() == null || !GumgaThreadScope.ignoreCheckOwnership.get())) {
             String ld = "";
             if (hasLogicalDelete()) {
                 ld = " obj.gumgaActive=" + (!query.isInactiveSearch()) + " and ";
