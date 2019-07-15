@@ -10,6 +10,8 @@ Framework Backend
 3.3.4
     - BAD_CREDENTIALS em GumgaSecurityCode
     - GumgaValues getCustomFileProperties - UTF8
+    - Ignorar o OI na busca advanceSearch atraves do ownership
+    - Correção nos parametros do GumgaGenericRepository
 
 3.3.3
     - Adicionado os atributos internalCode e idCliente na classe GumgaSaaS.
