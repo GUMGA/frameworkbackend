@@ -6,7 +6,7 @@
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
 
-        <version>3.3.4-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
 
      </parent>
 
@@ -41,8 +41,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -54,11 +54,11 @@
             <artifactId>gumga-validation</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
         </dependency>
         <dependency>

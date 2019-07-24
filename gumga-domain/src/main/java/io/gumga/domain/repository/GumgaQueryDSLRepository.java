@@ -1,12 +1,13 @@
 package io.gumga.domain.repository;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Predicate;
+
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import io.gumga.core.SearchResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
@@ -18,7 +19,7 @@ import java.util.List;
  * @author munif
  */
 @NoRepositoryBean
-public interface GumgaQueryDSLRepository<T, ID extends Serializable> extends GumgaCrudRepository<T, ID>, QueryDslPredicateExecutor<T> {
+public interface GumgaQueryDSLRepository<T, ID extends Serializable> extends GumgaCrudRepository<T, ID>, QuerydslPredicateExecutor<T> { // QueryDslPredicateExecutor<T> {
 
     List<T> findAll(Predicate predicate, OrderSpecifier<?>... orders);
 

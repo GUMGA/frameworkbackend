@@ -1,6 +1,6 @@
 package io.gumga.domain.repository;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;

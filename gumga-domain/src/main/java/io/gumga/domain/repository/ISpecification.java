@@ -1,6 +1,7 @@
 package io.gumga.domain.repository;
 
-import com.mysema.query.jpa.JPQLQuery;
+
+import com.querydsl.jpa.JPQLQuery;
 
 /**
  * Interface para consultas mais complexas

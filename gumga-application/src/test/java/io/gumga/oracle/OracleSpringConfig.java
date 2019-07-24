@@ -52,7 +52,6 @@ public class OracleSpringConfig {
         config.setMinimumIdle(5);
         config.setMaximumPoolSize(50);
         config.setIdleTimeout(30000L);
-        config.setInitializationFailFast(true);
         config.setDataSourceClassName("oracle.jdbc.pool.OracleDataSource");
         config.addDataSourceProperty("url", "jdbc:oracle:thin:@localhost:1521:xe");
         config.addDataSourceProperty("user", "dashboard");

@@ -2,10 +2,10 @@ package io.gumga.validation.validator.common;
 
 import com.google.common.base.Optional;
 import io.gumga.validation.GumgaValidationError;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.validation.Errors;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class IsFalseValidatorTest {

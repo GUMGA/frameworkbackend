@@ -23,6 +23,7 @@ import java.util.Objects;
 @Entity
 @SequenceGenerator(name = "SEQREV", sequenceName = "SEQREV")
 @RevisionEntity(GumgaRevisionListener.class)
+@Table(name = "gumgarevisionentity")
 public class GumgaRevisionEntity implements Serializable {
     public static final String SEQREV = "SEQREV";
     private static final long serialVersionUID = 1L;
@@ -34,6 +35,7 @@ public class GumgaRevisionEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date moment;
     private String ip;
+    @Column(name = "userlogin")
     private String userLogin;
 
     public GumgaRevisionEntity() {

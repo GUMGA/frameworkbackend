@@ -1,18 +1,14 @@
 package io.gumga.domain.shared;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.SimplePath;
-import com.mysema.query.types.path.StringPath;
 import io.gumga.domain.QGumgaModel;
 import io.gumga.domain.domains.GumgaOi;
 
 import javax.annotation.Generated;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 /**
  * QGumgaSharedModel is a Querydsl query type for GumgaSharedModel
@@ -47,7 +43,7 @@ public class QGumgaSharedModel extends EntityPathBase<GumgaSharedModel<? extends
     }
 
     @SuppressWarnings("all")
-    public QGumgaSharedModel(PathMetadata<?> metadata) {
+    public QGumgaSharedModel(PathMetadata metadata) {
         super((Class)GumgaSharedModel.class, metadata);
     }
 

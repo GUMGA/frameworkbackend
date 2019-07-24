@@ -3,6 +3,7 @@ package io.gumga.domain.domains.usertypes;
 import io.gumga.domain.domains.GumgaAddress;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
 import org.hibernate.usertype.CompositeUserType;
@@ -159,10 +160,7 @@ public class GumgaAddressUserType implements CompositeUserType {
     }
 
     @Override
-    public Object nullSafeGet(final ResultSet resultSet,
-            final String[] names,
-            final SessionImplementor paramSessionImplementor, final Object paramObject)
-            throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException, SQLException {
         //owner here is of type TestUser or the actual owning Object
         GumgaAddress object = null;
         final String zipCode = resultSet.getString(names[0]);
@@ -177,15 +175,8 @@ public class GumgaAddressUserType implements CompositeUserType {
         return new GumgaAddress();
     }
 
-    /**
-     * Before executing the save call this method is called. It will set the
-     * values in the prepared statement
-     */
     @Override
-    public void nullSafeSet(final PreparedStatement preparedStatement,
-            final Object value, final int property,
-            final SessionImplementor sessionImplementor)
-            throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int property, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException, SQLException {
         if (null == value) {
             preparedStatement.setNull(property + 0, java.sql.Types.VARCHAR);
             preparedStatement.setNull(property + 1, java.sql.Types.VARCHAR);
@@ -230,6 +221,8 @@ public class GumgaAddressUserType implements CompositeUserType {
         }
     }
 
+
+
     /**
      * Used to create Snapshots of the object
      */
@@ -250,38 +243,19 @@ public class GumgaAddressUserType implements CompositeUserType {
         return true;
     }
 
-    /**
-     * method called when Hibernate puts the data in a second level cache. The
-     * data is stored in a serializable form
-     */
     @Override
-    public Serializable disassemble(final Object value,
-            final SessionImplementor paramSessionImplementor)
-            throws HibernateException {
+    public Serializable disassemble(Object value, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException {
         //Thus the data Types must implement serializable
         return (Serializable) value;
     }
 
-    /**
-     * Returns the object from the 2 level cache
-     */
     @Override
-    public Object assemble(final Serializable cached,
-            final SessionImplementor sessionImplementor, final Object owner)
-            throws HibernateException {
-        //would work as the class is Serializable, and stored in cache as it is - see disassemble
+    public Object assemble(Serializable cached, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException {
         return cached;
     }
 
-    /**
-     * Method is called when merging two objects.
-     */
     @Override
-    public Object replace(final Object original, final Object target,
-            final SessionImplementor paramSessionImplementor, final Object owner)
-            throws HibernateException {
-        //        return original; // if immutable use this
-        //For mutable types at bare minimum return a deep copy of first argument
+    public Object replace(Object original, Object o1, SharedSessionContractImplementor sharedSessionContractImplementor, Object o2) throws HibernateException {
         return this.deepCopy(original);
     }
 

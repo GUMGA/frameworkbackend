@@ -5,7 +5,6 @@
  */
 package io.gumga.security;
 
-import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.core.FacebookRegister;
 import io.gumga.core.GumgaValues;
 import io.gumga.core.UserAndPassword;
@@ -13,18 +12,19 @@ import io.gumga.domain.domains.GumgaImage;
 import io.gumga.presentation.CustomGumgaRestTemplate;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import io.gumga.security_v2.GumgaCacheRequestFilterV2Repository;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.*;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.RestClientException;
 
 /**
  * Classe com métodos de integração utilizando token

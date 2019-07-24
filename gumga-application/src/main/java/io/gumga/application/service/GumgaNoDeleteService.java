@@ -66,7 +66,7 @@ public abstract class GumgaNoDeleteService<T extends GumgaIdable<ID>, ID extends
 	@Transactional(readOnly = true)
 	public T view(ID id) {
 		beforeView(id);
-		T entity = repository.findOne(id);
+		T entity = repository.getOne(id);
                 loadGumgaCustomFields(entity);
 		afterView(entity);
 		

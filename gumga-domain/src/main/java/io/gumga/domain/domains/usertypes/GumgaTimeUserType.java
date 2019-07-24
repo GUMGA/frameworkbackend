@@ -3,6 +3,7 @@ package io.gumga.domain.domains.usertypes;
 import io.gumga.domain.domains.GumgaTime;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
 import java.sql.*;
 import java.util.Date;
@@ -42,10 +43,7 @@ public class GumgaTimeUserType extends MutableUserType {
     }
 
     @Override
-    public Object nullSafeGet(final ResultSet resultSet,
-            final String[] names,
-            final SessionImplementor paramSessionImplementor, final Object paramObject)
-            throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException, SQLException {
         GumgaTime object = null;
         final Date valor = resultSet.getTime(names[0]);
         if (!resultSet.wasNull()) {
@@ -55,10 +53,7 @@ public class GumgaTimeUserType extends MutableUserType {
     }
 
     @Override
-    public void nullSafeSet(final PreparedStatement preparedStatement,
-            final Object value, final int property,
-            final SessionImplementor sessionImplementor)
-            throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int property, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException, SQLException {
         if (null == value) {
             preparedStatement.setNull(property, java.sql.Types.TIME);
         } else {
@@ -66,6 +61,7 @@ public class GumgaTimeUserType extends MutableUserType {
             preparedStatement.setTime(property, new Time(object.getValue().getTime()));
         }
     }
+
 
     @Override
     public Object deepCopy(Object value) throws HibernateException {

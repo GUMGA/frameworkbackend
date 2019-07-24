@@ -4,13 +4,13 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.gumga.validation.GumgaValidationError;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class NotEmptyCollectionValidatorTest {

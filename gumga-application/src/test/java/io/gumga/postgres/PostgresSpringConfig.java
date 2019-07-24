@@ -36,7 +36,6 @@ public class PostgresSpringConfig {
         config.setMinimumIdle(5);
         config.setMaximumPoolSize(50);
         config.setIdleTimeout(30000L);
-        config.setInitializationFailFast(true);
         config.setDataSourceClassName("org.postgresql.jdbc2.optional.SimpleDataSource");
         config.addDataSourceProperty("url", "jdbc:postgresql://localhost:5432/gumga_test");
         config.addDataSourceProperty("user", "postgres");

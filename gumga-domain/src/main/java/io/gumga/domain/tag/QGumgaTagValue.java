@@ -1,15 +1,14 @@
 package io.gumga.domain.tag;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.*;
 import io.gumga.domain.QGumgaModel;
 import io.gumga.domain.domains.GumgaOi;
 
 import javax.annotation.Generated;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 /**
  * QGumgaTagValue is a Querydsl query type for GumgaTagValue
  */
@@ -43,15 +42,15 @@ public class QGumgaTagValue extends EntityPathBase<GumgaTagValue> {
         this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QGumgaTagValue(PathMetadata<?> metadata) {
+    public QGumgaTagValue(PathMetadata metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QGumgaTagValue(PathMetadata<?> metadata, PathInits inits) {
+    public QGumgaTagValue(PathMetadata metadata, PathInits inits) {
         this(GumgaTagValue.class, metadata, inits);
     }
 
-    public QGumgaTagValue(Class<? extends GumgaTagValue> type, PathMetadata<?> metadata, PathInits inits) {
+    public QGumgaTagValue(Class<? extends GumgaTagValue> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.definition = inits.isInitialized("definition") ? new QGumgaTagValueDefinition(forProperty("definition")) : null;
     }

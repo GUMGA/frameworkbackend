@@ -17,7 +17,9 @@
 package io.gumga.domain.domains.usertypes;
 
 import io.gumga.domain.domains.GumgaYoutubeURL;
+import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +34,12 @@ public class GumgaYoutubeURLUserType extends ImmutableUserType {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws SQLException {
+    public Class<?> returnedClass() {
+        return GumgaYoutubeURL.class;
+    }
+
+    @Override
+    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException, SQLException {
         String value = rs.getString(names[0]);
         if (rs.wasNull()) {
             return null;
@@ -42,19 +49,13 @@ public class GumgaYoutubeURLUserType extends ImmutableUserType {
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session)
-            throws SQLException {
+    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException, SQLException {
         if (value == null) {
             st.setNull(index, Types.VARCHAR);
         } else {
             GumgaYoutubeURL url = (GumgaYoutubeURL) value;
             st.setString(index, url.toString());
         }
-    }
-
-    @Override
-    public Class<?> returnedClass() {
-        return GumgaYoutubeURL.class;
     }
 
     @Override

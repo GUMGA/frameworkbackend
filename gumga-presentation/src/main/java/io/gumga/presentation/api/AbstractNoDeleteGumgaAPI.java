@@ -1,12 +1,12 @@
 package io.gumga.presentation.api;
 
-import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.annotations.GumgaSwagger;
 import io.gumga.domain.GumgaServiceable;
 import io.gumga.domain.service.GumgaWritableServiceable;
 import io.gumga.domain.tag.GumgaTag;
 import io.gumga.presentation.RestResponse;
 import io.gumga.validation.exception.InvalidEntityException;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;

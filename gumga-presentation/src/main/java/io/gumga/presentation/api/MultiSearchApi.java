@@ -5,8 +5,8 @@
  */
 package io.gumga.presentation.api;
 
-import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.application.GumgaUntypedRepository;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,14 +1,15 @@
 package io.gumga.oracle;
 
 import io.gumga.alldatabases.AllDatabasesTest;
-import org.junit.Ignore;
-import org.junit.runner.RunWith;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {OracleSpringConfig.class})
-@Ignore
-public class OracleTest extends AllDatabasesTest{
+//@ExtendWith(SpringExtension.class)
+//@ContextConfiguration(classes = {OracleSpringConfig.class})
+//@Disabled
+public class OracleTest { //extends AllDatabasesTest{
     
 }

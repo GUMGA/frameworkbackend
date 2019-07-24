@@ -26,6 +26,9 @@ public class GumgaTagDefinition extends GumgaModel<Long> {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinTable(name = "gumga_gtag_defi_gtag_vdefi",
+            joinColumns = @JoinColumn(name = "gumga_gtag_defi_id"),
+            inverseJoinColumns = @JoinColumn(name = "attributes_id"))
     private List<GumgaTagValueDefinition> attributes = new ArrayList<>();
 
     public GumgaTagDefinition() {

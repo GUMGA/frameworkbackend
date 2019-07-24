@@ -1,39 +1,36 @@
 package io.gumga.logicaldelete;
 
-import io.gumga.alldatabases.AllDatabasesTest;
 import io.gumga.application.SpringConfig;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
-import io.gumga.mysql.MysqlSpringConfig;
 import io.gumga.testmodel.Book;
 import io.gumga.testmodel.BookRepository;
 import io.gumga.testmodel.BookService;
-import io.gumga.testmodel.Company;
-import io.gumga.testmodel.CompanyService;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Scanner;
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-@Ignore
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SpringConfig.class})
-public class LogicalDeleteTest {
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+//@Disabled
+//@ExtendWith(SpringExtension.class)
+//@ContextConfiguration(classes = {SpringConfig.class})
+public class LogicalDeleteTest {
+/*
     @Autowired
     protected BookService bookService;
     @Autowired
     private BookRepository bookRepository;
 
-    @Before
+    @BeforeEach
     @Transactional
     public void setUp() {
         bookRepository.deleteAll();
@@ -106,6 +103,6 @@ public class LogicalDeleteTest {
         assertEquals(3, result.size());
     }
 
-
+*/
 
 }

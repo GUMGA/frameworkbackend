@@ -32,7 +32,7 @@ public class GumgaTagDefinitionService extends GumgaService<GumgaTagDefinition, 
      */
     @Transactional
     public GumgaTagDefinition loadGumgaTagDefinitionFat(Long id) {
-        GumgaTagDefinition obj = repository.findOne(id);
+        GumgaTagDefinition obj = repository.getOne(id);
         Hibernate.initialize(obj.getAttributes());
         return obj;
     }

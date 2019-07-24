@@ -5,16 +5,17 @@ import io.gumga.core.GumgaThreadScope;
 import io.gumga.testmodel.PersonSharedModel;
 import io.gumga.testmodel.PersonSharedRepositoryModel;
 import io.gumga.testmodel.PersonSharedServiceModel;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-@RunWith(SpringJUnit4ClassRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
 public class GumgaSharedModelTest {
 
@@ -23,7 +24,7 @@ public class GumgaSharedModelTest {
     @Autowired
     PersonSharedRepositoryModel repository;
 
-    @Before
+    @BeforeEach
     @Transactional
     public void setUp() throws Exception {
         GumgaThreadScope.organizationCode.set("1.");

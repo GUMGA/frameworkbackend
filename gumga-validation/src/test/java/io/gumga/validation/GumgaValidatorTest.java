@@ -7,17 +7,20 @@ import io.gumga.validation.validator.common.IsFalseValidator;
 import io.gumga.validation.validator.common.IsTrueValidator;
 import io.gumga.validation.validator.common.NotNullValidator;
 import io.gumga.validation.validator.string.NotNullOrEmptyValidator;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.util.Assert;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class GumgaValidatorTest {
 
@@ -25,7 +28,7 @@ public class GumgaValidatorTest {
 	private static final String BIRTH_DATE_FIELD = "birthDate";
 	private Errors errors = Mockito.mock(Errors.class);
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Person person = Mockito.mock(Person.class);
 		this.errors = new BeanPropertyBindingResult(person, "person");
@@ -66,7 +69,7 @@ public class GumgaValidatorTest {
 
 		assertTrue(errors.hasErrors());
 		assertTrue(errors.hasFieldErrors(BIRTH_DATE_FIELD));
-		Assert.assertEquals(IsFalseValidator.ERROR_CODE, errors.getFieldError(BIRTH_DATE_FIELD).getCode());
+		assertEquals(IsFalseValidator.ERROR_CODE, errors.getFieldError(BIRTH_DATE_FIELD).getCode());
 
 	}
 
@@ -112,7 +115,7 @@ public class GumgaValidatorTest {
 
 		assertTrue(errors.hasErrors());
 		assertTrue(errors.hasFieldErrors(BIRTH_DATE_FIELD));
-		Assert.assertEquals(NotNullValidator.ERROR_CODE, errors.getFieldError(BIRTH_DATE_FIELD).getCode());
+		assertEquals(NotNullValidator.ERROR_CODE, errors.getFieldError(BIRTH_DATE_FIELD).getCode());
 
 	}
 
@@ -127,22 +130,24 @@ public class GumgaValidatorTest {
 
 	}
 
-	@Test(expected = InvalidEntityException.class)
+	@Test()
 	public void should_throw_exception_if_validation_is_false() {
+		assertThrows(InvalidEntityException.class, () -> {
+			GumgaValidator.with(errors) //
+					.check(BIRTH_DATE_FIELD, new Date(), GumgaCommonValidator.notNull()) //
+					.check(NAME_FIELD, "", GumgaStringValidation.notNullOrEmpty()).check();
+		});
 
-		GumgaValidator.with(errors) //
-				.check(BIRTH_DATE_FIELD, new Date(), GumgaCommonValidator.notNull()) //
-				.check(NAME_FIELD, "", GumgaStringValidation.notNullOrEmpty()).check();
 
 	}
 
-	@Test(expected = InvalidEntityException.class)
+	@Test()
 	public void should_throw_exception_if_validation_is_false_and_have_no_errors() {
-
-		GumgaValidator.get() //
-				.checkNotNull(BIRTH_DATE_FIELD, new Date()) //
-				.check(NAME_FIELD, "", GumgaStringValidation.notNullOrEmpty()).check();
-
+		assertThrows(InvalidEntityException.class, () -> {
+			GumgaValidator.get() //
+					.checkNotNull(BIRTH_DATE_FIELD, new Date()) //
+					.check(NAME_FIELD, "", GumgaStringValidation.notNullOrEmpty()).check();
+		});
 	}
 	
 	@Test
@@ -152,7 +157,8 @@ public class GumgaValidatorTest {
 	      .get()
 	      .check(NAME_FIELD, "", "The name field can't be equals empty", GumgaStringValidation.notNullOrEmpty())
 	      .check();
-	    Assert.fail();
+
+		Assertions.fail();
 	  } catch(InvalidEntityException e) {		
 	    FieldError error = e.getErrors().getFieldError(NAME_FIELD);			
 	    assertEquals(NAME_FIELD, error.getField()); 
