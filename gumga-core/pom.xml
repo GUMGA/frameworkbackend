@@ -6,7 +6,7 @@
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
 
-        <version>3.3.3</version>
+        <version>4.0.0</version>
     </parent>
 
     <artifactId>gumga-core</artifactId>
@@ -17,8 +17,8 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -30,8 +30,9 @@
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-core</artifactId>
+            <version>${querydsl.core.version}</version>
         </dependency>
 
     </dependencies>

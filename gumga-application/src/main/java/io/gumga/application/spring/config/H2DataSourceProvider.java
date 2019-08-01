@@ -39,7 +39,7 @@ public class H2DataSourceProvider implements DataSourceProvider {
         config.setMinimumIdle(minConnections);
         config.setMaximumPoolSize(maxConnections);
         config.setIdleTimeout(30000L);
-        config.setInitializationFailFast(true);
+//        config.setInitializationFailFast(true);
         return new HikariDataSource(config);
     }
 

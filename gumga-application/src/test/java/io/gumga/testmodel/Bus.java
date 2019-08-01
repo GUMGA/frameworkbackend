@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_BUS")
+
 @GumgaMultitenancy
 public class Bus extends GumgaSharedModel<Long> {
 

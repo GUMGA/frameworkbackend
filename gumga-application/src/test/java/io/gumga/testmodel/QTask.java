@@ -1,16 +1,13 @@
 package io.gumga.testmodel;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
+
 import io.gumga.domain.QGumgaModel;
 import io.gumga.domain.domains.GumgaOi;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 /**
  * Created by rafael on 08/04/15.
  */
@@ -39,7 +36,7 @@ public class QTask extends EntityPathBase<Task> {
         super(path.getType(), path.getMetadata());
     }
 
-    public QTask(PathMetadata<?> metadata) {
+    public QTask(PathMetadata metadata) {
         super(Task.class, metadata);
     }
 

@@ -140,7 +140,7 @@ public abstract class GumgaService<T extends GumgaIdable<ID>, ID extends Seriali
      */
     @Transactional
     public void delete(List<T> list) {
-        repository.delete(list);
+        repository.deleteAll(list);
         if (gces != null) {
             for (T e : list) {
                 gces.deleteCustomFields(e);

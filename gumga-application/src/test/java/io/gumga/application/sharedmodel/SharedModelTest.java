@@ -1,24 +1,25 @@
 package io.gumga.application.sharedmodel;
 
-import io.gumga.testmodel.Bus;
-import io.gumga.testmodel.BusRepository;
-import io.gumga.testmodel.BusService;
 import io.gumga.application.SpringConfig;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.gumga.testmodel.Bus;
+import io.gumga.testmodel.BusRepository;
+import io.gumga.testmodel.BusService;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
 public class SharedModelTest {
 
@@ -34,7 +35,8 @@ public class SharedModelTest {
         assertNotNull(busRepository);
     }
 
-    @Before
+    @BeforeEach
+    @Transactional
     public void insertData() {
         GumgaThreadScope.organizationCode.set("1.");
         GumgaThreadScope.login.set("munif@gumga.com.br");
@@ -92,18 +94,21 @@ public class SharedModelTest {
         }
     }
 
-    @Test(expected = Exception.class)
+    @Test
     @Transactional
     public void removeListBus() {
-        GumgaThreadScope.organizationCode.set("9.");
-        GumgaThreadScope.login.set("munif@gumga.com.br");
+        Assertions.assertThrows(Exception.class, () -> {
+            GumgaThreadScope.organizationCode.set("9.");
+            GumgaThreadScope.login.set("munif@gumga.com.br");
 
-        QueryObject qo = new QueryObject();
-        qo.setAq("obj.line like '%'");
-        SearchResult<Bus> pesquisa = busService.pesquisa(qo);
-        for (Bus b : pesquisa.getValues()) {
-            busService.delete(b);
-        }
+            QueryObject qo = new QueryObject();
+            qo.setAq("obj.line like '%'");
+            SearchResult<Bus> pesquisa = busService.pesquisa(qo);
+            for (Bus b : pesquisa.getValues()) {
+                busService.delete(b);
+            }
+        });
+
     }
 
 }

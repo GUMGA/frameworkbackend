@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author munif
  */
 @Entity
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_GUMGA_CTM_FLD")
+
 //             123456789012345678
 @Table(name = "gumga_ctm_fld")
 @GumgaMultitenancy

@@ -6,13 +6,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import io.gumga.application.GumgaRepositoryFactoryBean;
-import io.gumga.application.service.GumgaFreemarkerTemplateEngineService;
 import io.gumga.application.service.JasyptGumgaPasswordService;
-import io.gumga.core.GumgaValues;
-import io.gumga.core.exception.TemplateEngineException;
 import io.gumga.core.service.GumgaPasswordService;
 import io.gumga.domain.GumgaQueryParserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,9 +82,9 @@ public class SpringConfig {
     public MappingJackson2HttpMessageConverter jacksonConverter() {
         ObjectMapper mapper = new ObjectMapper();
 
-        Hibernate4Module hibernate4Module = new Hibernate4Module();
-        hibernate4Module.disable(Hibernate4Module.Feature.USE_TRANSIENT_ANNOTATION);
-        mapper.registerModule(hibernate4Module);
+        Hibernate5Module hibernate5Module = new Hibernate5Module();
+        hibernate5Module.disable(Hibernate5Module.Feature.USE_TRANSIENT_ANNOTATION);
+        mapper.registerModule(hibernate5Module);
         mapper.registerModule(new JodaModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.setDateFormat(new ISO8601DateFormat());

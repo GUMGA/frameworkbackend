@@ -19,7 +19,7 @@ import org.hibernate.envers.Audited;
 @GumgaMultitenancy
 @Entity
 @Audited
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_COMPANY")
+
 public class Company extends GumgaModel<Long> {
 
     private String name;

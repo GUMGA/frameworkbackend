@@ -5,10 +5,9 @@
  */
 package io.gumga.domain.customfields;
 
-import io.gumga.domain.domains.GumgaMoney;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  *

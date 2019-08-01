@@ -1,14 +1,12 @@
 package io.gumga.testmodel;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.*;
-import io.gumga.domain.domains.GumgaOi;
 
 import javax.annotation.Generated;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 /**
  * Created by gumgait on 25/01/18.
  */
@@ -42,15 +40,15 @@ public class QMarketPlace extends EntityPathBase<MarketPlace> {
         this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QMarketPlace(PathMetadata<?> metadata) {
+    public QMarketPlace(PathMetadata metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QMarketPlace(PathMetadata<?> metadata, PathInits inits) {
+    public QMarketPlace(PathMetadata metadata, PathInits inits) {
         this(MarketPlace.class, metadata, inits);
     }
 
-    public QMarketPlace(Class<? extends MarketPlace> type, PathMetadata<?> metadata, PathInits inits) {
+    public QMarketPlace(Class<? extends MarketPlace> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.stock = inits.isInitialized("stock") ? new QStock(forProperty("stock")) : null;
     }

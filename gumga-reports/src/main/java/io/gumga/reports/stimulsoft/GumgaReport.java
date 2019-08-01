@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Classe modelo onde será transportado e manipulado dados do stimulsoft
  */
 @GumgaMultitenancy
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_GUMGAREPORT")
+
 @Audited
 @Entity
 @Table(name = "gum_rep")

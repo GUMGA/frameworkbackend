@@ -13,44 +13,34 @@
         <github.global.server>github</github.global.server>
         -->
 
-        <spring.version>4.2.8.RELEASE</spring.version>
+        <spring.version>5.1.8.RELEASE</spring.version>
         <jasper.version>6.2.0</jasper.version>
         <github.global.server>github</github.global.server>
 
-        <hibernate.version>4.3.11.Final</hibernate.version>
-        <hibernate.validator.version>5.1.0.Final</hibernate.validator.version>
+        <hibernate.version>5.3.10.Final</hibernate.version>
+        <hibernate.validator.version>6.0.17.Final</hibernate.validator.version>
 
         <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
         <javax.servlet.jsp.api.version>2.2</javax.servlet.jsp.api.version>
         <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
-        <javax.validation.api.version>1.1.0.Final</javax.validation.api.version>
+        <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
 
 
-        <junit.version>4.11</junit.version>
-
+        <junit.version>5.5.1</junit.version>
         <net.jodah.version>0.3.1</net.jodah.version>
-
-        <com.fasterxml.jackson.version>2.6.7</com.fasterxml.jackson.version>
-
+        <com.fasterxml.jackson.version>2.9.9</com.fasterxml.jackson.version>
         <commons.lang3.version>3.3</commons.lang3.version>
-
-
-
         <org.glassfish.web.el.impl.version>2.2</org.glassfish.web.el.impl.version>
-
-        <hikaricp.version>2.5.1</hikaricp.version>
-        <!-- Não pode trocar a versão do querydsl, por que quebra o build no anymarkey -->
-        <querydsl.apt.version>3.4.0</querydsl.apt.version>
-        <querydsl.jpa.version>3.4.0</querydsl.jpa.version>
-        <querydsl.core.version>3.4.0</querydsl.core.version>
-
+        <hikaricp.version>3.3.1</hikaricp.version>
+        <querydsl.apt.version>4.2.1</querydsl.apt.version>
+        <querydsl.jpa.version>4.2.1</querydsl.jpa.version>
+        <querydsl.core.version>4.2.1</querydsl.core.version>
         <commons.fileupload.version>1.3.1</commons.fileupload.version>
-
         <commons.io.version>2.4</commons.io.version>
-
         <httpclient.version>4.5</httpclient.version>
-
         <commons.email.version>1.4</commons.email.version>
+
+
 
         <liquibase.core.version>3.5.3</liquibase.core.version>
 
@@ -58,11 +48,11 @@
 
         <slf4j.version>1.7.6</slf4j.version>
 
-        <spring-data-jpa.version>1.8.2.RELEASE</spring-data-jpa.version>
+        <spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
         <guava.version>18.0</guava.version>
         <mockito.version>1.9.5</mockito.version>
         <el-api.version>2.2</el-api.version>
-        <springfox-swagger2.version>2.0.1</springfox-swagger2.version>
+        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <swagger-spring-mvc-ui.versiom>0.4</swagger-spring-mvc-ui.versiom>
         <stimulsoft-reports-base.version>2017.1.10</stimulsoft-reports-base.version>
         <javax.interceptor-api.version>1.2</javax.interceptor-api.version>
@@ -70,7 +60,7 @@
         <cogroo-ann-pt_br.version>4.2.0</cogroo-ann-pt_br.version>
         <reflections.version>0.9.10</reflections.version>
         <freemarker.version>2.3.23</freemarker.version>
-        <hibernate-search-orm.version>5.1.0.Final</hibernate-search-orm.version>
+        <hibernate-search-orm.version>5.10.6.Final</hibernate-search-orm.version>
         <mail.version>1.4.7</mail.version>
     </properties>
 
@@ -116,7 +106,7 @@
     <groupId>io.gumga</groupId>
     <artifactId>gumga-backend-all</artifactId>
 
-    <version>3.3.3</version>
+    <version>4.0.0</version>
 
 
     <packaging>pom</packaging>
@@ -180,8 +170,13 @@
             </dependency>
 
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junit.version}</version>
             </dependency>
             <dependency>
@@ -303,7 +298,7 @@
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-hibernate4</artifactId>
+                <artifactId>jackson-datatype-hibernate5</artifactId>
                 <version>${com.fasterxml.jackson.version}</version>
             </dependency>
             <dependency>
@@ -313,17 +308,17 @@
             </dependency>
 
             <dependency>
-                <groupId>com.mysema.querydsl</groupId>
+                <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-apt</artifactId>
                 <version>${querydsl.apt.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.mysema.querydsl</groupId>
+                <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-jpa</artifactId>
                 <version>${querydsl.jpa.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.mysema.querydsl</groupId>
+                <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-core</artifactId>
                 <version>${querydsl.core.version}</version>
             </dependency>
@@ -470,6 +465,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -483,7 +479,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.3</version>
+                        <version>1.6.8</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>nexus-releases</serverId>
@@ -497,7 +493,7 @@
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-compiler-plugin</artifactId>
-                            <version>3.1</version>
+                            <version>3.8.1</version>
                             <configuration>
                                 <target>${java.versao}</target>
                                 <source>${java.versao}</source>
@@ -506,6 +502,7 @@
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-source-plugin</artifactId>
+                            <version>3.1.0</version>
                             <executions>
                                 <execution>
                                     <id>attach-sources</id>
@@ -518,6 +515,7 @@
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>3.1.1</version>
                             <executions>
                                 <execution>
                                     <id>attach-javadocs</id>
@@ -573,7 +571,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.7.2.201409121644</version>
+                        <version>0.8.4</version>
 
                         <executions>
                             <execution>
@@ -594,7 +592,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>2.2.1</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>

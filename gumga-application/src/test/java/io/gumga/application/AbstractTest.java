@@ -5,17 +5,15 @@
  */
 package io.gumga.application;
 
-import org.junit.runner.RunWith;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.annotation.IfProfileValue;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  *
  * @author gyowannyqueiroz
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
 public abstract class AbstractTest {
 

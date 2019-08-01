@@ -1,16 +1,14 @@
 package io.gumga.testmodel;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
+
 import io.gumga.domain.QGumgaModel;
 
 import javax.annotation.Generated;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 /**
  * QCoisa is a Querydsl query type for Coisa
@@ -41,7 +39,7 @@ public class QCar extends EntityPathBase<Car> {
         super(path.getType(), path.getMetadata());
     }
 
-    public QCar(PathMetadata<?> metadata) {
+    public QCar(PathMetadata metadata) {
         super(Car.class, metadata);
     }
 

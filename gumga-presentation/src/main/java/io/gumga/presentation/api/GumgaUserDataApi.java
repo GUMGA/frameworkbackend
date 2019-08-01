@@ -1,11 +1,11 @@
 package io.gumga.presentation.api;
 
-import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.application.GumgaService;
 import io.gumga.application.GumgaUserDataService;
 import io.gumga.core.SearchResult;
 import io.gumga.domain.GumgaUserData;
 import io.gumga.presentation.GumgaAPI;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

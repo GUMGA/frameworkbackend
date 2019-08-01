@@ -1,22 +1,21 @@
 package io.gumga.presentation;
 
-import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.annotations.GumgaSwagger;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
 import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.GumgaServiceable;
 import io.gumga.presentation.api.AbstractNoDeleteGumgaAPI;
+import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * API para acesso aos métodos de serviços que o Framework dispõe via requisições REST

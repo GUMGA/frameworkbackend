@@ -11,25 +11,23 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
-import java.util.EnumSet;
-import java.util.List;
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import java.util.EnumSet;
+import java.util.List;
 
 @Configuration
 public class WebConfigForTest extends WebMvcConfigurerAdapter implements WebApplicationInitializer {
@@ -41,7 +39,7 @@ public class WebConfigForTest extends WebMvcConfigurerAdapter implements WebAppl
     
     private MappingJackson2HttpMessageConverter jacksonConverter() {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new Hibernate4Module());
+        mapper.registerModule(new Hibernate5Module());
         mapper.registerModule(new JodaModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.setDateFormat(new ISO8601DateFormat());

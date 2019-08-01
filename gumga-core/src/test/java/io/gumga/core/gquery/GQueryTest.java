@@ -5,19 +5,22 @@
  */
 package io.gumga.core.gquery;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  *
  * @author munif
  */
-@Ignore
+//@Disabled
 public class GQueryTest {
-
+/*
 
     @Test
     public void testEMPTY() {
@@ -111,5 +114,5 @@ public class GQueryTest {
                 .and(new Criteria("name", ComparisonOperator.CONTAINS, "gebara"));
         assertEquals("(((name like 'munif%') OR (name like 'vicente%') OR (name like 'duda%')) AND (name like '%gebara%'))", gQuery.toString());
     }
-
+*/
 }

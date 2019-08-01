@@ -1,26 +1,25 @@
 package io.gumga.application;
 
-import io.gumga.testmodel.CompanyRepository;
-import io.gumga.testmodel.Company;
-import io.gumga.testmodel.CompanyService;
-import io.gumga.application.SpringConfig;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.gumga.testmodel.Company;
+import io.gumga.testmodel.CompanyRepository;
+import io.gumga.testmodel.CompanyService;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
 public class GumgaFinderTest {
 
@@ -83,7 +82,7 @@ companyRespository.deleteAll();
         GumgaThreadScope.organizationCode.set("1.");
         QueryObject query = new QueryObject();
         SearchResult<Company> pesquisa = service.pesquisa(query);
-        Assert.assertEquals(2l, pesquisa.getCount().longValue());
+        assertEquals(2l, pesquisa.getCount().longValue());
     }
 
     @Test
@@ -105,7 +104,7 @@ companyRespository.deleteAll();
         QueryObject query = new QueryObject();
         query.setAq("obj.name like '%'");
         SearchResult<Company> pesquisa = service.pesquisa(query);
-        Assert.assertEquals(2l, pesquisa.getCount().longValue());
+        assertEquals(2l, pesquisa.getCount().longValue());
     }
 
     @Test

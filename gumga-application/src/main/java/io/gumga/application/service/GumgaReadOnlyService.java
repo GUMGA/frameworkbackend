@@ -69,7 +69,7 @@ public abstract class GumgaReadOnlyService<T extends GumgaIdable<?>, ID extends 
     @Transactional(readOnly = true)
     public T view(ID id) {
         beforeView(id);
-        T entity = repository.findOne(id);
+        T entity = repository.getOne(id);
         loadGumgaCustomFields(entity);
         afterView(entity);
         return entity;

@@ -5,12 +5,13 @@
  */
 package io.gumga.core;
 
-import java.math.BigInteger;
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  *

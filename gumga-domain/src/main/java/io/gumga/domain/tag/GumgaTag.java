@@ -14,18 +14,21 @@ import java.util.List;
  * @author munif
  */
 @Entity
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_GUMGA_GTAG")
+
 @Table(name = "gumga_gtag")
 @GumgaMultitenancy
 public class GumgaTag extends GumgaModel<Long> {
 
     @Version
+    @Column(name = "version")
     private Integer version;
 
     @NotNull
+    @Column(name = "objecttype")
     private String objectType;
 
     @NotNull
+    @Column(name = "objectid")
     private Long objectId;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -33,6 +36,7 @@ public class GumgaTag extends GumgaModel<Long> {
     private List<GumgaTagValue> values = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "definition_id")
     private GumgaTagDefinition definition;
 
     public GumgaTag() {

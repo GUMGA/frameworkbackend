@@ -35,7 +35,6 @@ public class MysqlSpringConfig {
         config.setMinimumIdle(5);
         config.setMaximumPoolSize(50);
         config.setIdleTimeout(30000L);
-        config.setInitializationFailFast(true);
         config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
         config.addDataSourceProperty("url", "jdbc:mysql://localhost:3306/frameworkbackendteste?createDatabaseIfNotExist=true");
         config.addDataSourceProperty("user", "root");

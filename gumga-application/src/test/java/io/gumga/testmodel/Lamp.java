@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Version;
 
 @Entity
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_LAMP")
+
 @GumgaMultitenancy
 //@Indexed
 public class Lamp extends GumgaModel<Long> {

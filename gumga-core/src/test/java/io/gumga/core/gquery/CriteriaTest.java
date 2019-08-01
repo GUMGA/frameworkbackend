@@ -1,17 +1,17 @@
 package io.gumga.core.gquery;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  *
  * @author munif
  */
-@Ignore
+//@Disabled
 public class CriteriaTest {
-
+/*
 
     @Test
     public void testEMPTY() {
@@ -136,5 +136,6 @@ public class CriteriaTest {
         assertEquals("ativo = true", c.toString());
     }
 
+    */
 
 }

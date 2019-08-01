@@ -1,41 +1,31 @@
 package io.gumga.application.customfields;
 
-import io.gumga.testmodel.CarRepository;
-import io.gumga.testmodel.CompanyService;
-import io.gumga.testmodel.Car;
-import io.gumga.testmodel.Company;
 import io.gumga.application.SpringConfig;
-import io.gumga.application.*;
-import io.gumga.application.customfields.GumgaCustomEnhancerService;
-import io.gumga.application.customfields.GumgaCustomFieldService;
-import io.gumga.application.customfields.GumgaCustomFieldValueService;
 import io.gumga.core.QueryObject;
 import io.gumga.domain.customfields.CustomFieldType;
 import io.gumga.domain.customfields.GumgaCustomField;
 import io.gumga.domain.customfields.GumgaCustomFieldValue;
-import io.gumga.application.SpringConfig;
-import io.gumga.testmodel.MyCar;
-import io.gumga.testmodel.MyCarService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.gumga.testmodel.*;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Ignore;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Ignore
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SpringConfig.class})
+//@Disabled
+//@ExtendWith(SpringExtension.class)
+//@ContextConfiguration(classes = {SpringConfig.class})
 public class CustomFieldsTest {
-
+    /*
     @Autowired
     private CompanyService companyService;
 
@@ -61,7 +51,7 @@ public class CustomFieldsTest {
         assertNotNull(customFieldValueService);
     }
 
-    @Before
+    @BeforeEach
     public void insertData() {
         if (carRepository.findAll().size() > 0) {
             return;
@@ -137,5 +127,6 @@ public class CustomFieldsTest {
         enhancerService.setDefaultValues(myCar);
         assertEquals("MyCar{licensePlate=AAA-0001}{logicField=true, selectionField=Nothing, engineHP=Nothing}", myCar.toString());
     }
+    */
 
 }

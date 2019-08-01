@@ -1,14 +1,14 @@
 package io.gumga.testmodel;
 
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.*;
-import io.gumga.domain.domains.GumgaOi;
+
 
 import javax.annotation.Generated;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 @Generated("com.mysema.query.codegen.EntitySerializer")
 public class QStock extends EntityPathBase<Stock> {
@@ -36,7 +36,7 @@ public class QStock extends EntityPathBase<Stock> {
         super(path.getType(), path.getMetadata());
     }
 
-    public QStock(PathMetadata<?> metadata) {
+    public QStock(PathMetadata metadata) {
         super(Stock.class, metadata);
     }
 
