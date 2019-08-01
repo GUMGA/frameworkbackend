@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @NoRepositoryBean
+@Deprecated
 public class GumgaQueryDSLRepositoryImpl<T, ID extends Serializable> extends GumgaGenericRepository<T, ID> implements GumgaQueryDSLRepository<T, ID> {
 
     public GumgaQueryDSLRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
