@@ -6,7 +6,7 @@
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
 
-        <version>3.3.4-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>gumga-freshdesk</artifactId>

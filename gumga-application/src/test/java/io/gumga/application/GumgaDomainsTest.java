@@ -3,18 +3,17 @@ package io.gumga.application;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.domain.domains.GumgaBoolean;
 import io.gumga.testmodel.Lamp;
-
 import io.gumga.testmodel.LampService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import static org.junit.Assert.*;
-import org.junit.Ignore;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
 public class GumgaDomainsTest {
 
@@ -27,6 +26,7 @@ public class GumgaDomainsTest {
     }
 
     @Test
+    @Transactional
     public void gumgaBooleanVersion() {
         Lamp l=new Lamp("lampada 1", new GumgaBoolean(true));
         l=lampService.save(l);

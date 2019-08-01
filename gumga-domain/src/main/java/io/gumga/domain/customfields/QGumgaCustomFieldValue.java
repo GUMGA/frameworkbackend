@@ -1,15 +1,15 @@
 package io.gumga.domain.customfields;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.*;
+
 import io.gumga.domain.QGumgaModel;
 import io.gumga.domain.domains.GumgaOi;
 
 import javax.annotation.Generated;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 /**
  * QGumgaCustomFieldValue is a Querydsl query type for GumgaCustomFieldValue
  */
@@ -49,15 +49,15 @@ public class QGumgaCustomFieldValue extends EntityPathBase<GumgaCustomFieldValue
         this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QGumgaCustomFieldValue(PathMetadata<?> metadata) {
+    public QGumgaCustomFieldValue(PathMetadata metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QGumgaCustomFieldValue(PathMetadata<?> metadata, PathInits inits) {
+    public QGumgaCustomFieldValue(PathMetadata metadata, PathInits inits) {
         this(GumgaCustomFieldValue.class, metadata, inits);
     }
 
-    public QGumgaCustomFieldValue(Class<? extends GumgaCustomFieldValue> type, PathMetadata<?> metadata, PathInits inits) {
+    public QGumgaCustomFieldValue(Class<? extends GumgaCustomFieldValue> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.field = inits.isInitialized("field") ? new QGumgaCustomField(forProperty("field")) : null;
     }

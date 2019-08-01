@@ -7,23 +7,24 @@ package io.gumga.domain.test.money;
 
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.domain.GumgaTenancyUtils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  *
  * @author willian
  */
-@RunWith(JUnit4.class)
+@ExtendWith(SpringExtension.class)
 public class GumgaTenancyUtilsTest {
     @Test
     public void testChangeOi() {
         GumgaThreadScope.organizationCode.set("1.2.");
         TestEntity testEntity = new TestEntity();
-        Assert.assertEquals("1.2.",testEntity.getOi().getValue());
+        assertEquals("1.2.",testEntity.getOi().getValue());
         GumgaTenancyUtils.changeOi("1.3.", testEntity);
-        Assert.assertEquals("1.3.",testEntity.getOi().getValue());
+        assertEquals("1.3.",testEntity.getOi().getValue());
     }
 }

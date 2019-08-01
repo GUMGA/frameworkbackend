@@ -1,6 +1,5 @@
 package io.gumga.application;
 
-import io.gumga.application.GumgaRepositoryFactoryBean;
 import io.gumga.application.service.GumgaFreemarkerTemplateEngineService;
 import io.gumga.application.service.JasyptGumgaPasswordService;
 import io.gumga.core.GumgaValues;
@@ -16,6 +15,8 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 

@@ -3,18 +3,20 @@ package io.gumga.core;
 import io.gumga.core.gquery.ComparisonOperator;
 import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.GQuery;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MunifTest {
 
     @Test
     public void testeFeliz() {
-        Assert.assertTrue(ExemploUtils.ehPar(2));
-        Assert.assertFalse(ExemploUtils.ehPar(3));
-        Assert.assertTrue(ExemploUtils.ehPar(4));
-        Assert.assertFalse(ExemploUtils.ehPar(5));
-        Assert.assertTrue(ExemploUtils.ehPar(6));
+        assertTrue(ExemploUtils.ehPar(2));
+        assertFalse(ExemploUtils.ehPar(3));
+        assertTrue(ExemploUtils.ehPar(4));
+        assertFalse(ExemploUtils.ehPar(5));
+        assertTrue(ExemploUtils.ehPar(6));
     }
 
     @Test

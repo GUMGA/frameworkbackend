@@ -1,6 +1,5 @@
 package io.gumga.presentation.api;
 
-import com.wordnik.swagger.annotations.ApiOperation;
 import io.gumga.annotations.GumgaSwagger;
 import io.gumga.application.GumgaUserDataService;
 import io.gumga.application.tag.GumgaTagDefinitionService;
@@ -16,11 +15,13 @@ import io.gumga.domain.GumgaUserData;
 import io.gumga.domain.service.GumgaReadableServiceable;
 import io.gumga.domain.tag.GumgaTag;
 import io.gumga.domain.tag.GumgaTagDefinition;
+import io.swagger.annotations.ApiOperation;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.Serializable;

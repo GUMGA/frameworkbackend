@@ -7,6 +7,13 @@
 
 =======================================
 Framework Backend
+4.0.0
+    - Spring atualizado para versão 5.1.8
+    - Spring boot atualizado para versão 2.1.6
+    - JUnit atualizado para versão 5.5.1
+    - GumgaQueryDSLRepositoryImpl não tem tenancy e está depreciado.
+    - A sequencia padrão é seq
+
 3.3.4
     - BAD_CREDENTIALS em GumgaSecurityCode
     - GumgaValues getCustomFileProperties - UTF8

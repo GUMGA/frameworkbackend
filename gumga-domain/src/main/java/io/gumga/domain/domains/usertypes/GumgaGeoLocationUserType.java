@@ -3,6 +3,7 @@ package io.gumga.domain.domains.usertypes;
 import io.gumga.domain.domains.GumgaGeoLocation;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.DoubleType;
 import org.hibernate.type.Type;
 import org.hibernate.usertype.CompositeUserType;
@@ -73,10 +74,7 @@ public class GumgaGeoLocationUserType implements CompositeUserType {
     }
 
     @Override
-    public Object nullSafeGet(final ResultSet resultSet,
-            final String[] names,
-            final SessionImplementor paramSessionImplementor, final Object paramObject)
-            throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException, SQLException {
         //owner here is of type TestUser or the actual owning Object
         GumgaGeoLocation object = null;
         final double latitude = resultSet.getDouble(names[0]);
@@ -87,15 +85,8 @@ public class GumgaGeoLocationUserType implements CompositeUserType {
         return object;
     }
 
-    /**
-     * Before executing the save call this method is called. It will set the
-     * values in the prepared statement
-     */
     @Override
-    public void nullSafeSet(final PreparedStatement preparedStatement,
-            final Object value, final int property,
-            final SessionImplementor sessionImplementor)
-            throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int property, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException, SQLException {
         if (null == value) {
             preparedStatement.setDouble(property + 0, java.sql.Types.DOUBLE);
             preparedStatement.setDouble(property + 1, java.sql.Types.DOUBLE);
@@ -105,6 +96,8 @@ public class GumgaGeoLocationUserType implements CompositeUserType {
             preparedStatement.setDouble(property + 1, object.getLongitude());
         }
     }
+
+
 
     /**
      * Used to create Snapshots of the object
@@ -126,39 +119,20 @@ public class GumgaGeoLocationUserType implements CompositeUserType {
         return true;
     }
 
-    /**
-     * method called when Hibernate puts the data in a second level cache. The
-     * data is stored in a serializable form
-     */
     @Override
-    public Serializable disassemble(final Object value,
-            final SessionImplementor paramSessionImplementor)
-            throws HibernateException {
-        //Thus the data Types must implement serializable
-        return (Serializable) value;
+    public Serializable disassemble(Object o, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException {
+        return (Serializable) o;
     }
 
-    /**
-     * Returns the object from the 2 level cache
-     */
     @Override
-    public Object assemble(final Serializable cached,
-            final SessionImplementor sessionImplementor, final Object owner)
-            throws HibernateException {
-        //would work as the class is Serializable, and stored in cache as it is - see disassemble
-        return cached;
+    public Object assemble(Serializable serializable, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException {
+        return serializable;
     }
 
-    /**
-     * Method is called when merging two objects.
-     */
     @Override
-    public Object replace(final Object original, final Object target,
-            final SessionImplementor paramSessionImplementor, final Object owner)
-            throws HibernateException {
-        //        return original; // if immutable use this
-        //For mutable types at bare minimum return a deep copy of first argument
-        return this.deepCopy(original);
+    public Object replace(Object o, Object o1, SharedSessionContractImplementor sharedSessionContractImplementor, Object o2) throws HibernateException {
+        return this.deepCopy(o);
     }
+
 
 }

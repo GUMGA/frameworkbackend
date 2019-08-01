@@ -11,7 +11,7 @@ import javax.persistence.SequenceGenerator;
 
 @Entity
 @GumgaMultitenancy
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_PersonShared")
+
 public class PersonSharedLDModel extends GumgaSharedModel<Long> {
 
     @Column

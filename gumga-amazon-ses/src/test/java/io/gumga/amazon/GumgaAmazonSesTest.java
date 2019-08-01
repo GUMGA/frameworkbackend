@@ -1,22 +1,13 @@
 package io.gumga.amazon;
 
-import com.amazonaws.services.simpleemail.model.SendEmailResult;
-import com.amazonaws.services.simpleemail.model.SendRawEmailResult;
-import com.amazonaws.services.sqs.model.ListQueuesResult;
-import com.amazonaws.services.sqs.model.Message;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.gumga.amazon.ses.GumgaAmazonSes;
 import io.gumga.amazon.ses.GumgaAmazonSqs;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.mail.MessagingException;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Created by willian on 05/10/17.

@@ -19,6 +19,7 @@ package io.gumga.domain.domains.usertypes;
 import io.gumga.domain.domains.GumgaClassification;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,7 +34,12 @@ public class GumgaClassificationUserType extends ImmutableUserType {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException {
+    public Class<?> returnedClass() {
+        return GumgaClassification.class;
+    }
+
+    @Override
+    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException, SQLException {
         String value = rs.getString(names[0]);
         if (rs.wasNull()) {
             return null;
@@ -43,19 +49,13 @@ public class GumgaClassificationUserType extends ImmutableUserType {
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session)
-            throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException, SQLException {
         if (value == null) {
             st.setNull(index, Types.VARCHAR);
         } else {
             GumgaClassification classification = (GumgaClassification) value;
             st.setString(index, classification.toString());
         }
-    }
-
-    @Override
-    public Class<?> returnedClass() {
-        return GumgaClassification.class;
     }
 
     @Override

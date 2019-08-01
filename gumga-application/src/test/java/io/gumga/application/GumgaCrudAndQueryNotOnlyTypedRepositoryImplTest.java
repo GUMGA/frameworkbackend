@@ -5,35 +5,30 @@
  */
 package io.gumga.application;
 
-import io.gumga.testmodel.CarRepository;
-import io.gumga.testmodel.QCar;
-import io.gumga.testmodel.QTask;
-import io.gumga.testmodel.Task;
-import io.gumga.testmodel.TaskRepository;
-import io.gumga.application.SpringConfig;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.domain.domains.GumgaOi;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.gumga.testmodel.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  *
  * @author wlademir
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
 public class GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest {
 
@@ -45,7 +40,7 @@ public class GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest {
 
     private static boolean notPersisted = true;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         if (notPersisted) {
             GumgaThreadScope.organizationCode.set("1");
@@ -162,8 +157,8 @@ public class GumgaCrudAndQueryNotOnlyTypedRepositoryImplTest {
      */
     @Test
     public void testGetJPAQuerydsl() {
-        System.out.println("getJPAQuerydsl"+repository.getJPAQuerydsl().from(QCar.car).count());
-        assertTrue(repository.getJPAQuerydsl().from(QTask.task).count() > 0);
+        System.out.println("getJPAQuerydsl"+repository.getJPAQuerydsl().from(QCar.car).fetchCount());
+        assertTrue(repository.getJPAQuerydsl().from(QTask.task).fetchCount() > 0);
     }
     
     @Test

@@ -4,6 +4,7 @@ import io.gumga.domain.GumgaQueryParserProvider;
 import io.gumga.domain.domains.GumgaBoolean;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.BooleanType;
 import org.hibernate.usertype.EnhancedUserType;
 
@@ -49,10 +50,7 @@ public class GumgaBooleanUserType extends MutableUserType implements EnhancedUse
     }
 
     @Override
-    public Object nullSafeGet(final ResultSet resultSet,
-            final String[] names,
-            final SessionImplementor paramSessionImplementor, final Object paramObject)
-            throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException, SQLException {
         GumgaBoolean object = null;
         final boolean valor = resultSet.getBoolean(names[0]);
         if (!resultSet.wasNull()) {
@@ -62,18 +60,15 @@ public class GumgaBooleanUserType extends MutableUserType implements EnhancedUse
     }
 
     @Override
-    public void nullSafeSet(final PreparedStatement preparedStatement,
-            final Object value, final int property,
-            final SessionImplementor sessionImplementor)
-            throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int property, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException, SQLException {
         if (null == value) {
             preparedStatement.setNull(property, java.sql.Types.BOOLEAN);
         } else {
             Boolean result = value.toString().equals("true") ? Boolean.TRUE : Boolean.FALSE;
-            BooleanType.INSTANCE.set(preparedStatement, result, property, sessionImplementor);
-//            preparedStatement.setBoolean(property, value.toString().equals("true") ? Boolean.TRUE : Boolean.FALSE);
+            BooleanType.INSTANCE.set(preparedStatement, result, property, sharedSessionContractImplementor);
         }
     }
+
 
     @Override
     public Object deepCopy(Object value) throws HibernateException {

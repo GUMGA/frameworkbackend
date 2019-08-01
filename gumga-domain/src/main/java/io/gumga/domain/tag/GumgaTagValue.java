@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * @author munif
  */
 @Entity
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_GUMGA_GTAG_VALU")
+
 @Table(name = "gumga_gtag_valu")
 @GumgaMultitenancy
 public class GumgaTagValue extends GumgaModel<Long> {

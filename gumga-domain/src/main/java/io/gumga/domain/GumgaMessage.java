@@ -1,9 +1,6 @@
 package io.gumga.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -12,17 +9,22 @@ import java.util.Date;
  * @author munif
  */
 @Entity
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_GUMGA_MSG")
+
 @Table(name = "gumga_msg")
 @GumgaMultitenancy
 public class GumgaMessage extends GumgaModel<Long> {
 
+    @Column(name = "senderlogin")
     private String senderLogin;
+    @Column(name = "destinationlogin")
     private String destinationLogin;
+    @Column(name = "message")
     private String message;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Column(name = "viewedin")
     private Date viewedIn;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Column(name = "visibleon")
     private Date visibleOn;
 
     public GumgaMessage() {

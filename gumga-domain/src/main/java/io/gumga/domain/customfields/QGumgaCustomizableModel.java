@@ -1,17 +1,15 @@
 package io.gumga.domain.customfields;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.SimplePath;
+
 import io.gumga.domain.QGumgaModel;
 import io.gumga.domain.domains.GumgaOi;
 
 import javax.annotation.Generated;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 /**
  * QGumgaCustomizableModel is a Querydsl query type for GumgaCustomizableModel
  */
@@ -41,7 +39,7 @@ public class QGumgaCustomizableModel extends EntityPathBase<GumgaCustomizableMod
     }
 
     @SuppressWarnings("all")
-    public QGumgaCustomizableModel(PathMetadata<?> metadata) {
+    public QGumgaCustomizableModel(PathMetadata metadata) {
         super((Class) GumgaCustomizableModel.class, metadata);
     }
 

@@ -6,18 +6,17 @@
 package io.gumga.domain.TestGumgaModel;
 
 import io.gumga.domain.TestGumgaModel.TestModel.TestEntitySharedModel;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  *
  * @author munif
  */
-@RunWith(JUnit4.class)
+@ExtendWith(SpringExtension.class)
 public class GumgaSharedModelTest {
 
 

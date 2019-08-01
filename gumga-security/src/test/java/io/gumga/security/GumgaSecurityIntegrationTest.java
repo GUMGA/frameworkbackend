@@ -1,29 +1,26 @@
 package io.gumga.security;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@Ignore
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SpringConfigForTest.class,WebConfigForTest.class})
+//@Disabled
+//@ExtendWith(SpringExtension.class)
+//@ContextConfiguration(classes = {SpringConfigForTest.class, WebConfigForTest.class})
 public class GumgaSecurityIntegrationTest {
 
-    @Autowired
-    private GumgaSecurityIntegration gumgaSecurityIntegration;
-
-    public GumgaSecurityIntegrationTest() {
-    }
-
-    @Before
-    public void setUp() {
-    }
+//    @Autowired
+//    private GumgaSecurityIntegration gumgaSecurityIntegration;
+//
+//    public GumgaSecurityIntegrationTest() {
+//    }
+//
+//    @BeforeEach
+//    public void setUp() {
+//    }
 
 //    @Test
 //    public void testVerifyAndCreateOperations() {

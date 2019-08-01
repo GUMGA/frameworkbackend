@@ -3,6 +3,7 @@ package io.gumga.domain.domains.usertypes;
 import io.gumga.domain.domains.GumgaBarCode;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,10 +47,7 @@ public class GumgaBarCodeUserType extends MutableUserType {
     }
 
     @Override
-    public Object nullSafeGet(final ResultSet resultSet,
-            final String[] names,
-            final SessionImplementor paramSessionImplementor, final Object paramObject)
-            throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException, SQLException {
         GumgaBarCode object = null;
         final String valor = resultSet.getString(names[0]);
         if (!resultSet.wasNull()) {
@@ -59,10 +57,7 @@ public class GumgaBarCodeUserType extends MutableUserType {
     }
 
     @Override
-    public void nullSafeSet(final PreparedStatement preparedStatement,
-            final Object value, final int property,
-            final SessionImplementor sessionImplementor)
-            throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int property, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException, SQLException {
         if (null == value) {
             preparedStatement.setNull(property, java.sql.Types.VARCHAR);
         } else {
@@ -70,6 +65,7 @@ public class GumgaBarCodeUserType extends MutableUserType {
             preparedStatement.setString(property, object.getValue());
         }
     }
+
 
     @Override
     public Object deepCopy(Object value) throws HibernateException {

@@ -8,9 +8,9 @@ package io.gumga.application.template;
 import io.gumga.application.AbstractTest;
 import io.gumga.application.service.GumgaFreemarkerTemplateEngineService;
 import io.gumga.core.GumgaValues;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
@@ -38,7 +38,7 @@ public class GumgaFreemarkerTemplateEngineTest extends AbstractTest {
 
     private static final String OUTPUT_FOLDER = System.getProperty("user.dir") + "/templateEngineTestFolder";
 
-    @Before
+    @BeforeEach
     public void startup() throws Exception {
         URL resourceUrl = getClass().getResource("/templates");
         Path resourcePath = Paths.get(resourceUrl.toURI());
@@ -49,7 +49,7 @@ public class GumgaFreemarkerTemplateEngineTest extends AbstractTest {
         createOutputFolder(OUTPUT_FOLDER);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
 
     }

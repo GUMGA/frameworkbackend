@@ -7,30 +7,31 @@ package io.gumga.domain.test.money;
 
 import io.gumga.domain.CurrencyFormatter;
 import io.gumga.domain.domains.GumgaMoney;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.util.Locale;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
  * @author gyowanny
  */
-@RunWith(JUnit4.class)
+@ExtendWith(SpringExtension.class)
 public class GumgaMoneyTest {
     
-    @Before
+    @BeforeEach
     public void setUp() {
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
     }
     
@@ -109,19 +110,19 @@ public class GumgaMoneyTest {
         assertTrue(exception);
     }
     
-    @Test
-    @Ignore
-    public void testFormatCurrency() {
-        CurrencyFormatter.replaceSymbol("BRL", "R$");
-        GumgaMoney hundred = new GumgaMoney(GumgaMoney.HUNDRED);
-        CurrencyFormatter currencyFormatter = new CurrencyFormatter(new Locale("pt","BR"), 2);
-        String formatted = currencyFormatter.format(hundred);
-        assertNotNull(formatted);
-        assertEquals(formatted, "R$ 100,00");
-        
-        currencyFormatter = new CurrencyFormatter(Locale.US, 2);
-        formatted = currencyFormatter.format(hundred);
-        assertNotNull(formatted);
-        assertEquals(formatted, "$ 100.00");
-    }
+//    @Test
+//    @Disabled
+//    public void testFormatCurrency() {
+//        CurrencyFormatter.replaceSymbol("BRL", "R$");
+//        GumgaMoney hundred = new GumgaMoney(GumgaMoney.HUNDRED);
+//        CurrencyFormatter currencyFormatter = new CurrencyFormatter(new Locale("pt","BR"), 2);
+//        String formatted = currencyFormatter.format(hundred);
+//        assertNotNull(formatted);
+//        assertEquals(formatted, "R$ 100,00");
+//
+//        currencyFormatter = new CurrencyFormatter(Locale.US, 2);
+//        formatted = currencyFormatter.format(hundred);
+//        assertNotNull(formatted);
+//        assertEquals(formatted, "$ 100.00");
+//    }
 }

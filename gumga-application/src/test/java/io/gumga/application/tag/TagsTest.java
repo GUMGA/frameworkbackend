@@ -1,29 +1,29 @@
 package io.gumga.application.tag;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.gumga.testmodel.Car;
-import io.gumga.testmodel.CarRepository;
-import io.gumga.testmodel.CompanyService;
 import io.gumga.application.SpringConfig;
 import io.gumga.domain.tag.GumgaTag;
 import io.gumga.domain.tag.GumgaTagDefinition;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.gumga.testmodel.Car;
+import io.gumga.testmodel.CarRepository;
+import io.gumga.testmodel.CompanyService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
 public class TagsTest {
 
@@ -82,7 +82,7 @@ public class TagsTest {
 
     private Car march;
 
-    @Before
+    @BeforeEach
     public void insertData() {
         //Check sanity before making any calls
         injectionSanityCheck();
@@ -100,7 +100,7 @@ public class TagsTest {
 
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         versaoDef = null;
         motorizacaoDef = null;

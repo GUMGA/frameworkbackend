@@ -5,7 +5,7 @@
  */
 package io.gumga.application;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import io.gumga.domain.repository.GumgaCrudAndQueryNotOnlyTypedRepository;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -19,8 +19,11 @@ import java.util.Map;
 @NoRepositoryBean
 public class GumgaCrudAndQueryNotOnlyTypedRepositoryImpl<T, ID extends Serializable> extends GumgaGenericRepository<T, ID> implements GumgaCrudAndQueryNotOnlyTypedRepository<T, ID> {
 
+    private EntityManager entityManager;
+
     public GumgaCrudAndQueryNotOnlyTypedRepositoryImpl(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
+        this.entityManager = entityManager;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

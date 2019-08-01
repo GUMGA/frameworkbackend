@@ -3,25 +3,21 @@ package io.gumga.application;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.QueryObject;
 import io.gumga.core.SearchResult;
-import io.gumga.testmodel.Book;
-import io.gumga.testmodel.BookRepository;
-import io.gumga.testmodel.BookService;
-import io.gumga.testmodel.BookType;
-import io.gumga.testmodel.Company;
-import io.gumga.testmodel.CompanyRepository;
-import io.gumga.testmodel.CompanyService;
-import io.gumga.testmodel.MyCar;
-import io.gumga.testmodel.MyCarService;
-import java.util.Arrays;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.gumga.testmodel.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import static org.junit.Assert.*;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
 public class DeleteTest {
 
@@ -89,26 +85,31 @@ public class DeleteTest {
 
     }
 
-    @Test(expected = org.springframework.orm.jpa.JpaObjectRetrievalFailureException.class)
+    @Test
     public void deleteFromOtherOi() {
-        Book livro99 = new Book("TheThe");
-        bookService.save(livro99);
-        GumgaThreadScope.organizationCode.set("99.");
-        bookService.delete(livro99);
+        Assertions.assertThrows(JpaObjectRetrievalFailureException.class, () -> {
+            Book livro99 = new Book("TheThe");
+            bookService.save(livro99);
+            GumgaThreadScope.organizationCode.set("99.");
+            bookService.delete(livro99);
+        });
     }
 
-    @Test(expected = org.springframework.orm.jpa.JpaObjectRetrievalFailureException.class)
+    @Test
     public void deleteMultipleFromOtherOi() {
-        MyCar carro1 = new MyCar("A001", "red");
-        MyCar carro2 = new MyCar("A002", "blue");
-        GumgaThreadScope.organizationCode.set("99.");
-        MyCar carro3 = new MyCar("A003", "green");
-        MyCar carro4 = new MyCar("A004", "white");
-        myCarService.save(carro1);
-        myCarService.save(carro2);
-        myCarService.save(carro3);
-        myCarService.save(carro4);
-        myCarService.delete(Arrays.asList(new MyCar[]{carro1, carro2, carro3, carro4}));
+        Assertions.assertThrows(JpaObjectRetrievalFailureException.class, () -> {
+            MyCar carro1 = new MyCar("A001", "red");
+            MyCar carro2 = new MyCar("A002", "blue");
+            GumgaThreadScope.organizationCode.set("99.");
+            MyCar carro3 = new MyCar("A003", "green");
+            MyCar carro4 = new MyCar("A004", "white");
+            myCarService.save(carro1);
+            myCarService.save(carro2);
+            myCarService.save(carro3);
+            myCarService.save(carro4);
+            myCarService.delete(Arrays.asList(new MyCar[]{carro1, carro2, carro3, carro4}));
+        });
+
 
     }
 

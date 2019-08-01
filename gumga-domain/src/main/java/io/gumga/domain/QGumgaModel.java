@@ -1,18 +1,16 @@
 package io.gumga.domain;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.SimplePath;
 import io.gumga.domain.domains.GumgaOi;
 
 import javax.annotation.Generated;
 
 import java.io.Serializable;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 /**
  * QGumgaModel is a Querydsl query type for GumgaModel
@@ -41,7 +39,7 @@ public class QGumgaModel extends EntityPathBase<GumgaModel<? extends java.io.Ser
     }
 
     @SuppressWarnings("all")
-    public QGumgaModel(PathMetadata<?> metadata) {
+    public QGumgaModel(PathMetadata metadata) {
         super((Class) GumgaModel.class, metadata);
     }
 

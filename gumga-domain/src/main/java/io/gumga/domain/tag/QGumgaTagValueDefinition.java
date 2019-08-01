@@ -1,18 +1,14 @@
 package io.gumga.domain.tag;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
 import io.gumga.domain.QGumgaModel;
 import io.gumga.domain.domains.GumgaOi;
 
 import javax.annotation.Generated;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 /**
  * QGumgaTagValueDefinition is a Querydsl query type for GumgaTagValueDefinition
  */
@@ -42,7 +38,7 @@ public class QGumgaTagValueDefinition extends EntityPathBase<GumgaTagValueDefini
         super(path.getType(), path.getMetadata());
     }
 
-    public QGumgaTagValueDefinition(PathMetadata<?> metadata) {
+    public QGumgaTagValueDefinition(PathMetadata metadata) {
         super(GumgaTagValueDefinition.class, metadata);
     }
 

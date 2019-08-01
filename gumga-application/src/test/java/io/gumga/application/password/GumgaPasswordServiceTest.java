@@ -7,12 +7,14 @@ package io.gumga.application.password;
 
 import io.gumga.application.AbstractTest;
 import io.gumga.core.service.GumgaPasswordService;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 /**
  *
@@ -26,11 +28,11 @@ public class GumgaPasswordServiceTest extends AbstractTest {
     public GumgaPasswordServiceTest() {
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
     }
 
@@ -40,7 +42,7 @@ public class GumgaPasswordServiceTest extends AbstractTest {
         String password = "123";
         String encryptedPassword = "PaJOMOYNku8Mwv/JFX7YH9pb5zeMWSQmQGqRAA==";//passwordService.encryptPassword(password);
         System.out.println(String.format("### Password: %s - Encrypted password: %s", password, encryptedPassword));
-        assertFalse("The encrypted password is empty", encryptedPassword == null || encryptedPassword.isEmpty());
+        assertFalse(encryptedPassword == null || encryptedPassword.isEmpty(), "The encrypted password is empty");
         assertTrue("Password doesn't match", passwordService.isPasswordCorrect(password, encryptedPassword));
     }
 
@@ -50,7 +52,7 @@ public class GumgaPasswordServiceTest extends AbstractTest {
         String password = "!@#$%Gumga@1234!";
         String encryptedPassword = "Ujh6iHDMM+Fbln09zbYPIY6cNfRAjqyTSz1PNg==";//passwordService.encryptPassword(password);
         System.out.println(String.format("### Password: %s - Encrypted password: %s", password, encryptedPassword));
-        assertFalse("The encrypted password is empty", encryptedPassword == null || encryptedPassword.isEmpty());
+        assertFalse(encryptedPassword == null || encryptedPassword.isEmpty(), "The encrypted password is empty");
         assertTrue("Password doesn't match", passwordService.isPasswordCorrect(password, encryptedPassword));
     }
 

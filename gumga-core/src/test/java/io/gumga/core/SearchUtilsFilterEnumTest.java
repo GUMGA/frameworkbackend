@@ -1,17 +1,19 @@
 package io.gumga.core;
 
-import org.junit.Before;
-import org.junit.Test;
+
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static io.gumga.core.SearchUtilsFilterEnumTest.EnumLetras.*;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SearchUtilsFilterEnumTest {
 	
 	private QueryObject query = new QueryObject();
 	
-	@Before
+	@BeforeEach
 	public void setup() {
 		query.setQ("");
 		query.setPageSize(2);
@@ -114,10 +116,11 @@ public class SearchUtilsFilterEnumTest {
 		
 	private void assertResult(int pageSize, int start, Long count, EnumLetras... values) {
 		SearchResult<EnumLetras> result = SearchUtils.filterEnum(EnumLetras.class, query);
-		assertEquals("Result pageSize", pageSize, result.getPageSize());
-		assertEquals("Result start", start, result.getStart());
-		assertEquals("Result count", count, result.getCount());
-		assertEquals("Result values", asList(values), result.getValues());
+
+		assertEquals(pageSize, result.getPageSize(), "Result pageSize");
+		assertEquals(start, result.getStart(), "Result start");
+		assertEquals(count, result.getCount(), "Result count");
+		assertEquals(asList(values), result.getValues(), "Result values");
 	}
 	
 	static enum EnumLetras {

@@ -9,13 +9,14 @@ import io.gumga.application.SpringConfig;
 import io.gumga.application.service.JasperReportService;
 import io.gumga.application.service.ReportType;
 import net.sf.jasperreports.engine.JasperPrint;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,26 +24,27 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 /**
  *
  * @author gyowanny
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
+
 public class ReportTest {
 
     @Autowired
     private JasperReportService reportService;
 
-    @Before
+    @BeforeEach
     public void before() {
         assertNotNull("Report service is null", reportService);
     }
 
-    @After
+    @AfterEach
     public void after() {
 
     }
@@ -65,7 +67,7 @@ public class ReportTest {
             fos.flush();
             fos.close();
         }
-        assertTrue(new File(outputFile).exists());
+        assertTrue("testGenerateAndExportReportToPDF",new File(outputFile).exists());
     }
 
     @Test
@@ -73,7 +75,7 @@ public class ReportTest {
         InputStream is = getInputStreamReportFile();
         String outputFile = System.getProperty("java.io.tmpdir") + "/reportOutput.html";
         reportService.exportReportToHtmlFile(is, createContactList(), null, outputFile);
-        assertTrue(new File(outputFile).exists());
+        assertTrue("testGenerateAndExportReportToHTML",new File(outputFile).exists());
     }
 
     private InputStream getInputStreamReportFile() throws Exception {
