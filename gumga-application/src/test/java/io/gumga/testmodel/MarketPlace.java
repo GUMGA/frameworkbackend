@@ -9,7 +9,7 @@ import java.util.Map;
 
 @GumgaMultitenancy
 @Entity
-@SequenceGenerator(name = "SEQ", sequenceName = "SEQ_MarketPlace")
+
 public class MarketPlace extends GumgaModel<Long> {
 
     @ElementCollection

@@ -9,7 +9,7 @@ import java.util.Date;
  * @author munif
  */
 @Entity
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_GUMGA_GLOG")
+
 @Table(name = "gumga_glog")
 public class GumgaLog extends GumgaModel<Long> {
 

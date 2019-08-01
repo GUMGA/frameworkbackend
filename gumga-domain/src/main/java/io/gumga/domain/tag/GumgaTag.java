@@ -14,7 +14,7 @@ import java.util.List;
  * @author munif
  */
 @Entity
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_GUMGA_GTAG")
+
 @Table(name = "gumga_gtag")
 @GumgaMultitenancy
 public class GumgaTag extends GumgaModel<Long> {

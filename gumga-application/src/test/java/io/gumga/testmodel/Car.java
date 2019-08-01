@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 
 
 @Entity
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_CAR")
+
 @GumgaMultitenancy
 public class Car extends GumgaCustomizableModel<Long> {
 	

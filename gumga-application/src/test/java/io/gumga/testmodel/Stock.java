@@ -11,7 +11,7 @@ import java.util.List;
 
 @GumgaMultitenancy
 @Entity
-@SequenceGenerator(name = "SEQ", sequenceName = "SEQ_Stock")
+
 public class Stock extends GumgaModel<Long> {
 
     @Column(name = "nome")

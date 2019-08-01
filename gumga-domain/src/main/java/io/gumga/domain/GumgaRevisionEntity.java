@@ -21,7 +21,7 @@ import java.util.Objects;
  * @author munif
  */
 @Entity
-@SequenceGenerator(name = "SEQREV", sequenceName = "SEQREV")
+
 @RevisionEntity(GumgaRevisionListener.class)
 @Table(name = "gumgarevisionentity")
 public class GumgaRevisionEntity implements Serializable {

@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @author wlademir
  */
 @Entity
-@SequenceGenerator(name = GumgaModel.SEQ_NAME, sequenceName = "SEQ_CAR")
+
 @GumgaMultitenancy
 @Table(name = "task")
 public class Task extends GumgaModel<Long> implements Serializable{
