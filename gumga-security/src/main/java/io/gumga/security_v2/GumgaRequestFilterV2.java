@@ -5,6 +5,7 @@ import io.gumga.application.GumgaLogService;
 import io.gumga.core.GumgaThreadScope;
 import io.gumga.core.GumgaValues;
 import io.gumga.domain.GumgaLog;
+import io.gumga.domain.domains.GumgaOi;
 import io.gumga.presentation.CustomGumgaRestTemplate;
 import io.gumga.presentation.api.GumgaJsonRestTemplate;
 import io.gumga.security.*;
@@ -157,8 +158,8 @@ public class GumgaRequestFilterV2 extends HandlerInterceptorAdapter {
             GumgaThreadScope.softwareName.set(softwareId);
             GumgaThreadScope.instanceOi.set(ar.getInstanceOi());
             GumgaThreadScope.ignoreCheckOwnership.set(Boolean.FALSE);
-
-
+            GumgaThreadScope.databaseName.set(String.valueOf(authorizatonResponse.getOrDefault("databaseName", "NO_DATABASE_NAME")));
+            GumgaThreadScope.schemaName.set(String.valueOf(authorizatonResponse.getOrDefault("schemaName", "NO_SCHEMA_NAME")));
 
             if(!StringUtils.isEmpty(token)) {
                 data.put("gumgaToken", token);

@@ -28,14 +28,20 @@ public class GumgaCustomFieldValue extends GumgaModel<Long> {
 
     //TEXT, NUMBER, DATE, LOGIC, SELECTION;
     @ManyToOne
+    @JoinColumn(name = "field_id")
     private GumgaCustomField field;
 
+    @Column(name = "gumgamodelid")
     private Long gumgaModelId;
 
+    @Column(name = "textvalue")
     private String textValue;
+    @Column(name = "numbervalue")
     private BigDecimal numberValue;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "datevalue")
     private Date dateValue;
+    @Column(name = "logicvalue")
     private Boolean logicValue;
 
     public GumgaCustomFieldValue() {

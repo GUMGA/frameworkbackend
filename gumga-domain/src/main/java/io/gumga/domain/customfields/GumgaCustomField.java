@@ -18,22 +18,38 @@ import java.util.Objects;
 @GumgaMultitenancy
 public class GumgaCustomField extends GumgaModel<Long> {
 
+    @Column(name = "clazz")
     private String clazz;
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "active")
     private Boolean active;
     @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     private CustomFieldType type;
+    @Column(name = "validationdescription")
     private String validationDescription;
+    @Column(name = "validationscript")
     private String validationScript;
+    @Column(name = "defaultvaluescript")
     private String defaultValueScript;
+    @Column(name = "options")
     private String options;
+    @Column(name = "optionvaluefield")
     private String optionValueField;
+    @Column(name = "optionlabelfield")
     private String optionLabelField;
+    @Column(name = "optionscollection")
     private String optionsCollection;
+    @Column(name = "visualizationorder")
     private Double visualizationOrder;
+    @Column(name = "fieldgroup")
     private String fieldGroup;
+    @Column(name = "translatekey")
     private String translateKey;
+    @Column(name = "colsize")
     private Integer colSize;
 
     public GumgaCustomField() {

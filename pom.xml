@@ -13,7 +13,7 @@
         <github.global.server>github</github.global.server>
         -->
 
-        <spring.version>5.1.8.RELEASE</spring.version>
+        <spring.version>5.1.9.RELEASE</spring.version>
         <jasper.version>6.2.0</jasper.version>
         <github.global.server>github</github.global.server>
 
@@ -48,7 +48,7 @@
 
         <slf4j.version>1.7.6</slf4j.version>
 
-        <spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
+        <spring-data-jpa.version>2.1.10.RELEASE</spring-data-jpa.version>
         <guava.version>18.0</guava.version>
         <mockito.version>1.9.5</mockito.version>
         <el-api.version>2.2</el-api.version>
@@ -106,7 +106,7 @@
     <groupId>io.gumga</groupId>
     <artifactId>gumga-backend-all</artifactId>
 
-    <version>4.0.0-SNAPSHOT</version>
+    <version>4.0.1-SNAPSHOT</version>
 
 
     <packaging>pom</packaging>

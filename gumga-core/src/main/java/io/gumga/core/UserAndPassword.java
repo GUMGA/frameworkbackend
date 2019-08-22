@@ -13,11 +13,10 @@ package io.gumga.core;
 public class UserAndPassword {
 
     private String user;
-
     private String password;
-
     private String newPassword;
     private String softwareName;
+    private String realm;
 
     public UserAndPassword() {
         this.user = "empty";
@@ -61,5 +60,13 @@ public class UserAndPassword {
 
     public void setSoftwareName(String softwareName) {
         this.softwareName = softwareName;
+    }
+
+    public String getRealm() {
+        return realm;
+    }
+
+    public void setRealm(String realm) {
+        this.realm = realm;
     }
 }

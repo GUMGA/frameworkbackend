@@ -73,4 +73,7 @@ public class GumgaThreadScope {
      */
     public static final ThreadLocal<String> userRecognition = new ThreadLocal<>();
 
+    public static final ThreadLocal<String> databaseName = new ThreadLocal<>();
+    public static final ThreadLocal<String> schemaName = new ThreadLocal<>();
+
 }
