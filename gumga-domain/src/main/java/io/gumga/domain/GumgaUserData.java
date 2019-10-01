@@ -17,6 +17,7 @@ import javax.persistence.Table;
 @GumgaMultitenancy
 public class GumgaUserData extends GumgaModel<Long> {
 
+    @Column(name = "userlogin")
     private String userLogin;
     @Column(name = "data_key")
     private String key;
