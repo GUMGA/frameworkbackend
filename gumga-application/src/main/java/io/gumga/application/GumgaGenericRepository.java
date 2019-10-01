@@ -10,7 +10,9 @@ import io.gumga.core.gquery.Criteria;
 import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.*;
 import io.gumga.domain.domains.*;
+import io.gumga.domain.logicaldelete.GumgaLD;
 import io.gumga.domain.logicaldelete.GumgaLDModel;
+import io.gumga.domain.logicaldelete.GumgaLDModelUUID;
 import io.gumga.domain.repository.GumgaCrudRepository;
 import io.gumga.domain.repository.GumgaMultitenancyUtil;
 import io.gumga.domain.shared.GumgaSharedModel;
@@ -68,7 +70,8 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
     }
 
     public boolean hasLogicalDelete() {
-        return GumgaLDModel.class.isAssignableFrom(entityInformation.getJavaType());
+        return GumgaLDModel.class.isAssignableFrom(entityInformation.getJavaType()) ||
+               GumgaLDModelUUID.class.isAssignableFrom(entityInformation.getJavaType());
     }
 
     public SearchResult<T> aqoSearch(QueryObject query) {
@@ -349,7 +352,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             checkOwnership(entity);
         }
         if (hasLogicalDelete()) {
-            ((GumgaLDModel) entity).setGumgaActive(Boolean.FALSE);
+            ((GumgaLD) entity).setGumgaActive(Boolean.FALSE);
             return;
         }
         super.delete(entity);

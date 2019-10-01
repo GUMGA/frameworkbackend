@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @param <ID>
  */
 @MappedSuperclass
-public class GumgaSharedLDModel<ID extends Serializable> extends GumgaSharedModel<ID> {
+public class GumgaSharedLDModel<ID extends Serializable> extends GumgaSharedModel<ID> implements GumgaLD {
     public static final int MAX_LENGTH = 4000;
     public static final String GLOBAL = "GLOBAL.";
 
@@ -33,16 +33,16 @@ public class GumgaSharedLDModel<ID extends Serializable> extends GumgaSharedMode
 
     }
 
+
+    @Override
     public Boolean getGumgaActive() {
         return gumgaActive;
     }
 
+    @Override
     public void setGumgaActive(Boolean gumgaActive) {
         this.gumgaActive = gumgaActive;
     }
-
-
-
 }
 
 class StringList {

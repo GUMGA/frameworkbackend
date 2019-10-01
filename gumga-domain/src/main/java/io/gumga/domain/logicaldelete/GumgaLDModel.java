@@ -13,7 +13,7 @@ import javax.persistence.Column;
  * @author munif
  */
 @MappedSuperclass
-public class GumgaLDModel<ID extends Serializable> extends GumgaModel<ID> {
+public class GumgaLDModel<ID extends Serializable> extends GumgaModel<ID> implements GumgaLD {
 
     @Column(name = "gumga_active")
     protected Boolean gumgaActive;
@@ -28,10 +28,12 @@ public class GumgaLDModel<ID extends Serializable> extends GumgaModel<ID> {
         this.gumgaActive = gumgaActive;
     }
 
+    @Override
     public Boolean getGumgaActive() {
         return gumgaActive;
     }
 
+    @Override
     public void setGumgaActive(Boolean gumgaActive) {
         this.gumgaActive = gumgaActive;
     }
