@@ -28,7 +28,7 @@
 
         <junit.version>5.5.1</junit.version>
         <net.jodah.version>0.3.1</net.jodah.version>
-        <com.fasterxml.jackson.version>2.9.9</com.fasterxml.jackson.version>
+        <com.fasterxml.jackson.version>2.10.0</com.fasterxml.jackson.version>
         <commons.lang3.version>3.3</commons.lang3.version>
         <org.glassfish.web.el.impl.version>2.2</org.glassfish.web.el.impl.version>
         <hikaricp.version>3.3.1</hikaricp.version>
