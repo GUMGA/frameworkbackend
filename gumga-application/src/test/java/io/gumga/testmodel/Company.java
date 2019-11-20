@@ -19,7 +19,6 @@ import org.hibernate.envers.Audited;
 @GumgaMultitenancy
 @Entity
 @Audited
-
 public class Company extends GumgaModel<Long> {
 
     private String name;

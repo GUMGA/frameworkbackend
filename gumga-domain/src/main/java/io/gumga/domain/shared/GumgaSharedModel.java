@@ -14,6 +14,8 @@ public class GumgaSharedModel<ID extends Serializable> extends GumgaModel<ID> {
 
     public static final int MAX_LENGTH = 4000;
     public static final String GLOBAL = "GLOBAL.";
+    public static final String SHARED_BASE = "B%s.MO";
+    public static final String SHARED_MATRIX = "BM%s.%s.O";
     /**
      * Organizações
      */

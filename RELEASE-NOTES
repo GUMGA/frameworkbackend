@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+4.0.2
+    - GumgaSharedModel suporte ao tenancy compartilhado BMO(Base, Matrix, Organização(filiais))
+
 4.0.1
     - Spring atualizado para versão 5.1.9
     - Spring boot atualizado para versão 2.1.6
@@ -14,6 +17,7 @@ Framework Backend
     - Novos atributos em GumgaThreadScope(database,schema)
     - Adicionado o atributo reino no DTO UserAndPassword
     - Remoção logica GumgaLDModelUUID
+
 
 4.0.0
     - Spring atualizado para versão 5.1.8

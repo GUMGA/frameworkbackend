@@ -19,10 +19,11 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GumgaMultitenancy {
 
-    public GumgaMultitenancyPolicy policy() default GumgaMultitenancyPolicy.TOP_DOWN;
+    GumgaMultitenancyPolicy policy() default GumgaMultitenancyPolicy.TOP_DOWN;
 
-    public boolean allowPublics() default true;
+    boolean allowPublics() default true;
 
-    public TenancyPublicMarking publicMarking() default TenancyPublicMarking.NULL;
+    TenancyPublicMarking publicMarking() default TenancyPublicMarking.NULL;
 
+    boolean enableBMO() default false;
 }
