@@ -69,9 +69,17 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
         return entityInformation.getJavaType().isAnnotationPresent(GumgaMultitenancy.class);
     }
 
+    public boolean hasBMO() {
+        if (hasMultitenancy()) {
+            GumgaMultitenancy annotation = entityInformation.getJavaType().getAnnotation(GumgaMultitenancy.class);
+            return annotation.enableBMO() && (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType()));
+        }
+        return false;
+    }
+
     public boolean hasLogicalDelete() {
         return GumgaLDModel.class.isAssignableFrom(entityInformation.getJavaType()) ||
-               GumgaLDModelUUID.class.isAssignableFrom(entityInformation.getJavaType());
+                GumgaLDModelUUID.class.isAssignableFrom(entityInformation.getJavaType());
     }
 
     public SearchResult<T> aqoSearch(QueryObject query) {
@@ -735,10 +743,32 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
                 String objGumgaUsers = Criteria.generateHash("obj.gumgaUsers");
                 gQuery.fieldValue.put(objGumgaUsers, "%," + GumgaThreadScope.login.get() + ",%");
 
+                String objGumgaOrganizationsBase = "";
+                String objGumgaOrganizationsMatrix = "";
+
+                if (hasBMO()) {
+                    String[] bmo = GumgaThreadScope.organizationCode.get().split("\\.");
+                    if (bmo.length > 0) {
+                        String hashBase = Criteria.generateHash("obj.gumgaOrganizationsBase");
+                        gQuery.fieldValue.put(hashBase, "%," + String.format(GumgaSharedModel.SHARED_BASE, bmo[0]) + ",%");
+                        objGumgaOrganizationsBase = String.format(" or obj.gumgaOrganizations like :%s ", hashBase);
+                        if (bmo.length == 3) {
+                            String hashMatrix = Criteria.generateHash("obj.gumgaOrganizationsMatrix");
+                            gQuery.fieldValue.put(hashMatrix, "%," + String.format(GumgaSharedModel.SHARED_MATRIX, bmo[0], bmo[1]) + ",%");
+                            objGumgaOrganizationsMatrix = String.format(" or obj.gumgaOrganizations like :%s ", hashMatrix);
+                        }
+                    }
+                }
+
                 tenant = tenant.concat("("
                         .concat(oi))
-                        .concat(String.format(" or obj.gumgaOrganizations like :%s or obj.gumgaOrganizations like :%s or obj.gumgaUsers like :%s)", objGumgaOrganizations, objGumgaOrganizationsInstance, objGumgaUsers));
-
+                        .concat(
+                                String.format(" or obj.gumgaOrganizations like :%s or obj.gumgaOrganizations like :%s or obj.gumgaUsers like :%s %s %s)",
+                                        objGumgaOrganizations,
+                                        objGumgaOrganizationsInstance,
+                                        objGumgaUsers,
+                                        objGumgaOrganizationsBase,
+                                        objGumgaOrganizationsMatrix));
             } else {
                 tenant = tenant.concat("(").concat(oi).concat(")");
             }
@@ -794,7 +824,24 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
                 sharedCriterion = "or (obj.gumgaOrganizations like '%%," + oiPattern + ",%%' or "
                         + "obj.gumgaOrganizations like '%%," + instanceOi + ",%%' or "
                         + "obj.gumgaUsers like '%%," + GumgaThreadScope.login.get() + ",%%') ";
+
+                if (hasBMO()) {
+                    String[] bmo = GumgaThreadScope.organizationCode.get().split("\\.");
+                    if (bmo.length > 0) {
+                        sharedCriterion = sharedCriterion
+                                .concat(String
+                                        .format(" or obj.gumgaOrganizations like '%s' ",
+                                                "%," + String.format(GumgaSharedModel.SHARED_BASE, bmo[0]) + ",%"));
+                        if (bmo.length == 3) {
+                            sharedCriterion = sharedCriterion
+                                    .concat(String
+                                            .format(" or obj.gumgaOrganizations like '%s' ",
+                                                    "%," + String.format(GumgaSharedModel.SHARED_MATRIX, bmo[0], bmo[1]) + ",%"));
+                        }
+                    }
+                }
             }
+
             if (gumgaMultiTenancy.allowPublics()) {
                 if (gumgaMultiTenancy.publicMarking() == TenancyPublicMarking.NULL) {
                     modelo = "from %s obj WHERE (" + ld + "obj.oi is null OR obj.oi like '" + oiPattern + "%%' " + sharedCriterion + ")  AND (%s) ";
@@ -922,11 +969,31 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
             if (GumgaSharedModel.class.isAssignableFrom(entityInformation.getJavaType()) || GumgaSharedModelUUID.class.isAssignableFrom(entityInformation.getJavaType())) {
                 String instanceOi = GumgaThreadScope.instanceOi.get() + GumgaSharedModel.GLOBAL;
                 sharedCriterion = or(
-                        //  like("1","1",MatchMode.EXACT)
                         like("gumgaOrganizations", "," + oiPattern + ",", MatchMode.ANYWHERE),
                         like("gumgaOrganizations", "," + instanceOi + ",", MatchMode.ANYWHERE),
                         like("gumgaUsers", "," + GumgaThreadScope.login.get() + ",", MatchMode.ANYWHERE)
                 );
+
+                if (hasBMO()) {
+                    String[] bmo = GumgaThreadScope.organizationCode.get().split("\\.");
+                    if (bmo.length > 0) {
+                        sharedCriterion = or(
+                                like("gumgaOrganizations", "," + oiPattern + ",", MatchMode.ANYWHERE),
+                                like("gumgaOrganizations", "," + instanceOi + ",", MatchMode.ANYWHERE),
+                                like("gumgaOrganizations", "," + String.format(GumgaSharedModel.SHARED_BASE, bmo[0]) + ",", MatchMode.ANYWHERE),
+                                like("gumgaUsers", "," + GumgaThreadScope.login.get() + ",", MatchMode.ANYWHERE)
+                        );
+                        if (bmo.length == 3) {
+                            sharedCriterion = or(
+                                    like("gumgaOrganizations", "," + oiPattern + ",", MatchMode.ANYWHERE),
+                                    like("gumgaOrganizations", "," + instanceOi + ",", MatchMode.ANYWHERE),
+                                    like("gumgaOrganizations", "," + String.format(GumgaSharedModel.SHARED_BASE, bmo[0]) + ",", MatchMode.ANYWHERE),
+                                    like("gumgaOrganizations", "," + String.format(GumgaSharedModel.SHARED_MATRIX, bmo[0], bmo[1]) + ",", MatchMode.ANYWHERE),
+                                    like("gumgaUsers", "," + GumgaThreadScope.login.get() + ",", MatchMode.ANYWHERE)
+                            );
+                        }
+                    }
+                }
 
                 if (gumgaMultitenancy.allowPublics()) {
                     if (gumgaMultitenancy.publicMarking() == TenancyPublicMarking.NULL) {

@@ -10,8 +10,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@GumgaMultitenancy
-
+@GumgaMultitenancy(enableBMO = true)
 public class PersonSharedModel extends GumgaSharedModel<Long> {
 
     @Column
