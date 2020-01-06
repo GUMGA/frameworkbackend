@@ -1042,7 +1042,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     private Query createQueryCountWithGQuery(GQuery gQuery) {
         Boolean useDistinct = gQuery.useDistinct();
-        String query = (useDistinct ? "select distinct " : "select ") + " count(obj) FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+        String query = (useDistinct ? "select count(distinct obj) " : "select count(obj)") + " FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
 

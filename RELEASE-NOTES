@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+4.0.3
+    - Correção no count com distinct no GQuery
+
 4.0.2
     - GumgaSharedModel suporte ao tenancy compartilhado BMO(Base, Matrix, Organização(filiais))
 
