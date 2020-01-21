@@ -13,7 +13,7 @@
         <github.global.server>github</github.global.server>
         -->
 
-        <spring.version>5.1.9.RELEASE</spring.version>
+        <spring.version>5.2.3.RELEASE</spring.version>
         <jasper.version>6.2.0</jasper.version>
         <github.global.server>github</github.global.server>
 
