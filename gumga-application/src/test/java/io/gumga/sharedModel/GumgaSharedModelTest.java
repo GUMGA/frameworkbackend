@@ -2,6 +2,9 @@ package io.gumga.sharedModel;
 
 import io.gumga.application.SpringConfig;
 import io.gumga.core.GumgaThreadScope;
+import io.gumga.core.gquery.ComparisonOperator;
+import io.gumga.core.gquery.Criteria;
+import io.gumga.core.gquery.GQuery;
 import io.gumga.domain.shared.GumgaSharedModel;
 import io.gumga.testmodel.PersonSharedModel;
 import io.gumga.testmodel.PersonSharedRepositoryModel;
@@ -15,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
@@ -28,6 +32,7 @@ public class GumgaSharedModelTest {
     @BeforeEach
     @Transactional
     public void setUp() throws Exception {
+        GumgaThreadScope.ignoreCheckOwnership.set(Boolean.FALSE);
         GumgaThreadScope.organizationCode.set("1.");
         PersonSharedModel person1 = new PersonSharedModel("Caito Mango Evergreen");
         person1.addOrganization("2.");
@@ -107,5 +112,20 @@ public class GumgaSharedModelTest {
     public void sharedBmo2() {
         GumgaThreadScope.organizationCode.set("1000.1001.1004.");
         assertEquals(4, repository.findAll().size());
+    }
+
+    @Test
+    @Transactional
+    public void sharedFindOneBMO() {
+        GumgaThreadScope.organizationCode.set("1000.1001.1004.");
+        PersonSharedModel bm = repository
+                .findAll()
+                .stream()
+                .filter(personSharedModel -> personSharedModel.getGumgaOrganizations().contains("BM"))
+                .findFirst()
+                .get();
+        assertNotNull(repository.fetchOne(new GQuery(new Criteria("obj.id", ComparisonOperator.EQUAL, bm.getId()))));
+        assertNotNull(repository.findById(bm.getId()).get());
+        assertNotNull(repository.findOne(bm.getId()));
     }
 }

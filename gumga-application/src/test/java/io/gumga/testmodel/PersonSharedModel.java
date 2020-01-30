@@ -16,6 +16,9 @@ public class PersonSharedModel extends GumgaSharedModel<Long> {
     @Column
     private String nome;
 
+    public PersonSharedModel() {
+    }
+
     public PersonSharedModel(String nome) {
         this.nome = nome;
     }
@@ -27,4 +30,5 @@ public class PersonSharedModel extends GumgaSharedModel<Long> {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
 }

@@ -7,6 +7,9 @@
 
 =======================================
 Framework Backend
+4.0.4
+    - Correção no findOne compartilhado por BMO
+
 4.0.3
     - Correção no count com distinct no GQuery
 
