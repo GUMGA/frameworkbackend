@@ -2,7 +2,7 @@ package io.gumga.domain;
 
 import io.gumga.domain.domains.GumgaOi;
 
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 
 import java.io.Serializable;
 
