@@ -9,9 +9,7 @@
     <artifactId>gumga-application</artifactId>
     
     <properties>
-        <jasypt.version>1.9.2</jasypt.version>
-        <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
-        <jaxb-runtime.version>2.3.1</jaxb-runtime.version>
+        <jasypt.version>1.9.2</jasypt.version>    
     </properties>
     
     <dependencies>
@@ -172,17 +170,6 @@
             <groupId>com.stimulsoft</groupId>
             <artifactId>stimulsoft-reports-base</artifactId>
             <type>jar</type>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>${javax.annotation-api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
-            <version>${jaxb-runtime.version}</version>
         </dependency>
     </dependencies>
 
