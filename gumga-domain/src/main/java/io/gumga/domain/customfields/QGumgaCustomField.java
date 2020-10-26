@@ -7,7 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import io.gumga.domain.QGumgaModel;
 import io.gumga.domain.domains.GumgaOi;
 
-import javax.annotation.processing.Generated;
+import javax.annotation.Generated;
 
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 

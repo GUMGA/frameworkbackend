@@ -3,7 +3,7 @@ package io.gumga.domain.tag;
 import io.gumga.domain.QGumgaModel;
 import io.gumga.domain.domains.GumgaOi;
 
-import javax.annotation.processing.Generated;
+import javax.annotation.Generated;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
