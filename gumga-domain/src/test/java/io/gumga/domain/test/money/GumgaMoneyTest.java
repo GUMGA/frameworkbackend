@@ -7,7 +7,7 @@ package io.gumga.domain.test.money;
 
 import io.gumga.domain.CurrencyFormatter;
 import io.gumga.domain.domains.GumgaMoney;
-//import jdk.nashorn.internal.ir.annotations.Ignore;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
