@@ -43,3 +43,6 @@ nb_jr_remoting.cfg
 /target
 **/nbproject
 **/nbproject/**
+
+### Apple file ###
+.DS_Store
