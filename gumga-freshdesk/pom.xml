@@ -11,7 +11,7 @@
         <groupId>io.gumga</groupId>
         <artifactId>gumga-backend-all</artifactId>
 
-        <version>4.0.2-SNAPSHOT</version>
+        <version>4.0.5</version>
     </parent>
 
     <artifactId>gumga-freshdesk</artifactId>
