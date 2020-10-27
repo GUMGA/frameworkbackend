@@ -831,12 +831,12 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
                         sharedCriterion = sharedCriterion
                                 .concat(String
                                         .format(" or obj.gumgaOrganizations like '%s' ",
-                                                "%," + String.format(GumgaSharedModel.SHARED_BASE, bmo[0]) + ",%"));
+                                                "%%," + String.format(GumgaSharedModel.SHARED_BASE, bmo[0]) + ",%%"));
                         if (bmo.length == 3) {
                             sharedCriterion = sharedCriterion
                                     .concat(String
                                             .format(" or obj.gumgaOrganizations like '%s' ",
-                                                    "%," + String.format(GumgaSharedModel.SHARED_MATRIX, bmo[0], bmo[1]) + ",%"));
+                                                    "%%," + String.format(GumgaSharedModel.SHARED_MATRIX, bmo[0], bmo[1]) + ",%%"));
                         }
                     }
                 }
@@ -1042,7 +1042,7 @@ public class GumgaGenericRepository<T, ID extends Serializable> extends SimpleJp
 
     private Query createQueryCountWithGQuery(GQuery gQuery) {
         Boolean useDistinct = gQuery.useDistinct();
-        String query = (useDistinct ? "select distinct " : "select ") + " count(obj) FROM ".concat(entityInformation.getEntityName()).concat(" obj");
+        String query = (useDistinct ? "select count(distinct obj) " : "select count(obj)") + " FROM ".concat(entityInformation.getEntityName()).concat(" obj");
 
         String where = createWhere(gQuery);
 
