@@ -56,7 +56,7 @@
         <swagger-spring-mvc-ui.versiom>0.4</swagger-spring-mvc-ui.versiom>
         <stimulsoft-reports-base.version>2017.1.10</stimulsoft-reports-base.version>
         <javax.interceptor-api.version>1.2</javax.interceptor-api.version>
-        <spring-data-mongodb.version>1.10.0.RELEASE</spring-data-mongodb.version>
+        <spring-data-mongodb.version>3.3.5</spring-data-mongodb.version>
         <cogroo-ann-pt_br.version>4.2.0</cogroo-ann-pt_br.version>
         <reflections.version>0.9.10</reflections.version>
         <freemarker.version>2.3.23</freemarker.version>
